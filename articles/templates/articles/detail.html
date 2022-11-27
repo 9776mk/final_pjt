@@ -2,4 +2,14 @@
 
 {% block content %}
   <h1>detail</h1>
+  <p>{{ articles.title }}</p>
+  <p>{{ articles.content }}</p>
+  {% if request.user == articles.user %}
+    <form action="" method="POST">
+      {% csrf_token %}
+      <a href="{% url 'articles:delete' articles.pk %}" class="btn btn-outline-secondary">삭제</a>
+      <a href="{% url 'articles:update' articles.pk %}" class="btn btn-outline-secondary">수정</a>
+      <a href="{% url 'articles:index' %}" class="btn btn-outline-secondary">뒤로</a>
+    </form>
+  {% endif %}
 {% endblock %}
