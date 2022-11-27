@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Article, Image
-from .forms import articleForm, ImageForm
+
+from django.shortcuts import render,redirect,get_object_or_404
+from .models import Article,ArticleComment, Image
+from .forms import articleForm,ArticleCommentForm, ImageForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -50,6 +51,7 @@ def create(request):
 @login_required
 def detail(request, pk):
     articles = Article.objects.get(pk=pk)
+
     context = {
         "articles": articles,
         "image_cnt": articles.image_set.count(),
@@ -76,9 +78,9 @@ def update(request, pk):
         }
         return render(request, "articles/create.html", context)
     else:
-        return redirect("articles:detail", pk)
 
-
+        return redirect("articles:detail",pk)
+    
 @login_required
 def delete(request, pk):
     articles = get_object_or_404(Article, pk=pk)
@@ -87,3 +89,26 @@ def delete(request, pk):
         return redirect("articles:index")
     else:
         return redirect("articles:index")
+
+@login_required
+def comments_create(request,article_pk):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            article = get_object_or_404(Article, pk=article_pk)
+            comment_form = ArticleCommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.user = request.user
+                comment.article = article
+                comment.save()
+            return redirect("articles:detail", article.pk)
+    return redirect('accounts:login')
+
+@login_required
+def comments_delete(request, comment_pk, article_pk):
+    if request.user.is_authenticated:
+        comment = get_object_or_404(ArticleComment, pk=comment_pk)
+        if request.user == comment.user:
+            comment.delete()
+    return redirect("articles:detail", article_pk)
+

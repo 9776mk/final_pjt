@@ -5,4 +5,4 @@
   {% for article in articles.all %}
     <a href="{% url 'articles:detail' article.pk  %}">{{ article.title }}</a>
   {% endfor %}
-{% endblock %}
+{% endblock content %}
