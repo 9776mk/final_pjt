@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ user.username }} profile</h1>
+
+  {% if user == request.user %}
+    <a href="{% url 'accounts:profile_update' user.pk %}">회원 정보 수정</a>
+  {% else %}
+    <button class="btn btn-primary">팔로우</button>
+  {% endif %}
+
+  <p>{{ user.profile.nickname }}</p>
+  <p>{{ user.profile.language }}</p>
+  <p>{{ user.profile.mbti }}</p>
+  <p>{{ user.profile.intro }}</p>
+  {% if user.profile.image %}
+    <img src="{{ user.profile.image.url }}" alt="">
+  {% endif %}
+{% endblock content %}
