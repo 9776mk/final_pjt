@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
-
+{% load django_bootstrap5 %}
 {% block content %}
   <h1>detail</h1>
   <p>{{ articles.title }}</p>
   <p>{{ articles.content }}</p>
+
   {% if request.user == articles.user %}
     <form action="" method="POST">
       {% csrf_token %}
@@ -12,4 +13,13 @@
       <a href="{% url 'articles:index' %}" class="btn btn-outline-secondary">뒤로</a>
     </form>
   {% endif %}
-{% endblock %}
+  {% if request.user.is_authenticated %}
+    <form action="{% url 'articles:comments_create' articles.pk %}" method="POST">
+      {% csrf_token %}
+      <textarea name="content" id="content" rows="15"></textarea>
+      <input type="submit" value="글쓰기">
+    </form>
+  {% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">로그인</a>
+  {% endif %}
+{% endblock content %}

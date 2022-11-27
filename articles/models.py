@@ -8,3 +8,8 @@ class Article(models.Model):
     content = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     image = ProcessedImageField()
+class ArticleComment(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    content = models.TextField()
+    create_at = models.DateTimeField(null=True)
