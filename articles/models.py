@@ -7,4 +7,10 @@ class Article(models.Model):
     title = models.CharField(max_length=30)
     content = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    image = ProcessedImageField()
+    # image = ProcessedImageField()
+
+
+# Article의 이미지
+class Image(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    image = models.ImageField(blank=True, upload_to='article_images/')

@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
+{% load mathfilters %}
 
 {% block content %}
   <h1>detail</h1>
   <p>{{ articles.title }}</p>
   <p>{{ articles.content }}</p>
+
+  <!-- 사진 -->
+  {% for image in articles.image_set.all %}
+    <img style="object-fit: cover; height: 480px;" src="{{ image.image.url }}" class="d-block mx-auto" alt="{{ image.image }}">
+    <br>
+  {% endfor %}
+
   {% if request.user == articles.user %}
     <form action="" method="POST">
       {% csrf_token %}
