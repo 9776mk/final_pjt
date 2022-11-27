@@ -39,6 +39,7 @@ CUSTOM_APPS = [
     "django_bootstrap5",
     "django_extensions",
     "imagekit",
+    "mathfilters",
 ]
 
 DJANGO_APPS = [
