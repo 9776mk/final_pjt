@@ -5,6 +5,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+import json
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -31,6 +33,24 @@ def signup(request):
     }
 
     return render(request, 'accounts/signup.html', context)
+
+
+# 유효한 ID(username)인지 검사
+def is_valid_id(request):
+    username = json.loads(request.body).get('username')
+    # print(username)
+
+    if get_user_model().objects.filter(username=username).exists():
+        print('false')
+        is_valid = False
+    else:
+        is_valid = True
+
+    data = {
+        'is_valid': is_valid,
+    }
+
+    return JsonResponse(data)
 
 
 def login(request):

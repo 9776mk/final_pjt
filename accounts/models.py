@@ -9,6 +9,7 @@ from imagekit.processors import Thumbnail
 class User(AbstractUser):
     # username = models.CharField(max_length=16, unique=True)
     followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')
+    username = models.CharField(max_length=16, unique=True)
 
 
 class Profile(models.Model):
