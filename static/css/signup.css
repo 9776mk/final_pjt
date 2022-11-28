@@ -9,6 +9,20 @@
     align-items: center;
 }
 
+.check-btn {
+    padding: 0;
+    background: none;
+    padding: 0;
+    border: 0;
+}
+
+.signup-btn {
+    padding: 0;
+    background: none;
+    padding: 0;
+    border: 0;
+}
+
 .signup_box {
     display: inline-block;
     padding: 24px;
