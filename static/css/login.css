@@ -35,6 +35,13 @@
     transition: 0.5s;
 }
 
+.login-btn {
+    background: none;
+    padding: 0;
+    border: 0;
+
+}
+
 .inputBox span {
     position: absolute;
     left: 0;
