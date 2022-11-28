@@ -50,7 +50,7 @@ def is_valid_id(request):
         }
 
         return JsonResponse(data)
-    is_valid = False
+    is_valid = 'null'
     data = {
             'is_valid': is_valid,
         }

@@ -90,13 +90,19 @@ style="margin: 0;">
         } else if (response.data.is_valid === false) {
           modalBody.innerText = "사용 불가능한 아이디입니다."
           signupBtn.disabled = true
+        } else if (response.data.is_valid === 'null') {
+          modalBody.innerText = "아이디를 입력하세요."
+          signupBtn.disabled = true
         } else {
           modalBody.innerText = "사용 가능한 아이디입니다."
           signupBtn.disabled = false  // 회원가입 버튼 활성화
           // 비번창 나옴
           const box = document.querySelector('#passwordBox')
-          console.log(box.style.display) 
           box.style.display = 'block';
+          // 아이디 변경을 막음
+          const id_username = document.querySelector('#id_username')
+          id_username.setAttribute('readonly',true);
+
         }
       })
     }
