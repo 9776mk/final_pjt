@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <div class="container my-5">
   <div class="d-flex justify-content-center align-items-center mb-4">
     <div>
@@ -47,11 +48,11 @@
     <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3">
     <h5>작성 글</h5>
     <h5>작성 댓글</h5>
-    <h5>방명록</h5>
-    
-    
+      <a href="{% url 'accounts:guestbook' user.pk %}">
+        <h5>방명록</h5>
+      </a>
+
   </div>
-</div>
 {% endblock content %}
 
 {% block script %}
@@ -73,4 +74,5 @@
     });
   </script>
 {% endblock script %}
+
 

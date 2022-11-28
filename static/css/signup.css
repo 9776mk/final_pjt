@@ -1,12 +1,75 @@
-.h1 {
-    color: blue;
-}
-
-h1 {
-    color: blue;
-}
-
-body {
+.signup-main {
     height: 100vh;
-    background-color: aqua;
+    background-image: url(./sp.png);
+    background-position: center;
+    background-repeat: repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup_box {
+    display: inline-block;
+    padding: 24px;
+    background-color: #0c162d;
+    border: 1px solid #202637;
+    width: 900px;
+}
+
+.label-text {
+    color: #00cfc8 !important;
+
+}
+
+.form-style {
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.wel-text {
+    color: #627597;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.inputbox {
+    background: #1d2b3a !important;
+    color: #fff !important;
+}
+
+.typing {
+    text-transform: capitalize;
+    white-space: nowrap;
+    color: transparent;
+    margin: 0;
+    position: absolute;
+    margin-bottom: 15px;
+}
+
+.typing::before {
+    content: "비밀병기에 오신것을 환영합니다. ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #00cfc8;
+    overflow: hidden;
+    border-right: 3px solid white;
+    animation: typing 3s steps(20);
+}
+
+@keyframes typing {
+    0% {
+        width: 0%;
+    }
+
+    50% {
+        width: 50%;
+    }
+
+    100% {
+        width: 100%;
+    }
 }
