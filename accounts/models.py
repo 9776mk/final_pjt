@@ -41,3 +41,7 @@ class Profile(models.Model):
         ('ESTP', 'ESTP'), ('ESFP', 'ESFP'), ('ENFP', 'ENFP'), ('ENTP', 'ENTP'),
     )
     mbti = models.CharField(blank=True, max_length=4, choices=MBTI_CHOICE)
+
+    # 깃허브, 백준 ID
+    github_id = models.CharField(blank=True, max_length=20)
+    boj_id = models.CharField(blank=True, max_length=20)
