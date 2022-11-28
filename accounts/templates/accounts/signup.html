@@ -13,14 +13,22 @@
     </div>
     <form class='form-style' action="{% url 'accounts:signup' %}" method="POST">
       {% csrf_token %}
-      {% comment %} {% bootstrap_form signup_form %} {% endcomment %}
 
       <div class="mb-3">
-        <label class="form-label label-text " for="id_username">UserName</label>
-        <input type="text" name="username" maxlength="16" autofocus class="form-control inputbox" placeholder="UserName" required id="id_username" >
+        <label class="form-label label-text " for="id_username">ID</label>
+        <input type="text" name="username" autocomplete="off" maxlength="16" autofocus class="form-control inputbox" placeholder="ID" required id="id_username" >
         <div class="form-text">16자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</div>
         <div class="d-flex justify-content-end">
-          <input class="btn btn-outline-success " type="button" value="Check" data-bs-toggle="modal" data-bs-target="#isValidModal" onclick="isValidId();">
+          
+          
+          <div class="svg-wrapper">
+            <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+              <rect id="shape" height="40" width="150" />
+              <div id="text">
+                <button class='btn text-white' type="button" data-bs-toggle="modal" data-bs-target="#isValidModal" onclick="isValidId();"><span class="spot"></span>Check</button>
+              </div>
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -45,7 +53,14 @@
       </div>
 
       <div class="text-end">
-        <input type="submit" value="Signup" class="btn btn-outline-primary" id="signup-btn" disabled>
+        <div class="svg-wrapper">
+          <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+            <rect id="shape" height="40" width="150" />
+            <div id="text">
+              <button class='btn text-white' type="submit" id="signup-btn"><span class="spot"></span>Signup</button>
+            </div>
+          </svg>
+        </div>
       </div>
     </form>
   </div>
