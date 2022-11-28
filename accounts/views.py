@@ -23,6 +23,7 @@ def signup(request):
             # 현재 날짜를 기준으로 닉네임 자동 생성
             nickname = str(user.pk) + str(user.date_joined.strftime('%f'))
             Profile.objects.create(user=user, nickname=nickname)
+            Guestbook.objects.create(user=user)
             # 방명록 생성
             return redirect('articles:index')
     else:
@@ -144,26 +145,29 @@ def follow(request, user_pk):
 # 방명록
 def guestbook(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
-    gb_articles = user.guestbookarticle_set.all()
-    gb_article_form = GuestbookArticleForm()
+    gb_articles = user.guestbook.guestbookarticle_set.all()
+    gb_comments = user.guestbook.guestbookcomment_set.all()
 
     context = {
         'user': user,
         'gb_articles': gb_articles,
-        'gb_article_form': gb_article_form,
+        'gb_comments': gb_comments,
     }
 
     return render(request, 'accounts/guestbook.html', context)
 
 
+# 방명록 글 작성
 @login_required
 def gb_article_create(request, user_pk):
     # if 'gb_article_create' in request.POST:
     if request.method == 'POST':
         gb_article_form = GuestbookArticleForm(request.POST)
+        guestbook = get_object_or_404(Guestbook, user_id=user_pk)
         
         if gb_article_form.is_valid():
             gb_article = gb_article_form.save(commit=False)
+            gb_article.guestbook = guestbook
             gb_article.user = request.user
             gb_article.save()
 
@@ -177,6 +181,7 @@ def gb_article_create(request, user_pk):
         return JsonResponse(data)
 
 
+# 방명록 글 삭제
 @login_required
 def gb_article_delete(request, user_pk, gb_article_pk):
     gb_article = get_object_or_404(GuestbookArticle, pk=gb_article_pk)
@@ -193,3 +198,30 @@ def gb_article_delete(request, user_pk, gb_article_pk):
     }
 
     return JsonResponse(data)
+
+
+# 방명록 댓글 생성
+@login_required
+def gb_comment_create(request, user_pk, gb_article_pk):
+    if request.method == 'POST':
+        gb_comment_form = GuestbookCommentForm(request.POST)
+        article = get_object_or_404(GuestbookArticle, pk=gb_article_pk)
+        guestbook = get_object_or_404(Guestbook, user_id=user_pk)
+        
+        if gb_comment_form.is_valid():
+            comment = gb_comment_form.save(commit=False)
+            comment.guestbook = guestbook
+            comment.article = article
+            comment.user = request.user
+            comment.save()
+
+        # data = {
+        #     'comment_pk': comment.pk,
+        #     'comment_user': comment.user.profile.nickname,   # username?
+        #     'comment_content': comment.content,
+        #     'comment_created_at': comment.created_at.strftime('%Y.%m.%d'),
+        # }
+
+        # return JsonResponse(data)
+
+    return redirect('accounts:guestbook', user_pk)

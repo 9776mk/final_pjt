@@ -31,3 +31,9 @@ class GuestbookArticleForm(forms.ModelForm):
     class Meta:
         model = GuestbookArticle
         fields = ['content']
+
+
+class GuestbookCommentForm(forms.ModelForm):
+    class Meta:
+        model = GuestbookComment
+        fields = ['content']

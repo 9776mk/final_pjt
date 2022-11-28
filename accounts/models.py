@@ -51,8 +51,19 @@ class Profile(models.Model):
 class Guestbook(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+
 # 방명록 글
 class GuestbookArticle(models.Model):
+    guestbook = models.ForeignKey(Guestbook, on_delete=models.CASCADE)  # 어느 방명록에 글이 쓰였는지
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)    # 글을 누가 썼는지
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+# 방명록 댓글
+class GuestbookComment(models.Model):
+    guestbook = models.ForeignKey(Guestbook, on_delete=models.CASCADE)  # 어느 방명록에 글이 쓰였는지
+    article = models.ForeignKey(GuestbookArticle, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
