@@ -59,6 +59,7 @@ def is_valid_id(request):
 
 
 def login(request):
+    print(request)
     # 이미 로그인 → 로그인 X
     if request.user.is_authenticated:
         return redirect('articles:index')
