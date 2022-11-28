@@ -46,7 +46,9 @@
       </div>
       <h5>작성 글</h5>
       <h5>작성 댓글</h5>
-      <h5>방명록</h5>
+      <a href="{% url 'accounts:guestbook' user.pk %}">
+        <h5>방명록</h5>
+      </a>
     </div>
   </div>
 {% endblock content %}
