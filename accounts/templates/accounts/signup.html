@@ -35,7 +35,7 @@
       <div id='passwordBox' style='display: none;'>
       <div class="mb-3">
         <label class="form-label label-text" for="id_password1">Password</label>
-        <input type="password" name="password1" autocomplete="new-password" class="form-control inputbox" placeholder="Password" required id="id_password1">
+        <input type="password" name="password1" autocomplete="new-password" class="password_1 form-control inputbox" placeholder="Password" required id="id_password1">
         <div class="form-text">
           <ul>
             <li>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</li>
@@ -47,9 +47,10 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label label-text" for="id_password2">Confirm Password</label>
-        <input type="password" name="password2" autocomplete="new-password" class="form-control inputbox" placeholder="Confirm Password" required id="id_password2">
+        <label  class="form-label label-text" for="id_password2">Confirm Password</label><span id='statusP' style="margin-left:1rem;"></span>
+        <input type="password" name="password2" autocomplete="new-password" class="password_2 form-control inputbox" placeholder="Confirm Password" required id="id_password2" onkeyup="checkPass()">
         <div class="form-text">확인을 위해 이전과 동일한 비밀번호를 입력하세요. </div>
+        <font id = "checkPw" size = "2"></font>
       </div>
 
       <div class="text-end">
@@ -83,43 +84,7 @@ style="margin: 0;">
 </div>
 {% endblock content %}
 
-{% block script %}
-  <script>
-    // ID 중복확인
-    const signupBtn = document.querySelector('#signup-btn')
+{% block script %}  
+<script type="text/javascript" src="{% static 'js/signup.js' %}"></script>
 
-    function isValidId() {
-      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-      const userID = document.querySelector('#id_username').value
-      const modalBody = document.querySelector('#modal-body')
-
-      axios({
-        method: 'post',
-        url: '/accounts/is_valid_id/',
-        headers: {'X-CSRFToken': csrfToken},
-        data: {'username': userID}
-      }).then(response => {
-        if (userID.length > 16) {
-          modalBody.innerText = "16자 이하의 문자만 가능합니다."
-          signupBtn.disabled = true
-        } else if (response.data.is_valid === false) {
-          modalBody.innerText = "사용 불가능한 아이디입니다."
-          signupBtn.disabled = true
-        } else if (response.data.is_valid === 'null') {
-          modalBody.innerText = "아이디를 입력하세요."
-          signupBtn.disabled = true
-        } else {
-          modalBody.innerText = "사용 가능한 아이디입니다."
-          signupBtn.disabled = false  // 회원가입 버튼 활성화
-          // 비번창 나옴
-          const box = document.querySelector('#passwordBox')
-          box.style.display = 'block';
-          // 아이디 변경을 막음
-          const id_username = document.querySelector('#id_username')
-          id_username.setAttribute('readonly',true);
-
-        }
-      })
-    }
-  </script>
 {% endblock script %}
