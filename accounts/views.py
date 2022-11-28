@@ -134,3 +134,57 @@ def follow(request, user_pk):
     }
 
     return JsonResponse(data)
+
+
+# 방명록
+def guestbook(request, user_pk):
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    gb_articles = user.guestbookarticle_set.all()
+    gb_article_form = GuestbookArticleForm()
+
+    context = {
+        'user': user,
+        'gb_articles': gb_articles,
+        'gb_article_form': gb_article_form,
+    }
+
+    return render(request, 'accounts/guestbook.html', context)
+
+
+@login_required
+def gb_article_create(request, user_pk):
+    # if 'gb_article_create' in request.POST:
+    if request.method == 'POST':
+        gb_article_form = GuestbookArticleForm(request.POST)
+        
+        if gb_article_form.is_valid():
+            gb_article = gb_article_form.save(commit=False)
+            gb_article.user = request.user
+            gb_article.save()
+
+        data = {
+            'article_pk': gb_article.pk,
+            'article_user': gb_article.user.profile.nickname,   # username?
+            'article_content': gb_article.content,
+            'article_created_at': gb_article.created_at.strftime('%Y.%m.%d'),
+        }
+
+        return JsonResponse(data)
+
+
+@login_required
+def gb_article_delete(request, user_pk, gb_article_pk):
+    gb_article = get_object_or_404(GuestbookArticle, pk=gb_article_pk)
+
+    is_deleted = False
+
+    if request.user == gb_article.user and request.method == 'POST':
+        gb_article.delete()
+        # has_comment = True/False
+        is_deleted = True
+
+    data = {
+        'is_deleted': is_deleted,
+    }
+
+    return JsonResponse(data)
