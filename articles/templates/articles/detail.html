@@ -2,7 +2,6 @@
 {% load django_bootstrap5 %}
 {% load mathfilters %}
 
-
 {% block content %}
   <h1>detail</h1>
   <p>{{ articles.title }}</p>
@@ -13,7 +12,6 @@
     <img style="object-fit: cover; height: 480px;" src="{{ image.image.url }}" class="d-block mx-auto" alt="{{ image.image }}">
     <br>
   {% endfor %}
-
 
   {% if request.user == articles.user %}
     <form action="" method="POST">
@@ -32,4 +30,15 @@
   {% else %}
     <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">로그인</a>
   {% endif %}
+  <!-- 댓글 -->
+  {% for comment in comments.all %}
+    <p>{{ comment.content }}</p>
+    {% if request.user == comment.user %}
+      <form action="{% url 'articles:comments_delete' articles.pk comment.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="DELETE">
+      </form>
+    {% endif %}
+  {% endfor %}
+  {% block script %}{% endblock script %}
 {% endblock content %}

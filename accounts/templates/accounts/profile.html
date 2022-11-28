@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container my-5">
@@ -36,3 +37,41 @@
   </div>
 </div>
 {% endblock content %}
+
+  <!-- 회원 정보 수정 & 팔로우 버튼 -->
+  {% if user == request.user %}
+    <a href="{% url 'accounts:profile_update' user.pk %}">회원 정보 수정</a>
+  {% elif request.user.is_authenticated %}
+    <form id="follow-form" data-user-id="{{ user.pk }}">
+      {% csrf_token %}
+      {% if request.user in user.followers.all %}
+        <input id="follow-btn" type="submit" value="언팔로우" class="btn btn-danger">
+      {% else %}
+        <input id="follow-btn" type="submit" value="팔로우" class="btn btn-primary">
+      {% endif %}
+    </form>
+  {% endif %}
+
+  <p class="text-primary">팔로잉: <span id="followings-count">{{ user.followings.count }}</span></p>
+  <p class="text-primary">팔로워: <span id="followers-count">{{ user.followers.count }}</span></p>
+
+  <p>{{ user.profile.nickname }}</p>
+  <p>{{ user.profile.language }}</p>
+  <p>{{ user.profile.mbti }}</p>
+  <p>{{ user.profile.intro }}</p>
+  {% if user.profile.image %}
+    <img src="{{ user.profile.image.url }}" alt="">
+  {% endif %}
+  
+  <!-- username: jupiter6676 -->
+  <!-- 16진수 색상표 https://jasmintime.com/244 -->
+  <br>
+  <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}"/>
+  <br>
+  <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}"/>
+{% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/accounts_follow_async.js' %}"></script>
+{% endblock script %}
+

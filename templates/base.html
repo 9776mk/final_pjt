@@ -3,79 +3,118 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% block link %}{% endblock link %}
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-  <!-- Bootstrap icon -->
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-  <title> 비밀병기팀의 최종병기 </title>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block link %}{% endblock link %}
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- Bootstrap icon -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <title>
+      비밀병기팀의 최종병기
+    </title>
 
-  <style>
-    a {
-      text-decoration: none;
-    }
-  </style>
-</head>
+    <style>
+      a {
+        text-decoration: none;
+      }
+    </style>
+  </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#"> 최종병기 </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'articles:index' %}"> 게시판 </a>
-          </li>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          최종병기 (로고)
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- 메뉴 -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            {% comment %} <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="">Home</a>
+            </li> {% endcomment %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'articles:index' %}">
+                커뮤니티
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'articles:index' %}">
+                알고리즘
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'articles:index' %}">
+                이상형월드컵
+              </a>
+            </li>
+          </ul>
 
-          <!-- 로그인이 되어 있으면 -->
-          {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:profile' user.pk %}"> 내 정보 </a>
-          </li>
+          <!-- 가운데에 검색창 -->
+          {% comment %} <ul class="navbar-nav">
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </ul> {% endcomment %}
 
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:logout' %}"> 로그아웃 </a>
-          </li>
+          <!-- 회원 -->
+          <ul class="navbar-nav">
+            <!-- 로그인이 되어 있으면 -->
+            {% if request.user.is_authenticated %}
+              {% comment %} 쪽지 알람 {% endcomment %}
+              <li class='nav-item mx-2'>
+                <button type="button" class="btn btn-outline-primary position-relative">
+                  쪽지
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    99+
+                    <span class="visually-hidden">unread messages</span>
+                  </span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{}">
+                  내 정보
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:logout' %}">
+                  로그아웃
+                </a>
+              </li>
+            <!-- 로그인이 되어있지 않으면 -->
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:signup' %}">
+                  회원가입
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:login' %}">
+                  로그인
+                </a>
+              </li>
+            {% endif %}
+          </ul>
 
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:signup' %}"> 회원가입 </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:login' %}"> 로그인 </a>
-          </li>
-
-          {% endif %}
-        </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        </div>
       </div>
-    </div>
-  </nav>
-  {% block content%}
-  {% endblock content %}
+    </nav>
+    {% block content%}{% endblock content %}
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  <!-- Axios -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  
-  {% block script %}
-  {% endblock script %}
-</body>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    {% block script %}{% endblock script %}
+  </body>
 
 </html>
