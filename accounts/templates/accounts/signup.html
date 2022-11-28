@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}" type="text/css">
 
+{% endblock link %}
 {% block content %}
+<div class="main">
   <div class="container my-5">
     <h1 class="text-center">회원가입</h1>
 
@@ -54,6 +59,7 @@
       </div>
     </form>
   </div>
+</div>
 {% endblock content %}
 
 {% block script %}
