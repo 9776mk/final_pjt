@@ -110,3 +110,27 @@ def profile_update(request, user_pk):
     }
 
     return render(request, "accounts/profile_update.html", context)
+
+
+# 유저 팔로우/언팔로우
+def follow(request, user_pk):
+    if not request.user.is_authenticated:
+        return redirect('accounts:profile', user.pk)
+    
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    
+    # 나와 다른 유저만 (언)팔로우 가능
+    if request.user != user and request.method == 'POST':
+        if user.followers.filter(pk=request.user.pk).exists():
+            user.followers.remove(request.user)
+            is_following = False    # 팔로잉 취소
+        else:
+            user.followers.add(request.user)
+            is_following = True    # 팔로잉
+
+    data = {
+        'is_following': is_following,
+        'followers_count': user.followers.count(),
+    }
+
+    return JsonResponse(data)
