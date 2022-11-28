@@ -17,7 +17,7 @@
 
   <div id="gb-articles-box">
     {% for article in gb_articles %}
-      <div id="article-{{ article.pk }}">
+      <div id="article-{{ article.pk }}" class="mb-3">
         <p>{{ article.user.profile.nickname }} | {{ article.content }} | {{ article.created_at|date:'Y.m.d' }}</p>
         
         <!-- 방명록 글 삭제 Form -->
@@ -26,6 +26,26 @@
             {% csrf_token %}
             <input type="submit" class="btn-close" style="color:transparent;">
           </form>
+        {% endif %}
+        
+        <!-- 답글 생성 Form -->
+        {% if request.user.is_authenticated %}
+          <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}">답글 달기</a>
+          <div class="collapse" id="collapse-gb-comment-form-{{ article.pk }}">
+            <form action="{% url 'accounts:gb_comment_create' user.pk article.pk %}" method="POST">
+              {% csrf_token %}
+              <label class="form-label m-0 me-5" for="id_content">Content</label>
+              <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="Content" required id="id_content"></textarea>
+              <input type="submit" value="작성" name="gb_comment_create">
+            </form>
+
+            <!-- 답글 -->
+            {% for comment in gb_comments %}
+              {% if comment.article == article %}
+                <p>{{ comment.user.profile.nickname }} | {{ comment.content }} | {{ comment.created_at|date:'Y.m.d' }}</p>
+              {% endif %}
+            {% endfor %}
+          </div>
         {% endif %}
       </div>
     {% endfor %}

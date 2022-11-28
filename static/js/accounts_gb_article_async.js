@@ -34,11 +34,11 @@ function create_gb_article(form, user_pk) {
             <div id="article-${articlePk}">
                 <p>${articleUser} | ${articleContent} | ${articleCreatedAt}</p>
             
-            <!-- 방명록 글 삭제 Form -->
-            <form id="gb-article-delete-form-${articlePk}" onsubmit="event.preventDefault(); delete_gb_article(this, '${user_pk}', '${articlePk}')">
-                <input type="submit" class="btn-close" style="color:transparent;">
-            </form>
-        </div>
+                <!-- 방명록 글 삭제 Form -->
+                <form id="gb-article-delete-form-${articlePk}" onsubmit="event.preventDefault(); delete_gb_article(this, '${user_pk}', '${articlePk}')">
+                    <input type="submit" class="btn-close" style="color:transparent;">
+                </form>
+            </div>
         `)
 
         form.reset()
