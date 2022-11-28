@@ -51,10 +51,11 @@ def create(request):
 @login_required
 def detail(request, pk):
     articles = Article.objects.get(pk=pk)
-
+    comments = ArticleComment.objects.all()
     context = {
         "articles": articles,
         "image_cnt": articles.image_set.count(),
+        'comments':comments,
     }
     return render(request, "articles/detail.html", context)
 
@@ -111,4 +112,3 @@ def comments_delete(request, comment_pk, article_pk):
         if request.user == comment.user:
             comment.delete()
     return redirect("articles:detail", article_pk)
-
