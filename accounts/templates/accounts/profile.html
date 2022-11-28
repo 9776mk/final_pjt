@@ -2,57 +2,77 @@
 {% load static %}
 
 {% block content %}
-  <div class="container my-5">
-    <div class="d-flex justify-content-center align-items-center">
+
+<div class="container my-5">
+  <div class="d-flex justify-content-center align-items-center mb-4">
+    <div>
       {% if user.profile.image %}
       <img src="{{ user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
+      {% else %}
+      <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 200px;" alt="">
       {% endif %}
-      <div class="ms-5 w-100">
-        <div class="d-flex align-items-center">
-          <h1>{{ user.username }} profile</h1>
-
-          <!-- 회원 정보 수정 & 팔로우 버튼 -->
-          {% if user == request.user %}
-            <a href="{% url 'accounts:profile_update' user.pk %}">회원 정보 수정</a>
-          {% elif request.user.is_authenticated %}
-            <form id="follow-form" data-user-id="{{ user.pk }}">
-              {% csrf_token %}
-              {% if request.user in user.followers.all %}
-                <input id="follow-btn" type="submit" value="언팔로우" class="btn btn-danger">
-              {% else %}
-                <input id="follow-btn" type="submit" value="팔로우" class="btn btn-primary">
-              {% endif %}
-            </form>
-          {% endif %}
-
-          <p class="text-primary">팔로잉: <span id="followings-count">{{ user.followings.count }}</span></p>
-          <p class="text-primary">팔로워: <span id="followers-count">{{ user.followers.count }}</span></p>
-        </div>
-
-        <p>{{ user.profile.nickname }}</p>
-        <p>기술스택: {{ user.profile.language }}</p>
-        <p>MBTI: {{ user.profile.mbti }}</p>
-        <p>소개글 {{ user.profile.intro }}</p>
-      </div>
+      {% comment %} <button id="emoji_btn">이모지 추가<input type="text" id="message" style="border-radius: 70%; width: 30px;" class="position-absolute top-1 start-10"></button> {% endcomment %}
     </div>
-    <hr>
-    <div class="d-flex flex-wrap justify-content-center flex-column">
-      <div>
-        <!-- 16진수 색상표 https://jasmintime.com/244 -->
-        {% if user.profile.github_id %}
-          <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100">
-          <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100">
+    <div class="ms-5 w-100">
+      <div class="d-flex align-items-center mb-2">
+        <h1 class="mb-0" style="font-size: 30px;">{{ user.username }}님의 프로필</h1>
+        <!-- 회원 정보 수정 & 팔로우 버튼 -->
+        {% if user == request.user %}
+        <a href="{% url 'accounts:profile_update' user.pk %}">
+          <input type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="프로필 수정">
+        </a>
+        {% elif request.user.is_authenticated %}
+          <form id="follow-form" data-user-id="{{ user.pk }}">
+            {% csrf_token %}
+            {% if request.user in user.followers.all %}
+              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="언팔로우">
+            {% else %}
+              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="팔로우">
+            {% endif %}
+          </form>
         {% endif %}
       </div>
-      <h5>작성 글</h5>
-      <h5>작성 댓글</h5>
+
+      <p class="text-primary mb-1">팔로잉 <span id="followings-count">{{ user.followings.count }}</span>  팔로워 <span id="followers-count">{{ user.followers.count }}</span></p>
+      <p class="mb-1">{{ user.profile.nickname }}</p>
+      <p class="mb-1">{{ user.profile.language }} <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=ffffff"/></p>
+      <p class="mb-1"><span class="badge">{{ user.profile.mbti }}</span></p>
+      <p class="mb-1">{{ user.profile.intro }}</p>
+    </div>
+  </div>
+  <hr>
+  <div class="d-flex flex-wrap justify-content-center flex-column">
+    <!-- username: jupiter6676 -->
+    <!-- 16진수 색상표 https://jasmintime.com/244 -->
+    <!-- <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100"> -->
+    <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3">
+    <h5>작성 글</h5>
+    <h5>작성 댓글</h5>
       <a href="{% url 'accounts:guestbook' user.pk %}">
         <h5>방명록</h5>
       </a>
-    </div>
+
   </div>
 {% endblock content %}
 
 {% block script %}
   <script type="text/javascript" src="{% static 'js/accounts_follow_async.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+  <script>
+    const button = document.querySelector("#emoji_btn");
+    const picker = new EmojiButton({
+      position: 'bottom-start'
+    });
+    
+    button.addEventListener('click', () => {
+      picker.togglePicker(button);
+    });
+    
+    picker.on('emoji', emoji => {
+      const text_box = document.querySelector('#message');
+      text_box.value += emoji;
+    });
+  </script>
 {% endblock script %}
+
+
