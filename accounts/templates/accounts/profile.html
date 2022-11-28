@@ -10,11 +10,21 @@
     <div class="ms-5 w-100">
       <div class="d-flex align-items-center">
         <h1>{{ user.username }} profile</h1>
+        <!-- 회원 정보 수정 & 팔로우 버튼 -->
         {% if user == request.user %}
         <a href="{% url 'accounts:profile_update' user.pk %}" class="btn btn-primary ms-3">회원 정보 수정</a>
-        {% else %}
-        <button class="btn btn-primary">팔로우</button>
+        {% elif request.user.is_authenticated %}
+          <form id="follow-form" data-user-id="{{ user.pk }}">
+            {% csrf_token %}
+            {% if request.user in user.followers.all %}
+              <input id="follow-btn" type="submit" value="언팔로우" class="btn btn-danger">
+            {% else %}
+              <input id="follow-btn" type="submit" value="팔로우" class="btn btn-primary">
+            {% endif %}
+          </form>
         {% endif %}
+        <p class="text-primary">팔로잉: <span id="followings-count">{{ user.followings.count }}</span></p>
+        <p class="text-primary">팔로워: <span id="followers-count">{{ user.followers.count }}</span></p>
       </div>
 
       <p>{{ user.profile.nickname }}</p>
@@ -28,47 +38,14 @@
     <!-- username: jupiter6676 -->
     <!-- 16진수 색상표 https://jasmintime.com/244 -->
     <div>
-      <img src="https://ghchart.rshah.org/jupiter6676" class="w-100">
-      <img src="https://ghchart.rshah.org/6495ed/jupiter6676" class="w-100">
+      <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100">
+      <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100">
     </div>
     <h5>작성 글</h5>
     <h5>작성 댓글</h5>
     <h5>방명록</h5>
   </div>
 </div>
-{% endblock content %}
-
-  <!-- 회원 정보 수정 & 팔로우 버튼 -->
-  {% if user == request.user %}
-    <a href="{% url 'accounts:profile_update' user.pk %}">회원 정보 수정</a>
-  {% elif request.user.is_authenticated %}
-    <form id="follow-form" data-user-id="{{ user.pk }}">
-      {% csrf_token %}
-      {% if request.user in user.followers.all %}
-        <input id="follow-btn" type="submit" value="언팔로우" class="btn btn-danger">
-      {% else %}
-        <input id="follow-btn" type="submit" value="팔로우" class="btn btn-primary">
-      {% endif %}
-    </form>
-  {% endif %}
-
-  <p class="text-primary">팔로잉: <span id="followings-count">{{ user.followings.count }}</span></p>
-  <p class="text-primary">팔로워: <span id="followers-count">{{ user.followers.count }}</span></p>
-
-  <p>{{ user.profile.nickname }}</p>
-  <p>{{ user.profile.language }}</p>
-  <p>{{ user.profile.mbti }}</p>
-  <p>{{ user.profile.intro }}</p>
-  {% if user.profile.image %}
-    <img src="{{ user.profile.image.url }}" alt="">
-  {% endif %}
-  
-  <!-- username: jupiter6676 -->
-  <!-- 16진수 색상표 https://jasmintime.com/244 -->
-  <br>
-  <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}"/>
-  <br>
-  <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}"/>
 {% endblock content %}
 
 {% block script %}
