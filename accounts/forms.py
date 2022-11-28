@@ -15,11 +15,13 @@ class ProfileForm(forms.ModelForm):
     
     class Meta:
         model = Profile()
-        fields = ['image', 'nickname', 'language', 'mbti', 'intro']
+        fields = ['image', 'nickname', 'github_id', 'boj_id', 'language', 'mbti', 'intro']
         labels = {
             'nickname': '닉네임',
             'language': '사용 언어',
             'mbti': 'MBTI',
             'image': '프로필 사진',
             'intro': '소개글',
+            'github_id': 'Github 아이디', 
+            'boj_id': '백준 아이디',
         }
