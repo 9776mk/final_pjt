@@ -39,16 +39,21 @@ def signup(request):
 def is_valid_id(request):
     username = json.loads(request.body).get('username')
     # print(username)
+    if  len(username) > 0:
+        if get_user_model().objects.filter(username=username).exists() :
+            is_valid = False
+        else:
+            is_valid = True
 
-    if get_user_model().objects.filter(username=username).exists():
-        print('false')
-        is_valid = False
-    else:
-        is_valid = True
+        data = {
+            'is_valid': is_valid,
+        }
 
+        return JsonResponse(data)
+    is_valid = False
     data = {
-        'is_valid': is_valid,
-    }
+            'is_valid': is_valid,
+        }
 
     return JsonResponse(data)
 
