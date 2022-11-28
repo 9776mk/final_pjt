@@ -1,0 +1,12 @@
+.h1 {
+    color: blue;
+}
+
+h1 {
+    color: blue;
+}
+
+body {
+    height: 100vh;
+    background-color: aqua;
+}
