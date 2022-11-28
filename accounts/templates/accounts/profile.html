@@ -1,26 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>{{ user.username }} profile</h1>
+<div class="container my-5">
+  <div class="d-flex justify-content-center align-items-center">
+    {% if user.profile.image %}
+    <img src="{{ user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
+    {% endif %}
+    <div class="ms-5 w-100">
+      <div class="d-flex align-items-center">
+        <h1>{{ user.username }} profile</h1>
+        {% if user == request.user %}
+        <a href="{% url 'accounts:profile_update' user.pk %}" class="btn btn-primary ms-3">회원 정보 수정</a>
+        {% else %}
+        <button class="btn btn-primary">팔로우</button>
+        {% endif %}
+      </div>
 
-  {% if user == request.user %}
-    <a href="{% url 'accounts:profile_update' user.pk %}">회원 정보 수정</a>
-  {% else %}
-    <button class="btn btn-primary">팔로우</button>
-  {% endif %}
-
-  <p>{{ user.profile.nickname }}</p>
-  <p>{{ user.profile.language }}</p>
-  <p>{{ user.profile.mbti }}</p>
-  <p>{{ user.profile.intro }}</p>
-  {% if user.profile.image %}
-    <img src="{{ user.profile.image.url }}" alt="">
-  {% endif %}
-  
-  <!-- username: jupiter6676 -->
-  <!-- 16진수 색상표 https://jasmintime.com/244 -->
-  <br>
-  <img src="https://ghchart.rshah.org/jupiter6676"/>
-  <br>
-  <img src="https://ghchart.rshah.org/6495ed/jupiter6676"/>
+      <p>{{ user.profile.nickname }}</p>
+      <p>기술스택: {{ user.profile.language }}</p>
+      <p>MBTI: {{ user.profile.mbti }}</p>
+      <p>소개글 {{ user.profile.intro }}</p>
+    </div>
+  </div>
+  <hr>
+  <div class="d-flex flex-wrap justify-content-center flex-column">
+    <!-- username: jupiter6676 -->
+    <!-- 16진수 색상표 https://jasmintime.com/244 -->
+    <div>
+      <img src="https://ghchart.rshah.org/jupiter6676" class="w-100">
+      <img src="https://ghchart.rshah.org/6495ed/jupiter6676" class="w-100">
+    </div>
+    <h5>작성 글</h5>
+    <h5>작성 댓글</h5>
+    <h5>방명록</h5>
+  </div>
+</div>
 {% endblock content %}
