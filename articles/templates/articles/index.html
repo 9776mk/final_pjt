@@ -10,10 +10,10 @@
   <table class="table table-light table-bordered my-5 article_table">
     <thead>
     <tr>
-      <th style='width:150px'>카테고리</th>
-      <th style='width:200px'>작성자</th>
+      <th style='width:110px'>카테고리</th>
+      <th style='width:140px'>작성자</th>
       <th>내용</th>
-      <th style='width:100px'>작성날짜</th>
+      <th style='width:90px'>작성날짜</th>
     </tr>
     </thead>
     <tbody>
@@ -28,6 +28,6 @@
     </tbody>
   </table>
 
-  <a class='new_btn' href="{% url 'articles:create' %}">새 글 쓰기</a>
+  <a class='btn btn-light' href="{% url 'articles:create' %}">새 글 쓰기</a>
 </div>
 {% endblock content %}
