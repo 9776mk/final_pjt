@@ -27,7 +27,7 @@
   <body>
     <nav class="navbar navbar-expand-lg bg-white sticky-top">
       <div class="container-fluid">
-        <a class="navbar-brand mx-4" href="#">
+        <a class="navbar-brand mx-4" href="{% url "home" %}">
           최종병기 (로고)
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,8 +81,8 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'accounts:profile' user.pk %}">
-                  <div class="box" style="background: #BDBDBD;">
-                    <img class="profile" src="">
+                  <div class="box">
+                    <img class="profile" src={% if user.profile.image %}"{{ user.profile.image.url }}"{% else %}"https://dummyimage.com/50x50/1c46ff/ffffff&text=img"{% endif %}>
                   </div>
                 </a>
               </li>
