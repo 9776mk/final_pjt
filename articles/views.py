@@ -51,10 +51,11 @@ def create(request):
 @login_required
 def detail(request, pk):
     articles = Article.objects.get(pk=pk)
-
+    comments = ArticleComment.objects.all()
     context = {
         "articles": articles,
         "image_cnt": articles.image_set.count(),
+        'comments':comments,
     }
     return render(request, "articles/detail.html", context)
 
@@ -62,18 +63,36 @@ def detail(request, pk):
 @login_required
 def update(request, pk):
     articles = get_object_or_404(Article, pk=pk)
+    images = Image.objects.filter(article_id=pk)    # 기존 이미지
+
     if request.user == articles.user:
         if request.method == "POST":
             article_form = articleForm(request.POST, request.FILES, instance=articles)
-            if article_form.is_valid():
+            image_form = ImageForm(request.POST, request.FILES)
+            tmp_images = request.FILES.getlist('image')
+
+            # 기존 이미지 삭제
+            for img in images:
+                if img:
+                    img.delete()
+
+            if article_form.is_valid() and image_form.is_valid():
                 article = article_form.save(commit=False)
                 article.user = request.user
                 article.save()
+
+                if tmp_images:
+                    for img in tmp_images:
+                        img_instance = Image(article=article, image=img)
+                        img_instance.save()
+
             return redirect("articles:detail", pk)
         else:
             article_form = articleForm(instance=articles)
+            image_form = ImageForm()
         context = {
             "article_form": article_form,
+            "image_form": image_form,
             "articles": articles,
         }
         return render(request, "articles/create.html", context)
@@ -111,4 +130,3 @@ def comments_delete(request, comment_pk, article_pk):
         if request.user == comment.user:
             comment.delete()
     return redirect("articles:detail", article_pk)
-
