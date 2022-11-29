@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import Article,ArticleComment, Image
 from .forms import articleForm,ArticleCommentForm, ImageForm
 from django.contrib.auth.decorators import login_required
-
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -51,11 +51,12 @@ def create(request):
 @login_required
 def detail(request, pk):
     articles = Article.objects.get(pk=pk)
-    comments = ArticleComment.objects.all()
+    comment_form = ArticleCommentForm()
     context = {
         "articles": articles,
         "image_cnt": articles.image_set.count(),
-        'comments':comments,
+        'comments':articles.articlecomment_set.all(),
+        "comment_form":comment_form,
     }
     return render(request, "articles/detail.html", context)
 
@@ -113,14 +114,18 @@ def delete(request, pk):
 def comments_create(request,article_pk):
     if request.user.is_authenticated:
         if request.method == "POST":
-            article = get_object_or_404(Article, pk=article_pk)
+            article = Article.objects.get(pk=article_pk)
             comment_form = ArticleCommentForm(request.POST)
             if comment_form.is_valid():
                 comment = comment_form.save(commit=False)
                 comment.user = request.user
                 comment.article = article
                 comment.save()
-            return redirect("articles:detail", article.pk)
+            context={
+                'content':comment.content,
+                'userName':comment.user.username
+            }
+            return JsonResponse(context)
     return redirect('accounts:login')
 
 @login_required

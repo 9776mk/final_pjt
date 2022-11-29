@@ -45,13 +45,14 @@
     <!-- username: jupiter6676 -->
     <!-- 16진수 색상표 https://jasmintime.com/244 -->
     <!-- <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100"> -->
-    <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3">
+    {% if user.profile.github_id %}
+      <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3">
+    {% endif %}
     <h5>작성 글</h5>
     <h5>작성 댓글</h5>
-      <a href="{% url 'accounts:guestbook' user.pk %}">
-        <h5>방명록</h5>
-      </a>
-
+    <a href="{% url 'accounts:guestbook' user.pk %}">
+      <h5>방명록</h5>
+    </a>
   </div>
 {% endblock content %}
 
@@ -74,5 +75,3 @@
     });
   </script>
 {% endblock script %}
-
-
