@@ -230,13 +230,31 @@ def gb_comment_create(request, user_pk, gb_article_pk):
             comment.user = request.user
             comment.save()
 
-        # data = {
-        #     'comment_pk': comment.pk,
-        #     'comment_user': comment.user.profile.nickname,   # username?
-        #     'comment_content': comment.content,
-        #     'comment_created_at': comment.created_at.strftime('%Y.%m.%d'),
-        # }
+        data = {
+            'comment_pk': comment.pk,
+            'comment_user': comment.user.profile.nickname,   # username?
+            'comment_content': comment.content,
+            'comment_created_at': comment.created_at.strftime('%Y.%m.%d'),
+        }
 
-        # return JsonResponse(data)
+        return JsonResponse(data)
 
     return redirect('accounts:guestbook', user_pk)
+
+
+# 방명록 댓글 삭제
+@login_required
+def gb_comment_delete(request, user_pk, gb_article_pk, gb_comment_pk):
+    gb_comment = get_object_or_404(GuestbookComment, pk=gb_comment_pk)
+
+    is_deleted = False
+
+    if request.user == gb_comment.user and request.method == 'POST':
+        gb_comment.delete()
+        is_deleted = True
+
+    data = {
+        'is_deleted': is_deleted,
+    }
+
+    return JsonResponse(data)
