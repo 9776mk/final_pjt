@@ -258,7 +258,7 @@ def follow(request, user_pk):
 # 방명록
 def guestbook(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
-    gb_articles = user.guestbook.guestbookarticle_set.all()
+    gb_articles = user.guestbook.guestbookarticle_set.all().order_by("-pk")
     gb_comments = user.guestbook.guestbookcomment_set.all()
 
     context = {

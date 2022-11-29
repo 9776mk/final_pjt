@@ -282,3 +282,26 @@ a {
     font-weight: 700;
     letter-spacing: 1px;
 }
+
+.speech-bubble {
+	position: relative;
+	background: #ffffff;
+	border-radius: .4em;
+    padding: 20px;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 19px solid transparent;
+	border-right-color: #ffffff;
+	border-left: 0;
+	border-top: 0;
+	margin-top: -9.5px;
+	margin-left: -13px;
+    
+}

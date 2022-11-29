@@ -15,7 +15,7 @@
     </div>
     <div class="ms-5 w-100">
       <div class="d-flex align-items-center mb-2">
-        <h1 class="mb-0" style="font-size: 30px;">{{ user.username }}님의 프로필</h1>
+        <h1 class="mb-0" style="font-size: 30px;">{{ user.profile.nickname }}님의 프로필</h1>
         <!-- 회원 정보 수정 & 팔로우 버튼 -->
         {% if user == request.user %}
         <a href="{% url 'accounts:profile_update' user.pk %}">
@@ -34,7 +34,6 @@
       </div>
 
       <p class="text-primary mb-1">팔로잉 <span id="followings-count">{{ user.followings.count }}</span>  팔로워 <span id="followers-count">{{ user.followers.count }}</span></p>
-      <p class="mb-1">{{ user.profile.nickname }}</p>
       {% if user.profile.language == 'Python' %}
       <p class="mb-1"><img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff"/></p>
       {% elif user.profile.language == 'Java' %}
