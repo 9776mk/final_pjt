@@ -72,7 +72,7 @@ body {
     box-shadow: 0 2px 5px 0 rgba(229, 66, 10, 0.75);
 }
 
-
+/* navbar 프로필 사진 */
 .box {
     width: 30px;
     height: 30px; 
@@ -84,19 +84,4 @@ body {
     height: 100%;
     object-fit: cover;
 
-}
-
-table {
-    box-shadow: 0 2px 5px rgba(0,0,0,.25);
-    text-align: center;
-    
-}
-
-thead {
-    font-weight: bold;
-    color: rgb(0, 0, 0);
-}
-
-a {
-    color: #000000;
 }
