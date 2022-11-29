@@ -63,7 +63,7 @@ class GuestbookArticle(models.Model):
 # 방명록 댓글
 class GuestbookComment(models.Model):
     guestbook = models.ForeignKey(Guestbook, on_delete=models.CASCADE)  # 어느 방명록에 글이 쓰였는지
-    article = models.ForeignKey(GuestbookArticle, on_delete=models.SET_NULL, null=True)
+    article = models.ForeignKey(GuestbookArticle, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
