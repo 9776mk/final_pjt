@@ -35,8 +35,14 @@
 
       <p class="text-primary mb-1">팔로잉 <span id="followings-count">{{ user.followings.count }}</span>  팔로워 <span id="followers-count">{{ user.followers.count }}</span></p>
       <p class="mb-1">{{ user.profile.nickname }}</p>
-      <p class="mb-1">{{ user.profile.language }} <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=ffffff"/></p>
-      <p class="mb-1"><span class="badge">{{ user.profile.mbti }}</span></p>
+      {% if user.profile.language == 'Python' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff"/></p>
+      {% elif user.profile.language == 'Java' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white"></p>
+      {% elif user.profile.language == 'C' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white"></p>
+      {% endif %}
+      <p class="mb-1"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
       <p class="mb-1">{{ user.profile.intro }}</p>
     </div>
   </div>
