@@ -2,41 +2,44 @@
 {% load static %}
 
 {% block content %}
-<div class="container my-5">
-  <div class="d-flex justify-content-center align-items-center">
-    {% if user.profile.image %}
-    <img src="{{ user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
-    {% endif %}
-    <div class="ms-5 w-100">
-      <div class="d-flex align-items-center">
-        <h1>{{ user.username }} profile</h1>
-        {% if user == request.user %}
-        <a href="{% url 'accounts:profile_update' user.pk %}" class="btn btn-primary ms-3">회원 정보 수정</a>
-        {% else %}
-        <button class="btn btn-primary">팔로우</button>
-        {% endif %}
-      </div>
+  <div class="container my-5">
+    <div class="d-flex justify-content-center align-items-center">
+      {% if user.profile.image %}
+        <img src="{{ user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
+      {% endif %}
+      <div class="ms-5 w-100">
+        <div class="d-flex align-items-center">
+          <h1>{{ user.username }}
+            profile</h1>
+          {% if user == request.user %}
+            <a href="{% url 'accounts:profile_update' user.pk %}" class="btn btn-primary ms-3">회원 정보 수정</a>
+          {% else %}
+            <button class="btn btn-primary">팔로우</button>
+          {% endif %}
+        </div>
 
-      <p>{{ user.profile.nickname }}</p>
-      <p>기술스택: {{ user.profile.language }}</p>
-      <p>MBTI: {{ user.profile.mbti }}</p>
-      <p>소개글 {{ user.profile.intro }}</p>
+        <p>{{ user.profile.nickname }}</p>
+        <p>기술스택:
+          {{ user.profile.language }}</p>
+        <p>MBTI:
+          {{ user.profile.mbti }}</p>
+        <p>소개글
+          {{ user.profile.intro }}</p>
+      </div>
+    </div>
+    <hr>
+    <div class="d-flex flex-wrap justify-content-center flex-column">
+      <!-- username: jupiter6676 -->
+      <!-- 16진수 색상표 https://jasmintime.com/244 -->
+      <div>
+        <img src="https://ghchart.rshah.org/jupiter6676" class="w-100">
+        <img src="https://ghchart.rshah.org/6495ed/jupiter6676" class="w-100">
+      </div>
+      <h5>작성 글</h5>
+      <h5>작성 댓글</h5>
+      <h5>방명록</h5>
     </div>
   </div>
-  <hr>
-  <div class="d-flex flex-wrap justify-content-center flex-column">
-    <!-- username: jupiter6676 -->
-    <!-- 16진수 색상표 https://jasmintime.com/244 -->
-    <div>
-      <img src="https://ghchart.rshah.org/jupiter6676" class="w-100">
-      <img src="https://ghchart.rshah.org/6495ed/jupiter6676" class="w-100">
-    </div>
-    <h5>작성 글</h5>
-    <h5>작성 댓글</h5>
-    <h5>방명록</h5>
-  </div>
-</div>
-{% endblock content %}
 
   <!-- 회원 정보 수정 & 팔로우 버튼 -->
   {% if user == request.user %}
@@ -52,8 +55,10 @@
     </form>
   {% endif %}
 
-  <p class="text-primary">팔로잉: <span id="followings-count">{{ user.followings.count }}</span></p>
-  <p class="text-primary">팔로워: <span id="followers-count">{{ user.followers.count }}</span></p>
+  <p class="text-primary">팔로잉:
+    <span id="followings-count">{{ user.followings.count }}</span></p>
+  <p class="text-primary">팔로워:
+    <span id="followers-count">{{ user.followers.count }}</span></p>
 
   <p>{{ user.profile.nickname }}</p>
   <p>{{ user.profile.language }}</p>
@@ -62,7 +67,7 @@
   {% if user.profile.image %}
     <img src="{{ user.profile.image.url }}" alt="">
   {% endif %}
-  
+
   <!-- username: jupiter6676 -->
   <!-- 16진수 색상표 https://jasmintime.com/244 -->
   <br>
@@ -70,8 +75,6 @@
   <br>
   <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}"/>
 {% endblock content %}
-
 {% block script %}
   <script type="text/javascript" src="{% static 'js/accounts_follow_async.js' %}"></script>
 {% endblock script %}
-

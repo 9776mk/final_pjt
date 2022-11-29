@@ -22,15 +22,16 @@
     </form>
   {% endif %}
   {% if request.user.is_authenticated %}
-    <form action="{% url 'articles:comments_create' articles.pk %}" method="POST">
+    <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST">
       {% csrf_token %}
-      <textarea name="content" id="content" rows="15"></textarea>
-      <input type="submit" value="글쓰기">
+      {{ comment_form.as_table }}
+      <input type="submit" value="글쓰기" id="content-{{ articles.pk }}">
     </form>
   {% else %}
     <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">로그인</a>
   {% endif %}
   <!-- 댓글 -->
+  <div id="box"></div>
   {% for comment in comments.all %}
     <p>{{ comment.content }}</p>
     {% if request.user == comment.user %}
@@ -40,5 +41,41 @@
       </form>
     {% endif %}
   {% endfor %}
-  {% block script %}{% endblock script %}
 {% endblock content %}
+{% block script %}
+  <script>
+    const commentForm = document.querySelector("#comment-form")
+    const csrftoken = document
+      .querySelector('[name=csrfmiddlewaretoken]')
+      .value
+      commentForm
+      .addEventListener('submit', function (event) {
+        event.preventDefault()
+        axios({
+          method: 'post',
+          url: `/articles/${event.target.dataset.articleId}/comments_create/`,
+          headers: {
+            'X-CSRFToken': csrftoken
+          },
+          data: new FormData(commentForm)
+        })
+          .then(response => {
+            console.log(response.data)
+            const comments = document.querySelector(`#box`)
+            const p = document.createElement('p')
+            p.innerText = `${response
+              .data
+              .userName} | ${response
+              .data
+              .content}`
+              comments
+              .append(p)
+            console.log(comments)
+            commentForm.reset()
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        })
+  </script>
+{% endblock script %}
