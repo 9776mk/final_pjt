@@ -1,6 +1,6 @@
-const signupBtn = document.querySelector('#signup-btn')
 
 function isValidId() {
+    const signupBtn = document.querySelector('#signup-btn')
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
     const userID = document.querySelector('#id_username').value
     const modalBody = document.querySelector('#modal-body')
@@ -33,8 +33,23 @@ function isValidId() {
         }
     })
 }
+//1차 비번 확인
+function passValid() {
+    const pass1 = document.getElementById('id_password1').value
+    const status = document.getElementById('passvalid')
+    if (pass1.length < 8) {
+        status.innerHTML = "Valid";
+        status.style.color = "#ff0000";
+    } else {
+        status.innerHTML = "Valid";
+        status.style.color = "#00ff00";
+    }
 
 
+}
+
+
+// 2차 비번 확인
 function checkPass() {
     const pass1 = document.getElementById('id_password1').value
     const pass2 = document.getElementById('id_password2').value

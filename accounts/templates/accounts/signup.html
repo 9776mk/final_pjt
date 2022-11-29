@@ -35,7 +35,8 @@
       <div id='passwordBox' style='display: none;'>
       <div class="mb-3">
         <label class="form-label label-text" for="id_password1">Password</label>
-        <input type="password" name="password1" autocomplete="new-password" class="password_1 form-control inputbox" placeholder="Password" required id="id_password1">
+        <span id='passvalid' style="margin-left:1rem;"></span>
+        <input type="password" name="password1" autocomplete="new-password" class="password_1 form-control inputbox" placeholder="Password" required id="id_password1" onkeyup="passValid()">
         <div class="form-text">
           <ul>
             <li>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</li>
@@ -47,10 +48,10 @@
       </div>
 
       <div class="mb-3">
-        <label  class="form-label label-text" for="id_password2">Confirm Password</label><span id='statusP' style="margin-left:1rem;"></span>
+        <label  class="form-label label-text" for="id_password2">Confirm Password</label>
+        <span id='statusP' style="margin-left:1rem;"></span>
         <input type="password" name="password2" autocomplete="new-password" class="password_2 form-control inputbox" placeholder="Confirm Password" required id="id_password2" onkeyup="checkPass()">
         <div class="form-text">확인을 위해 이전과 동일한 비밀번호를 입력하세요. </div>
-        <font id = "checkPw" size = "2"></font>
       </div>
 
       <div class="text-end">
