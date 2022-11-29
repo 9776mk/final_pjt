@@ -58,7 +58,7 @@ function checkPass() {
         status.innerHTML = "Valid";
         status.style.color = "#00ff00";
     } else {
-        status.innerHTML = "Invalid";
+        status.innerHTML = "Valid";
         status.style.color = "#ff0000";
     }
 }
