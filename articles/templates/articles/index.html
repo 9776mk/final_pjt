@@ -1,52 +1,67 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block link %}
-<link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
 {% endblock link %}
 {% block content %}
-<div class='container my-5'>
-  <h1>개발마당</h1>
-  <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
-  {% comment %} {% for article in articles.all %}
-    <a href="{% url 'articles:detail' article.pk  %}">{{ article.title }}</a>
-  {% endfor %} {% endcomment %}
+  <div class='container my-5'>
+    <h1>개발마당</h1>
+    <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
 
-  <table class="table my-2">
-    <thead>
-      <tr>
-        <th style='width:110px'>분류</th>
-        <th style='width:140px'>작성자</th>
-        <th>내용</th>
-        <th style='width:90px'>작성날짜</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for article in articles.all %}
-      <tr>
-        <td class='article_category'><a href="">카테고리</a></td>
-        <td class='article_user'><a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a></td>
-        <!-- 바깥작성자는 popover로 띄울까 고민중-->
-        <td class='article_content'><a href="{% url 'articles:detail' article.pk %}" style="text-decoration:none;">{{ article.title }}</a></td>
-        <td>작성날짜</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% comment %} <img src="{% static 'images/1.png' %}" alt=""> {% endcomment %}
-  <div class="board_page">
-    <a href="#" class="bt first"><<</a>
-    <a href="#" class="bt prev"><</a>
-    <a href="#" class="num on">1</a>
-    <a href="#" class="num">2</a>
-    <a href="#" class="num">3</a>
-    <a href="#" class="num">4</a>
-    <a href="#" class="num">5</a>
-    <a href="#" class="bt next">></a>
-    <a href="#" class="bt last">>></a>
+    <!--게시판-->
+    <div class="board_list_wrap my-2">
+      <div class="board_list">
+        <div class="top">
+          <div class="category">분류</div>
+          <div class="title">제목</div>
+          <div class="writer">작성자</div>
+          <div class="date">작성일</div>
+        </div>
+        {% for article in articles.all %}
+          <div>
+            <div class="category">
+              <a href="">카테고리</a>
+            </div>
+            <div class="title">
+              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+            </div>
+            <!-- 바깥작성자는 popover로 띄울까 고민중-->
+            <div class="writer">
+              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a>
+            </div>
+            <div class="date">작성날짜</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!--페이지네이션-->
+    <div class="board_page">
+      <a href="#" class="bt first">
+        << </a> <a href="#" class="bt prev"> < </a> <a href="#" class="num on">1 </a> <a href="#" class="num">2</a> <a href="#" class="num">3</a> <a href="#" class="num">4</a> <a href="#" class="num">5</a> <a href="#" class="bt next"> > </a> <a href="#" class="bt last"> >>
+      </a>
+    </div>
+
+    <!--새 글 쓰기 버튼-->
+    <div class='bt_wrap'>
+      <a class='on' href="{% url 'articles:create' %}">새 글 쓰기</a>
+    </div>
+
   </div>
 
-  <div class='bt_wrap'>
-    <a class='on' href="{% url 'articles:create' %}">새 글 쓰기</a>
+  <div class='page'>
+    <ul>
+      <li>
+        <a href="#" class='first'>맨 처음으로</a>
+      </li>
+      <li>
+        <a href="#" class='arrow left'>
+          <<</a> </li> <li><a href="#" class='active num'>1</a></li> <li><a href="#" class='num'>2</a></li> <li><a href="#" class='num'>3</a></li> <li><a href="#" class='num'>4</a></li> <li><a href="#" class='arrow right'>>></a>
+      </li>
+      <li>
+        <a href="#" class='last'>맨 마지막으로</a>
+      </li>
+    </ul>
   </div>
-</div>
+
 {% endblock content %}

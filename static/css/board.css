@@ -1,24 +1,6 @@
-/* 게시판 */
 a {
   text-decoration: none;
-}
-
-.article_user > a {
-  color: rgb(0, 0, 0);
-}
-
-.article_content > a {
-  color: rgb(0, 0, 0);
-}
-
-.article_category > a {
-  color: rgba(0, 0, 0, 0.802);
-}
-
-table {
-  box-shadow: 0 2px 5px rgba(0,0,0,.25);
-  text-align: center;
-  background-image: url('../images/bg-6.PNG');
+  color: #000000;
 }
 
 thead {
@@ -26,9 +8,6 @@ thead {
   color: rgb(0, 0, 0);
 }
 
-a {
-  color: #000000;
-}
 
 /* 새글 쓰기 버튼 */
 .bt_wrap {
@@ -55,6 +34,7 @@ a {
   background: #000;
   color: #fff;
 }
+
 
 /* 페이지네이션 */
 .board_page {
@@ -86,10 +66,10 @@ a {
 }
 
 .board_page a.num.on {
+  cursor: default;
+  color: #fff;
   border-color: #000;
   background: #000;
-  color: #fff;
-  cursor: default;
 }
 
 .board_page a:first-child {
@@ -98,4 +78,149 @@ a {
 
 .board_page > a {
   color: rgb(0, 0, 0);
+}
+
+
+
+
+
+/* 게시판 */
+.board_wrap {
+  width: 1000px;
+  margin: 100px auto;
+}
+
+.board_title {
+  margin-bottom: 30px;
+}
+
+.board_title strong {
+  font-size: 3rem;
+}
+
+.board_title p {
+  margin-top: 5px;
+  font-size: 1.4rem;
+}
+
+.board_list {
+  width: 100%;
+  background-color: #fff;
+  border-top: 2px solid #000;
+}
+
+.board_list > div {
+  border-bottom: 1px solid #ddd;
+  font-size: 0;
+}
+
+.board_list > div.top {
+  border-bottom: 1px solid #999;
+}
+
+.board_list > div:last-child {
+  border-bottom: 1px solid #000;
+}
+
+.board_list > div > div {
+  display: inline-block;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.board_list > div.top > div {
+  font-weight: 600;
+}
+
+.board_list .category {
+  width: 15%;
+}
+
+.board_list .category > a {
+  color: rgb(12, 155, 69);
+}
+
+.board_list .title {
+  width: 60%;
+  text-align: left;
+}
+
+.board_list .top .title {
+  text-align: center;
+}
+
+.board_list .title > a {
+  color: rgb(0, 0, 0);
+}
+
+.board_list .writer {
+  width: 15%;
+}
+
+.board_list .writer > a {
+  color: rgb(0, 0, 0);
+}
+
+.board_list .date {
+  width: 10%;
+}
+
+
+/* 페이지네이션 따라만들기 */
+.page {
+  /* div 사이즈 영역 안에서의 center */
+  text-align: center; 
+  width: 50%
+}
+
+.pagination { 
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.pagination li {
+  display: inline;
+  text-align: center;
+}
+
+/* 숫자들에 대한 스타일 지정 */
+.pagination a {
+  float: left;
+  display: block;
+  font-size: 14px;
+  text-decoration: none;
+  padding: 5px 12px;
+  color: #96a0ad;
+  line-height: 1.5; 
+}
+
+.first {
+  margin-right: 15px;
+}
+
+.last { 
+  margin-left: 15px;
+}
+
+.first:hover, .last:hover, .left:hover, .right:hover {
+  color: #2e9cdf;
+}
+
+.pagination a.active { 
+  cursor: default;
+  color: #ffffff;
+}
+
+.pagination a:active {
+  outline: none;
+}
+
+.modal .num {
+  margin-left: 3px;
+  padding: 0;
+  width: 30px;
+  height: 30px;
 }
