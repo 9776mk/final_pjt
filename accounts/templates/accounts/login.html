@@ -6,7 +6,8 @@
 {% endblock link %}
 {% block content %}
 <div class="login-main">
-  
+
+
   <div class="container d-flex justify-content-center">
     <div class="login-box">
 
@@ -21,6 +22,12 @@
               <input type="password" name="password" required="required">
               <span>Password</span>
           </div>
+          <p style='color:#ff0000;'>
+            {% if status == 0 %}
+            아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.
+            <br>입력하신 내용을 다시 확인해주세요.
+            {% endif %}
+            </p>
           <div class='d-flex justify-content-evenly' >
             <div class="svg-wrapper">
               <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">

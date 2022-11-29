@@ -82,7 +82,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'accounts:profile' user.pk %}">
                   <div class="box">
-                    <img class="profile" src={% if user.profile.image %}"{{ user.profile.image.url }}"{% else %}"https://dummyimage.com/50x50/1c46ff/ffffff&text=img"{% endif %}>
+                    <img class="profile" src={% if request.user.profile.image %}"{{ request.user.profile.image.url }}"{% else %}"https://dummyimage.com/50x50/1c46ff/ffffff&text=img"{% endif %}>
                   </div>
                 </a>
               </li>

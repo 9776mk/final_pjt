@@ -50,7 +50,13 @@ a {
 }
 
 
-
+/* navbar 프로필 사진 */
+.box {
+    width: 30px;
+    height: 30px; 
+    border-radius: 70%;
+    overflow: hidden;
+}
 
 
 
@@ -98,6 +104,7 @@ a {
 }
 
 
+
 /* MBTI badge */
 
 .ISTJ-badge {
@@ -109,7 +116,6 @@ a {
     font-size: 0.75em;
     font-weight: 700;
     letter-spacing: 1px;
-}
 
 .ISFJ-badge {
     background-color: #fcc668;
@@ -275,3 +281,4 @@ a {
     font-weight: 700;
     letter-spacing: 1px;
 }
+
