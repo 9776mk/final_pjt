@@ -111,3 +111,6 @@ class GuestbookComment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+# https://github.com/login/oauth/authorize?client_id=None&redirect_uri=http://127.0.0.1:8000/accounts/login/github/callback/&scope=read:user
