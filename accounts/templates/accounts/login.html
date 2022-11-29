@@ -34,6 +34,7 @@
                 <rect id="shape" height="40" width="150" />
                 <div id="text">
                   <a href="{% url 'accounts:signup' %}"><span class="spot"></span>Signup</a>
+                  <a href="{% url 'accounts:github-login' %}" class="btn btn-outline-dark">깃허브 로그인</a>
                 </div>
               </svg>
             </div>
@@ -49,6 +50,7 @@
         </div>
       </form>
     </div>
+
   </div>
 </div>
 {% endblock content %}

@@ -7,12 +7,20 @@ from django.contrib.auth import get_user_model
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ["username", "password1", "password2"]
+        fields = [
+            "username",
+            "password1",
+            "password2",
+            "name",
+            "nickname",
+            "git_id",
+            "boj_id",
+        ]
 
 
 class ProfileForm(forms.ModelForm):
     password = None
-    
+
     class Meta:
         model = Profile
         fields = ['image', 'nickname', 'github_id', 'boj_id', 'language', 'mbti', 'intro']
