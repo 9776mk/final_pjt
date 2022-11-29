@@ -34,7 +34,6 @@
                 <rect id="shape" height="40" width="150" />
                 <div id="text">
                   <a href="{% url 'accounts:signup' %}"><span class="spot"></span>Signup</a>
-                  <a href="{% url 'accounts:github-login' %}" class="btn btn-outline-dark">깃허브 로그인</a>
                 </div>
               </svg>
             </div>
@@ -46,9 +45,14 @@
                 </div>
               </svg>
             </div>
+            
           </div>  
         </div>
       </form>
+      <hr style='border-width:3px; color:#b3c1cf;'>
+      <div class='d-flex justify-content-center'>
+        <a href="{% url 'accounts:github-login' %}" ><img src="{% static 'images/github.png' %}" width='32px;' height='32px;'></a>
+      </div>
     </div>
 
   </div>
