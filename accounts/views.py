@@ -27,20 +27,27 @@ def signup(request):
 
     if request.method == "POST":
         signup_form = CustomUserCreationForm(request.POST)
-        if signup_form.is_valid():
+        profile_form = ProfileForm(request.POST, request.FILES)
+
+        if signup_form.is_valid() and profile_form.is_valid():
             user = signup_form.save()
 
+            profile = profile_form.save(commit=False)
+            Profile.objects.create(user=user, nickname=profile.nickname, github_id=profile.github_id, boj_id=profile.boj_id)
+            profile.save()
+
             # 현재 날짜를 기준으로 닉네임 자동 생성
-            nickname = str(user.pk) + str(user.date_joined.strftime("%f"))
-            Profile.objects.create(user=user, nickname=nickname)
-            Guestbook.objects.create(user=user)
-            # 방명록 생성
+            # nickname = str(user.pk) + str(user.date_joined.strftime("%f"))
+            # Profile.objects.create(user=user, nickname=nickname)
+            Guestbook.objects.create(user=user) # 방명록 생성
             return redirect("articles:index")
     else:
         signup_form = CustomUserCreationForm()
+        profile_form = ProfileForm()
 
     context = {
         "signup_form": signup_form,
+        "profile_form": profile_form,
     }
 
     return render(request, "accounts/signup.html", context)
@@ -160,6 +167,7 @@ def github_login(request):
 def github_login_callback(request):
     if request.user.is_authenticated:
         raise SocialLoginException("User already logged in")
+        
     code = request.GET.get("code", None)
     if code is None:
         raise GithubException("Can't get code")
@@ -200,7 +208,7 @@ def github_login_callback(request):
 
     service_name = "github"
     profile_json = profile_request.json()
-    print(profile_json)
+
     login_data = {
         "github": {
             "social_id": profile_json["id"],
@@ -213,11 +221,19 @@ def github_login_callback(request):
             ### 깃허브에서만 가져오는 항목 ###
         },
     }
+
+    # DB에 깃허브 정보 저장
     user_info = login_data[service_name]
+
+    print(user_info["social_id"])   # 62585191
+    print(user_info["username"])    # jupiter6676
+
+    # 이미 연동된 유저는 로그인
     if get_user_model().objects.filter(social_id=user_info["social_id"]).exists():
         user = get_user_model().objects.get(social_id=user_info["social_id"])
         auth_login(request, user)
         return redirect(request.GET.get("next") or "reviews:index")
+    # 연동이 처음이면 회원가입 (DB에 저장)
     else:
         data = {
             # 일반 정보
@@ -225,6 +241,7 @@ def github_login_callback(request):
             "username": (profile_json["login"]),
             "git_id": (profile_json["login"]),
         }
+
         signup_form = CustomUserCreationForm(initial=data)
         context = {
             "signup_form": signup_form,
