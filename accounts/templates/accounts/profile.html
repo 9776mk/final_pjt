@@ -1,26 +1,83 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-  <h1>{{ user.username }} profile</h1>
 
-  {% if user == request.user %}
-    <a href="{% url 'accounts:profile_update' user.pk %}">회원 정보 수정</a>
-  {% else %}
-    <button class="btn btn-primary">팔로우</button>
-  {% endif %}
+<div class="container my-5">
+  <div class="d-flex justify-content-center align-items-center mb-4">
+    <div>
+      {% if user.profile.image %}
+      <img src="{{ user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
+      {% else %}
+      <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 200px;" alt="">
+      {% endif %}
+      {% comment %} <button id="emoji_btn">이모지 추가<input type="text" id="message" style="border-radius: 70%; width: 30px;" class="position-absolute top-1 start-10"></button> {% endcomment %}
+    </div>
+    <div class="ms-5 w-100">
+      <div class="d-flex align-items-center mb-2">
+        <h1 class="mb-0" style="font-size: 30px;">{{ user.username }}님의 프로필</h1>
+        <!-- 회원 정보 수정 & 팔로우 버튼 -->
+        {% if user == request.user %}
+        <a href="{% url 'accounts:profile_update' user.pk %}">
+          <input type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="프로필 수정">
+        </a>
+        {% elif request.user.is_authenticated %}
+          <form id="follow-form" data-user-id="{{ user.pk }}">
+            {% csrf_token %}
+            {% if request.user in user.followers.all %}
+              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="언팔로우">
+            {% else %}
+              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="팔로우">
+            {% endif %}
+          </form>
+        {% endif %}
+      </div>
 
-  <p>{{ user.profile.nickname }}</p>
-  <p>{{ user.profile.language }}</p>
-  <p>{{ user.profile.mbti }}</p>
-  <p>{{ user.profile.intro }}</p>
-  {% if user.profile.image %}
-    <img src="{{ user.profile.image.url }}" alt="">
-  {% endif %}
-  
-  <!-- username: jupiter6676 -->
-  <!-- 16진수 색상표 https://jasmintime.com/244 -->
-  <br>
-  <img src="https://ghchart.rshah.org/jupiter6676"/>
-  <br>
-  <img src="https://ghchart.rshah.org/6495ed/jupiter6676"/>
+      <p class="text-primary mb-1">팔로잉 <span id="followings-count">{{ user.followings.count }}</span>  팔로워 <span id="followers-count">{{ user.followers.count }}</span></p>
+      <p class="mb-1">{{ user.profile.nickname }}</p>
+      {% if user.profile.language == 'Python' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff"/></p>
+      {% elif user.profile.language == 'Java' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white"></p>
+      {% elif user.profile.language == 'C' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white"></p>
+      {% endif %}
+      <p class="mb-1"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+      <p class="mb-1">{{ user.profile.intro }}</p>
+    </div>
+  </div>
+  <hr>
+  <div class="d-flex flex-wrap justify-content-center flex-column">
+    <!-- username: jupiter6676 -->
+    <!-- 16진수 색상표 https://jasmintime.com/244 -->
+    <!-- <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100"> -->
+    {% if user.profile.github_id %}
+      <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3">
+    {% endif %}
+    <h5>작성 글</h5>
+    <h5>작성 댓글</h5>
+    <a href="{% url 'accounts:guestbook' user.pk %}">
+      <h5>방명록</h5>
+    </a>
+  </div>
 {% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/accounts_follow_async.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+  <script>
+    const button = document.querySelector("#emoji_btn");
+    const picker = new EmojiButton({
+      position: 'bottom-start'
+    });
+    
+    button.addEventListener('click', () => {
+      picker.togglePicker(button);
+    });
+    
+    picker.on('emoji', emoji => {
+      const text_box = document.querySelector('#message');
+      text_box.value += emoji;
+    });
+  </script>
+{% endblock script %}

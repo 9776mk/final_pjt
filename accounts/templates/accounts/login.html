@@ -1,20 +1,56 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
-
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
+{% endblock link %}
 {% block content %}
-  <div class="container my-5">
-    <h1 class="text-center">로그인</h1>
+<div class="login-main">
 
-    <form action="{% url 'accounts:login' %}" method="POST">
-      {% csrf_token %}
-      {% bootstrap_form login_form %}
 
-      <div class="text-end">
-        <a href="{% url 'accounts:signup' %}" class="btn btn-outline-primary">회원가입</a>
-        <input type="submit" value="로그인" class="btn btn-primary">
-      </div>
-    </form>
+  <div class="container d-flex justify-content-center">
+    <div class="login-box">
 
-    <a href="{% url 'accounts:github-login' %}" class="btn btn-outline-dark">깃허브 로그인</a>
+      <form action="{% url 'accounts:login' %}" method="POST">
+        {% csrf_token %}
+        <div class='mt-3'>
+          <div class="inputBox">
+            <input type="text" name="username" autocomplete="off" required="required">
+            <span>UserName</span>
+          </div>
+          <div class="inputBox my-3">
+              <input type="password" name="password" required="required">
+              <span>Password</span>
+          </div>
+          <p style='color:#ff0000;'>
+            {% if status == 0 %}
+            아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.
+            <br>입력하신 내용을 다시 확인해주세요.
+            {% endif %}
+            </p>
+          <div class='d-flex justify-content-evenly' >
+            <div class="svg-wrapper">
+              <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+                <rect id="shape" height="40" width="150" />
+                <div id="text">
+                  <a href="{% url 'accounts:signup' %}"><span class="spot"></span>Signup</a>
+                  <a href="{% url 'accounts:github-login' %}" class="btn btn-outline-dark">깃허브 로그인</a>
+                </div>
+              </svg>
+            </div>
+            <div class="svg-wrapper">
+              <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+                <rect id="shape" height="40" width="150" />
+                <div id="text">
+                  <button class='login-btn text-white' type='submit'><span class="spot"></span>Login</button>
+                </div>
+              </svg>
+            </div>
+          </div>  
+        </div>
+      </form>
+    </div>
+
   </div>
+</div>
 {% endblock content %}

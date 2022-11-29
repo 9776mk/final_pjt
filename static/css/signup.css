@@ -1,0 +1,163 @@
+.signup-main {
+    height: 100vh;
+    background-image: url(./sp.png);
+    background-position: center;
+    background-repeat: repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.check-btn {
+    padding: 0;
+    background: none;
+    padding: 0;
+    border: 0;
+}
+
+.signup-btn {
+    padding: 0;
+    background: none;
+    padding: 0;
+    border: 0;
+}
+
+.signup_box {
+    display: inline-block;
+    padding: 24px;
+    background-color: #0c162d;
+    border: 1px solid #202637;
+    width: 900px;
+}
+
+.label-text {
+    color: #00cfc8 !important;
+
+}
+
+.form-style {
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.wel-text {
+    color: #627597;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.inputbox {
+    background: #1d2b3a !important;
+    color: #fff !important;
+}
+
+.typing {
+    text-transform: capitalize;
+    white-space: nowrap;
+    color: transparent;
+    margin: 0;
+    position: absolute;
+    margin-bottom: 15px;
+}
+
+.typing::before {
+    content: "널뛰기에 오신것을 환영합니다.";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #00cfc8;
+    overflow: hidden;
+    border-right: 3px solid white;
+    animation: typing 2s steps(20);
+}
+
+@keyframes typing {
+    0% {
+        width: 0%;
+    }
+
+    50% {
+        width: 50%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+
+
+
+/* button Css*/
+.spot {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+/*
+      This is the outer svg wrapper that the SVG itself will 
+      fill. Multiple svg-wrapper classes can be put side by side.
+  */
+
+.svg-wrapper {
+    margin-top: 0;
+    position: relative;
+    width: 150px;
+    /*make sure to use same height/width as in the html*/
+    height: 40px;
+    display: inline-block;
+    border-radius: 3px;
+    margin-left: 5px;
+    margin-right: 5px
+}
+
+/*
+    This is where we define the fill, color, thickness,
+    and stroke pattern of the SVG when there is no hover.
+    The dasharray and offset together define the line position
+    under the words. Here's also where the transition speed is set.
+  */
+
+#shape {
+    stroke-width: 6px;
+    fill: transparent;
+    stroke: #009FFD;
+    stroke-dasharray: 85 400;
+    stroke-dashoffset: -220;
+    transition: 1s all ease;
+}
+
+/* 
+      Pushing the text up into the SVG. Without this the
+      text would be below the div's.
+  */
+
+#text {
+    margin-top: -35px;
+    text-align: center;
+}
+
+#text a {
+    color: white;
+    text-decoration: none;
+    font-weight: 100;
+    font-size: 1.1em;
+}
+
+/* 
+      Changing the shape on hover. I change the color of the stroke,
+  make it thinner, then set it to again wrap around the entire parent element.
+  */
+
+.svg-wrapper:hover #shape {
+    stroke-dasharray: 50 0;
+    stroke-width: 3px;
+    stroke-dashoffset: 0;
+    stroke: #06D6A0;
+}

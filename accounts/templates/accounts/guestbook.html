@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <!-- 방명록 글 작성 Form -->
+  <form id="gb-article-create-form" onsubmit="event.preventDefault(); create_gb_article(this, '{{ user.pk }}')">
+    {% csrf_token %}
+    <div class="mb-3">
+      <div class="d-flex align-items-center">
+        <label class="form-label m-0 me-5" for="id_content">Content</label>
+        <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="Content" required id="id_content"></textarea>
+        
+        {% if request.user.is_authenticated %}
+          <input type="submit" value="방명록 작성" name="gb_article_create">
+        {% else %}
+          <input type="submit" value="방명록 작성" name="gb_article_create" disabled>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+  <hr>
+
+  <div id="gb-articles-box" class="mx-5">
+    {% for article in gb_articles %}
+      <div id="article-{{ article.pk }}" class="mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <p>{{ article.user.profile.nickname }} | {{ article.content }} | {{ article.created_at|date:'Y.m.d' }}</p>
+          
+          <!-- 방명록 글 삭제 Form -->
+          {% if request.user == article.user %}
+            <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
+              {% csrf_token %}
+              <input type="submit" class="btn-close" style="color:transparent; font:16px">
+            </form>
+          {% endif %}
+        </div>
+        
+        <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}">답글 달기</a>
+        <div class="collapse" id="collapse-gb-comment-form-{{ article.pk }}">
+          <!-- 답글 생성 Form -->
+          {% if request.user.is_authenticated %}
+            <form onsubmit="event.preventDefault(); create_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}')">
+              {% csrf_token %}
+              <label class="form-label m-0 me-5" for="id_content">Content</label>
+              <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="Content" required id="id_content"></textarea>
+              <input type="submit" value="작성" name="gb_comment_create">
+            </form>
+          {% endif %}
+
+          <!-- 답글 -->
+          <div id="gb-comments-box-{{ article.pk }}" class="ms-5 text-bg-secondary">
+            {% for comment in gb_comments %}
+              {% if comment.article == article %}
+                <div id="comment-{{ comment.pk }}" class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <p>{{ comment.user.profile.nickname }} | {{ comment.content }} | {{ comment.created_at|date:'Y.m.d' }}</p>
+
+                    <!-- 답글 삭제 Form -->
+                    {% if request.user == comment.user %}
+                      <form id="gb-comment-delete-form-{{ comment.pk }}" onsubmit="event.preventDefault(); delete_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}', '{{ comment.pk }}')">
+                        {% csrf_token %}
+                        <input type="submit" class="btn-close" style="color:transparent; font:16px">
+                      </form>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            {% if article.guestbookcomment_set.all|length == 0 %}
+              <p id="article-{{ article.pk }}-no-comments">댓글이 없습니다.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/accounts_gb_article_async.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/accounts_gb_comment_async.js' %}"></script>
+{% endblock script %}

@@ -2,10 +2,10 @@
 {% load django_bootstrap5 %}
 {% block content %}
   <h1>create</h1>
-  <form action="{% url 'articles:create' %}" method="POST" enctype="multipart/form-data">
+  <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form article_form %}
     {% bootstrap_form image_form %}
     {% bootstrap_button '확인' %}
   </form>
-{% endblock %}
+{% endblock content %}

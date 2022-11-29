@@ -9,8 +9,13 @@ class Article(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     # image = ProcessedImageField()
 
-
 # Article의 이미지
 class Image(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     image = models.ImageField(blank=True, upload_to='article_images/')
+
+class ArticleComment(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    content = models.TextField()
+    create_at = models.DateTimeField(null=True)
