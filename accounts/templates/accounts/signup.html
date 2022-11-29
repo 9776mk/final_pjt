@@ -3,41 +3,39 @@
 {% load static %}
 {% block link %}
 <link rel="stylesheet" href="{% static 'css/signup.css' %}" type="text/css">
-
 {% endblock link %}
 {% block content %}
-<div class="main">
-  <div class="container my-5">
-    <h1 class="text-center">회원가입</h1>
-
-    <form action="{% url 'accounts:signup' %}" method="POST">
+<div class="signup-main">
+  <div class="container d-flex justify-content-center ">
+    <div class='signup_box'>
+    <div class=' wel-text mb-5'>
+      <span class='typing'>비밀병기에 오신것을 환영합니다.</span>
+    </div>
+    <form class='form-style' action="{% url 'accounts:signup' %}" method="POST">
       {% csrf_token %}
-      {% comment %} {% bootstrap_form signup_form %} {% endcomment %}
 
       <div class="mb-3">
-        <label class="form-label" for="id_username">사용자 이름</label>
-        <input type="text" name="username" maxlength="16" autofocus class="form-control" placeholder="사용자 이름" required id="id_username">
-        <input class="btn" type="button" value="중복확인" data-bs-toggle="modal" data-bs-target="#isValidModal" onclick="isValidId();">
-
-        <!-- 중복확인 모달 -->
-        <div class="modal fade" id="isValidModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-          style="margin: 0;">
-          <div class="modal-dialog container" style="width:360px; margin: 200px auto;">
-            <div class="modal-content mx-0" style="width:360px; height:180px;">
-              <div class="modal-body text-center" id="modal-body" style="padding: 40px 30px;font-size: 1rem; font-weight: 500;">
+        <label class="form-label label-text " for="id_username">ID</label>
+        <input type="text" name="username" autocomplete="off" maxlength="16" autofocus class="form-control inputbox" placeholder="ID" required id="id_username" >
+        <div class="form-text">16자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</div>
+        <div class="d-flex justify-content-end">
+          
+          
+          <div class="svg-wrapper">
+            <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+              <rect id="shape" height="40" width="150" />
+              <div id="text">
+                <button class='check-btn text-white' type="button" data-bs-toggle="modal" data-bs-target="#isValidModal" onclick="isValidId();"><span class="spot"></span>Check</button>
               </div>
-              <div class="modal-footer d-flex justify-content-center py-2">
-                <button class="btn" type="button" data-bs-dismiss="modal" style="color: #5e0080; border: 0px; font-weight: 500;">확인</button>
-              </div>
-            </div>
+            </svg>
           </div>
         </div>
-        <div class="form-text">16자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</div>
       </div>
 
+      <div id='passwordBox' style='display: none;'>
       <div class="mb-3">
-        <label class="form-label" for="id_password1">비밀번호</label>
-        <input type="password" name="password1" autocomplete="new-password" class="form-control" placeholder="비밀번호" required id="id_password1">
+        <label class="form-label label-text" for="id_password1">Password</label>
+        <input type="password" name="password1" autocomplete="new-password" class="password_1 form-control inputbox" placeholder="Password" required id="id_password1">
         <div class="form-text">
           <ul>
             <li>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</li>
@@ -49,46 +47,44 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label" for="id_password2">비밀번호 확인</label>
-        <input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="비밀번호 확인" required id="id_password2">
+        <label  class="form-label label-text" for="id_password2">Confirm Password</label><span id='statusP' style="margin-left:1rem;"></span>
+        <input type="password" name="password2" autocomplete="new-password" class="password_2 form-control inputbox" placeholder="Confirm Password" required id="id_password2" onkeyup="checkPass()">
         <div class="form-text">확인을 위해 이전과 동일한 비밀번호를 입력하세요. </div>
+        <font id = "checkPw" size = "2"></font>
       </div>
 
       <div class="text-end">
-        <input type="submit" value="회원가입" class="btn btn-primary" id="signup-btn" disabled>
+        <div class="svg-wrapper">
+          <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+            <rect id="shape" height="40" width="150" />
+            <div id="text">
+              <button class='signup-btn text-white' type="submit" id="signup-btn"><span class="spot"></span>Signup</button>
+            </div>
+          </svg>
+        </div>
       </div>
     </form>
   </div>
+
+  </div>
+</div>
+</div>
+<!-- 중복확인 모달 -->
+<div class="modal fade" id="isValidModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+style="margin: 0;">
+<div class="modal-dialog container" style="width:360px; margin: 200px auto;">
+  <div class="modal-content mx-0" style="width:360px; height:180px;">
+    <div class="modal-body text-center" id="modal-body" style="padding: 40px 30px;font-size: 1rem; font-weight: 500;">
+    </div>
+    <div class="modal-footer d-flex justify-content-center py-2">
+      <button class="btn" type="button" data-bs-dismiss="modal" style="color: #5e0080; border: 0px; font-weight: 500;">확인</button>
+    </div>
+  </div>
+</div>
 </div>
 {% endblock content %}
 
-{% block script %}
-  <script>
-    // ID 중복확인
-    const signupBtn = document.querySelector('#signup-btn')
+{% block script %}  
+<script type="text/javascript" src="{% static 'js/signup.js' %}"></script>
 
-    function isValidId() {
-      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-      const userID = document.querySelector('#id_username').value
-      const modalBody = document.querySelector('#modal-body')
-
-      axios({
-        method: 'post',
-        url: '/accounts/is_valid_id/',
-        headers: {'X-CSRFToken': csrfToken},
-        data: {'username': userID}
-      }).then(response => {
-        if (userID.length > 16) {
-          modalBody.innerText = "16자 이하의 문자만 가능합니다."
-          signupBtn.disabled = true
-        } else if (response.data.is_valid === false) {
-          modalBody.innerText = "사용 불가능한 아이디입니다."
-          signupBtn.disabled = true
-        } else {
-          modalBody.innerText = "사용 가능한 아이디입니다."
-          signupBtn.disabled = false  // 회원가입 버튼 활성화
-        }
-      })
-    }
-  </script>
 {% endblock script %}

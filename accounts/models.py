@@ -45,3 +45,25 @@ class Profile(models.Model):
     # 깃허브, 백준 ID
     github_id = models.CharField(blank=True, max_length=20)
     boj_id = models.CharField(blank=True, max_length=20)
+
+
+# 방명록 (User와 1:1)
+class Guestbook(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+# 방명록 글
+class GuestbookArticle(models.Model):
+    guestbook = models.ForeignKey(Guestbook, on_delete=models.CASCADE)  # 어느 방명록에 글이 쓰였는지
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)    # 글을 누가 썼는지
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+# 방명록 댓글
+class GuestbookComment(models.Model):
+    guestbook = models.ForeignKey(Guestbook, on_delete=models.CASCADE)  # 어느 방명록에 글이 쓰였는지
+    article = models.ForeignKey(GuestbookArticle, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

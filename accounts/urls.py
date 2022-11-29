@@ -12,4 +12,8 @@ urlpatterns = [
     path('<int:user_pk>/', views.profile, name='profile'),
     path('<int:user_pk>/update/', views.profile_update, name='profile_update'),
     path('<int:user_pk>/follow/', views.follow, name='follow'),
+    path('<int:user_pk>/guestbook/', views.guestbook, name='guestbook'),    # 방명록
+    path('<int:user_pk>/guestbook/article_create/', views.gb_article_create, name='gb_article_create'), # 방명록 글 작성
+    path('<int:user_pk>/guestbook/article/<int:gb_article_pk>/delete/', views.gb_article_delete, name='gb_article_delete'), # 방명록 글 삭제
+    path('<int:user_pk>/guestbook/article/<int:gb_article_pk>/comment_create/', views.gb_comment_create, name='gb_comment_create'), # 방명록 댓글 작성
 ]

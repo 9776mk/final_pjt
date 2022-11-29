@@ -1,4 +1,4 @@
-.signup-main {
+.login-main {
     height: 100vh;
     background-image: url(./sp.png);
     background-position: center;
@@ -9,86 +9,76 @@
     align-items: center;
 }
 
-.check-btn {
-    padding: 0;
-    background: none;
-    padding: 0;
-    border: 0;
-}
-
-.signup-btn {
-    padding: 0;
-    background: none;
-    padding: 0;
-    border: 0;
-}
-
-.signup_box {
-    display: inline-block;
+.login-box {
+    display: flex;
+    justify-content: center;
     padding: 24px;
     background-color: #0c162d;
     border: 1px solid #202637;
-    width: 900px;
+    width: 600px;
 }
 
-.label-text {
-    color: #00cfc8 !important;
-
+.inputBox {
+    position: relative;
+    width: 500px;
 }
 
-.form-style {
-    margin-left: 24px;
-    margin-right: 24px;
-}
-
-.wel-text {
-    color: #627597;
-    margin-left: 24px;
-    margin-right: 24px;
-}
-
-.inputbox {
-    background: #1d2b3a !important;
-    color: #fff !important;
-}
-
-.typing {
-    text-transform: capitalize;
-    white-space: nowrap;
-    color: transparent;
-    margin: 0;
-    position: absolute;
-    margin-bottom: 15px;
-}
-
-.typing::before {
-    content: "비밀병기에 오신것을 환영합니다. ";
-    position: absolute;
-    top: 0;
-    left: 0;
+.inputBox input {
     width: 100%;
-    height: 100%;
-    color: #00cfc8;
-    overflow: hidden;
-    border-right: 3px solid white;
-    animation: typing 3s steps(20);
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: #1d2b3a;
+    border-radius: 5px;
+    outline: none;
+    color: #fff;
+    font-size: 1em;
+    transition: 0.5s;
 }
 
-@keyframes typing {
-    0% {
-        width: 0%;
-    }
+.login-btn {
+    background: none;
+    padding: 0;
+    border: 0;
 
-    50% {
-        width: 50%;
-    }
+}
 
-    100% {
-        width: 100%;
-    }
+.inputBox span {
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    pointer-events: none;
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.25);
+    text-transform: uppercase;
+    transition: 0.5s;
+}
+
+.inputBox input:valid~span,
+.inputBox input:focus~span {
+    color: #00dfc4;
+    transform: translateX(10px) translateY(-7px);
+    font-size: 0.65em;
+    padding: 0 10px;
+    background: #1d2b3a;
+    border-left: 1px solid #00dfc4;
+    border-right: 1px solid #00dfc4;
+    letter-spacing: 0.2em;
 }
 
 
+
+/* 짝수 요소에 적용 */
+.inputBox:nth-child(2) input:valid~span,
+.inputBox:nth-child(2) input:focus~span {
+    background: #00dfc4;
+    color: #1d2b3a;
+    border-radius: 2px;
+}
+
+.inputBox input:valid,
+.inputBox input:focus {
+    border: 1px solid #00dfc4;
+}
 
 
 /* button Css*/

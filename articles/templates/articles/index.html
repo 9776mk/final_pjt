@@ -1,8 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>게시판</h1>
-  {% for article in articles.all %}
+<div class='container my-5'>
+  <h1>커뮤니티</h1>
+  {% comment %} {% for article in articles.all %}
     <a href="{% url 'articles:detail' article.pk  %}">{{ article.title }}</a>
-  {% endfor %}
+  {% endfor %} {% endcomment %}
+
+  <table class="table table-light table-bordered my-5 article_table">
+    <thead>
+    <tr>
+      <th style='width:110px'>카테고리</th>
+      <th style='width:140px'>작성자</th>
+      <th>내용</th>
+      <th style='width:90px'>작성날짜</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for article in articles.all %}
+      <tr>
+        <td>카테고리</td>
+        <td><a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a></td>
+        <td><a href="{% url 'articles:detail' article.pk %}" style="text-decoration:none;">{{ article.title }}</a></td>
+        <td>작성날짜</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a class='btn btn-light' href="{% url 'articles:create' %}">새 글 쓰기</a>
+</div>
 {% endblock content %}
