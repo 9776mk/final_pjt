@@ -42,7 +42,7 @@
       {% elif user.profile.language == 'C' %}
       <p class="mb-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white"></p>
       {% endif %}
-      <p class="mb-1"><span class="badge">{{ user.profile.mbti }}</span></p>
+      <p class="mb-1"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
       <p class="mb-1">{{ user.profile.intro }}</p>
     </div>
   </div>
