@@ -34,7 +34,6 @@ def signup(request):
 
             profile = profile_form.save(commit=False)
             Profile.objects.create(user=user, nickname=profile.nickname, github_id=profile.github_id, boj_id=profile.boj_id)
-            profile.save()
 
             # 현재 날짜를 기준으로 닉네임 자동 생성
             # nickname = str(user.pk) + str(user.date_joined.strftime("%f"))
