@@ -60,20 +60,34 @@ def is_valid_id(request):
 
 
 def login(request):
-    print(request)
+
+    status = 1
     # 이미 로그인 → 로그인 X
     if request.user.is_authenticated:
         return redirect('articles:index')
 
     if request.method == 'POST':
+        
         login_form = AuthenticationForm(request, data=request.POST)
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
             return redirect(request.GET.get('next') or 'articles:index')
+        else:
+            status = 0
+            login_form = AuthenticationForm()
+            context = {
+                'status':status,
+                'login_form': login_form,
+            }
+
+            return render(request, 'accounts/login.html', context)
+
+
     else:
         login_form = AuthenticationForm()
 
     context = {
+        'status':status,
         'login_form': login_form,
     }
 
