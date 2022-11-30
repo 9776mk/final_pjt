@@ -17,6 +17,7 @@ from .models import *
 from django.contrib import messages
 from django.core.files.base import ContentFile
 from django.db.models import *
+from django.utils import timezone   # settings.py의 USE_TZ=True면 datetime 대신 사용
 
 
 # Create your views here.
@@ -226,26 +227,34 @@ def github_login_callback(request):
 
     print(user_info["social_id"])   # 62585191
     print(user_info["username"])    # jupiter6676
+    print(user_info["social_profile_picture"])
 
     # 이미 연동된 유저는 로그인
     if get_user_model().objects.filter(social_id=user_info["social_id"]).exists():
         user = get_user_model().objects.get(social_id=user_info["social_id"])
         auth_login(request, user)
-        return redirect(request.GET.get("next") or "reviews:index")
+        return redirect(request.GET.get("next") or "/")
     # 연동이 처음이면 회원가입 (DB에 저장)
     else:
-        data = {
-            # 일반 정보
-            "name": (profile_json["name"]),
-            "username": (profile_json["login"]),
-            "git_id": (profile_json["login"]),
-        }
+        # data = {
+        #     # 일반 정보
+        #     "name": (profile_json["name"]),
+        #     "username": (profile_json["login"]),
+        #     "git_id": (profile_json["login"]),
+        # }
 
-        signup_form = CustomUserCreationForm(initial=data)
-        context = {
-            "signup_form": signup_form,
-        }
-        return render(request, "accounts/signup.html", context)
+        # signup_form = CustomUserCreationForm(initial=data)
+        # context = {
+        #     "signup_form": signup_form,
+        # }
+        
+        now = timezone.now()
+        username = str(user_info["social_id"]) + str(now.strftime("%f"))
+        user = get_user_model().objects.create(username=username, date_joined=now, social_id=user_info["social_id"])
+        Profile.objects.create(user=user, nickname=user_info["social_id"], github_id=user_info["username"], image=user_info["social_profile_picture"])
+        Guestbook.objects.create(user=user)
+
+        return redirect("/")
 
 # 유저 팔로우/언팔로우
 def follow(request, user_pk):
