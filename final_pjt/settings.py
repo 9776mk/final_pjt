@@ -40,6 +40,7 @@ CUSTOM_APPS = [
     "django_extensions",
     "imagekit",
     "mathfilters",
+    "widget_tweaks",
 ]
 
 DJANGO_APPS = [
