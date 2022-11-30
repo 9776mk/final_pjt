@@ -18,4 +18,4 @@ class ArticleComment(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     content = models.TextField()
-    create_at = models.DateTimeField(null=True)
+    create_at = models.DateTimeField(auto_now_add=True)
