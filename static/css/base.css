@@ -288,6 +288,7 @@ a {
 	background: #ffffff;
 	border-radius: .4em;
     padding: 20px;
+    box-shadow: 1px 2px 5px 0 rgb(199 198 198 / 75%);
 }
 
 .speech-bubble:after {
