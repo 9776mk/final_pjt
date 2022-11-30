@@ -1,79 +1,144 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block content %}
-  <!-- 방명록 글 작성 Form -->
-  <form id="gb-article-create-form" onsubmit="event.preventDefault(); create_gb_article(this, '{{ user.pk }}')">
-    {% csrf_token %}
-    <div class="mb-3">
-      <div class="d-flex align-items-center">
-        <label class="form-label m-0 me-5" for="id_content">Content</label>
-        <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="Content" required id="id_content"></textarea>
-        
-        {% if request.user.is_authenticated %}
-          <input type="submit" value="방명록 작성" name="gb_article_create">
-        {% else %}
-          <input type="submit" value="방명록 작성" name="gb_article_create" disabled>
-        {% endif %}
-      </div>
-    </div>
-  </form>
-  <hr>
+  <div class="container my-5 d-flex justify-content-center">
+    <div class="col-sm-12 col-lg-6 col-md-8 mx-3">
+      <h3 class="text-center mb-5">{{ user.profile.nickname }}님의 방명록 📜</h3>
+      <!-- 방명록 글 작성 Form -->
+      <form id="gb-article-create-form" onsubmit="event.preventDefault(); create_gb_article(this, '{{ user.pk }}')">
+        {% csrf_token %}
+        <div class="mb-3">
+          <div class="d-flex align-items-center">
+            {% if not request.user.profile.image %}
+              <img src="{% static 'images/no-avatar.jpg' %}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+            {% elif request.user.profile.image|slugify|slice:'0:4' == 'http' %}
+              <img src="{{ request.user.profile.image }}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+            {% else %}
+              <img src="{{ request.user.profile.image.url }}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+            {% endif %}
 
-  <div id="gb-articles-box" class="mx-5">
-    {% for article in gb_articles %}
-      <div id="article-{{ article.pk }}" class="mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-          <p>{{ article.user.profile.nickname }} | {{ article.content }} | {{ article.created_at|date:'Y.m.d' }}</p>
-          
-          <!-- 방명록 글 삭제 Form -->
-          {% if request.user == article.user %}
-            <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
-              {% csrf_token %}
-              <input type="submit" class="btn-close" style="color:transparent; font:16px">
-            </form>
-          {% endif %}
-        </div>
-        
-        <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}">답글 달기</a>
-        <div class="collapse" id="collapse-gb-comment-form-{{ article.pk }}">
-          <!-- 답글 생성 Form -->
-          {% if request.user.is_authenticated %}
-            <form onsubmit="event.preventDefault(); create_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}')">
-              {% csrf_token %}
-              <label class="form-label m-0 me-5" for="id_content">Content</label>
-              <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="Content" required id="id_content"></textarea>
-              <input type="submit" value="작성" name="gb_comment_create">
-            </form>
-          {% endif %}
-
-          <!-- 답글 -->
-          <div id="gb-comments-box-{{ article.pk }}" class="ms-5 text-bg-secondary">
-            {% for comment in gb_comments %}
-              {% if comment.article == article %}
-                <div id="comment-{{ comment.pk }}" class="mb-3">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p>{{ comment.user.profile.nickname }} | {{ comment.content }} | {{ comment.created_at|date:'Y.m.d' }}</p>
-
-                    <!-- 답글 삭제 Form -->
-                    {% if request.user == comment.user %}
-                      <form id="gb-comment-delete-form-{{ comment.pk }}" onsubmit="event.preventDefault(); delete_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}', '{{ comment.pk }}')">
-                        {% csrf_token %}
-                        <input type="submit" class="btn-close" style="color:transparent; font:16px">
-                      </form>
-                    {% endif %}
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-
-            {% if article.guestbookcomment_set.all|length == 0 %}
-              <p id="article-{{ article.pk }}-no-comments">댓글이 없습니다.</p>
+            <textarea name="content" cols="40" rows="3" class="form-control me-2" placeholder="방명록을 남겨주세요" required id="id_content"></textarea>
+            
+            {% if request.user.is_authenticated %}
+              <input type="submit" value="작성" name="gb_article_create" class="btn ms-1 follow-btn-hover color-2" style="width: 80px; height: 40px; background-color: #f37c2c; color: white;">
+            {% else %}
+              <input type="submit" value="작성" name="gb_article_create" class="btn ms-1 follow-btn-hover color-2" style="width: 80px; height: 40px; background-color: #f37c2c; color: white;" disabled>
             {% endif %}
           </div>
         </div>
+      </form>
+      <hr>
+      
+      <!-- 방명록 글 목록 -->
+      <div id="gb-articles-box" class="m-0">
+        {% for article in gb_articles %}
+          <div id="article-{{ article.pk }}" class="mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <!-- 프로필 사진 2 -->
+              {% if not article.user.profile.image %}
+                <div class="d-flex flex-column align-items-center">
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                </div>
+              {% elif article.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                <div class="d-flex flex-column align-items-center">
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image }}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                </div>
+              {% else %}
+                <div class="d-flex flex-column align-items-center">
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image.url }}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                </div>
+              {% endif %}
+
+              <!-- 방명록 말풍선 -->
+              <div class="speech-bubble w-100 ms-3">
+                <!-- 내용 & 날짜 -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="me-3">{{ article.content }}</div>
+                  <div style="font-size: 12px;">{{ article.created_at|date:'Y.m.d' }}</div>
+                </div>
+
+                <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
+                  <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                  
+                  {% if request.user == article.user %}
+                    <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
+                      {% csrf_token %}
+                      <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">
+                    </form>
+                  {% endif %}
+                </div>
+                <div class="collapse" id="collapse-gb-comment-form-{{ article.pk }}">
+                  <!-- 답글 생성 Form -->
+                  {% if request.user.is_authenticated %}
+                    <form onsubmit="event.preventDefault(); create_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}')">
+                      {% csrf_token %}
+                      {% comment %} <label class="form-label m-0 me-5" for="id_content">Content</label> {% endcomment %}
+                      <div class="d-flex align-items-center my-2">
+                        <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
+                        <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1" style="width: 50px; height: 40px; background-color: #f37c2c; color: white;">
+                      </div>
+                    </form>
+                  {% endif %}
+                </div>
+                <!-- 답글 -->
+                {% if article.guestbookcomment_set.all|length != 0 %}
+                  <div id="gb-comments-box-{{ article.pk }}" style="background-color: #f1f1f1; border-radius: 5px; padding: 13px 13px 5px 13px; margin-top: 10px;">
+                    {% for comment in gb_comments %}
+                      {% if comment.article == article %}
+                        <div id="comment-{{ comment.pk }}" class="mb-2">
+                          <div class="d-flex flex-column justify-content-between">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <div style="font-weight: bold; font-size: 15px;">
+                                <!-- 프로필 사진 3 -->
+                                {% if not comment.user.profile.image %}
+                                  <div class="d-flex align-items-center">
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                  </div>
+                                {% elif comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                                  <div class="d-flex align-items-center">
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                  </div>
+                                {% else %}
+                                  <div class="d-flex align-items-center">
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                  </div>
+                                {% endif %}
+                              </div>
+                              <p class="mb-0" style="font-size: 12px;">{{ comment.created_at|date:'Y.m.d' }}</p>
+                            </div>
+                          </div>
+                          <div class="d-flex justify-content-between">
+                            <p class="mb-0">{{ comment.content }}</p>
+                            <div class="d-flex align-items-end">
+                              <!-- 답글 삭제 Form -->
+                              {% if request.user == comment.user %}
+                                <form id="gb-comment-delete-form-{{ comment.pk }}" onsubmit="event.preventDefault(); delete_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}', '{{ comment.pk }}')">
+                                  {% csrf_token %}
+                                  <input type="submit" class="btn-close" style="color:transparent; font-size: 12px;" onclick="return confirm('삭제하시겠습니까?');">
+                                </form>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
       </div>
-    {% endfor %}
+    </div>
   </div>
 {% endblock content %}
 

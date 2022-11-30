@@ -17,30 +17,39 @@ from .models import *
 from django.contrib import messages
 from django.core.files.base import ContentFile
 from django.db.models import *
+from django.utils import timezone   # settings.py의 USE_TZ=True면 datetime 대신 사용
 
 
 # Create your views here.
 def signup(request):
     # 이미 로그인 → 회원가입 X
     if request.user.is_authenticated:
-        return redirect("articles:index")
+        return redirect("home")
 
     if request.method == "POST":
         signup_form = CustomUserCreationForm(request.POST)
-        if signup_form.is_valid():
+        profile_form = ProfileForm(request.POST, request.FILES)
+
+        if signup_form.is_valid() and profile_form.is_valid():
             user = signup_form.save()
 
+            profile = profile_form.save(commit=False)
+            Profile.objects.create(user=user, nickname=profile.nickname, github_id=profile.github_id, boj_id=profile.boj_id)
+
             # 현재 날짜를 기준으로 닉네임 자동 생성
-            nickname = str(user.pk) + str(user.date_joined.strftime("%f"))
-            Profile.objects.create(user=user, nickname=nickname)
-            Guestbook.objects.create(user=user)
-            # 방명록 생성
-            return redirect("articles:index")
+            # nickname = str(user.pk) + str(user.date_joined.strftime("%f"))
+            # Profile.objects.create(user=user, nickname=nickname)
+            Guestbook.objects.create(user=user) # 방명록 생성
+            # 회원가입 후 자동로그인
+            auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect("home")
     else:
         signup_form = CustomUserCreationForm()
+        profile_form = ProfileForm()
 
     context = {
         "signup_form": signup_form,
+        "profile_form": profile_form,
     }
 
     return render(request, "accounts/signup.html", context)
@@ -73,14 +82,14 @@ def login(request):
     status = 1
     # 이미 로그인 → 로그인 X
     if request.user.is_authenticated:
-        return redirect('articles:index')
+        return redirect('home')
 
     if request.method == 'POST':
         
         login_form = AuthenticationForm(request, data=request.POST)
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
-            return redirect(request.GET.get('next') or 'articles:index')
+            return redirect(request.GET.get('next') or 'home')
         else:
             status = 0
             login_form = AuthenticationForm()
@@ -105,14 +114,18 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    return redirect("articles:index")
+    return redirect("home")
 
 
 def profile(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
+    followers = user.followers.all()
+    followings = user.followings.all()
 
     context = {
         "user": user,
+        'followers': followers,
+        'followings': followings,
     }
 
     return render(request, "accounts/profile.html", context)
@@ -160,6 +173,7 @@ def github_login(request):
 def github_login_callback(request):
     if request.user.is_authenticated:
         raise SocialLoginException("User already logged in")
+        
     code = request.GET.get("code", None)
     if code is None:
         raise GithubException("Can't get code")
@@ -200,7 +214,7 @@ def github_login_callback(request):
 
     service_name = "github"
     profile_json = profile_request.json()
-    print(profile_json)
+
     login_data = {
         "github": {
             "social_id": profile_json["id"],
@@ -213,23 +227,40 @@ def github_login_callback(request):
             ### 깃허브에서만 가져오는 항목 ###
         },
     }
+
+    # DB에 깃허브 정보 저장
     user_info = login_data[service_name]
+
+    print(user_info["social_id"])   # 62585191
+    print(user_info["username"])    # jupiter6676
+    print(user_info["social_profile_picture"])
+
+    # 이미 연동된 유저는 로그인
     if get_user_model().objects.filter(social_id=user_info["social_id"]).exists():
         user = get_user_model().objects.get(social_id=user_info["social_id"])
         auth_login(request, user)
-        return redirect(request.GET.get("next") or "reviews:index")
+        return redirect(request.GET.get("next") or "/")
+    # 연동이 처음이면 회원가입 (DB에 저장)
     else:
-        data = {
-            # 일반 정보
-            "name": (profile_json["name"]),
-            "username": (profile_json["login"]),
-            "git_id": (profile_json["login"]),
-        }
-        signup_form = CustomUserCreationForm(initial=data)
-        context = {
-            "signup_form": signup_form,
-        }
-        return render(request, "accounts/signup.html", context)
+        # data = {
+        #     # 일반 정보
+        #     "name": (profile_json["name"]),
+        #     "username": (profile_json["login"]),
+        #     "git_id": (profile_json["login"]),
+        # }
+
+        # signup_form = CustomUserCreationForm(initial=data)
+        # context = {
+        #     "signup_form": signup_form,
+        # }
+        
+        now = timezone.now()
+        username = str(user_info["social_id"]) + str(now.strftime("%f"))
+        user = get_user_model().objects.create(username=username, date_joined=now, social_id=user_info["social_id"])
+        Profile.objects.create(user=user, nickname=user_info["social_id"], github_id=user_info["username"], image=user_info["social_profile_picture"])
+        Guestbook.objects.create(user=user)
+
+        return redirect("/")
 
 # 유저 팔로우/언팔로우
 def follow(request, user_pk):
@@ -258,7 +289,7 @@ def follow(request, user_pk):
 # 방명록
 def guestbook(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
-    gb_articles = user.guestbook.guestbookarticle_set.all()
+    gb_articles = user.guestbook.guestbookarticle_set.all().order_by("-pk")
     gb_comments = user.guestbook.guestbookcomment_set.all()
 
     context = {
@@ -284,11 +315,22 @@ def gb_article_create(request, user_pk):
             gb_article.user = request.user
             gb_article.save()
 
+        # 프사 X: images/unknown1111_MLNFs1A.jpg
+        # 깃허브 프사: https://avatars.githubusercontent.com/u/62585191?v=4
+        # 파일로 올린 프사: /static/images/no-avatar.jpg
+        if not gb_article.user.profile.image:
+            article_user_image = '/static/images/no-avatar.jpg'
+        elif str(gb_article.user.profile.image)[:4] == 'http':
+            article_user_image = str(gb_article.user.profile.image)
+        else:
+            article_user_image = str(gb_article.user.profile.image.url)
+
         data = {
             'article_pk': gb_article.pk,
             'article_user': gb_article.user.profile.nickname,   # username?
             'article_content': gb_article.content,
             'article_created_at': gb_article.created_at.strftime('%Y.%m.%d'),
+            'article_user_image': article_user_image,
         }
 
         return JsonResponse(data)

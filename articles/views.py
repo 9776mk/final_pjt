@@ -4,11 +4,38 @@ from .models import Article,ArticleComment, Image
 from .forms import articleForm,ArticleCommentForm, ImageForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from accounts.models import Profile
 # Create your views here.
 
 
 def home(request):
-    return render(request, "articles/home.html")
+    # 파이썬이 주 언어인 사람 가져옴
+    python = Profile.objects.filter(language = "Python")
+    C = Profile.objects.filter(language = "C")
+    Java = Profile.objects.filter(language = "Java")
+    python_cnt = len(python)
+    C_cnt = len(C)
+    Java_cnt = len(Java)
+    
+    # 여기 고쳤음! 비율 계산시에 값이 0이면 ZeroDivisionError라는 친구를 만나게 됨!
+    total_cnt = python_cnt + C_cnt + Java_cnt
+    
+    if total_cnt != 0 :
+        # 비율 계산
+        python_re=round((python_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+        C_re=round((C_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+        Java_re=round((Java_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+
+    
+
+
+    context = {
+        'Python_re':python_re,
+        'C_re':C_re,
+        'Java_re':Java_re
+      
+    }
+    return render(request, "articles/home.html", context)
 
 
 def index(request):
@@ -121,17 +148,26 @@ def comments_create(request,article_pk):
                 comment.user = request.user
                 comment.article = article
                 comment.save()
-            context={
-                'content':comment.content,
-                'userName':comment.user.username
-            }
-            return JsonResponse(context)
+                data={
+                    'pk':comment.pk,
+                    'content':comment.content,
+                    'userName':comment.user.username
+                }
+                return JsonResponse(data)
+            return redirect('articles:detail',article_pk)
     return redirect('accounts:login')
 
 @login_required
 def comments_delete(request, comment_pk, article_pk):
     if request.user.is_authenticated:
         comment = get_object_or_404(ArticleComment, pk=comment_pk)
+        is_deleted = False#삭제여부
+
         if request.user == comment.user:
             comment.delete()
+            is_deleted = True#삭제여부
+            data={
+                "is_deleted":is_deleted,
+            }
+            return JsonResponse(data)
     return redirect("articles:detail", article_pk)

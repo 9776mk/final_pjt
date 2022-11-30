@@ -1,6 +1,79 @@
 {% extends 'base.html' %}
+{% load static %}   
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/mainpage.css' %}">
+<script defer src="{% static 'js/mainpage.js' %}"></script>
+{% endblock link %}
 {% block content %}
+<main>
+    <div class='community'>
+        <h1> 개발마당</h1>
+        <img src="https://via.placeholder.com/800x400" alt="">
+        <div class='com-text'>
+            <div> 개발 마당의 소개글이 아마도 20자 정도 들어갈 것 같다는 지극히 
+                개인적인 생각이고 이거는 몇자일지 궁금해지는 순간이다라고 할 수도 있고 
+                안 할 수도있다.
+            </div>
+            <div><a href="">개발마당</a></div>            
+        </div>
+    </div>
+    <div class="algo">
+        <h1>알고리즘</h1>   
+        <div class='algoboxs'>
+            <div >
+                <div class='algobox'>
+                    알고리즘 문제추천
+                </div>
+                <span>오늘의 알고리즘 추천문제</span>
+            </div>
+            <div >
+                <div class='algobox'>
+                    오늘의 랜덤 문제
+                </div>
+                <span>오늘의 랜덤문제</span>
+            </div>
+        </div>
+    </div>
 
-<h1> 홈화면 입니다. </h1>
+    <div class="graph">
+        <h1>기술스텍 통계</h1>  
+        <div class='servey'>
+            {% comment %} data-num 변수로 들어갈거임 {% endcomment %}
+            <div class="progress_wap" data-num="{{ Python_re }}"> 
+                <font>Python</font>
+                <div class="bar_frame">
+                    <div class="bar"></div>
+                </div>
+                <span>0%</span>
+            </div>
+            <div class="progress_wap" data-num="{{ C_re }}">
+                <font>C</font>
+                <div class="bar_frame">
+                    <div class="bar"></div>
+                </div>
+                <span>0%</span>
+            </div>
+            <div class="progress_wap" data-num="{{ Java_re }}">
+                <font>Java</font>
+                <div class="bar_frame">
+                    <div class="bar"></div>
+                </div>
+                <span>0%</span>
+            </div>
+        </div>
+        <div>
+            <a href="">설문조사 하러가기!</a>
+        </div>
+    </div>
+    
+    <div class='find'>
+        <h1>나와 잘 맞는 개발자를 찾아보세요.</h1>
+        <div class='lay'>
+            <div class='p-img'> <h2>사진</h2><img src="https://via.placeholder.com/500x340" alt=""> </div>
+            <div class='p-text'> <h2>소개</h2><p>사용하는 기술스텍과 MBTI가 나와 비슷한 혹은 정반대의 동료와 스터디 혹은 관심 분야에 이야기를 나누어보세요</p> <div class='btn-holder'><button>찾으러</button></div></div>
+        </div>
+        
+    </div>
+</main>
 
 {% endblock%}
