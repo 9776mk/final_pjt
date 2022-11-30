@@ -16,18 +16,18 @@ def home(request):
     python_cnt = len(python)
     C_cnt = len(C)
     Java_cnt = len(Java)
+    
     # 여기 고쳤음! 비율 계산시에 값이 0이면 ZeroDivisionError라는 친구를 만나게 됨!
     total_cnt = python_cnt + C_cnt + Java_cnt
     
-    if total_cnt == 0 :
-        python_cnt = 1
-        C_cnt = 1
-        Java_cnt = 1
+    if total_cnt != 0 :
+        # 비율 계산
+        python_re=round((python_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+        C_re=round((C_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+        Java_re=round((Java_cnt/(python_cnt+Java_cnt+C_cnt))*100)
 
-    # 비율 계산
-    python_re=round((python_cnt/(python_cnt+Java_cnt+C_cnt))*100)
-    C_re=round((C_cnt/(python_cnt+Java_cnt+C_cnt))*100)
-    Java_re=round((Java_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+    
+
 
     context = {
         'Python_re':python_re,
