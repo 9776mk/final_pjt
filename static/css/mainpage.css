@@ -1,0 +1,67 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+  flex-direction: column;
+}
+main .community,
+main .find,
+main .graph,
+main .algo {
+  background-color: #e9e9e9;
+  box-sizing: border-box;
+  border: 1px solid #D9D9D9;
+  width: 1100px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+main .community h1,
+main .find h1,
+main .graph h1,
+main .algo h1 {
+  margin: 30px 0;
+}
+
+.community .com-text {
+  margin: 30px 150px;
+  text-align: start;
+}
+.community .com-text div:nth-child(2) {
+  display: flex;
+  justify-content: end;
+}
+.community a {
+  text-align: end;
+}
+
+.algo .algoboxs {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-around;
+}
+.algo .algoboxs .algobox {
+  margin-bottom: 10px;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  width: 400px;
+  height: 400px;
+}
+.algo .algoboxs .algobox span {
+  margin: 30px 0;
+}
+
+.find .lay {
+  display: flex;
+  justify-content: space-around;
+}
+.find .lay .p-text {
+  width: 400px;
+}
+.find .lay .p-text p {
+  text-align: start;
+}
+.find .lay .p-text .btn-holder {
+  justify-content: flex-end;
+  display: flex;
+}/*# sourceMappingURL=mainpage.css.map */
