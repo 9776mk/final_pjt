@@ -21,61 +21,87 @@
       <a href="{% url 'articles:index' %}" class="btn btn-outline-secondary">뒤로</a>
     </form>
   {% endif %}
+  <!-- 댓글생성 -->
   {% if request.user.is_authenticated %}
-    <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST">
+    <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{articles.pk}}')">
+      <!-- create_comment:함수명 -->
       {% csrf_token %}
-      {{ comment_form.as_table }}
+      {% bootstrap_form comment_form %}
       <input type="submit" value="글쓰기" id="content-{{ articles.pk }}">
     </form>
   {% else %}
     <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">로그인</a>
   {% endif %}
-  <!-- 댓글 -->
-  <div id="box"></div>
-  {% for comment in comments.all %}
-    <p>{{ comment.content }}</p>
-    {% if request.user == comment.user %}
-      <form action="{% url 'articles:comments_delete' articles.pk comment.pk %}" method="POST">
-        {% csrf_token %}
-        <input type="submit" value="DELETE">
-      </form>
-    {% endif %}
-  {% endfor %}
+  <!-- 댓글 목록 삭제-->
+  <div id="box">
+    {% for comment in comments.all %}
+      {% if request.user == comment.user %}
+        <div id="article-{{comment.pk}}">
+          <p>{{ comment.content }}</p>
+          <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{articles.pk}}', '{{comment.pk}}')">
+            {% csrf_token %}
+            <input type="submit" value="delete">
+          </form>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
 {% endblock content %}
 {% block script %}
   <script>
-    const commentForm = document.querySelector("#comment-form")
-    const csrftoken = document
-      .querySelector('[name=csrfmiddlewaretoken]')
-      .value
-      commentForm
-      .addEventListener('submit', function (event) {
-        event.preventDefault()
+    //댓글 비동기 생성
+    function create_comment(form, article_pk) { //form:html form태그
+      console.log(form)
+      const csrftoken = document
+        .querySelector('[name=csrfmiddlewaretoken]')
+        .value
         axios({
           method: 'post',
-          url: `/articles/${event.target.dataset.articleId}/comments_create/`,
+          url: `/articles/${article_pk}/comments_create/`,
           headers: {
             'X-CSRFToken': csrftoken
           },
-          data: new FormData(commentForm)
+          data: new FormData(form) //form:html form태그
         })
-          .then(response => {
-            console.log(response.data)
-            const comments = document.querySelector(`#box`)
-            const p = document.createElement('p')
-            p.innerText = `${response
-              .data
-              .userName} | ${response
-              .data
-              .content}`
-              comments
-              .append(p)
-            console.log(comments)
-            commentForm.reset()
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+        .then(response => {
+          const pk = response.data.pk
+          const comment_content = response.data.content
+          const userName = response.data.userName
+
+          const commentbox = document.querySelector('#box')
+          commentbox.insertAdjacentHTML('beforeend', `
+            <div id="article-${pk}">
+                <p>${userName} | ${comment_content}</p>
+                <form id="comment_delete-${pk}" onsubmit="event.preventDefault(); delete_comment(this, '${article_pk}', '${pk}')">
+                    <input type="submit" class="btn-close" style="color:transparent;">
+                </form>
+            </div>
+        `)
+          form.reset() //form:html form태그
         })
+        .catch(error => {
+          console.log(error)
+        })
+      }
+
+    //댓글 비동기 삭제
+    function delete_comment(form, article_pk, comment_pk) {
+      const csrftoken = document
+        .querySelector('[name=csrfmiddlewaretoken]')
+        .value
+
+        axios({
+          method: 'post',
+          url: `/articles/${article_pk}/comments_create/${comment_pk}/delete/`,
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        })
+        .then(response => {
+          const comment = document.querySelector(`#article-${comment_pk}`)
+          console.log(response.data.is_deleted)
+          comment.remove()
+        })
+    }
   </script>
 {% endblock script %}

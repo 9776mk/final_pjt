@@ -121,17 +121,26 @@ def comments_create(request,article_pk):
                 comment.user = request.user
                 comment.article = article
                 comment.save()
-            context={
-                'content':comment.content,
-                'userName':comment.user.username
-            }
-            return JsonResponse(context)
+                data={
+                    'pk':comment.pk,
+                    'content':comment.content,
+                    'userName':comment.user.username
+                }
+                return JsonResponse(data)
+            return redirect('articles:detail',article_pk)
     return redirect('accounts:login')
 
 @login_required
 def comments_delete(request, comment_pk, article_pk):
     if request.user.is_authenticated:
         comment = get_object_or_404(ArticleComment, pk=comment_pk)
+        is_deleted = False#삭제여부
+
         if request.user == comment.user:
             comment.delete()
+            is_deleted = True#삭제여부
+            data={
+                "is_deleted":is_deleted,
+            }
+            return JsonResponse(data)
     return redirect("articles:detail", article_pk)
