@@ -11,11 +11,14 @@
         {% csrf_token %}
         <div class="mb-3">
           <div class="d-flex align-items-center">
-            {% if request.user.profile.image %}
-            <img src="{{ request.user.profile.image.url }}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+            {% if not request.user.profile.image %}
+              <img src="{% static 'images/no-avatar.jpg' %}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+            {% elif request.user.profile.image|slugify|slice:'0:4' == 'http' %}
+              <img src="{{ request.user.profile.image }}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
             {% else %}
-            <img src="{% static 'images/no-avatar.jpg' %}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+              <img src="{{ request.user.profile.image.url }}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
             {% endif %}
+
             <textarea name="content" cols="40" rows="3" class="form-control me-2" placeholder="방명록을 남겨주세요" required id="id_content"></textarea>
             
             {% if request.user.is_authenticated %}
@@ -33,38 +36,42 @@
         {% for article in gb_articles %}
           <div id="article-{{ article.pk }}" class="mb-3">
             <div class="d-flex justify-content-between align-items-center">
-              {% if article.user.profile.image %}
-              <div class="d-flex flex-column align-items-center">
-                <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image.url }}" style="border-radius: 70%; width: 50px;" alt=""></a>
-                <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
-              </div>
+              <!-- 프로필 사진 2 -->
+              {% if not article.user.profile.image %}
+                <div class="d-flex flex-column align-items-center">
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                </div>
+              {% elif article.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                <div class="d-flex flex-column align-items-center">
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image }}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                </div>
               {% else %}
-              <div class="d-flex flex-column align-items-center">
-                <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 50px;" alt=""></a>
-                <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
-              </div>
+                <div class="d-flex flex-column align-items-center">
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image.url }}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                </div>
               {% endif %}
 
               <!-- 방명록 말풍선 -->
               <div class="speech-bubble w-100 ms-3">
-                <div class="d-flex justify-content-between">
+                <!-- 내용 & 날짜 -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
                   <div class="me-3">{{ article.content }}</div>
-                  <!-- 작성 날짜, 삭제 -->
-                  <div class="d-flex flex-column justify-content-between" style="font-size: 12px;">
-                    {{ article.created_at|date:'Y.m.d' }}
-                    <div class="d-flex justify-content-end mt-1">
-                      {% if request.user == article.user %}
-                      <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
-                        {% csrf_token %}
-                        <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">
-                      </form>
-                      {% endif %}
-                    </div>
-                  </div>
+                  <div style="font-size: 12px;">{{ article.created_at|date:'Y.m.d' }}</div>
                 </div>
-                <!-- 방명록 글 삭제 Form -->
-                <div class="text-end">
+
+                <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
                   <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                  
+                  {% if request.user == article.user %}
+                    <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
+                      {% csrf_token %}
+                      <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">
+                    </form>
+                  {% endif %}
                 </div>
                 <div class="collapse" id="collapse-gb-comment-form-{{ article.pk }}">
                   <!-- 답글 생성 Form -->
@@ -86,16 +93,27 @@
                       {% if comment.article == article %}
                         <div id="comment-{{ comment.pk }}" class="mb-2">
                           <div class="d-flex flex-column justify-content-between">
-                            <div class="d-flex justify-content-between">
-                              <p class="mb-1" style="font-weight: bold; font-size: 15px;">
-                                {% if article.user.profile.image %}
-                                  <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ article.user.profile.image.url }}" style="border-radius: 70%; width: 25px; margin-right: 5px;" alt=""></a>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <div style="font-weight: bold; font-size: 15px;">
+                                <!-- 프로필 사진 3 -->
+                                {% if not comment.user.profile.image %}
+                                  <div class="d-flex align-items-center">
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                  </div>
+                                {% elif comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                                  <div class="d-flex align-items-center">
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                  </div>
                                 {% else %}
-                                  <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                  <div class="d-flex align-items-center">
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                    <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                  </div>
                                 {% endif %}
-                                <a href="{% url 'accounts:profile' comment.user.pk %}">{{ comment.user.profile.nickname }}</a>
-                              </p>
-                              <p class="mb-1" style="font-size: 12px;">{{ comment.created_at|date:'Y.m.d' }}</p>
+                              </div>
+                              <p class="mb-0" style="font-size: 12px;">{{ comment.created_at|date:'Y.m.d' }}</p>
                             </div>
                           </div>
                           <div class="d-flex justify-content-between">
@@ -116,12 +134,10 @@
                   </div>
                 {% endif %}
               </div>
-
             </div>
           </div>
         {% endfor %}
       </div>
-      
     </div>
   </div>
 {% endblock content %}
