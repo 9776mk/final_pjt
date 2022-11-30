@@ -4,11 +4,30 @@ from .models import Article,ArticleComment, Image
 from .forms import articleForm,ArticleCommentForm, ImageForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from accounts.models import Profile
 # Create your views here.
 
 
 def home(request):
-    return render(request, "articles/home.html")
+    # 파이썬이 주 언어인 사람 가져옴
+    python = Profile.objects.filter(language = "Python")
+    C = Profile.objects.filter(language = "C")
+    Java = Profile.objects.filter(language = "Java")
+    python_cnt = len(python)
+    C_cnt = len(C)
+    Java_cnt = len(Java)
+
+    # 비율 계산
+    python_re=round((python_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+    C_re=round((C_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+    Java_re=round((Java_cnt/(python_cnt+Java_cnt+C_cnt))*100)
+    context = {
+        'Python_re':python_re,
+        'C_re':C_re,
+        'Java_re':Java_re
+      
+    }
+    return render(request, "articles/home.html", context)
 
 
 def index(request):
