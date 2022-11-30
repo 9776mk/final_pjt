@@ -2,6 +2,7 @@
 {% load static %}   
 {% block link %}
 <link rel="stylesheet" href="{% static 'css/mainpage.css' %}">
+<script defer src="{% static 'js/mainpage.js' %}"></script>
 {% endblock link %}
 {% block content %}
 <main>
@@ -33,15 +34,39 @@
             </div>
         </div>
     </div>
+
     <div class="graph">
         <h1>기술스텍 통계</h1>  
         <div class='servey'>
-            여기 막대기 나옴
+            {% comment %} data-num 변수로 들어갈거임 {% endcomment %}
+            <div class="progress_wap" data-num="40"> 
+                <font>python</font>
+                <div class="bar_frame">
+                    <div class="bar"></div>
+                </div>
+                <span>0</span>
+            </div>
+            <div class="progress_wap" data-num="10">
+                <font>javascript</font>
+                <div class="bar_frame">
+                    <div class="bar"></div>
+                </div>
+                <span>0</span>
+            </div>
+            <div class="progress_wap" data-num="30">
+                <font>java</font>
+                <div class="bar_frame">
+                    <div class="bar"></div>
+                </div>
+                <span>0</span>
+            </div>
         </div>
         <div>
+            <p class='fs-4 fw-bold text-danger'>벡에서 데이터 넘기는거는 제가 할게여~</p>
             <a href="">설문조사 하러가기!</a>
         </div>
     </div>
+    
     <div class='find'>
         <h1>나와 잘 맞는 개발자를 찾아보세요.</h1>
         <div class='lay'>
