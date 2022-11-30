@@ -119,9 +119,13 @@ def logout(request):
 
 def profile(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
+    followers = user.followers.all()
+    followings = user.followings.all()
 
     context = {
         "user": user,
+        'followers': followers,
+        'followings': followings,
     }
 
     return render(request, "accounts/profile.html", context)
