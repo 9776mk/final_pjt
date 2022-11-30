@@ -46,9 +46,14 @@ thead {
 }
 
 a {
+    text-decoration: none;
     color: #000000;
 }
 
+a:hover {
+    text-decoration: none;
+    color: #000000;
+}
 
 /* navbar 프로필 사진 */
 .box {
