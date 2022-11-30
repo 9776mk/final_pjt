@@ -89,7 +89,7 @@
                       <!-- 파일로 추가한 이미지 /media/ -->
                       <img src="{{ user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
                     {% else %}
-                      <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 200px;" alt="">
+                      <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 100%; border: 2px solid #b9b9b9;" alt="">
                     {% endif %}
                     {% comment %} <img class="profile" src={% if request.user.profile.image %}"{{ request.user.profile.image.url }}"{% else %}"https://dummyimage.com/50x50/1c46ff/ffffff&text=img"{% endif %}> {% endcomment %}
                   </div>

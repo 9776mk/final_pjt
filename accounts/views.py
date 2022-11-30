@@ -24,7 +24,7 @@ from django.utils import timezone   # settings.py의 USE_TZ=True면 datetime 대
 def signup(request):
     # 이미 로그인 → 회원가입 X
     if request.user.is_authenticated:
-        return redirect("articles:index")
+        return redirect("home")
 
     if request.method == "POST":
         signup_form = CustomUserCreationForm(request.POST)
@@ -40,7 +40,9 @@ def signup(request):
             # nickname = str(user.pk) + str(user.date_joined.strftime("%f"))
             # Profile.objects.create(user=user, nickname=nickname)
             Guestbook.objects.create(user=user) # 방명록 생성
-            return redirect("articles:index")
+            # 회원가입 후 자동로그인
+            auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect("home")
     else:
         signup_form = CustomUserCreationForm()
         profile_form = ProfileForm()
@@ -80,14 +82,14 @@ def login(request):
     status = 1
     # 이미 로그인 → 로그인 X
     if request.user.is_authenticated:
-        return redirect('articles:index')
+        return redirect('home')
 
     if request.method == 'POST':
         
         login_form = AuthenticationForm(request, data=request.POST)
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
-            return redirect(request.GET.get('next') or 'articles:index')
+            return redirect(request.GET.get('next') or 'home')
         else:
             status = 0
             login_form = AuthenticationForm()
@@ -112,7 +114,7 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    return redirect("articles:index")
+    return redirect("home")
 
 
 def profile(request, user_pk):
