@@ -1,11 +1,66 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load django_bootstrap5 %}
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/board_create.css' %}" type="text/css">
+{% endblock link %}
+
 {% block content %}
-  <h1>create</h1>
-  <form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% bootstrap_form article_form %}
-    {% bootstrap_form image_form %}
-    {% bootstrap_button '확인' %}
-  </form>
+  <div class='container py-5'>
+    {% if request.resolver_match.url_name == 'create' %}
+      <h1 class='mb-4'>글쓰기</h1>
+    {% else %}
+      <h1 class='mb-4'>수정하기</h1>
+    {% endif %}
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!--폼-->
+      <div class="board_write">
+        <div class="board_write">
+          <div class="title">
+            <dl>
+              <dt>제목</dt>
+              <dd><input type="text" name="title" value="{{ articles.title }}" placeholder="제목 입력"></dd>
+            </dl>
+          </div>
+          <div class="info">
+            <dl class='d-flex align-items-center'>
+                <dt>이미지</dt>
+                <dd><input type="file" class="form-control" name='image' accept="media/article_images" value="" id="id_image"></dd>
+            </dl>
+          </div>
+          <div class="cont">
+            <textarea name="content" placeholder="내용 입력">{{ articles.content }}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 버튼 -->
+      <div class="container text-center bt_wrap">
+        {% if request.resolver_match.url_name == 'update' %}
+          <button type="submit" class="px-4 on">수정</button>
+          <a class='px-4' href="{% url 'articles:detail' articles.pk %}">뒤로가기</a>
+        {% elif request.resolver_match.url_name == 'create' %}
+          <button type="submit" class="px-4 on">등록</button>
+          <a class='px-4' href="{% url 'articles:index' %}">목록으로</a>
+        {% endif %}
+      </div>
+    </form>
+    
+  </div>
+
+  {% comment %} <div class="input-group mb-1">
+    <input type="file" class="form-control" name='image' accept="media/article_images" value="" id="id_image">
+  </div> {% endcomment %}
+
+  {% comment %} <div class='d-flex'>
+    {% comment %} 이미지가 있는 경우 현재 이미지 경로 보여주기 
+    {% if article.image %}
+    <p>현재 등록된 이미지 : </p>
+    <a href="{{ article.image.url }}"><p class='mx-2'>{{ article.image }}</p></a>
+    {% endif %}
+  </div>  {% endcomment %}
+
+
 {% endblock content %}

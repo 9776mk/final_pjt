@@ -9,9 +9,9 @@ thead {
 }
 
 
-/* 새글 쓰기 버튼 */
+/* 글 쓰기 버튼 */
 .bt_wrap {
-  margin-top: 30px;
+  margin: 30px auto;
   text-align: center;
   font-size: 0;
 }
@@ -24,15 +24,18 @@ thead {
   border: 1px solid #000;
   border-radius: 2px;
   font-size: 0.9rem;
+  background: #000;
+  color: #fff;
+  transition: all 0.4s;
 }
 
 .bt_wrap a:first-child {
   margin-left: 0;
 }
 
-.bt_wrap a.on {
-  background: #000;
-  color: #fff;
+.bt_wrap a:hover {
+  background-color: white;
+  color: black;
 }
 
 
@@ -81,26 +84,10 @@ thead {
 }
 
 
-
-
-
 /* 게시판 */
 .board_wrap {
   width: 1000px;
   margin: 100px auto;
-}
-
-.board_title {
-  margin-bottom: 30px;
-}
-
-.board_title strong {
-  font-size: 3rem;
-}
-
-.board_title p {
-  margin-top: 5px;
-  font-size: 1.4rem;
 }
 
 .board_list {

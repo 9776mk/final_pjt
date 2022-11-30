@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
 {% endblock link %}
 {% block content %}
-  <div class='container my-5'>
+  <div class='container py-5'>
     <h1>개발마당</h1>
     <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
 
@@ -44,12 +44,12 @@
 
     <!--새 글 쓰기 버튼-->
     <div class='bt_wrap'>
-      <a class='on' href="{% url 'articles:create' %}">새 글 쓰기</a>
+      <a class='px-4' href="{% url 'articles:create' %}">새 글 쓰기</a>
     </div>
-
   </div>
 
-  <div class='page'>
+  <!--페이지네이션 따라 만들기 하던거-->
+  {% comment %} <div class='page'>
     <ul>
       <li>
         <a href="#" class='first'>맨 처음으로</a>
@@ -62,6 +62,6 @@
         <a href="#" class='last'>맨 마지막으로</a>
       </li>
     </ul>
-  </div>
-
+  </div> {% endcomment %}
+  
 {% endblock content %}
