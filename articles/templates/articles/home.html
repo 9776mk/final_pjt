@@ -39,22 +39,22 @@
         <h1>기술스텍 통계</h1>  
         <div class='servey'>
             {% comment %} data-num 변수로 들어갈거임 {% endcomment %}
-            <div class="progress_wap" data-num="40"> 
-                <font>python</font>
+            <div class="progress_wap" data-num="{{ Python_re }}"> 
+                <font>Python</font>
                 <div class="bar_frame">
                     <div class="bar"></div>
                 </div>
                 <span>0</span>
             </div>
-            <div class="progress_wap" data-num="10">
-                <font>javascript</font>
+            <div class="progress_wap" data-num="{{ C_re }}">
+                <font>C</font>
                 <div class="bar_frame">
                     <div class="bar"></div>
                 </div>
                 <span>0</span>
             </div>
-            <div class="progress_wap" data-num="30">
-                <font>java</font>
+            <div class="progress_wap" data-num="{{ Java_re }}">
+                <font>Java</font>
                 <div class="bar_frame">
                     <div class="bar"></div>
                 </div>
@@ -62,7 +62,6 @@
             </div>
         </div>
         <div>
-            <p class='fs-4 fw-bold text-danger'>벡에서 데이터 넘기는거는 제가 할게여~</p>
             <a href="">설문조사 하러가기!</a>
         </div>
     </div>
