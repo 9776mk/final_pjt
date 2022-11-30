@@ -51,9 +51,20 @@ main .algo h1 {
   margin: 30px 0;
 }
 
+.graph .servey {
+  width: 80%;
+  margin: auto;
+}
+.graph .servey font {
+  margin-right: 10px;
+  text-align: end;
+  width: 80px;
+}
+
 .find .lay {
   display: flex;
   justify-content: space-around;
+  margin-bottom: 30px;
 }
 .find .lay .p-text {
   width: 400px;
@@ -64,4 +75,31 @@ main .algo h1 {
 .find .lay .p-text .btn-holder {
   justify-content: flex-end;
   display: flex;
+}
+
+.progress_wap {
+  display: flex;
+  width: auto;
+  margin: 20px 0;
+  border-radius: 5px;
+  height: 26px;
+  /* border: 1px solid #3498db; */
+  position: relative;
+  /* box-sizing: border-box; */
+}
+
+.bar_frame {
+  width: 0;
+  background: linear-gradient(135deg, rgba(248, 168, 20, 0.704) 2%, rgba(249, 216, 140, 0.641) 98%);
+  border-radius: 5px;
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(135deg, #f8aa14 2%, #f9d98c 98%);
+  border-radius: 5px;
+  height: 23px;
 }/*# sourceMappingURL=mainpage.css.map */
