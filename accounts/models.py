@@ -102,6 +102,7 @@ class GuestbookArticle(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)    # 글을 누가 썼는지
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    is_secret = models.BooleanField(default=False)
 
 
 # 방명록 댓글
@@ -111,6 +112,7 @@ class GuestbookComment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    is_secret = models.BooleanField(default=False)
 
 
 # https://github.com/login/oauth/authorize?client_id=None&redirect_uri=http://127.0.0.1:8000/accounts/login/github/callback/&scope=read:user

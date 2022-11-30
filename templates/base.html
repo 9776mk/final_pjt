@@ -82,12 +82,12 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'accounts:profile' request.user.pk %}">
                   <div class="box">
-                    {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
+                    {% if request.user.profile.image|slugify|slice:'0:4' == 'http' %}
                       <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-                      <img src="{{ user.profile.image }}" style="border-radius: 70%; max-width: 100%;" alt="">
-                    {% elif user.profile.image %}
+                      <img src="{{ request.user.profile.image }}" style="border-radius: 70%; max-width: 100%;" alt="">
+                    {% elif request.user.profile.image %}
                       <!-- 파일로 추가한 이미지 /media/ -->
-                      <img src="{{ user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
+                      <img src="{{ request.user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
                     {% else %}
                       <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 100%; border: 2px solid #b9b9b9;" alt="">
                     {% endif %}

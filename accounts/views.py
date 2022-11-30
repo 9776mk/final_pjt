@@ -315,11 +315,22 @@ def gb_article_create(request, user_pk):
             gb_article.user = request.user
             gb_article.save()
 
+        # 프사 X: images/unknown1111_MLNFs1A.jpg
+        # 깃허브 프사: https://avatars.githubusercontent.com/u/62585191?v=4
+        # 파일로 올린 프사: /static/images/no-avatar.jpg
+        if not gb_article.user.profile.image:
+            article_user_image = '/static/images/no-avatar.jpg'
+        elif str(gb_article.user.profile.image)[:4] == 'http':
+            article_user_image = str(gb_article.user.profile.image)
+        else:
+            article_user_image = str(gb_article.user.profile.image.url)
+
         data = {
             'article_pk': gb_article.pk,
             'article_user': gb_article.user.profile.nickname,   # username?
             'article_content': gb_article.content,
             'article_created_at': gb_article.created_at.strftime('%Y.%m.%d'),
+            'article_user_image': article_user_image,
         }
 
         return JsonResponse(data)
