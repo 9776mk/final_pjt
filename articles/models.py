@@ -1,6 +1,7 @@
 from django.db import models
 from imagekit.models import ProcessedImageField
 from django.contrib.auth import get_user_model
+from accounts.models import User
 # Create your models here.
 
 class Article(models.Model):
@@ -8,6 +9,8 @@ class Article(models.Model):
     content = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     # image = ProcessedImageField()
+    create_at = models.DateTimeField(auto_now_add=True)
+    like = models.ManyToManyField(User, blank=True ,related_name="article_like")
 
 # Article의 이미지
 class Image(models.Model):

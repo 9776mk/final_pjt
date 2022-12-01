@@ -7,6 +7,18 @@
 {% endblock link %}
 
 {% block content %}
+  <!-- 좋아요 버튼 -->
+ <div>
+    <form class="like-froms" data-article-id="{{ articles.pk }}" method="POST">
+      {% csrf_token %}
+      {% if request.user in article.like.all %}
+        <input type="submit" value="좋아요 취소" id="like-{{ articles.pk }}">
+      {% else %}
+        <input type="submit" value="좋아요" id="like-{{ articles.pk }}">
+      {% endif %}
+    </form>
+  </div>
+  
   <div class='container py-5'>
     <div class="board_view">
       <div class="title">
@@ -41,7 +53,6 @@
         </div>
       </form>
     {% endif %}
-
     <br>
     <br>
 
@@ -133,5 +144,39 @@
           comment.remove()
         })
     }
+
+    const form = document.querySelector('.like-froms')
+    const csrftoken = document
+      .querySelector('[name=csrfmiddlewaretoken]')
+      .value
+      form
+      .addEventListener('submit', function (event) {
+        event.preventDefault()
+        const articleId = event
+          .target
+          .dataset
+          .articleId
+          console
+          .log(form)
+        axios({
+          method: 'post',
+          url: `/articles/${articleId}/likes/`,
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        })
+          .then((response) => {
+            const isLiked = response.data.is_liked
+            const likeBtn = document.querySelector(`#like-${articleId}`)
+            if (isLiked === true) {
+              likeBtn.value = "좋아요 취소"
+            } else {
+              likeBtn.value = "좋아요"
+            }
+          })
+          .catch((error) => {
+            console.log(error.response)
+          })
+        })
   </script>
 {% endblock script %}
