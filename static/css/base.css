@@ -312,6 +312,7 @@ a:hover {
     
 }
 
+
 .bbtn {
     width: 100%; 
     height: 40px; 
@@ -332,3 +333,34 @@ a:hover {
     background-color: #ff8e00; 
     color: white;
 }
+
+/* 게시판 버튼 */
+.bt_wrap {
+    margin: 30px auto;
+    text-align: center;
+    font-size: 0;
+  }
+  .bt_wrap a,
+  .bt_wrap button {
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    background: #000;
+    color: #fff;
+    transition: all 0.4s;
+  }
+  .bt_wrap a:first-child,
+  .bt_wrap button:first-child {
+    margin-left: 0;
+  }
+  .bt_wrap a:hover,
+  .bt_wrap button:hover {
+    background-color: white;
+    color: black;
+  }
+  .bt_wrap a {
+    margin-left: 15px;
+  }
+
