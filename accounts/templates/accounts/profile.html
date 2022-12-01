@@ -18,7 +18,6 @@
       {% else %}
         <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
       {% endif %}
-      {% comment %} <button id="emoji_btn">이모지 추가<input type="text" id="message" style="border-radius: 70%; width: 30px;" class="position-absolute top-1 start-10"></button> {% endcomment %}
     </div>
     <div class="ms-5 w-100">
       <div class="d-flex align-items-center mb-2">
@@ -179,20 +178,4 @@
 
 {% block script %}
   <script type="text/javascript" src="{% static 'js/accounts_follow_async.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
-  {% comment %} <script>
-    const button = document.querySelector("#emoji_btn");
-    const picker = new EmojiButton({
-      position: 'bottom-start'
-    });
-    
-    button.addEventListener('click', () => {
-      picker.togglePicker(button);
-    });
-    
-    picker.on('emoji', emoji => {
-      const text_box = document.querySelector('#message');
-      text_box.value += emoji;
-    });
-  </script> {% endcomment %}
 {% endblock script %}
