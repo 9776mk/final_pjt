@@ -6,7 +6,15 @@
 .board_view .title {
   padding: 20px 15px;
   border-bottom: 1px dashed #ddd;
-  font-size: 2rem;
+  font-size: 0.9rem;
+}
+.board_view .title img {
+  margin-left: 30px;
+  width: 5%;
+  border-radius: 70%;
+}
+.board_view .title .writer_profile {
+  margin: auto 5px;
 }
 .board_view .info {
   padding: 15px;
