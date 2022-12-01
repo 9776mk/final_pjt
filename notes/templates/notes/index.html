@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block content%}
+  <img src="" alt="">
+  <div class="container fs-5 mt-4">
+    <div id="main_in" class="d-flex justify-content-center">
+      <table class="list-table">
+        <thead>
+          <th class="fs-2 fw-bold">받은 편지함</th>
+          <tr>
+            <th width="150" class="tl">보낸사람</th>
+            <th width="400" class="tl">제목</th>
+            <th width="200" class="tc">날짜</th>
+            <th width="100" class="tc">읽음</th>
+            <th width="100" class="tc">삭제</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for note in notes %}
+            {% if note.read == 1 %}
+              <tr class="text-muted" id="{{note.pk}}">
+                <td>
+                  {% if note.from_user.nickname %}
+                    {{ note.from_user.nickname }}
+                  {% else %}
+                    {{ note.from_user.username }}
+                  {% endif %}
+                </td>
+                <!---보낸이 -->
+                <td>
+                  <a class="text-muted" style="text-decoration:none;" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a>
+                </td>
+                <!---제목 -->
+                <td class="tc">{{ note.created_at|date:'o.m.d' }}
+                  {{ note.created_at|time:"H:i" }}</td>
+                <!---보낸시간 -->
+                {% if note.read == 1 %}
+                  <td>읽음</td>
+                  <!---읽음 -->
+                {% else %}
+                  <td>안읽음</td>
+                  <!---읽음 -->
+                {% endif %}
+                <td class="tc">
+                  {% csrf_token %}
+                  <button id="custom-btn" style="background-color:transparent;">
+                    <i xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-trash3" viewbox="0 0 16 16" data-note-id="{{note.pk}}" value="{{note.pk}}" onclick="remove(event)"></i>
+                  </button>
+                </td>
+                <!---삭제 -->
+              </tr>
+            {% else %}
+              <tr id="{{note.pk}}">
+                <td>
+                  {% if note.from_user.nickname %}
+                    {{note.from_user.nickname}}
+                  {% else %}
+                    {{note.from_user.username}}
+                  {% endif %}
+                </td>
+                <!---보낸이 -->
+                <td>
+                  <a class="custom-link" style="text-decoration:none; color:black;" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a>
+                </td>
+                <!---제목 -->
+                <td class="tc">{{ note.created_at|date:'o.m.d' }}
+                  {{ note.created_at|time:"H:i" }}</td>
+                <!---보낸시간 -->
+                {% if note.read == 1 %}
+                  <td>읽음</td>
+                  <!---읽음 -->
+                {% else %}
+                  <td>안읽음</td>
+                  <!---읽음 -->
+                {% endif %}
+                <td class="tc"></td>
+                <!---삭제 -->
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr/>
+  <div class="container fs-5 mt-4">
+
+    <div id="main_in" class="d-flex justify-content-center">
+      <table class="list-table">
+        <thead>
+          <th class="fs-2 fw-bold">보낸 편지함</th>
+          <th>
+            <span class="fs-6 text-muted p-2">상대방이 읽으면 읽음처리 됩니다.</span></th>
+          <tr>
+            <th width="150" class="tl">받는사람</th>
+            <th width="400" class="tl">제목</th>
+            <th width="200" class="tc">날짜</th>
+            <th width="100" class="tc">읽음</th>
+            <th width="100" class="tc"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for note in to_notes %}
+            <div id="{{note.pk}}">
+              {% if note.read == 1 %}
+                <tr class="text-muted">
+                  <td>
+                    {% if note.to_user.username %}
+                      {{note.to_user.username}}
+                    {% else %}
+                      {{note.to_user.username}}
+                    {% endif %}
+                  </td>
+                  <!---보낸이 -->
+                  <td>
+                    <a class="text-muted" style="text-decoration:none;" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a>
+                  </td>
+                  <!---제목 -->
+                  <td class="tc">{{ note.created_at|date:'o.m.d' }}
+                    {{ note.created_at|time:"H:i" }}</td>
+                  <!---보낸시간 -->
+                  {% if note.read == 1 %}
+                    <td>읽음</td>
+                    <!---읽음 -->
+                  {% else %}
+                    <td>안읽음</td>
+                    <!---읽음 -->
+                  {% endif %}
+                  <td class="tc">
+                    {% csrf_token %}
+                    <button id="custom-btn" style="background-color:transparent;" onclick="location.href='{% url 'notes:delete' note.pk %}'"></button>
+                  </td>
+                  <!---삭제 -->
+                </tr>
+              {% else %}
+                <tr>
+                  <td>
+                    {% if note.to_user.username %}
+                      {{note.to_user.username}}
+                    {% else %}
+                      {{note.to_user.username}}
+                    {% endif %}
+                  </td>
+                  <!---내가 보낸 -->
+                  <td>
+                    <a class=" custom-link" style=" text-decoration:none;=" text-decoration:none;" color:black;"="text-decoration:none;" color:black;""="color:black;" "" href=" {% url 'notes:detail' note.pk %} ">{{ note.title }}</a>
+                  </td>
+                  <!---제목 -->
+                  <td class="tc">{{ note.created_at|date:'o.m.d' }}
+                    {{ note.created_at|time:"H:i" }}</td>
+                  <!---보낸시간 -->
+                  {% if note.read == 1 %}
+                    <td>읽음</td>
+                    <!---읽음 -->
+                  {% else %}
+                    <td>안읽음</td>
+                    <!---읽음 -->
+                  {% endif %}
+                  <td class="tc"></td>
+                  <!---삭제 -->
+                </tr>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock content %}
+{% block script %}{% endblock script %}

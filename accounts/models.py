@@ -42,6 +42,8 @@ class User(AbstractUser):
     social_profile_picture = models.CharField(null=True, blank=True, max_length=150)
     # 인증 필드
     token = models.CharField(max_length=150, null=True, blank=True)
+    notice_note = models.BooleanField(default=True)#쪽지
+    note_notice = models.BooleanField(default=True)#쪽지
 
 
 class Profile(models.Model):
