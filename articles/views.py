@@ -26,8 +26,9 @@ def home(request):
         C_re=round((C_cnt/(python_cnt+Java_cnt+C_cnt))*100)
         Java_re=round((Java_cnt/(python_cnt+Java_cnt+C_cnt))*100)
 
-    
-
+    python_re = 0
+    C_re = 0
+    Java_re= 0
 
     context = {
         'Python_re':python_re,
