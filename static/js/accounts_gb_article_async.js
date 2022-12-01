@@ -17,12 +17,16 @@ function delete_gb_article(form, user_pk, article_pk) {
 // 2. 방명록 글 생성 비동기
 function create_gb_article(form, user_pk) {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-
+    let formData = new FormData(form)
+    
+    const isSecret = articleSecretBtn.getAttribute('data-is-secret')
+    formData.append('is_secret', isSecret)  // key - value 쌍
+    
     axios({
         method: 'post',
         url: `/accounts/${user_pk}/guestbook/article_create/`,
         headers: {'X-CSRFToken': csrftoken},
-        data: new FormData(form)
+        data: formData
     }).then(response => {
         const articlePk = response.data.article_pk
         const articleUser = response.data.article_user
@@ -80,3 +84,21 @@ function create_gb_article(form, user_pk) {
         console.log(error)
     })
 }
+
+
+// 3. 비공개 선택 버튼
+const articleSecretBtn = document.querySelector('#article-secret-btn')
+articleSecretBtn.addEventListener('click', event => {
+    // 아이콘 이미지 변경
+    const icon = document.querySelector('#article-secret-btn-icon')
+    icon.classList.toggle('bi-unlock')
+    icon.classList.toggle('bi-lock-fill')
+
+    // data-is-secret 값 변경
+    let isSecret = articleSecretBtn.getAttribute('data-is-secret')
+    if (isSecret === 'true') {
+        articleSecretBtn.setAttribute('data-is-secret', 'false')
+    } else {
+        articleSecretBtn.setAttribute('data-is-secret', 'true')
+    }
+})
