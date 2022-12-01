@@ -67,30 +67,3 @@ a {
     }
   }
 }
-
-.bt_wrap {
-  margin: 30px auto;
-  text-align: center;
-  font-size: 0;
-  a,
-  button {
-    display: inline-block;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 2px;
-    font-size: 0.9rem;
-    background: #000;
-    color: #fff;
-    transition: all 0.4s;
-    &:first-child {
-      margin-left: 0;
-    }
-    &:hover {
-      background-color: white;
-      color: black;
-    }
-  }
-  a {
-    margin-left: 15px;
-  }
-}
