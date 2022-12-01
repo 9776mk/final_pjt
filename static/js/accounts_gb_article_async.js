@@ -56,6 +56,7 @@ function create_gb_article(form, user_pk) {
                     <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">
                   </form>
                 </div>
+
                 <div class="collapse" id="collapse-gb-comment-form-${articlePk}">
                   <!-- 답글 생성 Form -->
                   <form onsubmit="event.preventDefault(); create_gb_comment(this, '${user_pk}', '${articlePk}')">
@@ -64,6 +65,10 @@ function create_gb_article(form, user_pk) {
                       <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1" style="width: 50px; height: 40px; background-color: #f37c2c; color: white;">
                     </div>
                   </form>
+
+                  <!-- 답글 -->
+                  <div id="gb-comments-box-${articlePk}">
+                  </div>
                 </div>
               </div>
             </div>
