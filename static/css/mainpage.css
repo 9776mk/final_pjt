@@ -58,7 +58,7 @@ main .algo h1 {
 .graph .servey font {
   margin-right: 10px;
   text-align: end;
-  width: 80px;
+  width: 10%;
 }
 
 .find .lay {
@@ -84,14 +84,20 @@ main .algo h1 {
   border-radius: 5px;
   height: 26px;
   /* border: 1px solid #3498db; */
-  position: relative;
   /* box-sizing: border-box; */
+}
+
+.limitbox {
+  width: 85%;
+  display: flex;
+  position: relative;
 }
 
 .bar_frame {
   width: 0;
   background: linear-gradient(135deg, rgba(248, 168, 20, 0.704) 2%, rgba(249, 216, 140, 0.641) 98%);
   border-radius: 5px;
+  height: 26px;
 }
 
 .bar {
