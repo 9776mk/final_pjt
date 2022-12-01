@@ -27,8 +27,9 @@
   <body>
     <nav class="navbar navbar-expand-lg bg-white sticky-top">
       <div class="container-fluid">
-        <a class="navbar-brand mx-4" href="{% url "home" %}">
-          널뛰기 (로고)
+        <a class="navbar-brand ms-4" href="{% url "home" %}">
+          {% comment %} 널뛰기 {% endcomment %}
+          <img src="{% static 'images/로고.png' %}" alt="" style='width: 90px'>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -91,7 +92,6 @@
                     {% else %}
                       <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 100%; border: 2px solid #b9b9b9;" alt="">
                     {% endif %}
-                    {% comment %} <img class="profile" src={% if request.user.profile.image %}"{{ request.user.profile.image.url }}"{% else %}"https://dummyimage.com/50x50/1c46ff/ffffff&text=img"{% endif %}> {% endcomment %}
                   </div>
                 </a>
               </li>

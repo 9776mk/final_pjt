@@ -10,7 +10,20 @@
   <div class='container py-5'>
     <div class="board_view">
       <div class="title">
-        <p class='px-3'>여기에 작성자 사진이랑 정보 태그처럼 끌고오는데... 프로필에서 끌고오면 될듯</p>
+        {% if articles.user.profile.image|slugify|slice:'0:4' == 'http' %}
+        <!-- 깃허브에서 가져온 이미지: https로 시작 -->
+          <img src="{{ articles.user.profile.image }}">
+        {% elif articles.user.profile.image %}
+          <!-- 파일로 추가한 이미지 /media/ -->
+          <img src="{{ articles.user.profile.image.url }}">
+        {% else %}
+          <img src="{% static 'images/no-avatar.jpg' %}">
+        {% endif %}
+        <div class='writer_profile'>
+          <a href="{% url 'accounts:profile' articles.user.pk %}">{{ articles.user.profile.nickname }}</a>
+          <p>기술</p>
+          <p>mbti</p>
+        </div>
       </div>
       <div class="info">
         <dl class="px-3">
