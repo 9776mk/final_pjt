@@ -46,6 +46,7 @@ page = {
     29: 1,
     30: 1,
 }
+result = {}
 
 for i in range(1, 31):
     driver.refresh()
@@ -53,14 +54,13 @@ for i in range(1, 31):
     for j in range(1, int(v) + 1):
         URL = f"https://solved.ac/problems/level/{i}?page={j}"
         driver.get(url=URL)
-        if j == 1 or j == int(v) + 1:
-            driver.refresh()
+        # if j == 1 or j == int(v) + 1:
+        driver.refresh()
         driver.implicitly_wait(1)
         time.sleep(1)
 
-        count = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
-        print(f"전체 개수 : {len(count)}")
-
+        c = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
+        count = len(c)
         #         level = i
         # 문제 번호
         # 한 페이지에 최대 50문제 1~50까지
@@ -74,7 +74,8 @@ for i in range(1, 31):
             )
             for i in prob_num:
                 num_.append(i.text)
-        print(len(num_))
+        print(num_)
+        # print(len(num_))  # 번호
 
         # title
         # 첫 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[1]/td[2]/span/div/div[1]/span[1]/div/a/span
@@ -89,7 +90,7 @@ for i in range(1, 31):
                 # print(value.text)
                 title_.append(value.text)
 
-        print(len(title_))
+        # print(len(title_))
         print(title_)
 
         # 카테고리
@@ -98,36 +99,29 @@ for i in range(1, 31):
         # 마지막 : //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[50]/td[2]/span/div/div[1]/span[2]/div/button
         category_ = [[] for _ in range(count)]
 
-        for i in range(1, count + 1):
-            for_category = driver.find_elements(
-                By.XPATH,
-                '//*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[{i}]/td[i]/span/div/div[1]/span[2]/div/button',
-            )
+        tags_list = []
+        for_category = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
+        for i in for_category:
+            li = []
+            # i.click() element not interactable 에러 발생
+            i.send_keys(Keys.ENTER)
+            time.sleep(2)  # 이거 안기다리면 오류남
+            tags = driver.find_elements(By.CLASS_NAME, "css-1rqtlpb")
+            if len(tags) > 1:  # 태그 여러개
+                for t in tags:
+                    # print(t.text)
 
-            for j in for_category:
-                # i.click() element not interactable 에러 발생
-                j.send_keys(Keys.ENTER)
-                # 크롤링
-
-                for k in j:
-                    # print(i.text)
-                    category_[k].append(i.text)
-
-        # for_category = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
-        # for i in for_category:
-        #     # i.click() element not interactable 에러 발생
-        #     i.send_keys(Keys.ENTER)
-        #     # 크롤링
-
-        # category = driver.find_elements(By.CLASS_NAME, "css-18la3yb")
-        # for i in category:
-        #     # print(i.text)
-        #     category_.append(i.text)
-
-        print(category_)
-
+                    li.append(t.text)
+            else:  # 한개
+                tags = driver.find_element(By.CLASS_NAME, "css-1rqtlpb")
+                # print(tags.text)
+                li.append(tags.text)
+                # print(li)
+            tags_list.append(li)
+            i.send_keys(Keys.ENTER)
+        # print(tags_list, len(tags_list)) #잘 들어오고 50개 들어오는거 홛인했음
 
 driver.close()
 
-while True:
-    pass
+# while True:
+#     pass
