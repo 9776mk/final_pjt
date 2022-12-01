@@ -67,6 +67,7 @@ for i in range(1, 31):
         # 첫 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[5]/td[1]/div/div/div/span/a/span
         # 50 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[50]/td[1]/div/div/div/span/a/span
         num_ = []
+        url_ = []
         for k in range(1, count + 1):
             prob_num = driver.find_elements(
                 By.XPATH,
@@ -74,9 +75,19 @@ for i in range(1, 31):
             )
             for i in prob_num:
                 num_.append(i.text)
+            # url
+
+            url_set = driver.find_elements(By.CLASS_NAME, "css-q9j30p")
+            status = 0
+            for i in url_set:
+                if status % 2 == 0:
+                    url_.append(i.get_attribute("href"))
+                status += 1
+
+        print(url_)
+        print(len(url_))
         print(num_)
         # print(len(num_))  # 번호
-
         # title
         # 첫 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[1]/td[2]/span/div/div[1]/span[1]/div/a/span
         # 마지막 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[50]/td[2]/span/div/div[1]/span[1]/div/a/span
