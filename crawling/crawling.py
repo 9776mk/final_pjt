@@ -130,7 +130,7 @@ for i in range(1, 31):
                 # print(li)
             tags_list.append(li)
             i.send_keys(Keys.ENTER)
-        # print(tags_list, len(tags_list)) #잘 들어오고 50개 들어오는거 홛인했음
+        print(tags_list, len(tags_list))  # 잘 들어오고 50개 들어오는거 홛인했음
 
 driver.close()
 
