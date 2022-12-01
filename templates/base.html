@@ -71,7 +71,7 @@
             {% if request.user.is_authenticated %}
               {% comment %} 쪽지 알람 {% endcomment %}
               <li class='nav-item mx-2'>
-                <button type="button" class="btn btn-outline-primary position-relative">
+                <button type="button" class="btn btn-outline-primary position-relative" onclick="location.href='{% url 'notes:index' %}'">
                   쪽지
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     99+
