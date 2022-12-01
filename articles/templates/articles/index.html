@@ -20,14 +20,14 @@
         {% for article in articles.all %}
           <div>
             <div class="category">
-              <a href="">카테고리</a>
+              <a href="">벗삼기/찾기</a>
             </div>
             <div class="title">
               <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
             <div class="writer">
-              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a>
+              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
             </div>
             <div class="date">작성날짜</div>
           </div>
