@@ -1,52 +1,82 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% load mathfilters %}
+{% load static %}
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+{% endblock link %}
 
 {% block content %}
-  <h1>detail</h1>
-  <p>{{ articles.title }}</p>
-  <p>{{ articles.content }}</p>
-
-  <!-- 사진 -->
-  {% for image in articles.image_set.all %}
-    <img style="object-fit: cover; height: 480px;" src="{{ image.image.url }}" class="d-block mx-auto" alt="{{ image.image }}">
-    <br>
-  {% endfor %}
-
-  {% if request.user == articles.user %}
-    <form action="" method="POST">
-      {% csrf_token %}
-      <a href="{% url 'articles:delete' articles.pk %}" class="btn btn-outline-secondary">삭제</a>
-      <a href="{% url 'articles:update' articles.pk %}" class="btn btn-outline-secondary">수정</a>
-      <a href="{% url 'articles:index' %}" class="btn btn-outline-secondary">뒤로</a>
-    </form>
-  {% endif %}
-  <!-- 댓글생성 -->
-  {% if request.user.is_authenticated %}
-    <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{articles.pk}}')">
-      <!-- create_comment:함수명 -->
-      {% csrf_token %}
-      {% bootstrap_form comment_form %}
-      <input type="submit" value="글쓰기" id="content-{{ articles.pk }}">
-    </form>
-  {% else %}
-    <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">로그인</a>
-  {% endif %}
-  <!-- 댓글 목록 삭제-->
-  <div id="box">
-    {% for comment in comments.all %}
-      {% if request.user == comment.user %}
-        <div id="article-{{comment.pk}}">
-          <p>{{ comment.content }}</p>
-          <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{articles.pk}}', '{{comment.pk}}')">
-            {% csrf_token %}
-            <input type="submit" value="delete">
-          </form>
+  <div class='container py-5'>
+    <div class="board_view">
+      <div class="title">
+        <p class='px-3'>여기에 작성자 사진이랑 정보 태그처럼 끌고오는데... 프로필에서 끌고오면 될듯</p>
+      </div>
+      <div class="info">
+        <dl class="px-3">
+          <dt>제목 :</dt>
+          <dd>{{ articles.title }}</dd>
+        </dl>
+        <dl>
+          <dt>작성일</dt>
+          <dd>작성 날짜</dd>
+        </dl>
+      </div>
+      <!-- 사진 -->
+      {% for image in articles.image_set.all %}
+        <img class="d-block mx-auto board_img" src="{{ image.image.url }}" alt="{{ image.image }}">
+        <br>
+      {% endfor %}
+      <div class="cont">
+        <p class='px-3'>{{ articles.content }}</p>
+      </div>
+    </div>
+    {% if request.user == articles.user %}
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="bt_wrap">
+          <a href="{% url 'articles:delete' articles.pk %}" class="on">삭제</a>
+          <a href="{% url 'articles:update' articles.pk %}" class="on">수정</a>
+          <a href="{% url 'articles:index' %}" class="on">뒤로</a>
         </div>
-      {% endif %}
-    {% endfor %}
+      </form>
+    {% endif %}
+
+    <br>
+    <br>
+
+    <!-- 댓글생성 -->
+    {% if request.user.is_authenticated %}
+      <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{articles.pk}}')">
+        <!-- create_comment:함수명 -->
+        {% csrf_token %}
+        <div>
+          {% comment %} {% bootstrap_form comment_form %} {% endcomment %}
+          <input type="text">
+          <input type="submit" value="댓글쓰기" id="content-{{ articles.pk }}">
+        </div>
+      </form>
+    {% else %}
+      <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">로그인</a>
+    {% endif %}
+
+    <!-- 댓글 목록 삭제-->
+    <div id="box">
+      {% for comment in comments.all %}
+        {% if request.user == comment.user %}
+          <div id="article-{{comment.pk}}">
+            <p>{{ comment.content }}</p>
+            <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{articles.pk}}', '{{comment.pk}}')">
+              {% csrf_token %}
+              <input type="submit" value="delete">
+            </form>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
 {% endblock content %}
+
 {% block script %}
   <script>
     //댓글 비동기 생성
