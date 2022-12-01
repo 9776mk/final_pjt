@@ -6,7 +6,16 @@
   <h1>detail</h1>
   <p>{{ articles.title }}</p>
   <p>{{ articles.content }}</p>
-
+  <div>
+    <form class="like-froms" data-article-id="{{ articles.pk }}" method="POST">
+      {% csrf_token %}
+      {% if request.user in article.like.all %}
+        <input type="submit" value="좋아요 취소" id="like-{{ articles.pk }}">
+      {% else %}
+        <input type="submit" value="좋아요" id="like-{{ articles.pk }}">
+      {% endif %}
+    </form>
+  </div>
   <!-- 사진 -->
   {% for image in articles.image_set.all %}
     <img style="object-fit: cover; height: 480px;" src="{{ image.image.url }}" class="d-block mx-auto" alt="{{ image.image }}">
@@ -103,5 +112,39 @@
           comment.remove()
         })
     }
+
+    const form = document.querySelector('.like-froms')
+    const csrftoken = document
+      .querySelector('[name=csrfmiddlewaretoken]')
+      .value
+      form
+      .addEventListener('submit', function (event) {
+        event.preventDefault()
+        const articleId = event
+          .target
+          .dataset
+          .articleId
+          console
+          .log(form)
+        axios({
+          method: 'post',
+          url: `/articles/${articleId}/likes/`,
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        })
+          .then((response) => {
+            const isLiked = response.data.is_liked
+            const likeBtn = document.querySelector(`#like-${articleId}`)
+            if (isLiked === true) {
+              likeBtn.value = "좋아요 취소"
+            } else {
+              likeBtn.value = "좋아요"
+            }
+          })
+          .catch((error) => {
+            console.log(error.response)
+          })
+        })
   </script>
 {% endblock script %}

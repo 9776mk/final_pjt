@@ -29,7 +29,7 @@
             <div class="writer">
               <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a>
             </div>
-            <div class="date">작성날짜</div>
+            <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
           </div>
         {% endfor %}
       </div>

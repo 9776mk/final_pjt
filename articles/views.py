@@ -172,3 +172,18 @@ def comments_delete(request, comment_pk, article_pk):
             }
             return JsonResponse(data)
     return redirect("articles:detail", article_pk)
+
+def likes(request, article_pk):
+    if request.user.is_authenticated:
+        article = Article.objects.get(pk=article_pk)
+        if article.like.filter(pk=request.user.pk).exists():
+            article.like.remove(request.user)
+            is_liked = False
+        else:
+            article.like.add(request.user)
+            is_liked = True
+        data={
+            "is_liked":is_liked
+        }
+        return JsonResponse(data)
+    return redirect('accounts:login')
