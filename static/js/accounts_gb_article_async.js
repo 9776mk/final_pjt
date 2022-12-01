@@ -50,7 +50,7 @@ function create_gb_article(form, user_pk) {
 
                 <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
                 <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
-                  <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-${articlePk}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                  <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-${articlePk}" class="text-center text-muted">답글 달기</a>
                   
                   <form id="gb-article-delete-form-${articlePk}" onsubmit="event.preventDefault(); delete_gb_article(this, '${user_pk}', '${articlePk}')">
                     <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">
