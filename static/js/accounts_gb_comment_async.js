@@ -13,7 +13,12 @@ function delete_gb_comment(form, user_pk, article_pk, comment_pk) {
 
       if (response.data.total_comment_cnt === 0) {
         const commentsBox = document.querySelector(`#gb-comments-box-${article_pk}`)
-        commentsBox.classList.remove('comment-bg')
+
+        if (commentsBox.classList.contains('comment-bg')) {
+          commentsBox.classList.remove('comment-bg')
+        } else if (commentsBox.classList.contains('comment-bg-secret')) {
+          commentsBox.classList.remove('comment-bg-secret')
+        }
       }
   })
 }
@@ -35,9 +40,16 @@ function create_gb_comment(form, user_pk, article_pk) {
       const commentContent = response.data.comment_content
       const commentCreatedAt = response.data.comment_created_at
       const commentUserImage = response.data.comment_user_image
+      const articleIsSecret = response.data.article_is_secret // 방명록 글이 비밀글이면, 댓글도 비밀댓글
 
       const commentsBox = document.querySelector(`#gb-comments-box-${article_pk}`)
-      commentsBox.classList.add('comment-bg')
+      
+      if (articleIsSecret === true) {
+        commentsBox.classList.add('comment-bg-secret')
+      } else {
+        commentsBox.classList.add('comment-bg')
+      }
+      
       commentsBox.insertAdjacentHTML('beforeend', `
         <div id="comment-${commentPk}" class="mb-2">
           <div class="d-flex flex-column justify-content-between">

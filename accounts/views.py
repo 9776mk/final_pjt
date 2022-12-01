@@ -308,11 +308,13 @@ def gb_article_create(request, user_pk):
     if request.method == 'POST':
         gb_article_form = GuestbookArticleForm(request.POST)
         guestbook = get_object_or_404(Guestbook, user_id=user_pk)
+        is_secret = True if request.POST.get('is_secret') == 'true' else False
         
         if gb_article_form.is_valid():
             gb_article = gb_article_form.save(commit=False)
             gb_article.guestbook = guestbook
             gb_article.user = request.user
+            gb_article.is_secret = is_secret
             gb_article.save()
 
         # 프사 X: images/unknown1111_MLNFs1A.jpg
@@ -331,6 +333,7 @@ def gb_article_create(request, user_pk):
             'article_content': gb_article.content,
             'article_created_at': gb_article.created_at.strftime('%Y.%m.%d'),
             'article_user_image': article_user_image,
+            'article_is_secret': is_secret,
         }
 
         return JsonResponse(data)
@@ -383,6 +386,7 @@ def gb_comment_create(request, user_pk, gb_article_pk):
             'comment_content': comment.content,
             'comment_created_at': comment.created_at.strftime('%Y.%m.%d'),
             'comment_user_image': comment_user_image,
+            'article_is_secret': article.is_secret,
         }
 
         return JsonResponse(data)
