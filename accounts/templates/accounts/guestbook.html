@@ -14,7 +14,7 @@
 {% endblock link %}
 
 {% block content %}
-  <div class="container my-5 d-flex justify-content-center">
+  <div class="container py-5 d-flex justify-content-center">
     <div class="col-sm-12 col-lg-6 col-md-8 mx-3">
       <h3 class="text-center mb-5">{{ user.profile.nickname }}님의 방명록 📜</h3>
       <!-- 방명록 글 작성 Form -->
@@ -30,7 +30,7 @@
               <img src="{{ request.user.profile.image.url }}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
             {% endif %}
 
-            <textarea name="content" cols="40" rows="3" class="form-control me-2" placeholder="방명록을 남겨주세요" required id="id_content"></textarea>
+            <textarea name="content" cols="40" rows="3" wrap="hard" class="form-control me-2" placeholder="방명록을 남겨주세요" required id="id_content"></textarea>
             
             {% if request.user.is_authenticated %}
               <input type="submit" value="작성" name="gb_article_create" class="btn ms-1 follow-btn-hover color-2" style="width: 80px; height: 40px; background-color: #f37c2c; color: white;">
@@ -74,8 +74,8 @@
                 </div>
 
                 <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
-                <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
-                  <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 13px;">
+                  <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" class="text-center text-muted">답글 달기</a>
                   
                   {% if request.user == article.user %}
                     <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
@@ -156,4 +156,9 @@
 {% block script %}
   <script type="text/javascript" src="{% static 'js/accounts_gb_article_async.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/accounts_gb_comment_async.js' %}"></script>
+  <script>
+    var str = document.getElementById("textarea").value;
+    str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+    document.getElementById("text").innerHTML = str;
+  </script>
 {% endblock script %}
