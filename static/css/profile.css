@@ -1,0 +1,9 @@
+.profile-img {
+    border-radius: 70%; 
+    max-width: 200px;
+}
+
+.modal-profile-img {
+    border-radius: 70%; 
+    max-width: 50px;
+}

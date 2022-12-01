@@ -11,12 +11,12 @@
     <div>
       {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
         <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-        <img src="{{ user.profile.image }}" style="border-radius: 70%; max-width: 200px;" alt="">
+        <img src="{{ user.profile.image }}" class="profile-img" alt="">
       {% elif user.profile.image %}
         <!-- 파일로 추가한 이미지 /media/ -->
-        <img src="{{ user.profile.image.url }}" style="border-radius: 70%; max-width: 200px;" alt="">
+        <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
       {% else %}
-        <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 200px;" alt="">
+        <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
       {% endif %}
       {% comment %} <button id="emoji_btn">이모지 추가<input type="text" id="message" style="border-radius: 70%; width: 30px;" class="position-absolute top-1 start-10"></button> {% endcomment %}
     </div>
@@ -26,15 +26,15 @@
         <!-- 회원 정보 수정 & 팔로우 버튼 -->
         {% if user == request.user %}
         <a href="{% url 'accounts:profile_update' user.pk %}">
-          <input type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="프로필 수정">
+          <input type="submit" class="btn ms-3 follow-btn-hover color-2 bbtn" value="프로필 수정">
         </a>
         {% elif request.user.is_authenticated %}
           <form id="follow-form" data-user-id="{{ user.pk }}">
             {% csrf_token %}
             {% if request.user in user.followers.all %}
-              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="언팔로우">
+              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2 bbtn" value="언팔로우">
             {% else %}
-              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="팔로우">
+              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2 bbtn" value="팔로우">
             {% endif %}
           </form>
         {% endif %}
@@ -61,7 +61,7 @@
     <!-- 16진수 색상표 https://jasmintime.com/244 -->
     <!-- <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100"> -->
     {% if user.profile.github_id %}
-    <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3">
+    <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}/" class="w-100 mb-3">
     {% endif %}
     <h5>작성 글</h5>
     <h5>작성 댓글</h5>
@@ -86,12 +86,12 @@
                 <a href="{% url 'accounts:profile' follower.pk %}">
                   {% if follower.profile.image|slugify|slice:'0:4' == 'http' %}
                   <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-                  <img src="{{ follower.profile.image }}" style="border-radius: 70%; max-width: 50px;" alt="">
+                  <img src="{{ follower.profile.image }}" class="modal-profile-img" alt="">
                   {% elif follower.profile.image %}
                   <!-- 파일로 추가한 이미지 /media/ -->
-                  <img src="{{ follower.profile.image.url }}" style="border-radius: 70%; max-width: 50px;" alt="">
+                  <img src="{{ follower.profile.image.url }}" class="modal-profile-img" alt="">
                   {% else %}
-                  <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 50px;" alt="">
+                  <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
                   {% endif %}
                 </a>
               </div>
@@ -104,12 +104,14 @@
             </div>
             <div class="me-3">
               {% if request.user.is_authenticated %}
-              <form id="follow-form" data-user-id="{{ user.pk }}">
+              <form id="follow-form1" data-user-id="{{ user.pk }}">
                 {% csrf_token %}
-                {% if request.user in follower.user.followers.all %}
-                  <input id="follow-btn" type="submit" class="btn px-3" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="언팔로우">
-                {% else %}
-                  <input id="follow-btn" type="submit" class="btn px-3" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="팔로우">
+                {% if request.user != follower %}
+                  {% if request.user in follower.user.followers.all %}
+                    <input id="follow-btn1" type="submit" class="btn px-3 bbtn" value="언팔로우">
+                  {% else %}
+                    <input id="follow-btn1" type="submit" class="btn px-3 bbtn" value="팔로우">
+                  {% endif %}
                 {% endif %}
               </form>
               {% endif %}                 
@@ -137,12 +139,12 @@
                 <a href="{% url 'accounts:profile' following.pk %}">
                   {% if following.profile.image|slugify|slice:'0:4' == 'http' %}
                   <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-                  <img src="{{ following.profile.image }}" style="border-radius: 70%; max-width: 50px;" alt="">
+                  <img src="{{ following.profile.image }}" class="modal-profile-img" alt="">
                   {% elif following.profile.image %}
                   <!-- 파일로 추가한 이미지 /media/ -->
-                  <img src="{{ following.profile.image.url }}" style="border-radius: 70%; max-width: 50px;" alt="">
+                  <img src="{{ following.profile.image.url }}" class="modal-profile-img" alt="">
                   {% else %}
-                  <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 50px;" alt="">
+                  <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
                   {% endif %}
                 </a>
               </div>
@@ -155,15 +157,17 @@
             </div>
             <div class="me-3">
               {% if request.user.is_authenticated %}
-              <form id="follow-form" data-user-id="{{ user.pk }}">
+              <form id="follow-form2" data-user-id="{{ user.pk }}">
                 {% csrf_token %}
-                {% if request.user in following.followers.all %}
-                  <input id="follow-btn" type="submit" class="btn px-3" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="언팔로우">
-                {% else %}
-                  <input id="follow-btn" type="submit" class="btn px-3" style="width: 100%; height: 40px; background-color: #f37c2c; color: white;" value="팔로우">
+                {% if request.user != following %}
+                  {% if request.user in following.followers.all %}
+                    <input id="follow-btn2" type="submit" class="btn px-3 bbtn" value="언팔로우">
+                  {% else %}
+                    <input id="follow-btn2" type="submit" class="btn px-3 bbtn" value="팔로우">
+                  {% endif %}
                 {% endif %}
               </form>
-              {% endif %}                 
+              {% endif %}
             </div>
           </div>
           {% endfor %}

@@ -311,3 +311,24 @@ a:hover {
 	margin-left: -13px;
     
 }
+
+.bbtn {
+    width: 100%; 
+    height: 40px; 
+    background-color: #FF8E00; 
+    color: white;
+}
+
+.bbtn:hover {
+    width: 100%; 
+    height: 40px; 
+    background-color: #FF8E00; 
+    color: white;
+}
+
+.bbtn:active {
+    width: 100%; 
+    height: 40px; 
+    background-color: #ff8e00; 
+    color: white;
+}
