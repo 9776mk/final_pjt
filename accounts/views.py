@@ -370,11 +370,19 @@ def gb_comment_create(request, user_pk, gb_article_pk):
             comment.user = request.user
             comment.save()
 
+        if not comment.user.profile.image:
+            comment_user_image = '/static/images/no-avatar.jpg'
+        elif str(comment.user.profile.image)[:4] == 'http':
+            comment_user_image = str(comment.user.profile.image)
+        else:
+            comment_user_image = str(comment.user.profile.image.url)
+        
         data = {
             'comment_pk': comment.pk,
             'comment_user': comment.user.profile.nickname,   # username?
             'comment_content': comment.content,
             'comment_created_at': comment.created_at.strftime('%Y.%m.%d'),
+            'comment_user_image': comment_user_image,
         }
 
         return JsonResponse(data)
@@ -386,15 +394,16 @@ def gb_comment_create(request, user_pk, gb_article_pk):
 @login_required
 def gb_comment_delete(request, user_pk, gb_article_pk, gb_comment_pk):
     gb_comment = get_object_or_404(GuestbookComment, pk=gb_comment_pk)
-
-    is_deleted = False
+    gb_article = get_object_or_404(GuestbookArticle, pk=gb_article_pk)
 
     if request.user == gb_comment.user and request.method == 'POST':
         gb_comment.delete()
-        is_deleted = True
+
+    # 방명록 글에 작성된 답글의 개수
+    total_comment_cnt = gb_article.guestbookcomment_set.count()
 
     data = {
-        'is_deleted': is_deleted,
+        'total_comment_cnt': total_comment_cnt,
     }
 
     return JsonResponse(data)

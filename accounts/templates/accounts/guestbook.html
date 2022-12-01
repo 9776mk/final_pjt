@@ -2,6 +2,17 @@
 {% load static %}
 {% load widget_tweaks %}
 
+{% block link %}
+  <style>
+    .comment-bg {
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      padding: 13px 13px 5px 13px; 
+      margin-top: 10px;
+    }
+  </style>
+{% endblock link %}
+
 {% block content %}
   <div class="container my-5 d-flex justify-content-center">
     <div class="col-sm-12 col-lg-6 col-md-8 mx-3">
@@ -73,6 +84,7 @@
                     </form>
                   {% endif %}
                 </div>
+                
                 <div class="collapse" id="collapse-gb-comment-form-{{ article.pk }}">
                   <!-- 답글 생성 Form -->
                   {% if request.user.is_authenticated %}
@@ -85,10 +97,9 @@
                       </div>
                     </form>
                   {% endif %}
-                </div>
-                <!-- 답글 -->
-                {% if article.guestbookcomment_set.all|length != 0 %}
-                  <div id="gb-comments-box-{{ article.pk }}" style="background-color: #f1f1f1; border-radius: 5px; padding: 13px 13px 5px 13px; margin-top: 10px;">
+
+                  <!-- 답글 -->
+                  <div id="gb-comments-box-{{ article.pk }}" class="{% if article.guestbookcomment_set.all|length != 0 %}comment-bg{% endif %}">
                     {% for comment in gb_comments %}
                       {% if comment.article == article %}
                         <div id="comment-{{ comment.pk }}" class="mb-2">
@@ -132,7 +143,7 @@
                       {% endif %}
                     {% endfor %}
                   </div>
-                {% endif %}
+                </div>
               </div>
             </div>
           </div>
