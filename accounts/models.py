@@ -22,18 +22,18 @@ class User(AbstractUser):
         verbose_name="아이디",
     )
     # 선택 항목 필드
-    name = models.CharField(max_length=20, null=True, blank=True)
-    nickname = models.CharField(max_length=20, null=True, blank=True)
-    profile_picture = ProcessedImageField(
-        upload_to="profile_pictures/",
-        null=True,
-        blank=True,
-        processors=[ResizeToFill(512, 512)],
-        format="JPEG",
-        options={
-            "quality": 80,
-        },
-    )
+    # name = models.CharField(max_length=20, null=True, blank=True)
+    # nickname = models.CharField(max_length=20, null=True, blank=True)
+    # profile_picture = ProcessedImageField(
+    #     upload_to="profile_pictures/",
+    #     null=True,
+    #     blank=True,
+    #     processors=[ResizeToFill(512, 512)],
+    #     format="JPEG",
+    #     options={
+    #         "quality": 80,
+    #     },
+    # )
     # 소셜 아이디 관련 필드
     is_social_account = models.BooleanField(default=False)
     git_id = models.CharField(null=True, blank=True, max_length=50)
@@ -78,7 +78,7 @@ class Profile(models.Model):
         ("MySQL", "MySQL"),
         ("SQLite", "SQLite"),
     )
-    stack = MultiSelectField(choices=STACK)
+    stack = MultiSelectField(blank=True, choices=STACK)
 
     # MBTI 유형 선택
     MBTI_CHOICE = (
