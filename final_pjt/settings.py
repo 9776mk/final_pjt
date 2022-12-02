@@ -34,7 +34,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 CUSTOM_APPS = [
-    "notes",#쪽지
+    "algorithm",
+    "notes",  # 쪽지
     "accounts",
     "articles",
     "django_bootstrap5",
