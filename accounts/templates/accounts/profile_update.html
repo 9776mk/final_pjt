@@ -3,13 +3,13 @@
 
 {% block content %}
   <div class="container py-5 d-flex justify-content-center">
-    <div class="col-6">
+    <div class="col-sm-12 col-lg-6 col-md-8">
       <h1 class="text-center">회원 정보 수정</h1>
       <form action="{% url 'accounts:profile_update' user.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form profile_form %}
-        <div class="text-end">
-          <input type="submit" value="수정" class="btn bbtn">
+        <div class="mt-1">
+          <input type="submit" value="완료" class="bbtn">
         </div>
       </form>
     </div>
