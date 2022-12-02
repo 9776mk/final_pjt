@@ -1,23 +1,49 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+
 {% block content%}
-  <img src="" alt="">
-  <div class="container fs-5 mt-4">
-    <div id="main_in" class="d-flex justify-content-center">
-      <table class="list-table">
-        <thead>
-          <th class="fs-2 fw-bold">받은 편지함</th>
-          <tr>
-            <th width="150" class="tl">보낸사람</th>
-            <th width="400" class="tl">제목</th>
-            <th width="200" class="tc">날짜</th>
-            <th width="100" class="tc">읽음</th>
-            <th width="100" class="tc">삭제</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for note in notes %}
-            {% if note.read == 1 %}
+  <div class="container mt-5">
+    <div id="main_in" class="row">
+      <div class="col-3">
+        <table class="table bg-white">
+          <thead>
+            <tr>
+              <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:sent' %}">보낸 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">중요 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">휴지통</a></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% if request.resolver_match.url_name == 'index' %}
+      <div class="col-9">
+        <table class="table bg-white">
+          <thead>
+            <th class="fw-bold">받은 쪽지함</th>
+            <tr>
+              <th scope="col">보낸 사람</th>
+              <th scope="col">제목</th>
+              <th scope="col">받은 시간</th>
+              <th scope="col">읽음</th>
+              <th scope="col">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for note in notes %}
+              <!-- 쪽지 읽음 일때 -->
+              {% if note.read == 1 %}
               <tr class="text-muted" id="{{note.pk}}">
                 <td>
                   {% if note.from_user.nickname %}
@@ -26,30 +52,21 @@
                     {{ note.from_user.username }}
                   {% endif %}
                 </td>
-                <!---보낸이 -->
-                <td>
-                  <a class="text-muted" style="text-decoration:none;" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a>
-                </td>
-                <!---제목 -->
-                <td class="tc">{{ note.created_at|date:'o.m.d' }}
-                  {{ note.created_at|time:"H:i" }}</td>
-                <!---보낸시간 -->
+                <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
                 {% if note.read == 1 %}
-                  <td>읽음</td>
-                  <!---읽음 -->
+                <td>읽음</td>
                 {% else %}
-                  <td>안읽음</td>
-                  <!---읽음 -->
+                <td>안읽음</td>
                 {% endif %}
-                <td class="tc">
-                  {% csrf_token %}
-                  <button id="custom-btn" style="background-color:transparent;">
-                    <i xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-trash3" viewbox="0 0 16 16" data-note-id="{{note.pk}}" value="{{note.pk}}" onclick="remove(event)"></i>
-                  </button>
+                <td>
+                  <a href="{% url 'notes:delete' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                  </svg></a>
                 </td>
-                <!---삭제 -->
               </tr>
-            {% else %}
+              {% else %}
+              <!-- 쪽지 안읽음 일때-->
               <tr id="{{note.pk}}">
                 <td>
                   {% if note.from_user.nickname %}
@@ -58,114 +75,116 @@
                     {{note.from_user.username}}
                   {% endif %}
                 </td>
-                <!---보낸이 -->
-                <td>
-                  <a class="custom-link" style="text-decoration:none; color:black;" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a>
-                </td>
-                <!---제목 -->
-                <td class="tc">{{ note.created_at|date:'o.m.d' }}
-                  {{ note.created_at|time:"H:i" }}</td>
-                <!---보낸시간 -->
+                <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
                 {% if note.read == 1 %}
-                  <td>읽음</td>
-                  <!---읽음 -->
+                <td>읽음</td>
                 {% else %}
-                  <td>안읽음</td>
-                  <!---읽음 -->
+                <td>안읽음</td>
                 {% endif %}
-                <td class="tc"></td>
-                <!---삭제 -->
+                <td>
+                  <a href="{% url 'notes:delete' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                  </svg></a>
+                </td>
               </tr>
-            {% endif %}
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <hr/>
-  <div class="container fs-5 mt-4">
-
-    <div id="main_in" class="d-flex justify-content-center">
-      <table class="list-table">
-        <thead>
-          <th class="fs-2 fw-bold">보낸 편지함</th>
-          <th>
-            <span class="fs-6 text-muted p-2">상대방이 읽으면 읽음처리 됩니다.</span></th>
-          <tr>
-            <th width="150" class="tl">받는사람</th>
-            <th width="400" class="tl">제목</th>
-            <th width="200" class="tc">날짜</th>
-            <th width="100" class="tc">읽음</th>
-            <th width="100" class="tc"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for note in to_notes %}
-            <div id="{{note.pk}}">
-              {% if note.read == 1 %}
-                <tr class="text-muted">
-                  <td>
-                    {% if note.to_user.username %}
-                      {{note.to_user.username}}
-                    {% else %}
-                      {{note.to_user.username}}
-                    {% endif %}
-                  </td>
-                  <!---보낸이 -->
-                  <td>
-                    <a class="text-muted" style="text-decoration:none;" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a>
-                  </td>
-                  <!---제목 -->
-                  <td class="tc">{{ note.created_at|date:'o.m.d' }}
-                    {{ note.created_at|time:"H:i" }}</td>
-                  <!---보낸시간 -->
-                  {% if note.read == 1 %}
-                    <td>읽음</td>
-                    <!---읽음 -->
-                  {% else %}
-                    <td>안읽음</td>
-                    <!---읽음 -->
-                  {% endif %}
-                  <td class="tc">
-                    {% csrf_token %}
-                    <button id="custom-btn" style="background-color:transparent;" onclick="location.href='{% url 'notes:delete' note.pk %}'"></button>
-                  </td>
-                  <!---삭제 -->
-                </tr>
-              {% else %}
-                <tr>
-                  <td>
-                    {% if note.to_user.username %}
-                      {{note.to_user.username}}
-                    {% else %}
-                      {{note.to_user.username}}
-                    {% endif %}
-                  </td>
-                  <!---내가 보낸 -->
-                  <td>
-                    <a class=" custom-link" style=" text-decoration:none;=" text-decoration:none;" color:black;"="text-decoration:none;" color:black;""="color:black;" "" href=" {% url 'notes:detail' note.pk %} ">{{ note.title }}</a>
-                  </td>
-                  <!---제목 -->
-                  <td class="tc">{{ note.created_at|date:'o.m.d' }}
-                    {{ note.created_at|time:"H:i" }}</td>
-                  <!---보낸시간 -->
-                  {% if note.read == 1 %}
-                    <td>읽음</td>
-                    <!---읽음 -->
-                  {% else %}
-                    <td>안읽음</td>
-                    <!---읽음 -->
-                  {% endif %}
-                  <td class="tc"></td>
-                  <!---삭제 -->
-                </tr>
               {% endif %}
-            </div>
-          {% endfor %}
-        </tbody>
-      </table>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% elif request.resolver_match.url_name == 'sent' %}
+      <div class="col-9">
+        <table class="table bg-white">
+          <thead>
+            <th class="fw-bold">보낸 쪽지함</th>
+            <tr>
+              <th scope="col">받는 사람</th>
+              <th scope="col">제목</th>
+              <th scope="col">받은 시간</th>
+              <th scope="col">읽음</th>
+              <th scope="col">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for note in to_notes %}
+              <!-- 쪽지 읽음 일때 -->
+              {% if note.read == 1 %}
+              <tr class="text-muted" id="{{note.pk}}">
+                <td>
+                  {% if note.to_user.nickname %}
+                    {{ note.to_user.nickname }}
+                  {% else %}
+                    {{ note.to_user.username }}
+                  {% endif %}
+                </td>
+                <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                {% if note.read == 1 %}
+                <td>읽음</td>
+                {% else %}
+                <td>안읽음</td>
+                {% endif %}
+                <td>
+                  <a href="{% url 'notes:delete' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                  </svg></a>
+                </td>
+              </tr>
+              {% else %}
+              <!-- 쪽지 안읽음 일때-->
+              <tr id="{{note.pk}}">
+                <td>
+                  {% if note.from_user.nickname %}
+                    {{note.from_user.nickname}}
+                  {% else %}
+                    {{note.from_user.username}}
+                  {% endif %}
+                </td>
+                <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                {% if note.read == 1 %}
+                <td>읽음</td>
+                {% else %}
+                <td>안읽음</td>
+                {% endif %}
+                <td>
+                  <a href="{% url 'notes:delete' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                  </svg></a>
+                </td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
     </div>
   </div>
 {% endblock content %}
-{% block script %}{% endblock script %}
+
+{% block script %}
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  function remove(event) {
+  console.log(event.target.dataset.noteId)
+  var delete_warning = confirm('쪽지를 삭제하시겠습니까?')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  if (delete_warning == true) {
+    axios({
+      method: 'post',
+      url: `/notes/${event.target.dataset.noteId}/delete/`,
+      headers: {'X-CSRFToken': csrftoken},
+      data: {'note_pk': event.target.dataset.noteId},
+    })
+    .then(response => {
+      const resdata = response.data.pk
+      const div = document.getElementById(resdata)
+      console.log(div)
+      div.remove()
+    })
+  }
+}
+</script> {% endcomment %}
+{% endblock script %}
