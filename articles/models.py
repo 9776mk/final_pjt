@@ -11,7 +11,7 @@ class Article(models.Model):
     # image = ProcessedImageField()
     create_at = models.DateTimeField(auto_now_add=True)
     like = models.ManyToManyField(User, blank=True ,related_name="article_like")
-
+    hits = models.PositiveIntegerField(default=0, verbose_name='조회수')
 # Article의 이미지
 class Image(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)

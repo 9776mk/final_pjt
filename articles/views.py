@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from accounts.models import Profile
 
+from datetime import date, datetime, timedelta
+
 # Create your views here.
 
 
@@ -87,7 +89,21 @@ def detail(request, pk):
         "comments": articles.articlecomment_set.all(),
         "comment_form": comment_form,
     }
-    return render(request, "articles/detail.html", context)
+    response = render(request, "articles/detail.html", context)
+    expire_date, now = datetime.now(), datetime.now()
+    expire_date += timedelta(days=1)
+    expire_date = expire_date.replace(hour=0, minute=0, second=0, microsecond=0)
+    expire_date -= now
+    max_age = expire_date.total_seconds()
+    cookie_value = request.COOKIES.get('hitboard', '_')
+
+    if f'_{pk}_' not in cookie_value:
+        cookie_value += f'{pk}_'
+        response.set_cookie('hitboard', value=cookie_value, max_age=max_age, httponly=True)
+        articles.hits += 1
+        articles.save()
+    return response
+
 
 
 @login_required
