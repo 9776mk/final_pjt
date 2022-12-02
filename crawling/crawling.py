@@ -2,13 +2,14 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-import time
+import time, os, json
 from selenium.webdriver.common.keys import Keys
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+## python파일의 위치
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# driver.get("https://solved.ac/problems/level/1?page=1")
-# driver.refresh()
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 # options = webdriver.ChromeOptions()
 # options.add_experimental_option("excludeSwitches", ["enable-logging"])
@@ -52,7 +53,10 @@ for i in range(1, 31):
     driver.refresh()
     v = page[i]
     for j in range(1, int(v) + 1):
-        URL = f"https://solved.ac/problems/level/{i}?page={j}"
+        level_ = i
+        page_ = j
+        print(f"{level_}레벨 {page_}페이지 시작")
+        URL = f"https://solved.ac/problems/level/{level_}?page={page_}"
         driver.get(url=URL)
         # if j == 1 or j == int(v) + 1:
         driver.refresh()
@@ -69,84 +73,50 @@ for i in range(1, 31):
         # 50 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[50]/td[1]/div/div/div/span/a/span
 
         num_ = []
-        url_ = []
+        # url_ = []
         for k in range(1, count + 1):
             prob_num = driver.find_elements(
                 By.XPATH,
                 f'//*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[{k}]/td[1]/div/div/div/span/a/span',
             )
-            for i in prob_num:
-                num_.append(i.text)
-            # url
+            for m in prob_num:
+                num_.append(m.text)
+        # print(num_)
+        #     # url
 
-            url_set = driver.find_elements(By.CLASS_NAME, "css-q9j30p")
-            status = 0
-            for i in url_set:
-                if status % 2 == 0:
-                    url_.append(i.get_attribute("href"))
-                status += 1
+        #     url_set = driver.find_elements(By.CLASS_NAME, "css-q9j30p")
+        #     status = 0
+        #     for i in url_set:
+        #         if status % 2 == 0:
+        #             url_.append(i.get_attribute("href"))
+        #         status += 1
 
-        print(url_)
-        print(len(url_))
-        print(num_)
+        # print(url_)
+        # print(len(url_))
+        # print(num_)
         # print(len(num_))  # 번호
         # title
         # 첫 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[1]/td[2]/span/div/div[1]/span[1]/div/a/span
         # 마지막 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[50]/td[2]/span/div/div[1]/span[1]/div/a/span
         title_ = []
-        for i in range(1, count + 1):
+        for m in range(1, count + 1):
             title = driver.find_elements(
                 By.XPATH,
-                f'//*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[{i}]/td[2]/span/div/div[1]/span[1]/div/a/span',
+                f'//*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[{m}]/td[2]/span/div/div[1]/span[1]/div/a/span',
             )
             for value in title:
                 # print(value.text)
                 title_.append(value.text)
 
         # print(len(title_))
-        print(title_)
-
-        # 카테고리
-        # 클릭해서 전부 열기
-        # for_category = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
-        # for i in for_category:
-        #     # i.click() element not interactable 에러 발생
-        #     i.send_keys(Keys.ENTER)
-        #     # 크롤링
-        # ==================================================================== #
-
-        # 태그 열기 위한 버튼 클릭
-        # for k in range(1, count + 1):
-        #     abc = driver.find_elements(
-        #         By.XPATH,
-        #         f'//*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[{k}]/td[2]/span/div/div[1]/span[2]/div/button',
-        #     )
-        #     abc.send_keys(Keys.Enter)
-
-        #     # 버튼 클릭 후
-        #     category_ = [[] for _ in range(count)]
-        #     category = driver.find_elements(By.CLASS_NAME, "css-18la3yb")
-        #     for i in category:
-        #         category_[k].append(i.text)
-        #         print(category_)
-
-        # category_ = [[] for _ in range(count)]
-        # category = driver.find_elements(By.CLASS_NAME, "css-18la3yb")
-        # for i in category:
-        #     # print(i.text)
-        #     category_.append(i.text)
-        # print(category_)
-
-        # 처음 : //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[1]/td[2]/span/div/div[1]/span[2]/div/button
-        # 마지막 : //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[50]/td[2]/span/div/div[1]/span[2]/div/button
-        category_ = [[] for _ in range(count)]
+        # print(title_)
 
         tags_list = []
         for_category = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
-        for i in for_category:
+        for n in for_category:
             li = []
             # i.click() element not interactable 에러 발생
-            i.send_keys(Keys.ENTER)
+            n.send_keys(Keys.ENTER)
             time.sleep(2)  # 이거 안기다리면 오류남
             tags = driver.find_elements(By.CLASS_NAME, "css-1rqtlpb")
             if len(tags) > 1:  # 태그 여러개
@@ -160,8 +130,22 @@ for i in range(1, 31):
                 li.append(tags.text)
                 # print(li)
             tags_list.append(li)
-            i.send_keys(Keys.ENTER)
-        print(tags_list, len(tags_list))  # 잘 들어오고 50개 들어오는거 홛인했음
+            n.send_keys(Keys.ENTER)
+        # print(tags_list, len(tags_list))  # 잘 들어오고 50개 들어오는거 홛인했음
+
+        info = {}
+        info[num_] = num_
+        info[title_] = title_
+        info[tags_list] = tags_list
+
+        with open(
+            os.path.join(BASE_DIR, "crawling_1_url.json"), "w+", encoding="UTF-8"
+        ) as json_file:
+            json.dump(info, json_file, ensure_ascii=False, indent=2)
+
+        for nu in range(1, count + 1):
+            print(num_[nu], title_[nu], tags_list[nu])
+
 
 driver.close()
 
