@@ -5,6 +5,19 @@ from selenium.webdriver.common.by import By
 import time, os, json
 from selenium.webdriver.common.keys import Keys
 
+# 데이터 저장용
+import os
+
+## Python이 실행될 때 DJANGO_SETTINGS_MODULE이라는 환경 변수에 현재 프로젝트의 settings.py파일 경로를 등록
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "final_pjt.settings")
+## 프로젝트를 사용할 수 있도록 환경 생성
+import django
+
+django.setup()
+
+from algorithm.models import BJData
+
+
 ## python파일의 위치
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -48,6 +61,7 @@ page = {
     30: 1,
 }
 result = {}
+temp = {}
 
 for i in range(1, 31):
     driver.refresh()
@@ -79,8 +93,8 @@ for i in range(1, 31):
                 By.XPATH,
                 f'//*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[{k}]/td[1]/div/div/div/span/a/span',
             )
-            for m in prob_num:
-                num_.append(m.text)
+            for number in prob_num:
+                num_.append(number.text)
         # print(num_)
         #     # url
 
@@ -122,7 +136,6 @@ for i in range(1, 31):
             if len(tags) > 1:  # 태그 여러개
                 for t in tags:
                     # print(t.text)
-
                     li.append(t.text)
             else:  # 한개
                 tags = driver.find_element(By.CLASS_NAME, "css-1rqtlpb")
@@ -133,18 +146,25 @@ for i in range(1, 31):
             n.send_keys(Keys.ENTER)
         # print(tags_list, len(tags_list))  # 잘 들어오고 50개 들어오는거 홛인했음
 
-        info = {}
-        info[num_] = num_
-        info[title_] = title_
-        info[tags_list] = tags_list
+        # json_file => 백준 : {문제번호 : ~, 제목: ~, 태그: ~}
+
+        temp["number"] = num_
+        temp["title"] = title_
+        temp["tags"] = tags_list
+        result[level_] = temp
 
         with open(
-            os.path.join(BASE_DIR, "crawling_1_url.json"), "w+", encoding="UTF-8"
+            os.path.join(BASE_DIR, "problems.json"), "w+", encoding="UTF-8"
         ) as json_file:
-            json.dump(info, json_file, ensure_ascii=False, indent=2)
+            json.dump(result, json_file, ensure_ascii=False, indent=2)
 
-        for nu in range(1, count + 1):
-            print(num_[nu], title_[nu], tags_list[nu])
+        if __name__ == "__main__":
+            bj_data_dict = result
+            for le, n, ti, ta in bj_data_dict.items():
+                BJData(level=le, number=n, title=ti, tags=ta).save()
+
+        # for nu in range(count):
+        #     print(num_[nu], title_[nu], tags_list[nu])
 
 
 driver.close()
