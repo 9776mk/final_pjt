@@ -79,7 +79,7 @@ def create(request):
     return render(request, "articles/create.html", context)
 
 
-@login_required
+
 def detail(request, pk):
     articles = Article.objects.get(pk=pk)
     comment_form = ArticleCommentForm()
