@@ -1,7 +1,44 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+
 {% block content%}
-  <p>{{ note.to_user }}</p>
-  <p>{{ note.title }}</p>
-  <p>{{ note.content }}</p>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-3">
+        <table class="table bg-white">
+          <thead>
+            <tr>
+              <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:sent' %}">보낸 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">중요 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">휴지통</a></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-9">
+        <h5 class="mb-3">보낸 사람 : 
+          {% if note.from_user.nickname %}
+          {{ note.from_user.nickname }}
+          {% else %}
+          {{ note.from_user.username }}
+          {% endif %}
+        </h5>
+        <h5 class="mb-3">받은 시간 : {{ note.created_at|date:'y년 m월 d일 H시 m분' }}</h5>
+        <h5 class="mb-3">제목 : {{ note.title }}</h5>
+        <h5 class="mb-3">내용 : {{ note.content }}</h5>
+      </div>
+    </div>
+  </div>
 {% endblock %}

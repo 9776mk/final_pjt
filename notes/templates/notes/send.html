@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% block content%}
-  <form action="{% url 'notes:send' %}" method="POST">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    <input type="submit">
-  </form>
+  <div class="container d-flex justify-content-center p-5">
+    <div class="col-sm-12 col-md-6" style="max-width: 450px;">
+      <h1 class="text-center mb-3">쪽지 보내기✉️</h1>
+      <form action="{% url 'notes:send' %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div class="d-flex justify-content-center">
+          <input type="submit" class="bbtn">
+        </div>
+      </form>
+    </div>
+  </div>
+
 {% endblock %}
