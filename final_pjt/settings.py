@@ -38,6 +38,7 @@ CUSTOM_APPS = [
     "notes",  # 쪽지
     "accounts",
     "articles",
+    "surveys",
     "django_bootstrap5",
     "django_extensions",
     "imagekit",
