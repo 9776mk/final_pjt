@@ -366,11 +366,17 @@ def gb_comment_create(request, user_pk, gb_article_pk):
         article = get_object_or_404(GuestbookArticle, pk=gb_article_pk)
         guestbook = get_object_or_404(Guestbook, user_id=user_pk)
         
+        if request.POST.get('is_secret') == 'true' or article.is_secret == True:
+            is_secret = True
+        else:
+            is_secret = False
+        
         if gb_comment_form.is_valid():
             comment = gb_comment_form.save(commit=False)
             comment.guestbook = guestbook
             comment.article = article
             comment.user = request.user
+            comment.is_secret = is_secret
             comment.save()
 
         if not comment.user.profile.image:
@@ -387,6 +393,7 @@ def gb_comment_create(request, user_pk, gb_article_pk):
             'comment_created_at': comment.created_at.strftime('%Y.%m.%d'),
             'comment_user_image': comment_user_image,
             'article_is_secret': article.is_secret,
+            'comment_is_secret': is_secret,
         }
 
         return JsonResponse(data)

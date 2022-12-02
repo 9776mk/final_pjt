@@ -318,21 +318,21 @@ a:hover {
     height: 40px; 
     background-color: #FF8E00; 
     color: white;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 7px;
+    border: 0;
+    outline: 0;
+    transition: all 0.2s ;
 }
 
 .bbtn:hover {
     width: 100%; 
     height: 40px; 
-    background-color: #FF8E00; 
+    background-color: #ff7b00; 
     color: white;
 }
 
-.bbtn:active {
-    width: 100%; 
-    height: 40px; 
-    background-color: #ff8e00; 
-    color: white;
-}
 
 /* 게시판 버튼 */
 .bt_wrap {

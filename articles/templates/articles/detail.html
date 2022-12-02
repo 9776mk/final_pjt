@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
 {% endblock link %}
 
-{% block content %}  
+{% block content %} 
   <div class='container py-5'>
     <div class="board_view">
       <!-- 작성자 -->
@@ -82,7 +82,8 @@
         {% endif %}
       </form>
     </div>
-
+    <p>조회수:{{ articles.hits }}</p>
+    
     <!-- 댓글생성 -->
     {% if request.user.is_authenticated %}
       <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{articles.pk}}')">

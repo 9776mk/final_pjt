@@ -6,6 +6,7 @@ from imagekit.processors import Thumbnail
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from imagekit.processors import ResizeToFill
+from multiselectfield import MultiSelectField
 
 # Create your models here.
 class User(AbstractUser):
@@ -42,8 +43,8 @@ class User(AbstractUser):
     social_profile_picture = models.CharField(null=True, blank=True, max_length=150)
     # 인증 필드
     token = models.CharField(max_length=150, null=True, blank=True)
-    notice_note = models.BooleanField(default=True)#쪽지
-    note_notice = models.BooleanField(default=True)#쪽지
+    notice_note = models.BooleanField(default=True)  # 쪽지
+    note_notice = models.BooleanField(default=True)  # 쪽지
 
 
 class Profile(models.Model):
@@ -66,6 +67,15 @@ class Profile(models.Model):
         ("Java", "Java"),
     )
     language = models.CharField(blank=True, max_length=10, choices=LANGUAGE_CHOICE)
+    STACK = (
+        ("Django", "Django"),
+        ("Spring", "Spring"),
+        ("Node.js", "Node.js"),
+        ("React", "React"),
+        ("MySQL", "MySQL"),
+        ("SQLite", "SQLite"),
+    )
+    stack = MultiSelectField(choices=STACK)
 
     # MBTI 유형 선택
     MBTI_CHOICE = (
