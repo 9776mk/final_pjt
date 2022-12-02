@@ -62,9 +62,12 @@ class Profile(models.Model):
     # 프로그래밍 언어 선택
     # 앞: DB에 저장되는 값, 뒤: admin이나 form에서 표시하는 값
     LANGUAGE_CHOICE = (
-        ("C", "C"),
-        ("Python", "Python"),
+        ("JavaScript", "JavaScript"),
         ("Java", "Java"),
+        ("Python", "Python"),
+        ("C", "C"),
+        ("C++", "C++"),
+        ("PHP", "PHP"),
     )
     language = models.CharField(blank=True, max_length=10, choices=LANGUAGE_CHOICE)
     STACK = (
