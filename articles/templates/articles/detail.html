@@ -6,69 +6,84 @@
   <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
 {% endblock link %}
 
-{% block content %}
-  <!-- 좋아요 버튼 -->
- <div>
-    <form class="like-froms" data-article-id="{{ articles.pk }}" method="POST">
-      {% csrf_token %}
-      {% if request.user in article.like.all %}
-        <input type="submit" value="좋아요 취소" id="like-{{ articles.pk }}">
-      {% else %}
-        <input type="submit" value="좋아요" id="like-{{ articles.pk }}">
-      {% endif %}
-    </form>
-  </div>
-  <p>조회수:{{ articles.hits }}</p>
+{% block content %} 
   <div class='container py-5'>
     <div class="board_view">
-      <div class="title">
-        {% if articles.user.profile.image|slugify|slice:'0:4' == 'http' %}
-        <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-          <img src="{{ articles.user.profile.image }}">
-        {% elif articles.user.profile.image %}
-          <!-- 파일로 추가한 이미지 /media/ -->
-          <img src="{{ articles.user.profile.image.url }}">
-        {% else %}
-          <img src="{% static 'images/no-avatar.jpg' %}">
-        {% endif %}
+      <!-- 작성자 -->
+      <div class="writer">
         <div class='writer_profile'>
-          <a href="{% url 'accounts:profile' articles.user.pk %}">{{ articles.user.profile.nickname }}</a>
-          <p>기술</p>
-          <p>mbti</p>
+          <a class='d-flex' href="{% url 'accounts:profile' articles.user.pk %}">
+            {% if articles.user.profile.image|slugify|slice:'0:4' == 'http' %}
+            <!-- 깃허브에서 가져온 이미지: https로 시작 -->
+              <img class='writer_img' src="{{ articles.user.profile.image }}">
+            {% elif articles.user.profile.image %}
+              <!-- 파일로 추가한 이미지 /media/ -->
+              <img class='writer_img' src="{{ articles.user.profile.image.url }}">
+            {% else %}
+              <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
+            {% endif %}
+            <div d-flex>
+              <div class='my-1' style='width: auto'>{{ articles.user.profile.nickname }}</div>
+              <div>
+                {% if articles.user.profile.language == 'Python' %}
+                  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff">
+                {% elif articles.user.profile.language == 'Java' %}
+                  <img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white">
+                {% elif articles.user.profile.language == 'C' %}
+                  <img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white">
+                {% endif %}
+              </div>
+            </div>
+          </a>
         </div>
       </div>
+
+      <!-- 제목 작성일 -->
       <div class="info">
-        <dl class="px-3">
-          <dt>제목 :</dt>
-          <dd>{{ articles.title }}</dd>
-        </dl>
-        <dl>
-          <dt>작성일</dt>
-          <dd>작성 날짜</dd>
-        </dl>
+        <div class='title'>{{ articles.title }}</div>
+        <p>2021.4.23</p>
       </div>
+
       <!-- 사진 -->
       {% for image in articles.image_set.all %}
         <img class="d-block mx-auto board_img" src="{{ image.image.url }}" alt="{{ image.image }}">
-        <br>
       {% endfor %}
+
+      <!-- 내용 -->
       <div class="cont">
-        <p class='px-3'>{{ articles.content }}</p>
+        {{ articles.content }}
+      </div>
+
+      <!-- 삭제, 수정, 뒤로가기 버튼들 -->
+      <div>
+        {% if request.user == articles.user %}
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="bt_wrap pb-5">
+              <a href="{% url 'articles:delete' articles.pk %}" class="on">삭제</a>
+              <a href="{% url 'articles:update' articles.pk %}" class="on">수정</a>
+              <a href="{% url 'articles:index' %}" class="on">뒤로</a>
+            </div>
+          </form>
+        {% endif %}
       </div>
     </div>
-    {% if request.user == articles.user %}
-      <form action="" method="POST">
-        {% csrf_token %}
-        <div class="bt_wrap">
-          <a href="{% url 'articles:delete' articles.pk %}" class="on">삭제</a>
-          <a href="{% url 'articles:update' articles.pk %}" class="on">수정</a>
-          <a href="{% url 'articles:index' %}" class="on">뒤로</a>
-        </div>
-      </form>
-    {% endif %}
-    <br>
     <br>
 
+
+    <!-- 좋아요 버튼 -->
+    <div>
+      <form class="like-froms" data-article-id="{{ articles.pk }}" method="POST">
+        {% csrf_token %}
+        {% if request.user in article.like.all %}
+          <input type="submit" value="좋아요 취소" id="like-{{ articles.pk }}">
+        {% else %}
+          <input type="submit" value="좋아요" id="like-{{ articles.pk }}">
+        {% endif %}
+      </form>
+    </div>
+    <p>조회수:{{ articles.hits }}</p>
+    
     <!-- 댓글생성 -->
     {% if request.user.is_authenticated %}
       <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{articles.pk}}')">
