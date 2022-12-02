@@ -77,7 +77,7 @@
     <div>
       <form class="like-froms" data-article-id="{{ articles.pk }}" method="POST">
         {% csrf_token %}
-        {% if request.user in article.like.all %}
+        {% if request.user in articles.like.all %}
           <input type="submit" value="좋아요 취소" id="like-{{ articles.pk }}">
         {% else %}
           <input type="submit" value="좋아요" id="like-{{ articles.pk }}">
