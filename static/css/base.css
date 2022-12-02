@@ -51,8 +51,7 @@ a {
 }
 
 a:hover {
-    text-decoration: none;
-    color: #000000;
+    color: #FF8E00;
 }
 
 /* navbar 프로필 사진 */
@@ -62,7 +61,6 @@ a:hover {
     border-radius: 70%;
     overflow: hidden;
 }
-
 
 
 /* 프로필 */
@@ -343,11 +341,11 @@ a:hover {
   .bt_wrap button {
     display: inline-block;
     padding: 10px;
-    border: 1px solid #000;
+    border: 1px solid #FF8E00;
     border-radius: 2px;
     font-size: 0.9rem;
-    background: #000;
-    color: #fff;
+    background: #fff;
+    color: #FF8E00;
     transition: all 0.4s;
   }
   .bt_wrap a:first-child,
@@ -356,8 +354,8 @@ a:hover {
   }
   .bt_wrap a:hover,
   .bt_wrap button:hover {
-    background-color: white;
-    color: black;
+    background-color: #FF8E00;
+    color: white;
   }
   .bt_wrap a {
     margin-left: 15px;
