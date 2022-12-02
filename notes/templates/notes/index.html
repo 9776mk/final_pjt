@@ -45,13 +45,7 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted" id="{{note.pk}}">
-                <td>
-                  {% if note.from_user.nickname %}
-                    {{ note.from_user.nickname }}
-                  {% else %}
-                    {{ note.from_user.username }}
-                  {% endif %}
-                </td>
+                <td>{{ note.from_user.profile.nickname }}</td>
                 <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
                 <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
                 {% if note.read == 1 %}
@@ -68,13 +62,7 @@
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr id="{{note.pk}}">
-                <td>
-                  {% if note.from_user.nickname %}
-                    {{note.from_user.nickname}}
-                  {% else %}
-                    {{note.from_user.username}}
-                  {% endif %}
-                </td>
+                <td>{{ note.from_user.profile.nickname }}</td>
                 <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
                 <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
                 {% if note.read == 1 %}
@@ -111,13 +99,7 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted" id="{{note.pk}}">
-                <td>
-                  {% if note.to_user.nickname %}
-                    {{ note.to_user.nickname }}
-                  {% else %}
-                    {{ note.to_user.username }}
-                  {% endif %}
-                </td>
+                <td>{{ note.to_user.profile.nickname }}</td>
                 <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
                 <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
                 {% if note.read == 1 %}
@@ -134,13 +116,7 @@
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr id="{{note.pk}}">
-                <td>
-                  {% if note.from_user.nickname %}
-                    {{note.from_user.nickname}}
-                  {% else %}
-                    {{note.from_user.username}}
-                  {% endif %}
-                </td>
+                <td>{{ note.to_user.profile.nickname }}</td>
                 <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
                 <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
                 {% if note.read == 1 %}
