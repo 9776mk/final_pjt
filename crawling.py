@@ -17,7 +17,6 @@ django.setup()
 
 from algorithm.models import BJData
 
-
 ## python파일의 위치
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
