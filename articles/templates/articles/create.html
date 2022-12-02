@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load django_bootstrap5 %}
+{% load widget_tweaks %}
+
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board_create.css' %}" type="text/css">
 {% endblock link %}
@@ -27,7 +29,7 @@
           <div class="info">
             <dl class='d-flex align-items-center'>
                 <dt>이미지</dt>
-                <dd>{% bootstrap_form image_form %}</dd>
+                <dd>{{ image_form.image|add_class:'form-control' }}</dd>
                 {% comment %} <input type="file" class="form-control" name='image' accept="media/article_images" value="" id="id_image"> {% endcomment %}
             </dl>
           </div>
