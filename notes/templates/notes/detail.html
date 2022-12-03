@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load static %}
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/notes.css' %}" type="text/css">
+{% endblock link %}
 
 {% block content%}
   <div class="container mt-5">
@@ -19,10 +23,10 @@
               <th scope="row"><a href="{% url 'notes:sent' %}">보낸 쪽지함</a></th>
             </tr>
             <tr>
-              <th scope="row"><a href="{% url 'notes:index' %}">중요 쪽지함</a></th>
+              <th scope="row"><a href="{% url 'notes:important' %}">보관함</a></th>
             </tr>
             <tr>
-              <th scope="row"><a href="{% url 'notes:index' %}">휴지통</a></th>
+              <th scope="row"><a href="{% url 'notes:trash' %}">휴지통</a></th>
             </tr>
           </tbody>
         </table>
