@@ -43,7 +43,7 @@
         <div class='title'>{{ articles.title }}</div>
         <p>2021.4.23</p>
       </div>
-
+      
       <!-- 사진 -->
       {% for image in articles.image_set.all %}
         <img class="d-block mx-auto board_img" src="{{ image.image.url }}" alt="{{ image.image }}" style='margin-bottom: 20px;'>

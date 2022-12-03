@@ -91,7 +91,7 @@ def detail(request, pk):
     }
     response = render(request, "articles/detail.html", context)
     expire_date, now = datetime.now(), datetime.now()
-    expire_date += timedelta(days=1)
+    expire_date += timedelta(seconds=1)
     expire_date = expire_date.replace(hour=0, minute=0, second=0, microsecond=0)
     expire_date -= now
     max_age = expire_date.total_seconds()
