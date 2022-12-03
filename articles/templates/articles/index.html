@@ -20,7 +20,7 @@
         {% for article in articles.all %}
           <div>
             <div class="category">
-              <a href="">벗삼기/찾기</a>
+              <a href="">{{ article.category }}</a>
             </div>
             <div class="title">
               <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>

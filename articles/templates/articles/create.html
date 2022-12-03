@@ -26,6 +26,12 @@
               <dd><input type="text" name="title" value="{{ articles.title }}" placeholder="제목 입력"></dd>
             </dl>
           </div>
+          <div class="info">  <!-- 여기 위치 클래스 하나 추가해야 할 듯! -->
+            <dl class='d-flex align-items-center'>
+                <dt>카테고리</dt>
+                <dd>{{ article_form.category|add_class:'form-select' }}</dd>
+            </dl>
+          </div>
           <div class="info">
             <dl class='d-flex align-items-center'>
                 <dt>이미지</dt>
