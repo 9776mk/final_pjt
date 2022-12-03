@@ -9,6 +9,7 @@ class articleForm(forms.ModelForm):
         fields = [
             'title',
             'content',
+            'category',
             # 'image',
         ]
 

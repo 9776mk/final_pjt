@@ -12,6 +12,13 @@ class Article(models.Model):
     create_at = models.DateTimeField(auto_now_add=True)
     like = models.ManyToManyField(User, blank=True ,related_name="article_like")
     hits = models.PositiveIntegerField(default=0, verbose_name='조회수')
+
+    # 글 카테고리
+    CATEGORY = (
+        ('자료공유', '자료공유'), ('질문', '질문'), ('취업', '취업'), ('잡담', '잡담'),
+    )
+    category = models.CharField(max_length=20, choices=CATEGORY)
+
 # Article의 이미지
 class Image(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
