@@ -10,7 +10,7 @@
 {% block content %}
   <div class='container py-5'>
     {% if request.resolver_match.url_name == 'create' %}
-      <h1 class='mb-4'>글쓰기</h1>
+      <h1 class='mb-4'>글쓰기</h1> 
     {% else %}
       <h1 class='mb-4'>수정하기</h1>
     {% endif %}
@@ -70,6 +70,14 @@
     <a href="{{ article.image.url }}"><p class='mx-2'>{{ article.image }}</p></a>
     {% endif %}
   </div>  {% endcomment %}
-
-
+  {% comment %} 에디터 폼  {% endcomment %}
+  <div class="container">
+    <form action="POST">
+      {% csrf_token %}
+      {{ article_form.media }}
+      {{ article_form.as_p }}
+      <br>
+      <input type="submit" value="제출">
+    </form>
+  </div>
 {% endblock content %}
