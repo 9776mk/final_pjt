@@ -1,9 +1,59 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load static %}
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/notes.css' %}" type="text/css">
+{% endblock link %}
+
 {% block content%}
-  <form action="{% url 'notes:send' %}" method="POST">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    <input type="submit">
-  </form>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-3">
+        <table class="table bg-white">
+          <thead>
+            <tr>
+              <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:sent' %}">보낸 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:important' %}">보관함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:trash' %}">휴지통</a></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-9">
+        <form action="{% url 'notes:send' %}" method="POST">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <div class="d-flex justify-content-end">
+            <input type="submit" class="bbtn" value="보내기">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} <div class="container d-flex justify-content-center p-5">
+    <div class="col-sm-12 col-md-6" style="max-width: 450px;">
+      <h3 class="text-center mb-3" style="font-family: 'HBIOS-SYS';">쪽지 쓰기✉️</h3>
+      <form action="{% url 'notes:send' %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div class="d-flex justify-content-center">
+          <input type="submit" class="bbtn" value="보내기">
+        </div>
+      </form>
+    </div>
+  </div> {% endcomment %}
+
 {% endblock %}

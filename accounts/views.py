@@ -28,17 +28,13 @@ def signup(request):
 
     if request.method == "POST":
         signup_form = CustomUserCreationForm(request.POST)
-        profile_form = ProfileForm(request.POST, request.FILES)
+        profile_form = ProfileForm(request.POST)
 
         if signup_form.is_valid() and profile_form.is_valid():
             user = signup_form.save()
 
             profile = profile_form.save(commit=False)
             Profile.objects.create(user=user, nickname=profile.nickname, github_id=profile.github_id, boj_id=profile.boj_id)
-
-            # 현재 날짜를 기준으로 닉네임 자동 생성
-            # nickname = str(user.pk) + str(user.date_joined.strftime("%f"))
-            # Profile.objects.create(user=user, nickname=nickname)
             Guestbook.objects.create(user=user) # 방명록 생성
             # 회원가입 후 자동로그인
             auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')

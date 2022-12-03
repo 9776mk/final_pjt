@@ -34,6 +34,7 @@
   font-size: 0.9rem;
   font-weight: lighter;
   text-align: end;
+  margin-bottom: 3px;
 }
 .board_view .cont {
   padding: 20px 40px 60px;
@@ -44,4 +45,28 @@
   -o-object-fit: cover;
      object-fit: cover;
   height: 480px;
+}
+
+.speech-bubble {
+  position: relative;
+  color: #ff8800;
+  border-radius: 0.4em;
+}
+.speech-bubble:hover {
+  color: #fff;
+  background-color: #04188a;
+}
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 32px solid transparent;
+  border-right-color: #ff8800;
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -16px;
+  margin-left: -32px;
 }/*# sourceMappingURL=board_detail.css.map */

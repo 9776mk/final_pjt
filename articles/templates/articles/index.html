@@ -5,7 +5,7 @@
 {% endblock link %}
 {% block content %}
   <div class='container py-5'>
-    <h1>개발마당</h1>
+    <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
     <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
 
     <!--게시판-->
@@ -20,7 +20,7 @@
         {% for article in articles.all %}
           <div>
             <div class="category">
-              <a href="">벗삼기/찾기</a>
+              <a href="">{{ article.category }}</a>
             </div>
             <div class="title">
               <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>

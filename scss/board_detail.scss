@@ -33,6 +33,7 @@
       font-size: 0.9rem;
       font-weight: lighter;
       text-align: end;
+      margin-bottom: 3px;
     }
   }
   .cont {
@@ -43,5 +44,31 @@
   .board_img {
     object-fit: cover;
     height: 480px;
+  }
+}
+
+// 말풍선 모양
+// https://projects.verou.me/bubbly/
+.speech-bubble {
+	position: relative;
+	color: #ff8800;
+	border-radius: .4em;
+  &:hover {
+    color: #fff;
+    background-color: #04188a;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 32px solid transparent;
+    border-right-color: #ff8800;
+    border-left: 0;
+    border-bottom: 0;
+    margin-top: -16px;
+    margin-left: -32px;
   }
 }

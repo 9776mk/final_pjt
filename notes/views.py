@@ -1,21 +1,36 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Notes
-from .forms import NotesForm
+from .models import *
+from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 # Create your views here.
 
 
 @login_required
 def index(request):
-    notes = request.user.user_to.order_by("-created_at")
-    to_notes = request.user.user_from.order_by("-created_at")
-    context={
-        "notes":notes,
+    # notes = request.user.user_to.order_by("-created_at")
+    notes = Notes.objects.filter(to_user_id=request.user.id, garbage=False).order_by(
+        "-created_at"
+    )
+    context = {
+        "notes": notes,
+    }
+    return render(request, "notes/index.html", context)
+
+
+@login_required
+def sent(request):
+    # to_notes = request.user.user_from.order_by("-created_at")
+    to_notes = Notes.objects.filter(from_user_id=request.user.id, garbage=False).order_by(
+        "-created_at"
+    )
+    context = {
         "to_notes":to_notes,
     }
-    return render(request, "notes/index.html",context)
-    
+    return render(request, "notes/index.html", context)
+
+
 @login_required
 def send(request):
     form = NotesForm(request.POST or None)
@@ -29,11 +44,13 @@ def send(request):
         return redirect("notes:index")
 
     context = {
-        "form": form
+        "form": form,
     }
-    return render(request, "notes/send.html" , context) 
+    return render(request, "notes/send.html" , context)
+
+
 @login_required
-def detail(request,pk):
+def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
     if request.user == note.to_user:
         if not note.read:
@@ -48,11 +65,61 @@ def detail(request,pk):
     else:
         return redirect("notes:index")
 
+
 @login_required
-def delete(request,pk):
-    note = get_object_or_404(Notes,pk=pk)
-    if request.user == note.to_user and request.method == "POST":
-        note.delete()
-        return redirect("notes:index")
-    else:
-        return redirect("notes:index")
+def delete(request, pk):
+    note = get_object_or_404(Notes, pk=pk)
+    note.delete()
+    return redirect("notes:trash")
+
+
+@login_required
+def trash_throw_away(request, pk):
+    note = Notes.objects.get(pk=pk)
+    note.garbage = True
+    note.save()
+    return redirect("notes:index")
+
+
+@login_required
+def trash_return(request, pk):
+    note = Notes.objects.get(pk=pk)
+    note.garbage = False
+    note.save()
+    return redirect("notes:trash")
+
+
+@login_required
+def trash(request):
+    trash_notes = Notes.objects.filter(to_user_id=request.user.id, 
+    garbage=True).order_by("-created_at")
+    context = {
+        "notes": trash_notes,
+    }
+    return render(request, "notes/trash.html", context)
+
+
+@login_required
+def important_check(request, pk):
+    note = Notes.objects.get(pk=pk)
+    note.important = True
+    note.save()
+    return redirect("notes:index")
+
+
+@login_required
+def important_return(request, pk):
+    note = Notes.objects.get(pk=pk)
+    note.important = False
+    note.save()
+    return redirect("notes:index")
+
+
+@login_required
+def important(request):
+    important_notes = Notes.objects.filter(to_user_id=request.user.id, 
+    garbage=False, important=True).order_by("-created_at")
+    context = {
+        "notes": important_notes,
+    }
+    return render(request, "notes/important.html", context)

@@ -21,7 +21,7 @@ thead {
   height: 32px;
   box-sizing: border-box;
   vertical-align: middle;
-  border: 1px solid #ddd;
+  border: 1px solid #FF8E00;
   border-left: 0;
   line-height: 100%;
 }
@@ -40,12 +40,12 @@ thead {
 .board_page a.num.on {
   cursor: default;
   color: #fff;
-  border-color: #000;
-  background: #000;
+  border-color: #FF8E00;
+  background: #FF8E00;
 }
 
 .board_page a:first-child {
-  border-left: 1px solid #ddd;
+  border-left: 1px solid #FF8E00;
 }
 
 .board_page > a {

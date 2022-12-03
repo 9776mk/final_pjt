@@ -41,7 +41,8 @@
       <!-- 제목 작성일 -->
       <div class="info">
         <div class='title'>{{ articles.title }}</div>
-        <p>2021.4.23</p>
+        <p>{{ articles.create_at|date:'Y-m-d H:i' }}</p>
+        <p>조회수 : {{ articles.hits }}</p>
       </div>
       
       <!-- 사진 -->
@@ -50,7 +51,7 @@
       {% endfor %}
 
       <!-- 내용 -->
-      <div class="cont">
+      <div class="cont text-break" style="white-space: pre-line">
         {{ articles.content }}
       </div>
 
@@ -67,36 +68,39 @@
           </form>
         {% endif %}
       </div>
-    </div>
-    <br>
 
+    </div>
+    
+    <br>
 
     <!-- 좋아요 버튼 -->
     <div>
       <form class="like-froms" data-article-id="{{ articles.pk }}" method="POST">
         {% csrf_token %}
-        {% if request.user in article.like.all %}
+        {% if request.user in articles.like.all %}
           <input type="submit" value="좋아요 취소" id="like-{{ articles.pk }}">
         {% else %}
           <input type="submit" value="좋아요" id="like-{{ articles.pk }}">
         {% endif %}
       </form>
     </div>
-    <p>조회수:{{ articles.hits }}</p>
+    
     
     <!-- 댓글생성 -->
+    {% comment %} 로그인 안 했으면 제출 버튼을 disabled 해도 되고 {% endcomment %}
     {% if request.user.is_authenticated %}
       <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{articles.pk}}')">
         <!-- create_comment:함수명 -->
         {% csrf_token %}
         <div>
-          {% comment %} {% bootstrap_form comment_form %} {% endcomment %}
-          <input type="text">
+          {% bootstrap_form comment_form %}
+          {% comment %} <input type="text"> {% endcomment %}
           <input type="submit" value="댓글쓰기" id="content-{{ articles.pk }}">
         </div>
       </form>
     {% else %}
-      <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">로그인</a>
+      <a class="speech-bubble" href="{% url 'accounts:login' %}">로그인이 필요합니다~</a>
+      
     {% endif %}
 
     <!-- 댓글 목록 삭제-->
