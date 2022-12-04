@@ -331,33 +331,34 @@ a:hover {
 }
 
 
-/* 게시판 버튼 */s
+/* 게시판 버튼 */
 .bt_wrap {
     margin: 30px auto;
     text-align: center;
     font-size: 0;
+    border-radius: 30rem;
   }
-  .bt_wrap a,
-  .bt_wrap button {
-    display: inline-block;
-    padding: 10px;
-    border: 1px solid #FF8E00;
-    border-radius: 2px;
-    font-size: 0.9rem;
-    background: #fff;
-    color: #FF8E00;
-    transition: all 0.4s;
-  }
-  .bt_wrap a:first-child,
-  .bt_wrap button:first-child {
-    margin-left: 0;
-  }
-  .bt_wrap a:hover,
-  .bt_wrap button:hover {
-    background-color: #FF8E00;
-    color: white;
-  }
-  .bt_wrap a {
-    margin-left: 15px;
-  }
+.bt_wrap a,
+.bt_wrap button {
+display: inline-block;
+padding: 10px;
+border: 1px solid #FF8E00;
+border-radius: 2px;
+font-size: 0.9rem;
+background: #fff;
+color: #FF8E00;
+transition: all 0.4s;
+}
+.bt_wrap a:first-child,
+.bt_wrap button:first-child {
+margin-left: 0;
+}
+.bt_wrap a:hover,
+.bt_wrap button:hover {
+background-color: #FF8E00;
+color: white;
+}
+.bt_wrap a {
+margin-left: 15px;
+}
 

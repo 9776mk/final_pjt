@@ -22,8 +22,8 @@
             {% else %}
               <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
             {% endif %}
-            <div d-flex>
-              <div class='my-1' style='width: auto'>{{ articles.user.profile.nickname }}</div>
+            <div>
+              <div class='mb-1'>{{ articles.user.profile.nickname }}</div>
               <div>
                 {% if articles.user.profile.language == 'Python' %}
                   <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff">
@@ -56,19 +56,16 @@
       </div>
 
       <!-- 삭제, 수정, 뒤로가기 버튼들 -->
-      <div>
-        {% if request.user == articles.user %}
-          <form action="" method="POST">
-            {% csrf_token %}
-            <div class="bt_wrap pb-5">
-              <a href="{% url 'articles:delete' articles.pk %}" class="on">삭제</a>
-              <a href="{% url 'articles:update' articles.pk %}" class="on">수정</a>
-              <a href="{% url 'articles:index' %}" class="on">뒤로</a>
-            </div>
-          </form>
-        {% endif %}
-      </div>
-
+      {% if request.user == articles.user %}
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="bt_wrap pb-5">
+            <a href="{% url 'articles:delete' articles.pk %}" class="on">삭제</a>
+            <a href="{% url 'articles:update' articles.pk %}" class="on">수정</a>
+            <a href="{% url 'articles:index' %}" class="on">뒤로</a>
+          </div>
+        </form>
+      {% endif %}
     </div>
     
     <br>
@@ -77,14 +74,13 @@
     <div>
       <form class="like-froms" data-article-id="{{ articles.pk }}" method="POST">
         {% csrf_token %}
-        {% if request.user in article.like.all %}
-          <input type="submit" value="좋아요 취소" id="like-{{ articles.pk }}">
+        {% if request.user in articles.like.all %}
+          <input class='like_btn' type="submit" value="❌" id="like-{{ articles.pk }}">
         {% else %}
-          <input type="submit" value="좋아요" id="like-{{ articles.pk }}">
+          <input type="submit" value="❤️" id="like-{{ articles.pk }}">
         {% endif %}
       </form>
     </div>
-    
     
     <!-- 댓글생성 -->
     {% comment %} 로그인 안 했으면 제출 버튼을 disabled 해도 되고 {% endcomment %}
@@ -99,8 +95,7 @@
         </div>
       </form>
     {% else %}
-      <a class="speech-bubble" href="{% url 'accounts:login' %}">로그인이 필요합니다~</a>
-      
+      <a class="speech-bubble my-4" href="{% url 'accounts:login' %}">로그인이 필요합니다~</a>  
     {% endif %}
 
     <!-- 댓글 목록 삭제-->
@@ -111,7 +106,7 @@
             <p>{{ comment.content }}</p>
             <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{articles.pk}}', '{{comment.pk}}')">
               {% csrf_token %}
-              <input type="submit" value="delete">
+              <input class='btn btn-outline-danger' type="submit" value="delete">
             </form>
           </div>
         {% endif %}
@@ -201,14 +196,17 @@
             const isLiked = response.data.is_liked
             const likeBtn = document.querySelector(`#like-${articleId}`)
             if (isLiked === true) {
-              likeBtn.value = "좋아요 취소"
+              likeBtn.value = "❌"
             } else {
-              likeBtn.value = "좋아요"
+              likeBtn.value = "❤️"
             }
           })
           .catch((error) => {
             console.log(error.response)
           })
         })
+
+
+
   </script>
 {% endblock script %}

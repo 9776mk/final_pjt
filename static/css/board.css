@@ -21,15 +21,17 @@ thead {
   height: 32px;
   box-sizing: border-box;
   vertical-align: middle;
-  border: 1px solid #FF8E00;
   border-left: 0;
   line-height: 100%;
+  color: rgb(178, 178, 178);
+  
 }
 
 .board_page a.bt {
   padding-top: 10px;
   font-size: 0.8rem;
   letter-spacing: -1px;
+  color: rgb(178, 178, 178);
 }
 
 .board_page a.num {
@@ -41,15 +43,8 @@ thead {
   cursor: default;
   color: #fff;
   border-color: #FF8E00;
+  border-radius: 40rem;
   background: #FF8E00;
-}
-
-.board_page a:first-child {
-  border-left: 1px solid #FF8E00;
-}
-
-.board_page > a {
-  color: rgb(0, 0, 0);
 }
 
 
@@ -62,20 +57,23 @@ thead {
 .board_list {
   width: 100%;
   background-color: #fff;
-  border-top: 2px solid #000;
+  border: 1px solid #ff8800;
+  border-radius: 20px;
+  font-size: 0.9rem;
 }
 
 .board_list > div {
-  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
   font-size: 0;
 }
 
 .board_list > div.top {
-  border-bottom: 1px solid #999;
-}
-
-.board_list > div:last-child {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #9b9b9b;
+  border-top: 0;
+  font-weight: bold;
+  color: rgb(175, 175, 175);
+  padding-top: 11px;
+  padding-bottom: 8px;
 }
 
 .board_list > div > div {
@@ -83,10 +81,6 @@ thead {
   padding: 15px 0;
   text-align: center;
   font-size: 0.9rem;
-}
-
-.board_list > div.top > div {
-  font-weight: 600;
 }
 
 .board_list .category {
