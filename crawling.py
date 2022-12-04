@@ -3,10 +3,8 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import time, os, json
-from selenium.webdriver.common.keys import Keys
 
-# 데이터 저장용
-import os
+from selenium.webdriver.common.keys import Keys
 
 ## Python이 실행될 때 DJANGO_SETTINGS_MODULE이라는 환경 변수에 현재 프로젝트의 settings.py파일 경로를 등록
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "final_pjt.settings")
@@ -15,10 +13,11 @@ import django
 
 django.setup()
 
-from algorithm.models import BJData
+from algorithm.models import *
 
 ## python파일의 위치
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -28,48 +27,59 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 # browser = webdriver.Chrome(options=options)
 
 page = {
+    # 브론즈
     1: 3,
     2: 4,
     3: 11,
     4: 16,
     5: 13,
+    # 실버
     6: 13,
     7: 15,
     8: 15,
     9: 16,
     10: 15,
+    # 골드
     11: 18,
     12: 20,
     13: 20,
     14: 18,
     15: 17,
+    # 플레
     16: 18,
     17: 18,
     18: 19,
     19: 18,
     20: 15,
+    # 다이아
     21: 15,
     22: 14,
     23: 10,
     24: 8,
     25: 6,
+    # 루비
     26: 5,
     27: 3,
     28: 2,
     29: 1,
     30: 1,
 }
-result = {}
-temp = {}
 
-for i in range(1, 31):
+# for i in range(1, 31):
+for i in range(1, 2):
+    temp = {}
+    result = {}
+    level_ = []
+    num_ = []
+    title_ = []
+    tags_list = []
+
     driver.refresh()
     v = page[i]
-    for j in range(1, int(v) + 1):
-        level_ = i
-        page_ = j
-        print(f"{level_}레벨 {page_}페이지 시작")
-        URL = f"https://solved.ac/problems/level/{level_}?page={page_}"
+    for i in range(1, 2):
+        # for j in range(1, int(v) + 1):
+        # print(f"{i}레벨 {j}페이지 시작")
+        URL = f"https://solved.ac/problems/level/{1}?page={3}"
         driver.get(url=URL)
         # if j == 1 or j == int(v) + 1:
         driver.refresh()
@@ -79,13 +89,13 @@ for i in range(1, 31):
         c = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
         count = len(c)
         # level = i
-
+        for lev in range(1, count + 1):
+            level_.append(i)
         # 문제 번호
         # 한 페이지에 최대 50문제 1~50까지
         # 첫 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[5]/td[1]/div/div/div/span/a/span
         # 50 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[50]/td[1]/div/div/div/span/a/span
 
-        num_ = []
         # url_ = []
         for k in range(1, count + 1):
             prob_num = driver.find_elements(
@@ -110,8 +120,7 @@ for i in range(1, 31):
         # print(len(num_))  # 번호
         # title
         # 첫 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[1]/td[2]/span/div/div[1]/span[1]/div/a/span
-        # 마지막 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[50]/td[2]/span/div/div[1]/span[1]/div/a/span
-        title_ = []
+
         for m in range(1, count + 1):
             title = driver.find_elements(
                 By.XPATH,
@@ -124,7 +133,6 @@ for i in range(1, 31):
         # print(len(title_))
         # print(title_)
 
-        tags_list = []
         for_category = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
         for n in for_category:
             li = []
@@ -134,12 +142,13 @@ for i in range(1, 31):
             tags = driver.find_elements(By.CLASS_NAME, "css-1rqtlpb")
             if len(tags) > 1:  # 태그 여러개
                 for t in tags:
-                    # print(t.text)
-                    li.append(t.text)
+                    print(t.text)
+                    print(t.text.lstrip("#"))
+                    li.append(t.text.lstrip("#"))
             else:  # 한개
                 tags = driver.find_element(By.CLASS_NAME, "css-1rqtlpb")
                 # print(tags.text)
-                li.append(tags.text)
+                li.append(tags.text.lstrip("#"))
                 # print(li)
             tags_list.append(li)
             n.send_keys(Keys.ENTER)
@@ -147,26 +156,35 @@ for i in range(1, 31):
 
         # json_file => 백준 : {문제번호 : ~, 제목: ~, 태그: ~}
 
-        temp["number"] = num_
-        temp["title"] = title_
-        temp["tags"] = tags_list
-        result[level_] = temp
+    temp["level"] = level_
+    temp["number"] = num_
+    temp["title"] = title_
+    temp["tags"] = tags_list
+    # result[level_] = temp
 
-        with open(
-            os.path.join(BASE_DIR, "problems.json"), "w+", encoding="UTF-8"
-        ) as json_file:
-            json.dump(result, json_file, ensure_ascii=False, indent=2)
+    with open(
+        os.path.join(BASE_DIR, "problems.json"), "w+", encoding="UTF-8"
+    ) as json_file:
+        json.dump(temp, json_file, ensure_ascii=False, indent=2)
 
-        if __name__ == "__main__":
-            bj_data_dict = result
-            for le, n, ti, ta in bj_data_dict.items():
-                BJData(level=le, number=n, title=ti, tags=ta).save()
+    # print("끝")
 
-        # for nu in range(count):
-        #     print(num_[nu], title_[nu], tags_list[nu])
+    with open(
+        os.path.join(BASE_DIR, "problems.json"), "r", encoding="UTF-8"
+    ) as json_file:
+        json_file = json.load(json_file)
 
+    # json_file['변수명']['인덱스']로 확인 가능
+    len_ = len(json_file["level"])
+
+    for i in range(len_):
+        level = json_file["level"][i]
+        number = json_file["number"][i]
+        title = json_file["title"][i]
+        tags = json_file["tags"][i]
+
+    if __name__ == "__main__":
+        if i <= 5:
+            BJData_1(level=level, number=number, title=title, tags=tags).save()
 
 driver.close()
-
-# while True:
-#     pass
