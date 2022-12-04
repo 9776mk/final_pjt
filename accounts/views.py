@@ -27,13 +27,8 @@ def signup(request):
         return redirect("home")
 
     if request.method == "POST":
-        print('########################method: post')
         signup_form = CustomUserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
-
-        print(signup_form.is_valid())
-        print(profile_form.is_valid())
-        # print(profile_form)
 
         if signup_form.is_valid() and profile_form.is_valid():
             user = signup_form.save()
@@ -45,7 +40,6 @@ def signup(request):
             auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect("home")
     else:
-        print('########################method: get')
         signup_form = CustomUserCreationForm()
         profile_form = ProfileForm()
 

@@ -6,6 +6,7 @@ from .forms import *
 def create(request):
     if request.method == 'POST':
         survey_form = SurveyForm(request.POST)
+        print(survey_form.is_valid())
 
         if survey_form.is_valid():
             survey_form.save()
