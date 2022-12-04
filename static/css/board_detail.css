@@ -1,12 +1,11 @@
 .board_view {
   width: 100%;
-  border-top: 2px solid #000;
-  border-bottom: 1px solid #000;
+  border: 1px solid #ff8800;
   background-color: white;
+  border-radius: 20px;
 }
 .board_view .writer {
-  padding: 30px 40px 0px;
-  font-size: 0.9rem;
+  padding: 50px 60px 0px;
 }
 .board_view .writer a {
   width: 280px;
@@ -20,7 +19,7 @@
   width: auto;
 }
 .board_view .info {
-  padding: 40px 40px;
+  padding: 40px 80px;
   margin: 0;
   margin-bottom: 0;
 }
@@ -37,7 +36,7 @@
   margin-bottom: 3px;
 }
 .board_view .cont {
-  padding: 20px 40px 60px;
+  padding: 20px 80px 60px;
   line-height: 160%;
   font-size: 1rem;
 }
@@ -69,4 +68,10 @@
   border-bottom: 0;
   margin-top: -16px;
   margin-left: -32px;
+}
+
+.like_btn {
+  background-image: url("../static/images/likes.png");
+  background-repeat: no-repeat;
+  background-size: 50px;
 }/*# sourceMappingURL=board_detail.css.map */

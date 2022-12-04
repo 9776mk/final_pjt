@@ -10,6 +10,8 @@ a {
 
 .board_write {
   background-color: white;
+  border: 1px solid #ff8800;
+  border-radius: 20px;
 }
 .board_write .title,
 .board_write .info {
@@ -38,7 +40,7 @@ a {
 }
 .board_write .info {
   border-top: 1px dashed #ddd;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #ff8800;
   font-size: 0;
 }
 .board_write .info dl {
@@ -46,9 +48,6 @@ a {
   width: 100%;
   vertical-align: middle;
   margin-bottom: 0;
-}
-.board_write .title {
-  border-top: 2px solid #000;
 }
 .board_write .title dl {
   font-size: 0;
@@ -59,9 +58,6 @@ a {
 }
 .board_write .title input[type=text] {
   width: 90%;
-}
-.board_write .cont {
-  border-bottom: 1px solid #000;
 }
 .board_write .cont textarea {
   display: block;

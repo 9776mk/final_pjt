@@ -10,6 +10,8 @@ a {
 
 .board_write {
   background-color: white;
+  border: 1px solid #ff8800;
+  border-radius: 20px;
   .title, 
   .info {
     padding: 15px;
@@ -32,7 +34,7 @@ a {
   }
   .info{
     border-top: 1px dashed #ddd;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #ff8800;
     font-size: 0;
     dl {
       display: inline-block;
@@ -42,7 +44,7 @@ a {
     }
   }
   .title {
-    border-top: 2px solid #000;;
+    // border-top: 2px solid #000;
     dl {
       font-size: 0;
       margin-bottom: 0;
@@ -55,7 +57,7 @@ a {
     }
   }
   .cont {
-    border-bottom: 1px solid #000;
+    // border-bottom: 1px solid #000;
     textarea {
       display: block;
       width: 100%;
