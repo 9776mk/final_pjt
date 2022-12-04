@@ -39,8 +39,11 @@
         <h1>기술스텍 통계</h1>  
         <div class='servey'>
             {% comment %} data-num 변수로 들어갈거임 {% endcomment %}
-            <div class="progress_wap" data-num="{{ Python_re }}"> 
-                <font>Python</font>
+            {% comment %} 반복문으로 변수만큼 돌면서 이름과 데이터번호는 변수처리 빽에서 넘어온거 넣음
+            내림차순으로 데이터가 넘어오면 된다. {% endcomment %}
+            {% for val in sorted_dict %}
+            <div class="progress_wap" data-num="{{val.1}}"> 
+                <font>{{val.0}}</font>
                 <div class='limitbox' >
                     <div class="bar_frame">
                         <div class="bar"></div>
@@ -48,29 +51,14 @@
                 </div>
                 <span class='mx-3' style="width:5%;">0%</span>
             </div>
-            <div class="progress_wap" data-num="{{ C_re }}">
-                <font>C</font>
-                <div class='limitbox' >
-                    <div class="bar_frame">
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <span class='mx-3' style="width:5%;">0%</span>
+            {% endfor %}
+            <div>
+                <a href="">설문조사 하러가기!</a>
             </div>
-            <div class="progress_wap" data-num="{{Java_re}}">
-                <font>Java</font>
-                <div class='limitbox' >
-                    <div class="bar_frame">
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <span class='mx-3' style="width:5%;">0%</span>
-            </div>
-        </div>
-        <div>
-            <a href="">설문조사 하러가기!</a>
         </div>
     </div>
+
+ 
     
     <div class='find'>
         <h1>나와 잘 맞는 개발자를 찾아보세요.</h1>

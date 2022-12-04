@@ -25,15 +25,15 @@
         <!-- 회원 정보 수정 & 팔로우 버튼 -->
         {% if user == request.user %}
         <a href="{% url 'accounts:profile_update' user.pk %}">
-          <input type="submit" class="btn ms-3 follow-btn-hover color-2 bbtn" value="프로필 수정">
+          <input type="submit" class="btn ms-3 follow-btn-hover color-2" value="프로필 수정">
         </a>
         {% elif request.user.is_authenticated %}
           <form id="follow-form" data-user-id="{{ user.pk }}">
             {% csrf_token %}
             {% if request.user in user.followers.all %}
-              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2 bbtn" value="언팔로우">
+              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2" value="언팔로우">
             {% else %}
-              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2 bbtn" value="팔로우">
+              <input id="follow-btn" type="submit" class="btn ms-3 follow-btn-hover color-2" value="팔로우">
             {% endif %}
           </form>
         {% endif %}
@@ -44,13 +44,19 @@
         <a type="button" data-bs-toggle="modal" data-bs-target="#followingModal">팔로잉 <span id="followings-count">{{ user.followings.count }}</span></a>
       </p>
       {% if user.profile.language == 'Python' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff"/></p>
+      <p class="mb-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
       {% elif user.profile.language == 'Java' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white"></p>
+      <p class="mb-1"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
       {% elif user.profile.language == 'C' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white"></p>
+      <p class="mb-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
+      {% elif user.profile.language == 'JavaScript' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
+      {% elif user.profile.language == 'C++' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
+      {% elif user.profile.language == 'PHP' %}
+      <p class="mb-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
       {% endif %}
-      <p class="mb-1"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+      <p class="mt-1 mb-1"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
       <p class="mb-1">{{ user.profile.intro }}</p>
     </div>
   </div>
@@ -60,7 +66,7 @@
     <!-- 16진수 색상표 https://jasmintime.com/244 -->
     <!-- <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100"> -->
     {% if user.profile.github_id %}
-    <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}/" class="w-100 mb-3">
+    <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3">
     {% endif %}
     <h5>작성 글</h5>
     <h5>작성 댓글</h5>

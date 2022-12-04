@@ -34,10 +34,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 CUSTOM_APPS = [
+    'ckeditor',
     "algorithm",
     "notes",  # 쪽지
     "accounts",
     "articles",
+    "surveys",
     "django_bootstrap5",
     "django_extensions",
     "imagekit",
@@ -149,3 +151,4 @@ AUTH_USER_MODEL = "accounts.User"
 MEDIA_ROOT = BASE_DIR / "media"
 
 MEDIA_URL = "/media/"
+

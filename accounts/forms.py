@@ -11,10 +11,6 @@ class CustomUserCreationForm(UserCreationForm):
             "username",
             "password1",
             "password2",
-            "name",
-            "nickname",
-            "git_id",
-            "boj_id",
         ]
 
 

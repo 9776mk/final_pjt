@@ -16,6 +16,12 @@ body {
     font-weight: 400;
     font-style: normal;
 }
+@font-face {
+    font-family: 'HBIOS-SYS';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2207-01@1.0/HBIOS-SYS.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
 
 * {
     font-family: 'Pretendard-Regular';
@@ -51,8 +57,7 @@ a {
 }
 
 a:hover {
-    text-decoration: none;
-    color: #000000;
+    color: #FF8E00;
 }
 
 /* navbar 프로필 사진 */
@@ -64,7 +69,6 @@ a:hover {
 }
 
 
-
 /* 프로필 */
 
 .follow-buttons {
@@ -73,17 +77,16 @@ a:hover {
 }
 
 .follow-btn-hover {
-    width: 200px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     color: #fff;
     cursor: pointer;
     margin: 0px;
-    height: 55px;
+    height: 40px;
     text-align:center;
     border: none;
     background-size: 300% 100%;
-
+    padding: 1px 15px;
     border-radius: 50px;
     moz-transition: all .4s ease-in-out;
     -o-transition: all .4s ease-in-out;
@@ -97,6 +100,7 @@ a:hover {
     -o-transition: all .4s ease-in-out;
     -webkit-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
+    color: #fff;
 }
 
 .follow-btn-hover:focus {
@@ -109,7 +113,83 @@ a:hover {
 }
 
 
+.speech-bubble {
+	position: relative;
+	background: #ffffff;
+	border-radius: .4em;
+    padding: 20px;
+    box-shadow: 1px 2px 5px 0 rgb(199 198 198 / 75%);
+}
 
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 19px solid transparent;
+	border-right-color: #ffffff;
+	border-left: 0;
+	border-top: 0;
+	margin-top: -9.5px;
+	margin-left: -13px;
+    
+}
+
+
+.bbtn {
+    height: 40px; 
+    background-color: #FF8E00; 
+    color: white;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 7px;
+    border: 0;
+    outline: 0;
+    transition: all 0.2s ;
+    padding: 1px 15px;
+}
+
+.bbtn:hover {
+    height: 40px; 
+    background-color: #ff7b00; 
+    color: white;
+}
+
+
+/* 게시판 버튼 */s
+.bt_wrap {
+    margin: 30px auto;
+    text-align: center;
+    font-size: 0;
+  }
+  .bt_wrap a,
+  .bt_wrap button {
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #FF8E00;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: #FF8E00;
+    transition: all 0.4s;
+  }
+  .bt_wrap a:first-child,
+  .bt_wrap button:first-child {
+    margin-left: 0;
+  }
+  .bt_wrap a:hover,
+  .bt_wrap button:hover {
+    background-color: #FF8E00;
+    color: white;
+  }
+  .bt_wrap a {
+    margin-left: 15px;
+  }
+
+
+  
 /* MBTI badge */
 
 .ISTJ-badge {
@@ -288,6 +368,7 @@ a:hover {
     letter-spacing: 1px;
 }
 
+
 .speech-bubble {
 	position: relative;
 	background: #ffffff;
@@ -314,7 +395,6 @@ a:hover {
 
 
 .bbtn {
-    width: 100%; 
     height: 40px; 
     background-color: #FF8E00; 
     color: white;
@@ -324,10 +404,10 @@ a:hover {
     border: 0;
     outline: 0;
     transition: all 0.2s ;
+    padding: 1px 15px;
 }
 
 .bbtn:hover {
-    width: 100%; 
     height: 40px; 
     background-color: #ff7b00; 
     color: white;
@@ -339,28 +419,28 @@ a:hover {
     margin: 30px auto;
     text-align: center;
     font-size: 0;
+    border-radius: 30rem;
   }
-  .bt_wrap a,
-  .bt_wrap button {
-    display: inline-block;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 2px;
-    font-size: 0.9rem;
-    background: #000;
-    color: #fff;
-    transition: all 0.4s;
-  }
-  .bt_wrap a:first-child,
-  .bt_wrap button:first-child {
-    margin-left: 0;
-  }
-  .bt_wrap a:hover,
-  .bt_wrap button:hover {
-    background-color: white;
-    color: black;
-  }
-  .bt_wrap a {
-    margin-left: 15px;
-  }
-
+.bt_wrap a,
+.bt_wrap button {
+display: inline-block;
+padding: 10px;
+border: 1px solid #FF8E00;
+border-radius: 2px;
+font-size: 0.9rem;
+background: #fff;
+color: #FF8E00;
+transition: all 0.4s;
+}
+.bt_wrap a:first-child,
+.bt_wrap button:first-child {
+margin-left: 0;
+}
+.bt_wrap a:hover,
+.bt_wrap button:hover {
+background-color: #FF8E00;
+color: white;
+}
+.bt_wrap a {
+margin-left: 15px;
+}

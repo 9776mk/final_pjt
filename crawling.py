@@ -2,11 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-import time, os, json, sys
-from selenium.webdriver.common.keys import Keys
+import time, os, json
 
-## python파일의 위치
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+from selenium.webdriver.common.keys import Keys
 
 ## Python이 실행될 때 DJANGO_SETTINGS_MODULE이라는 환경 변수에 현재 프로젝트의 settings.py파일 경로를 등록
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "final_pjt.settings")
@@ -16,6 +14,11 @@ import django
 django.setup()
 
 from algorithm.models import *
+
+## python파일의 위치
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
@@ -85,11 +88,9 @@ for i in range(1, 2):
 
         c = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
         count = len(c)
-
         # level = i
         for lev in range(1, count + 1):
             level_.append(i)
-
         # 문제 번호
         # 한 페이지에 최대 50문제 1~50까지
         # 첫 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[5]/td[1]/div/div/div/span/a/span
