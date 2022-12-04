@@ -19,7 +19,6 @@ from algorithm.models import *
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 # options = webdriver.ChromeOptions()
@@ -66,7 +65,7 @@ page = {
 }
 
 # for i in range(1, 31):
-for i in range(1, 2):
+for i in range(10, 11):
     temp = {}
     result = {}
     level_ = []
@@ -76,10 +75,10 @@ for i in range(1, 2):
 
     driver.refresh()
     v = page[i]
-    for i in range(1, 2):
+    for j in range(15, 16):
         # for j in range(1, int(v) + 1):
-        # print(f"{i}레벨 {j}페이지 시작")
-        URL = f"https://solved.ac/problems/level/{1}?page={3}"
+        print(f"{i}레벨 {j}페이지 시작")
+        URL = f"https://solved.ac/problems/level/{i}?page={j}"
         driver.get(url=URL)
         # if j == 1 or j == int(v) + 1:
         driver.refresh()
@@ -91,6 +90,7 @@ for i in range(1, 2):
         # level = i
         for lev in range(1, count + 1):
             level_.append(i)
+        print(level_)
         # 문제 번호
         # 한 페이지에 최대 50문제 1~50까지
         # 첫 번째 //*[@id="__next"]/div/div[4]/div[2]/div[1]/table/tbody/tr[5]/td[1]/div/div/div/span/a/span
@@ -104,7 +104,7 @@ for i in range(1, 2):
             )
             for number in prob_num:
                 num_.append(number.text)
-        # print(num_)
+        print(num_)
         #     # url
 
         #     url_set = driver.find_elements(By.CLASS_NAME, "css-q9j30p")
@@ -131,7 +131,7 @@ for i in range(1, 2):
                 title_.append(value.text)
 
         # print(len(title_))
-        # print(title_)
+        print(title_)
 
         for_category = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
         for n in for_category:
@@ -142,8 +142,8 @@ for i in range(1, 2):
             tags = driver.find_elements(By.CLASS_NAME, "css-1rqtlpb")
             if len(tags) > 1:  # 태그 여러개
                 for t in tags:
-                    print(t.text)
-                    print(t.text.lstrip("#"))
+                    # print(t.text)
+                    # print(t.text.lstrip("#"))
                     li.append(t.text.lstrip("#"))
             else:  # 한개
                 tags = driver.find_element(By.CLASS_NAME, "css-1rqtlpb")
@@ -153,7 +153,7 @@ for i in range(1, 2):
             tags_list.append(li)
             n.send_keys(Keys.ENTER)
         # print(tags_list, len(tags_list))  # 잘 들어오고 50개 들어오는거 홛인했음
-
+        print(tags_list)
         # json_file => 백준 : {문제번호 : ~, 제목: ~, 태그: ~}
 
     temp["level"] = level_
@@ -176,15 +176,31 @@ for i in range(1, 2):
 
     # json_file['변수명']['인덱스']로 확인 가능
     len_ = len(json_file["level"])
+    print(len_)
 
-    for i in range(len_):
-        level = json_file["level"][i]
-        number = json_file["number"][i]
-        title = json_file["title"][i]
-        tags = json_file["tags"][i]
+    for ind in range(len_):
+        level = json_file["level"][ind]
+        number = json_file["number"][ind]
+        title = json_file["title"][ind]
+        tags = json_file["tags"][ind]
 
-    if __name__ == "__main__":
-        if i <= 5:
-            BJData_1(level=level, number=number, title=title, tags=tags).save()
-
+        if __name__ == "__main__":
+            if i <= 5:
+                BJData_br(level=level, number=number, title=title, tags=tags).save()
+                print("브론즈 저장 완료")
+            elif i <= 10:
+                BJData_si(level=level, number=number, title=title, tags=tags).save()
+                print("실버 저장 완료")
+            elif i <= 15:
+                BJData_go(level=level, number=number, title=title, tags=tags).save()
+                print("골드 저장 완료")
+            elif i <= 20:
+                BJData_pl(level=level, number=number, title=title, tags=tags).save()
+                print("플레 저장 완료")
+            elif i <= 25:
+                BJData_di(level=level, number=number, title=title, tags=tags).save()
+                print("다이아 저장 완료")
+            else:
+                BJData_ru(level=level, number=number, title=title, tags=tags).save()
+                print("루비 저장 완료")
 driver.close()
