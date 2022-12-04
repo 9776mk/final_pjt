@@ -8,6 +8,9 @@ thead {
   color: rgb(0, 0, 0);
 }
 
+/* 탭 */
+
+
 /* 페이지네이션 */
 .board_page {
   margin-top: 30px;
@@ -34,6 +37,14 @@ thead {
   color: rgb(178, 178, 178);
 }
 
+.board_page a.bt.first:hover {
+  color: rgb(30, 225, 255);
+}
+
+.board_page a.bt.last:hover {
+  color: rgb(30, 225, 255);
+}
+
 .board_page a.num {
   padding-top: 9px;
   font-size: 0.8rem;
@@ -57,7 +68,7 @@ thead {
 .board_list {
   width: 100%;
   background-color: #fff;
-  border: 1px solid #ff8800;
+  border: 1px solid #000;
   border-radius: 20px;
   font-size: 0.9rem;
 }
