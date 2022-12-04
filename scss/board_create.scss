@@ -12,8 +12,12 @@ a {
   background-color: white;
   border: 1px solid #ff8800;
   border-radius: 20px;
+  dl {
+    margin-left: 15px;
+  }
   .title, 
-  .info {
+  .info,
+  .category {
     padding: 15px;
     dt, 
     dd {
@@ -32,9 +36,16 @@ a {
       box-sizing: border-box;
     }
   }
-  .info{
+  .category {
     border-top: 1px dashed #ddd;
-    border-bottom: 1px solid #ff8800;
+    font-size: 0;
+    dl {
+      margin-bottom: 0;
+    }
+  }
+  .info {
+    border-top: 1px dashed #ddd;
+    border-bottom: 1px dashed #ddd;
     font-size: 0;
     dl {
       display: inline-block;

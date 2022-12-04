@@ -10,6 +10,22 @@
       <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
     </div>
 
+    <!--탭-->
+    <ul class="nav justify-content-end mb-2">
+      <li class="nav-item">
+        <a class="me-3" href="#" style="font-family: 'HBIOS-SYS';">자료공유</a>
+      </li>
+      <li class="nav-item">
+        <a class="me-3" href="#" style="font-family: 'HBIOS-SYS';">질문</a>
+      </li>
+      <li class="nav-item">
+        <a class="me-3" href="#" style="font-family: 'HBIOS-SYS';">취업</a>
+      </li>
+      <li class="nav-item">
+        <a class="me-4" href="#" style="font-family: 'HBIOS-SYS';">잡담</a>
+      </li>
+    </ul>
+
     <!--게시판-->
     <div class="board_list">
       <div class="top">
@@ -21,7 +37,15 @@
       {% for article in articles.all %}
         <div>
           <div class="category">
-            <a href="">{{ article.category }}</a>
+            {% if article.category == '자료공유'%}
+              <a href="" style='color: #1346ff'>{{ article.category }}</a>
+            {% elif article.category == '취업'%}
+              <a href="" style='color: #ff8800'>{{ article.category }}</a>
+            {% elif article.category == '질문'%}
+              <a href="" style='color: #33aa23'>{{ article.category }}</a>
+            {% else %}
+              <a href="" style='color: #000'>{{ article.category }}</a>
+            {% endif %}
           </div>
           <div class="title">
             <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
