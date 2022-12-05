@@ -53,7 +53,7 @@ function create_gb_comment(form, user_pk, article_pk) {
 
         const commentsBox = document.querySelector(`#gb-comments-box-${article_pk}`)
         
-        if (articleIsSecret === true || commentIsSecret === true) {
+        if (articleIsSecret === true && commentIsSecret === true) {
             commentsBox.classList.add('comment-bg-secret')
             commentsBox.insertAdjacentHTML('beforeend', `
               <div id="comment-${commentPk}" class="mb-2">
@@ -72,6 +72,35 @@ function create_gb_comment(form, user_pk, article_pk) {
                 <div class="d-flex justify-content-between">
                   <p class="mb-1 text-break">
                     <span style="font-size: 13px;">🔒 </span><span style="white-space: pre-line">${commentContent}</span>
+                  </p>
+                  <div class="d-flex align-items-end">
+                    <!-- 답글 삭제 Form -->
+                    <form id="gb-comment-delete-form-${commentPk}" onsubmit="event.preventDefault(); delete_gb_comment(this, '${user_pk}', '${article_pk}', '${commentPk}')">
+                      <input type="submit" class="btn-close" style="color:transparent; font-size: 12px;" onclick="return confirm('삭제하시겠습니까?');">
+                    </form>
+                  </div>
+                </div>
+              </div>
+            `)
+        } else if (commentIsSecret === true) {
+            commentsBox.classList.add('comment-bg')
+            commentsBox.insertAdjacentHTML('beforeend', `
+              <div id="comment-${commentPk}" class="mb-2">
+                <div class="d-flex flex-column justify-content-between">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div style="font-weight: bold; font-size: 15px;">
+                      <!-- 프로필 사진 3 -->
+                      <div class="d-flex align-items-center">
+                        <a href="/accounts/${user_pk}/"><img src="${commentUserImage}" class="comment-img" alt=""></a>
+                        <a href="/accounts/${user_pk}/"><p class="ms-2 mb-0">${commentUser}</p></a>
+                      </div>
+                    </div>
+                    <p class="mb-0" style="font-size: 12px;">${commentCreatedAt}</p>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <p class="mb-1 text-break">
+                    <span style="white-space: pre-line"><span style="font-size: 13px;">🔒 </span><span style="white-space: pre-line">${commentContent}</span></span>
                   </p>
                   <div class="d-flex align-items-end">
                     <!-- 답글 삭제 Form -->
@@ -113,8 +142,6 @@ function create_gb_comment(form, user_pk, article_pk) {
             `)
         }
         
-        
-
         const noComments = document.querySelector(`#article-${article_pk}-no-comments`)
         if (noComments) {
             noComments.remove()
