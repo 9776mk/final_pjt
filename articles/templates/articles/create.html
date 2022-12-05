@@ -38,11 +38,11 @@
           </dl>
         </div>
         <div class="cont">
-          <textarea name="content" placeholder="내용 입력">{{ articles.content }}</textarea>
+          {{ article_form.media }}
+          {{ article_form.content }}
         </div>
         <br>
       </div>
-
       <!-- 버튼 -->
       <div class="container text-center bt_wrap">
         {% if request.resolver_match.url_name == 'update' %}
@@ -54,16 +54,15 @@
         {% endif %}
       </div>
     </form>
-
   </div>
 
-  <div class="container">
-    <form action="POST">
+  {% comment %} <div class="container">
+    <form action="POST" enctype="multipart/form-data">
       {% csrf_token %}
       {{ article_form.media }}
       {{ article_form.as_p }}
       <br>
       <input type="submit" value="제출">
     </form>
-  </div>
+  </div> {% endcomment %}
 {% endblock content %}
