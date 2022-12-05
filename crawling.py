@@ -65,7 +65,7 @@ page = {
 }
 
 # for i in range(1, 31):
-for i in range(10, 11):
+for i in range(15, 16):
     temp = {}
     result = {}
     level_ = []
@@ -87,6 +87,7 @@ for i in range(10, 11):
 
         c = driver.find_elements(By.CLASS_NAME, "css-gv0s7n")
         count = len(c)
+        print(f"len: {count}")
         # level = i
         for lev in range(1, count + 1):
             level_.append(i)
@@ -145,11 +146,13 @@ for i in range(10, 11):
                     # print(t.text)
                     # print(t.text.lstrip("#"))
                     li.append(t.text.lstrip("#"))
-            else:  # 한개
+            elif len(tags) == 1:  # 한개
                 tags = driver.find_element(By.CLASS_NAME, "css-1rqtlpb")
                 # print(tags.text)
                 li.append(tags.text.lstrip("#"))
                 # print(li)
+            else:
+                pass
             tags_list.append(li)
             n.send_keys(Keys.ENTER)
         # print(tags_list, len(tags_list))  # 잘 들어오고 50개 들어오는거 홛인했음
