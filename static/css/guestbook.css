@@ -26,18 +26,18 @@ textarea::placeholder {
 }
 
 .speech-bubble:after {
+  background-color: #ffffff;
+  box-shadow: -0.5px 2px 2px 0 rgb(178 178 178 / 40%);
   content: '';
   position: absolute;
-  left: 0;
-  top: 50%;
-  width: 0;
-  height: 0;
+  left: -10px;
+  top: 35%;
+  width: 20px;
+  height: 20px;
   border: 19px solid transparent;
-  border-right-color: #ffffff;
   border-left: 0;
   border-top: 0;
-  margin-top: -9.5px;
-  margin-left: -13px;
+  transform: rotate( 45deg );
 }
 
 .speech-bubble-secret {
@@ -49,18 +49,18 @@ textarea::placeholder {
 }
 
 .speech-bubble-secret:after {
+  background-color: #fff0dd;
+  box-shadow: -0.5px 2px 2px 0 rgb(178 178 178 / 40%);
   content: '';
   position: absolute;
-  left: 0;
-  top: 50%;
-  width: 0;
-  height: 0;
+  left: -10px;
+  top: 35%;
+  width: 20px;
+  height: 20px;
   border: 19px solid transparent;
-  border-right-color: #fff0dd;
   border-left: 0;
   border-top: 0;
-  margin-top: -9.5px;
-  margin-left: -13px;   
+  transform: rotate( 45deg ); 
 }
 
 .guestbook-img {
@@ -97,4 +97,11 @@ textarea::placeholder {
   padding: 5px; 
   font-size: 14px; 
   border-top: 1px solid #e3e3e3;
+}
+
+.cmt-lock-box {
+  box-sizing: border-box; 
+  height: 35px; 
+  padding: 5px 5px 5px 0px; 
+  font-size: 14px; 
 }

@@ -183,18 +183,18 @@
                       <form onsubmit="event.preventDefault(); create_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}')">
                         {% csrf_token %}
                         <div class="d-flex align-items-center my-2">
-                          <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
-                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1" style="width: 50px; height: 40px; background-color: #f37c2c; color: white;">
+                          <div id="container" class="article-box d-flex align-items-center">
+                            <textarea name="content" cols="40" rows="1" class="form-control article-text" style="border: 0px;" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
+                            <!-- 방명록 답글 비공개 -->
+                            <div class="form cmt-lock-box">
+                              <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" data-article-id="{{ article.pk }}" class="comment-secret-btn" id="comment-secret-btn-{{ article.pk }}" onclick="secretComment(this, '{{ article.pk }}')">
+                                <span id="comment-secret-btn-icon-{{ article.pk }}" class="bi bi-unlock"></span>
+                              </button>
+                            </div>
+                          </div>
+                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-2 follow-btn-hover color-2">
                         </div>
                       </form>
-
-                      <!-- 방명록 답글 비공개 -->
-                      <div class="form">
-                        <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" data-article-id="{{ article.pk }}" class="comment-secret-btn" id="comment-secret-btn-{{ article.pk }}" onclick="secretComment(this, '{{ article.pk }}')">
-                          <span id="comment-secret-btn-icon-{{ article.pk }}" class="bi bi-unlock"></span>
-                        </button>
-                        <label class="form-label" for="secret-btn">비밀글</label>
-                      </div>
                     {% endif %}
 
                     <!-- 답글 -->
