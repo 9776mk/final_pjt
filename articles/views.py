@@ -15,55 +15,26 @@ def home(request):
     python = Profile.objects.filter(language="Python")
     C = Profile.objects.filter(language="C")
     Java = Profile.objects.filter(language="Java")
-    Cp = Profile.objects.filter(language="C++")
-    JavaScript = Profile.objects.filter(language="JavaScript")
-    PHP = Profile.objects.filter(language="PHP")
-
-    Cp_cnt = len(Cp)
-    JavaScript_cnt = len(JavaScript)
-    PHP_cnt = len(PHP)
     python_cnt = len(python)
     C_cnt = len(C)
     Java_cnt = len(Java)
 
-    Cp_re = 0
-    JavaScript_re = 0
-    PHP_re = 0
+    # 여기 고쳤음! 비율 계산시에 값이 0이면 ZeroDivisionError라는 친구를 만나게 됨!
+
     python_re = 0
     C_re = 0
     Java_re = 0
-    re_li = [Cp_re, JavaScript_re, PHP_re, python_re, C_re, Java_re]
-    cnt_li = [Cp_cnt, JavaScript_cnt, PHP_cnt, python_cnt, C_cnt, Java_cnt]
     # 비율 계산
-    for i in range(len(re_li)):
-        if cnt_li[i] != 0:
-            re_li[i] = round(
-                (
-                    cnt_li[i]
-                    / (
-                        python_cnt
-                        + Java_cnt
-                        + C_cnt
-                        + Cp_cnt
-                        + JavaScript_cnt
-                        + PHP_cnt
-                    )
-                )
-                * 100
-            )
-    dic = {
-        "C++": re_li[0],
-        "JavaScript": re_li[1],
-        "PHP": re_li[2],
-        "Python": re_li[3],
-        "C": re_li[4],
-        "Java": re_li[5],
-    }
-    sorted_dict = sorted(dic.items(), key=lambda item: item[1], reverse=True)
+    if python_cnt != 0:
+        python_re = round((python_cnt / (python_cnt + Java_cnt + C_cnt)) * 100)
 
-    context = {
-        "sorted_dict": sorted_dict,
-    }
+    if C_cnt != 0:
+        C_re = round((C_cnt / (python_cnt + Java_cnt + C_cnt)) * 100)
+
+    if Java_cnt != 0:
+        Java_re = round((Java_cnt / (python_cnt + Java_cnt + C_cnt)) * 100)
+
+    context = {"Python_re": python_re, "C_re": C_re, "Java_re": Java_re}
     return render(request, "articles/home.html", context)
 
 
@@ -119,17 +90,15 @@ def detail(request, pk):
     }
     response = render(request, "articles/detail.html", context)
     expire_date, now = datetime.now(), datetime.now()
-    expire_date += timedelta(seconds=1)
+    expire_date += timedelta(days=1)
     expire_date = expire_date.replace(hour=0, minute=0, second=0, microsecond=0)
     expire_date -= now
     max_age = expire_date.total_seconds()
-    cookie_value = request.COOKIES.get("hitboard", "_")
+    cookie_value = request.COOKIES.get('hitboard', '_')
 
-    if f"_{pk}_" not in cookie_value:
-        cookie_value += f"{pk}_"
-        response.set_cookie(
-            "hitboard", value=cookie_value, max_age=max_age, httponly=True
-        )
+    if f'_{pk}_' not in cookie_value:
+        cookie_value += f'{pk}_'
+        response.set_cookie('hitboard', value=cookie_value, max_age=max_age, httponly=True)
         articles.hits += 1
         articles.save()
     return response
@@ -197,10 +166,20 @@ def comments_create(request, article_pk):
                 comment.user = request.user
                 comment.article = article
                 comment.save()
+
+                if not comment.user.profile.image:
+                    comment_user_image = "/static/images/no-avatar.jpg"
+                elif str(comment.user.profile.image)[:4] == 'http':
+                    comment_user_image = str(comment.user.profile.image)
+                else:
+                    comment_user_image = str(comment.user.profile.image.url)
+
                 data = {
                     "pk": comment.pk,
                     "content": comment.content,
-                    "userName": comment.user.username,
+                    "userName": comment.user.profile.nickname,
+                    'userPk': comment.user.pk,
+                    'commentUserImage': comment_user_image,
                 }
                 return JsonResponse(data)
             return redirect("articles:detail", article_pk)

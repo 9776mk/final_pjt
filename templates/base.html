@@ -67,17 +67,17 @@
           </ul> {% endcomment %}
 
           <!-- 회원 -->
-          <ul class="navbar-nav">
+          <ul class="navbar-nav align-items-center">
             <!-- 로그인이 되어 있으면 -->
             {% if request.user.is_authenticated %}
-              {% comment %} 쪽지 알람 {% endcomment %}
-              <li class='nav-item mx-2'>
-                <button type="button" class="btn btn-outline-primary position-relative" onclick="location.href='{% url 'notes:index' %}'">
-                  쪽지
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              <!-- 쪽지 알람 -->
+              <li class='nav-item'>
+                <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
+                <i class="bi bi-bell"></i>
+                  {% comment %} <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     99+
                     <span class="visually-hidden">unread messages</span>
-                  </span>
+                  </span> {% endcomment %}
                 </button>
               </li>
               <li class="nav-item">
