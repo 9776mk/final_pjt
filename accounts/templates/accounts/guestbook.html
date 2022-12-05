@@ -38,8 +38,6 @@
               <input type="submit" value="작성" name="gb_article_create" class="btn ms-3 follow-btn-hover color-2" disabled>
             {% endif %}
           </div>
-
-          
         </div>
       </form>
       <hr>
@@ -117,17 +115,17 @@
                                     <!-- 프로필 사진 3 -->
                                     {% if not comment.user.profile.image %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="guestbook-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% elif comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" class="guestbook-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% else %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" class="guestbook-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% endif %}
@@ -182,6 +180,7 @@
                     {% if request.user.is_authenticated %}
                       <form onsubmit="event.preventDefault(); create_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}')">
                         {% csrf_token %}
+
                         <div class="d-flex align-items-center my-2">
                           <div id="container" class="article-box d-flex align-items-center">
                             <textarea name="content" cols="40" rows="1" class="form-control article-text" style="border: 0px;" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
