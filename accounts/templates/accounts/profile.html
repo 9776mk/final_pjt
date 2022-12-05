@@ -57,6 +57,11 @@
       <p class="mb-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
       {% endif %}
       <p class="mt-1 mb-1"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+      {% if tier %}
+      <p> <img style="height:25px" src="https://static.solved.ac/tier_small/{{ tier }}.svg"> </p>
+      {% else %}
+      <p> 백준 아이디 등록하세요. </p>
+      {% endif %}
       <p class="mb-1">{{ user.profile.intro }}</p>
     </div>
   </div>

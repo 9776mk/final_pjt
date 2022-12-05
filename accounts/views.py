@@ -17,7 +17,7 @@ from .models import *
 from django.contrib import messages
 from django.core.files.base import ContentFile
 from django.db.models import *
-from django.utils import timezone   # settings.py의 USE_TZ=True면 datetime 대신 사용
+from django.utils import timezone  # settings.py의 USE_TZ=True면 datetime 대신 사용
 
 
 # Create your views here.
@@ -34,10 +34,17 @@ def signup(request):
             user = signup_form.save()
 
             profile = profile_form.save(commit=False)
-            Profile.objects.create(user=user, nickname=profile.nickname, github_id=profile.github_id, boj_id=profile.boj_id)
-            Guestbook.objects.create(user=user) # 방명록 생성
+            Profile.objects.create(
+                user=user,
+                nickname=profile.nickname,
+                github_id=profile.github_id,
+                boj_id=profile.boj_id,
+            )
+            Guestbook.objects.create(user=user)  # 방명록 생성
             # 회원가입 후 자동로그인
-            auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            auth_login(
+                request, user, backend="django.contrib.auth.backends.ModelBackend"
+            )
             return redirect("home")
     else:
         signup_form = CustomUserCreationForm()
@@ -50,24 +57,25 @@ def signup(request):
 
     return render(request, "accounts/signup.html", context)
 
+
 # 유효한 ID(username)인지 검사
 def is_valid_id(request):
-    username = json.loads(request.body).get('username')
+    username = json.loads(request.body).get("username")
     # print(username)
-    if  len(username) > 0:
-        if get_user_model().objects.filter(username=username).exists() :
+    if len(username) > 0:
+        if get_user_model().objects.filter(username=username).exists():
             is_valid = False
         else:
             is_valid = True
 
         data = {
-            'is_valid': is_valid,
+            "is_valid": is_valid,
         }
 
         return JsonResponse(data)
-    is_valid = 'null'
+    is_valid = "null"
     data = {
-        'is_valid': is_valid,
+        "is_valid": is_valid,
     }
 
     return JsonResponse(data)
@@ -78,34 +86,33 @@ def login(request):
     status = 1
     # 이미 로그인 → 로그인 X
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect("home")
 
-    if request.method == 'POST':
-        
+    if request.method == "POST":
+
         login_form = AuthenticationForm(request, data=request.POST)
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
-            return redirect(request.GET.get('next') or 'home')
+            return redirect(request.GET.get("next") or "home")
         else:
             status = 0
             login_form = AuthenticationForm()
             context = {
-                'status':status,
-                'login_form': login_form,
+                "status": status,
+                "login_form": login_form,
             }
 
-            return render(request, 'accounts/login.html', context)
-
+            return render(request, "accounts/login.html", context)
 
     else:
         login_form = AuthenticationForm()
 
     context = {
-        'status':status,
-        'login_form': login_form,
+        "status": status,
+        "login_form": login_form,
     }
 
-    return render(request, 'accounts/login.html', context)
+    return render(request, "accounts/login.html", context)
 
 
 def logout(request):
@@ -118,10 +125,23 @@ def profile(request, user_pk):
     followers = user.followers.all()
     followings = user.followings.all()
 
+    # 백준에서 
+    url = "https://solved.ac/api/v3/user/show"
+    profile_info = Profile.objects.get(pk=user_pk)
+    id = profile_info.boj_id
+    if id:
+        querystring = {"handle": {id}}
+        headers = {"Content-Type": "application/json"}
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        tier = response.json()["tier"]
+    else:
+        tier = 0
+
     context = {
         "user": user,
-        'followers': followers,
-        'followings': followings,
+        "followers": followers,
+        "followings": followings,
+        "tier": tier,
     }
 
     return render(request, "accounts/profile.html", context)
@@ -165,11 +185,12 @@ def github_login(request):
         f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}"
     )
 
-# git에서 로그인 유저 정보 
+
+# git에서 로그인 유저 정보
 def github_login_callback(request):
     if request.user.is_authenticated:
         raise SocialLoginException("User already logged in")
-        
+
     code = request.GET.get("code", None)
     if code is None:
         raise GithubException("Can't get code")
@@ -227,8 +248,8 @@ def github_login_callback(request):
     # DB에 깃허브 정보 저장
     user_info = login_data[service_name]
 
-    print(user_info["social_id"])   # 62585191
-    print(user_info["username"])    # jupiter6676
+    print(user_info["social_id"])  # 62585191
+    print(user_info["username"])  # jupiter6676
     print(user_info["social_profile_picture"])
 
     # 이미 연동된 유저는 로그인
@@ -249,34 +270,42 @@ def github_login_callback(request):
         # context = {
         #     "signup_form": signup_form,
         # }
-        
+
         now = timezone.now()
         username = str(user_info["social_id"]) + str(now.strftime("%f"))
-        user = get_user_model().objects.create(username=username, date_joined=now, social_id=user_info["social_id"])
-        Profile.objects.create(user=user, nickname=user_info["social_id"], github_id=user_info["username"], image=user_info["social_profile_picture"])
+        user = get_user_model().objects.create(
+            username=username, date_joined=now, social_id=user_info["social_id"]
+        )
+        Profile.objects.create(
+            user=user,
+            nickname=user_info["social_id"],
+            github_id=user_info["username"],
+            image=user_info["social_profile_picture"],
+        )
         Guestbook.objects.create(user=user)
 
         return redirect("/")
 
+
 # 유저 팔로우/언팔로우
 def follow(request, user_pk):
     if not request.user.is_authenticated:
-        return redirect('accounts:profile', user.pk)
-    
+        return redirect("accounts:profile", user.pk)
+
     user = get_object_or_404(get_user_model(), pk=user_pk)
-    
+
     # 나와 다른 유저만 (언)팔로우 가능
-    if request.user != user and request.method == 'POST':
+    if request.user != user and request.method == "POST":
         if user.followers.filter(pk=request.user.pk).exists():
             user.followers.remove(request.user)
-            is_following = False    # 팔로잉 취소
+            is_following = False  # 팔로잉 취소
         else:
             user.followers.add(request.user)
-            is_following = True    # 팔로잉
+            is_following = True  # 팔로잉
 
     data = {
-        'is_following': is_following,
-        'followers_count': user.followers.count(),
+        "is_following": is_following,
+        "followers_count": user.followers.count(),
     }
 
     return JsonResponse(data)
@@ -289,23 +318,23 @@ def guestbook(request, user_pk):
     gb_comments = user.guestbook.guestbookcomment_set.all()
 
     context = {
-        'user': user,
-        'gb_articles': gb_articles,
-        'gb_comments': gb_comments,
+        "user": user,
+        "gb_articles": gb_articles,
+        "gb_comments": gb_comments,
     }
 
-    return render(request, 'accounts/guestbook.html', context)
+    return render(request, "accounts/guestbook.html", context)
 
 
 # 방명록 글 작성
 @login_required
 def gb_article_create(request, user_pk):
     # if 'gb_article_create' in request.POST:
-    if request.method == 'POST':
+    if request.method == "POST":
         gb_article_form = GuestbookArticleForm(request.POST)
         guestbook = get_object_or_404(Guestbook, user_id=user_pk)
-        is_secret = True if request.POST.get('is_secret') == 'true' else False
-        
+        is_secret = True if request.POST.get("is_secret") == "true" else False
+
         if gb_article_form.is_valid():
             gb_article = gb_article_form.save(commit=False)
             gb_article.guestbook = guestbook
@@ -317,19 +346,19 @@ def gb_article_create(request, user_pk):
         # 깃허브 프사: https://avatars.githubusercontent.com/u/62585191?v=4
         # 파일로 올린 프사: /static/images/no-avatar.jpg
         if not gb_article.user.profile.image:
-            article_user_image = '/static/images/no-avatar.jpg'
-        elif str(gb_article.user.profile.image)[:4] == 'http':
+            article_user_image = "/static/images/no-avatar.jpg"
+        elif str(gb_article.user.profile.image)[:4] == "http":
             article_user_image = str(gb_article.user.profile.image)
         else:
             article_user_image = str(gb_article.user.profile.image.url)
 
         data = {
-            'article_pk': gb_article.pk,
-            'article_user': gb_article.user.profile.nickname,   # username?
-            'article_content': gb_article.content,
-            'article_created_at': gb_article.created_at.strftime('%Y.%m.%d'),
-            'article_user_image': article_user_image,
-            'article_is_secret': is_secret,
+            "article_pk": gb_article.pk,
+            "article_user": gb_article.user.profile.nickname,  # username?
+            "article_content": gb_article.content,
+            "article_created_at": gb_article.created_at.strftime("%Y.%m.%d"),
+            "article_user_image": article_user_image,
+            "article_is_secret": is_secret,
         }
 
         return JsonResponse(data)
@@ -342,13 +371,13 @@ def gb_article_delete(request, user_pk, gb_article_pk):
 
     is_deleted = False
 
-    if request.user == gb_article.user and request.method == 'POST':
+    if request.user == gb_article.user and request.method == "POST":
         gb_article.delete()
         # has_comment = True/False
         is_deleted = True
 
     data = {
-        'is_deleted': is_deleted,
+        "is_deleted": is_deleted,
     }
 
     return JsonResponse(data)
@@ -357,16 +386,16 @@ def gb_article_delete(request, user_pk, gb_article_pk):
 # 방명록 댓글 생성
 @login_required
 def gb_comment_create(request, user_pk, gb_article_pk):
-    if request.method == 'POST':
+    if request.method == "POST":
         gb_comment_form = GuestbookCommentForm(request.POST)
         article = get_object_or_404(GuestbookArticle, pk=gb_article_pk)
         guestbook = get_object_or_404(Guestbook, user_id=user_pk)
-        
-        if request.POST.get('is_secret') == 'true' or article.is_secret == True:
+
+        if request.POST.get("is_secret") == "true" or article.is_secret == True:
             is_secret = True
         else:
             is_secret = False
-        
+
         if gb_comment_form.is_valid():
             comment = gb_comment_form.save(commit=False)
             comment.guestbook = guestbook
@@ -376,25 +405,25 @@ def gb_comment_create(request, user_pk, gb_article_pk):
             comment.save()
 
         if not comment.user.profile.image:
-            comment_user_image = '/static/images/no-avatar.jpg'
-        elif str(comment.user.profile.image)[:4] == 'http':
+            comment_user_image = "/static/images/no-avatar.jpg"
+        elif str(comment.user.profile.image)[:4] == "http":
             comment_user_image = str(comment.user.profile.image)
         else:
             comment_user_image = str(comment.user.profile.image.url)
-        
+
         data = {
-            'comment_pk': comment.pk,
-            'comment_user': comment.user.profile.nickname,   # username?
-            'comment_content': comment.content,
-            'comment_created_at': comment.created_at.strftime('%Y.%m.%d'),
-            'comment_user_image': comment_user_image,
-            'article_is_secret': article.is_secret,
-            'comment_is_secret': is_secret,
+            "comment_pk": comment.pk,
+            "comment_user": comment.user.profile.nickname,  # username?
+            "comment_content": comment.content,
+            "comment_created_at": comment.created_at.strftime("%Y.%m.%d"),
+            "comment_user_image": comment_user_image,
+            "article_is_secret": article.is_secret,
+            "comment_is_secret": is_secret,
         }
 
         return JsonResponse(data)
 
-    return redirect('accounts:guestbook', user_pk)
+    return redirect("accounts:guestbook", user_pk)
 
 
 # 방명록 댓글 삭제
@@ -403,14 +432,14 @@ def gb_comment_delete(request, user_pk, gb_article_pk, gb_comment_pk):
     gb_comment = get_object_or_404(GuestbookComment, pk=gb_comment_pk)
     gb_article = get_object_or_404(GuestbookArticle, pk=gb_article_pk)
 
-    if request.user == gb_comment.user and request.method == 'POST':
+    if request.user == gb_comment.user and request.method == "POST":
         gb_comment.delete()
 
     # 방명록 글에 작성된 답글의 개수
     total_comment_cnt = gb_article.guestbookcomment_set.count()
 
     data = {
-        'total_comment_cnt': total_comment_cnt,
+        "total_comment_cnt": total_comment_cnt,
     }
 
     return JsonResponse(data)
