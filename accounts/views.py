@@ -125,7 +125,7 @@ def profile(request, user_pk):
     followers = user.followers.all()
     followings = user.followings.all()
 
-    # 백준에서 
+    # 백준에서 id로 정보 받아오기
     url = "https://solved.ac/api/v3/user/show"
     profile_info = Profile.objects.get(pk=user_pk)
     id = profile_info.boj_id
@@ -133,7 +133,10 @@ def profile(request, user_pk):
         querystring = {"handle": {id}}
         headers = {"Content-Type": "application/json"}
         response = requests.request("GET", url, headers=headers, params=querystring)
-        tier = response.json()["tier"]
+        if response.status_code == 200:
+            tier = response.json()["tier"]
+        else:
+            tier = -1
     else:
         tier = 0
 
