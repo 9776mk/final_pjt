@@ -85,8 +85,87 @@ option5.addEventListener('click', function () {
     }
 })
 // 질문 6
+let dropdown6 = document.querySelector('.dropdown6')
+let option6 = document.querySelector('.option6')
+
+dropdown6.onclick = function () {
+    dropdown6.classList.toggle('active');
+}
+function show6(a) {
+    document.querySelector('.text06').value = a;
+}
+option6.addEventListener('click', function () {
+    const text6 = document.querySelector('.text06').value
+    if (text6) {
+        const check6 = document.querySelector('.check6');
+        check6.className = ' val';
+    }
+})
 // 질문 7
+let dropdown7 = document.querySelector('.dropdown7')
+let option7 = document.querySelector('.option7')
+
+dropdown7.onclick = function () {
+    dropdown7.classList.toggle('active');
+}
+function show7(a) {
+    document.querySelector('.text07').value = a;
+}
+option7.addEventListener('click', function () {
+    const text7 = document.querySelector('.text07').value
+    if (text7) {
+        const check7 = document.querySelector('.check7');
+        check7.className = ' val';
+    }
+})
 // 질문 8
+let dropdown8 = document.querySelector('.dropdown8')
+let option8 = document.querySelector('.option8')
+
+dropdown8.onclick = function () {
+    dropdown8.classList.toggle('active');
+}
+function show8(a) {
+    document.querySelector('.text08').value = a;
+}
+option8.addEventListener('click', function () {
+    const text8 = document.querySelector('.text08').value
+    if (text8) {
+        const check8 = document.querySelector('.check8');
+        check8.className = ' val';
+    }
+})
 // 질문 9
+let dropdown9 = document.querySelector('.dropdown9')
+let option9 = document.querySelector('.option9')
+
+dropdown9.onclick = function () {
+    dropdown9.classList.toggle('active');
+}
+function show9(a) {
+    document.querySelector('.text09').value = a;
+}
+option9.addEventListener('click', function () {
+    const text9 = document.querySelector('.text09').value
+    if (text9) {
+        const check9 = document.querySelector('.check9');
+        check9.className = ' val';
+    }
+})
 // 질문 10
-// 질문 11
+let dropdown10 = document.querySelector('.dropdown10')
+let option10 = document.querySelector('.option10')
+
+dropdown10.onclick = function () {
+    dropdown10.classList.toggle('active');
+}
+function show10(a) {
+    document.querySelector('.text10').value = a;
+}
+option10.addEventListener('click', function () {
+    const text10 = document.querySelector('.text10').value
+    if (text10) {
+        const check10 = document.querySelector('.check10');
+        check10.className = ' val';
+    }
+})
