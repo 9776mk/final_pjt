@@ -1,7 +1,4 @@
 'use strict';
-
-
-
 let progressWap = document.querySelectorAll('.progress_wap');
 progressWap.forEach(item => {
     // console.log(item)
