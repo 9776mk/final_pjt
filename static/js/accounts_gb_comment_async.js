@@ -62,7 +62,7 @@ function create_gb_comment(form, user_pk, article_pk) {
                     <div style="font-weight: bold; font-size: 15px;">
                       <!-- 프로필 사진 3 -->
                       <div class="d-flex align-items-center">
-                        <a href="/accounts/${user_pk}/"><img src="${commentUserImage}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                        <a href="/accounts/${user_pk}/"><img src="${commentUserImage}" class="comment-img" alt=""></a>
                         <a href="/accounts/${user_pk}/"><p class="ms-2 mb-0">${commentUser}</p></a>
                       </div>
                     </div>
@@ -70,9 +70,8 @@ function create_gb_comment(form, user_pk, article_pk) {
                   </div>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <p class="mb-0 text-break">
-                    <span>${commentContent}</span>
-                    <span class="bi bi-lock"></span>
+                  <p class="mb-1 text-break">
+                    <span style="font-size: 13px;">🔒 </span><span style="white-space: pre-line">${commentContent}</span>
                   </p>
                   <div class="d-flex align-items-end">
                     <!-- 답글 삭제 Form -->
@@ -92,7 +91,7 @@ function create_gb_comment(form, user_pk, article_pk) {
                     <div style="font-weight: bold; font-size: 15px;">
                       <!-- 프로필 사진 3 -->
                       <div class="d-flex align-items-center">
-                        <a href="/accounts/${user_pk}/"><img src="${commentUserImage}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                        <a href="/accounts/${user_pk}/"><img src="${commentUserImage}" class="comment-img" alt=""></a>
                         <a href="/accounts/${user_pk}/"><p class="ms-2 mb-0">${commentUser}</p></a>
                       </div>
                     </div>
@@ -100,8 +99,8 @@ function create_gb_comment(form, user_pk, article_pk) {
                   </div>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <p class="mb-0 text-break">
-                    <span>${commentContent}</span>
+                  <p class="mb-1 text-break">
+                    <span style="white-space: pre-line">${commentContent}</span>
                   </p>
                   <div class="d-flex align-items-end">
                     <!-- 답글 삭제 Form -->
