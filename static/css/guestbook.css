@@ -1,3 +1,7 @@
+textarea::placeholder {
+  font-size: 14px;
+}
+
 .comment-bg {
   background-color: #f1f1f1;
   border-radius: 5px;
@@ -72,4 +76,25 @@
 .lock-btn {
   border: 0px;
   background-color: transparent;
+}
+
+.article-box {
+  width: 100%; 
+  border: 1px solid #cbcbcb; 
+  border-radius: 8px; 
+  background-color: white;
+}
+
+.article-text {
+  width: 100%; 
+  border-radius: 8px; 
+}
+
+.lock-box {
+  width: 100%; 
+  box-sizing: border-box; 
+  height: 35px; 
+  padding: 5px; 
+  font-size: 14px; 
+  border-top: 1px solid #e3e3e3;
 }
