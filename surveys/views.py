@@ -11,9 +11,6 @@ def index(request):
         "20대": 0,
         "30대": 0,
         "40대": 0,
-        "50대": 0,
-        "60대": 0,
-        "70대 이상": 0,
     }
 
     for age in ages:
@@ -24,7 +21,7 @@ def index(request):
         ages_dict[k] = int(round(v / total_people_cnt, 2) * 100)
 
     sorted_ages = sorted(ages_dict.items(), key=lambda item: item[1], reverse=True)
-    print(sorted_ages)
+    # print(sorted_ages)
 
     # 2. 코딩 경력
     careers = Survey.objects.all().values_list("career", flat=True)
@@ -47,14 +44,14 @@ def index(request):
     sorted_careers = sorted(
         careers_dict.items(), key=lambda item: item[1], reverse=True
     )
-    print(sorted_careers)
+    # print(sorted_careers)
 
     # 3. 개발자 유형
     developers = Survey.objects.all().values_list("developer_type", flat=True)
     developers_dict = {
-        "풀스택 개발자": 0,
-        "백엔드 개발자": 0,
-        "프론트엔드 개발자": 0,
+        "풀스택": 0,
+        "백엔드": 0,
+        "프론트엔드": 0,
         "기타": 0,
     }
 
@@ -67,7 +64,7 @@ def index(request):
     sorted_developers = sorted(
         developers_dict.items(), key=lambda item: item[1], reverse=True
     )
-    print(sorted_developers)
+    # print(sorted_developers)
 
     # 4. 배우고 싶은 언어
     d_langs = Survey.objects.all().values_list("desired_language", flat=True)
@@ -89,7 +86,7 @@ def index(request):
     sorted_d_langs = sorted(
         d_langs_dict.items(), key=lambda item: item[1], reverse=True
     )
-    print(sorted_d_langs)
+    # print(sorted_d_langs)
 
     # 5. 가장 많이 사용하는 언어
     u_langs = Survey.objects.all().values_list("most_using_language", flat=True)
@@ -111,7 +108,7 @@ def index(request):
     sorted_u_langs = sorted(
         u_langs_dict.items(), key=lambda item: item[1], reverse=True
     )
-    print(sorted_u_langs)
+    # print(sorted_u_langs)
 
     # 6. 코딩을 배운 방법
     methods = Survey.objects.all().values_list("how_to_learn", flat=True)
@@ -119,8 +116,7 @@ def index(request):
         "학교": 0,
         "책": 0,
         "온라인 강의": 0,
-        "코딩 부트캠프": 0,
-        "기타 자료 (동영상, 블로그 등)": 0,
+        "부트캠프": 0,
         "기타": 0,
     }
 
@@ -133,15 +129,15 @@ def index(request):
     sorted_methods = sorted(
         methods_dict.items(), key=lambda item: item[1], reverse=True
     )
-    print(sorted_methods)
+    # print(sorted_methods)
 
     # 7. 하루 평균 학습 시간
     hours = Survey.objects.all().values_list("daily_learning_hours", flat=True)
     hours_dict = {
-        "1시간 미만": 0,
-        "1시간 이상 3시간 미만": 0,
-        "3시간 이상 5시간 미만": 0,
-        "5시간 이상 10시간 미만": 0,
+        "1시간 이상": 0,
+        "2시간 이상": 0,
+        "3시간 이상": 0,
+        "5시간 이상": 0,
         "10시간 이상": 0,
     }
 
@@ -152,7 +148,7 @@ def index(request):
         hours_dict[k] = int(round(v / total_people_cnt, 2) * 100)
 
     sorted_hours = sorted(hours_dict.items(), key=lambda item: item[1], reverse=True)
-    print(sorted_hours)
+    # print(sorted_hours)
 
     # 9. 학위
     degrees = Survey.objects.all().values_list("degree", flat=True)
@@ -173,7 +169,7 @@ def index(request):
     sorted_degrees = sorted(
         degrees_dict.items(), key=lambda item: item[1], reverse=True
     )
-    print(sorted_degrees)
+    # print(sorted_degrees)
 
     # 10. 성별
     genders = Survey.objects.all().values_list("gender", flat=True)
@@ -192,7 +188,7 @@ def index(request):
     sorted_genders = sorted(
         genders_dict.items(), key=lambda item: item[1], reverse=True
     )
-    print(sorted_genders)
+    # print(sorted_genders)
 
     # 11. MBTI
     mbtis = Survey.objects.all().values_list("mbti", flat=True)
@@ -222,7 +218,7 @@ def index(request):
         mbtis_dict[k] = int(round(v / total_people_cnt, 2) * 100)
 
     sorted_mbtis = sorted(mbtis_dict.items(), key=lambda item: item[1], reverse=True)
-    print(sorted_mbtis)
+    # print(sorted_mbtis)
 
     context = {
         "sorted_ages": sorted_ages,
@@ -243,7 +239,7 @@ def index(request):
 def create(request):
     if request.method == "POST":
         survey_form = SurveyForm(request.POST)
-        print(survey_form.is_valid())
+        # print(survey_form.is_valid())
 
         if survey_form.is_valid():
             survey_form.save()

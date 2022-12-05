@@ -1,0 +1,89 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+  flex-direction: column;
+}
+main .eData,
+main .dData,
+main .sData {
+  background-color: #e9e9e9;
+  box-sizing: border-box;
+  border: 1px solid #D9D9D9;
+  width: 1100px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+main .eData h1,
+main .dData h1,
+main .sData h1 {
+  margin: 30px 0;
+}
+
+.dData .servey,
+.eData .servey,
+.sData .servey {
+  width: 80%;
+  margin: auto;
+  margin-bottom: 60px;
+}
+.dData .servey font,
+.eData .servey font,
+.sData .servey font {
+  margin-right: 10px;
+  text-align: end;
+  width: 10%;
+}
+
+.dStatus,
+.eStatus,
+.sStatus {
+  display: flex;
+  width: auto;
+  margin: 20px 0;
+  border-radius: 5px;
+  height: 26px;
+  /* border: 1px solid #3498db; */
+  /* box-sizing: border-box; */
+}
+
+.limitbox {
+  width: 85%;
+  display: flex;
+  position: relative;
+}
+
+.bar_frame {
+  width: 0;
+  background: linear-gradient(135deg, rgba(248, 168, 20, 0.704) 2%, rgba(249, 216, 140, 0.641) 98%);
+  border-radius: 5px;
+  height: 26px;
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(135deg, #f8aa14 2%, #f9d98c 98%);
+  border-radius: 5px;
+  height: 23px;
+}
+
+#svbtn {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #FF8E00;
+  background: #fff;
+  color: #FF8E00;
+  transition: all 0.4s;
+  border-radius: 8px;
+  text-align: center;
+  width: 100px;
+}
+
+#svbtn:hover {
+  background-color: #FF8E00;
+  color: white;
+}/*# sourceMappingURL=surveyIndex.css.map */
