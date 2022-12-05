@@ -243,7 +243,7 @@ def create(request):
 
         if survey_form.is_valid():
             survey_form.save()
-            return redirect("home")
+            return redirect("surveys:index")
 
     else:
         survey_form = SurveyForm()
