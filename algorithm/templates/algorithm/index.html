@@ -2,5 +2,14 @@
 {% block content %}
 <h1> 알고리즘 인덱스 페이지 </h1>
 
+<h2> 브론즈 </h2>
+{% for i in br %}
+   <p> {{ i.number }} | <a href="https://www.acmicpc.net/problem/{{i.number}}" target='_blank'>{{ i.title }}  </p> </a>
+{% endfor %}
+
+<h2> 실버 </h2>
+{% for i in si %}
+   <p> {{ i.number }} | <a href="https://www.acmicpc.net/problem/{{i.number}}" target='_blank'>{{ i.title }} </p></a>
+{% endfor %}
 
 {% endblock %}
