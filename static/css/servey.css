@@ -1,0 +1,505 @@
+.main {
+    padding: 30px;
+}
+
+/* 질문 1 */
+.dropdown1 {
+    position: relative;
+    width: 60%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown1::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown1.active::before {
+    right: 20px;
+}
+
+.dropdown1.active::after {
+    right: 28px;
+}
+
+.dropdown1::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown1 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown1 .option1 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown1.active .option1 {
+    /*클래스가 dropdown1 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown1 .option1 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown1 .option1 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check1 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.val {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* 질문 2 */
+.dropdown2 {
+    position: relative;
+    width: 60%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown2::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown2.active::before {
+    right: 20px;
+}
+
+.dropdown2.active::after {
+    right: 28px;
+}
+
+.dropdown2::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown2 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown2 .option2 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown2.active .option2 {
+    /*클래스가 dropdown2 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown2 .option2 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown2 .option2 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check2 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.check2.val {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 질문 3 */
+.dropdown3 {
+    position: relative;
+    width: 60%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown3::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown3.active::before {
+    right: 20px;
+}
+
+.dropdown3.active::after {
+    right: 28px;
+}
+
+.dropdown3::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown3 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown3 .option3 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown3.active .option3 {
+    /*클래스가 dropdown3 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown3 .option3 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown3 .option3 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check3 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.val {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* 질문 4 */
+.dropdown4 {
+    position: relative;
+    width: 60%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown4::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown4.active::before {
+    right: 20px;
+}
+
+.dropdown4.active::after {
+    right: 28px;
+}
+
+.dropdown4::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown4 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown4 .option4 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown4.active .option4 {
+    /*클래스가 dropdown4 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown4 .option4 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown4 .option4 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check4 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.val {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 질문 5 */
+.dropdown5 {
+    position: relative;
+    width: 60%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown5::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown5.active::before {
+    right: 20px;
+}
+
+.dropdown5.active::after {
+    right: 28px;
+}
+
+.dropdown5::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown5 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown5 .option5 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown5.active .option5 {
+    /*클래스가 dropdown5 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown5 .option5 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown5 .option5 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check5 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.val {
+    visibility: visible;
+    opacity: 1;
+}
