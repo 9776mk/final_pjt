@@ -988,23 +988,23 @@ label {
     width: 40%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     margin: auto;
 }
 
 
 #svbtn {
-    display: inline-block;
+    border: none;
     padding: 10px;
-    border: 1px solid #FF8E00;
-    background: #fff;
-    color: #FF8E00;
+    background-color: #FF8E00;
+    color: #fff;
     transition: all 0.4s;
     border-radius: 8px;
-    width: 60px;
+    text-align: center;
+    width: 100px;
+    letter-spacing: 3px;
 }
 
 #svbtn:hover {
-    background-color: #FF8E00;
-    color: white;
+    background: #c96f00;
 }
