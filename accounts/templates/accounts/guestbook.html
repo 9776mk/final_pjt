@@ -3,48 +3,11 @@
 {% load widget_tweaks %}
 
 {% block link %}
-  <style>
-    .comment-bg {
-      background-color: #f1f1f1;
-      border-radius: 5px;
-      padding: 13px 13px 5px 13px; 
-      margin-top: 10px;
-    }
-
-    .comment-bg-secret {
-      background-color: #b0b0b0;
-      border-radius: 5px;
-      padding: 13px 13px 5px 13px; 
-      margin-top: 10px;
-    }
-
-    .speech-bubble-secret {
-      position: relative;
-      background: #d5d5d5;
-      border-radius: .4em;
-        padding: 20px;
-        box-shadow: 1px 2px 5px 0 rgb(199 198 198 / 75%);
-    }
-
-    .speech-bubble-secret:after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      width: 0;
-      height: 0;
-      border: 19px solid transparent;
-      border-right-color: #d5d5d5;
-      border-left: 0;
-      border-top: 0;
-      margin-top: -9.5px;
-      margin-left: -13px;   
-    }
-  </style>
+<link rel="stylesheet" href="{% static 'css/guestbook.css' %}" type="text/css">
 {% endblock link %}
 
 {% block content %}
-  <div class="container my-5 d-flex justify-content-center">
+  <div class="container my-5 pb-5 d-flex justify-content-center">
     <div class="col-sm-12 col-lg-6 col-md-8 mx-3">
       <h3 class="text-center mb-5" style="font-family: 'HBIOS-SYS';">{{ user.profile.nickname }}님의 방명록 📜</h3>
       <!-- 방명록 글 작성 Form -->
@@ -53,29 +16,30 @@
         <div class="mb-3">
           <div class="d-flex align-items-center">
             {% if not request.user.profile.image %}
-              <img src="{% static 'images/no-avatar.jpg' %}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+              <img src="{% static 'images/no-avatar.jpg' %}" class="me-3 guestbook-img" alt="">
             {% elif request.user.profile.image|slugify|slice:'0:4' == 'http' %}
-              <img src="{{ request.user.profile.image }}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+              <img src="{{ request.user.profile.image }}" class="me-3 guestbook-img" alt="">
             {% else %}
-              <img src="{{ request.user.profile.image.url }}" class="me-3" style="border-radius: 70%; width: 50px;" alt="">
+              <img src="{{ request.user.profile.image.url }}" class="me-3 guestbook-img" alt="">
             {% endif %}
-
-            <textarea name="content" cols="40" rows="3" class="form-control me-2" placeholder="방명록을 남겨주세요" required id="id_content"></textarea>
+            <div id="container" class="article-box">
+              <textarea name="content" cols="40" rows="3" class="form-control me-2 article-text" style="border: 0px;" placeholder="방명록을 남겨주세요" required id="id_content"></textarea>
+              <div class="form lock-box">
+                <!-- 방명록 글 비공개 -->
+                <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" id="article-secret-btn" onclick="secretArticle(this)">
+                  <span id="article-secret-btn-icon" class="bi bi-unlock text-muted"> 비밀글</span>
+                </button>
+              </div>
+            </div>
             
             {% if request.user.is_authenticated %}
-              <input type="submit" value="작성" name="gb_article_create" class="btn ms-1 follow-btn-hover color-2" style="width: 80px; height: 40px; background-color: #f37c2c; color: white;">
+              <input type="submit" value="작성" name="gb_article_create" class="btn ms-3 follow-btn-hover color-2">
             {% else %}
-              <input type="submit" value="작성" name="gb_article_create" class="btn ms-1 follow-btn-hover color-2" style="width: 80px; height: 40px; background-color: #f37c2c; color: white;" disabled>
+              <input type="submit" value="작성" name="gb_article_create" class="btn ms-3 follow-btn-hover color-2" disabled>
             {% endif %}
           </div>
 
-          <!-- 방명록 글 비공개 -->
-          <div class="form">
-            <button type="button" name="is_secret" data-is-secret="false" id="article-secret-btn" onclick="secretArticle(this)">
-              <span id="article-secret-btn-icon" class="bi bi-unlock"></span>
-            </button>
-            <label class="form-label" for="secret-btn">비밀글</label>
-          </div>
+          
         </div>
       </form>
       <hr>
@@ -88,17 +52,17 @@
               <!-- 프로필 사진 2 -->
               {% if not article.user.profile.image %}
                 <div class="d-flex flex-column align-items-center">
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="guestbook-img" alt=""></a>
                   <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
                 </div>
               {% elif article.user.profile.image|slugify|slice:'0:4' == 'http' %}
                 <div class="d-flex flex-column align-items-center">
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image }}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image }}" class="guestbook-img" alt=""></a>
                   <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
                 </div>
               {% else %}
                 <div class="d-flex flex-column align-items-center">
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image.url }}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image.url }}" class="guestbook-img" alt=""></a>
                   <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
                 </div>
               {% endif %}
@@ -112,20 +76,20 @@
                     <!-- 비밀글 - 내용 & 날짜 -->
                     <div class="d-flex justify-content-between align-items-baseline mb-2">
                       <div class="me-3 text-break">
-                        <span>{{ article.content }}</span>
-                        <span class="bi bi-lock"></span>
+                        <p class="mb-2 text-muted" style="font-size: 13px;">🔒 비밀글</p>
+                        <span style="white-space: pre-line">{{ article.content }}</span>
                       </div>
                       <div style="font-size: 12px;">{{ article.created_at|date:'Y.m.d' }}</div>
                     </div>
 
                     <!-- 비밀글 - 답글 달기 토글 & 방명록 글 삭제 Form -->
-                    <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
-                      <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                    <div class="d-flex justify-content-between align-items-center" style="font-size: 13px;">
+                      <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" class="text-center">답글 달기</a>
                       
                       {% if request.user == article.user %}
                         <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
                           {% csrf_token %}
-                          <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">
+                          <input type="submit" class="btn-close" style="color:transparent;" onclick="return confirm('삭제하시겠습니까?');">
                         </form>
                       {% endif %}
                     </div>
@@ -137,7 +101,7 @@
                           {% csrf_token %}
                           <div class="d-flex align-items-center my-2">
                             <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
-                            <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1" style="width: 50px; height: 40px; background-color: #f37c2c; color: white;">
+                            <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1 follow-btn-hover color-2">
                           </div>
                         </form>
                       {% endif %}
@@ -153,17 +117,17 @@
                                     <!-- 프로필 사진 3 -->
                                     {% if not comment.user.profile.image %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="guestbook-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% elif comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" class="guestbook-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% else %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" class="guestbook-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% endif %}
@@ -172,9 +136,8 @@
                                 </div>
                               </div>
                               <div class="d-flex justify-content-between">
-                                <p class="mb-0 text-break">
-                                  <span>{{ comment.content }}</span>
-                                  <span class="bi bi-lock"></span>
+                                <p class="mb-1 text-break">
+                                  <span style="font-size: 13px;">🔒 </span><span style="white-space: pre-line">{{ comment.content }}</span>
                                 </p>
                                 <div class="d-flex align-items-end">
                                   <!-- 답글 삭제 Form -->
@@ -192,19 +155,19 @@
                       </div>
                     </div>
                   {% else %}
-                    <p class="m-0" style="color:#979797">비밀글입니다.</p>
+                    <p class="m-0" style="color:#979797">🔒 비밀글입니다.</p>
                   {% endif %}
                 <!-- 비밀글이 아닐 때 -->
                 {% else %}
                   <!-- 내용 & 날짜 -->
                   <div class="d-flex justify-content-between align-items-baseline mb-2">
-                    <div class="me-3 text-break">{{ article.content }}</div>
+                    <div class="me-3 text-break" style="white-space: pre-line">{{ article.content }}</div>
                     <div style="font-size: 12px;">{{ article.created_at|date:'Y.m.d' }}</div>
                   </div>
 
                   <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
-                  <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
-                    <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                  <div class="d-flex justify-content-between align-items-center" style="font-size: 13px;">
+                    <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" class="text-center">답글 달기</a>
                     
                     {% if request.user == article.user %}
                       <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
@@ -227,7 +190,7 @@
 
                       <!-- 방명록 답글 비공개 -->
                       <div class="form">
-                        <button type="button" name="is_secret" data-is-secret="false" data-article-id="{{ article.pk }}" class="comment-secret-btn" id="comment-secret-btn-{{ article.pk }}" onclick="secretComment(this, '{{ article.pk }}')">
+                        <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" data-article-id="{{ article.pk }}" class="comment-secret-btn" id="comment-secret-btn-{{ article.pk }}" onclick="secretComment(this, '{{ article.pk }}')">
                           <span id="comment-secret-btn-icon-{{ article.pk }}" class="bi bi-unlock"></span>
                         </button>
                         <label class="form-label" for="secret-btn">비밀글</label>
@@ -269,8 +232,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between">
                                   <p class="mb-0 text-break">
-                                    <span>{{ comment.content }}</span>
-                                    <span class="bi bi-lock"></span>
+                                    <span style="font-size: 13px;">🔒 </span><span style="white-space: pre-line">{{ comment.content }}</span>
                                   </p>
                                   <div class="d-flex align-items-end">
                                     <!-- 답글 삭제 Form -->
@@ -284,7 +246,33 @@
                                 </div>
                               </div>
                             {% else %}
-                              <p class="mb-2" style="color:#979797">비밀글입니다.</p>
+                              <div class="d-flex flex-column justify-content-between">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                  <div style="font-weight: bold; font-size: 15px;">
+                                    <!-- 프로필 사진 3 -->
+                                    {% if not comment.user.profile.image %}
+                                      <div class="d-flex align-items-center">
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="comment-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                      </div>
+                                    {% elif comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                                      <div class="d-flex align-items-center">
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" class="comment-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                      </div>
+                                    {% else %}
+                                      <div class="d-flex align-items-center">
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" class="comment-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
+                                      </div>
+                                    {% endif %}
+                                  </div>
+                                  <p class="mb-0" style="font-size: 12px;">{{ comment.created_at|date:'Y.m.d' }}</p>
+                                </div>
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <p class="mb-2" style="color:#979797; font-size: 15px;">🔒 비밀글입니다.</p>
+                              </div>
                             {% endif %}
                           <!-- 비밀댓글 아닐 때 -->
                           {% else %}
@@ -295,17 +283,17 @@
                                     <!-- 프로필 사진 3 -->
                                     {% if not comment.user.profile.image %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% elif comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% else %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" style="border-radius: 70%; width: 25px;" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% endif %}
@@ -315,7 +303,7 @@
                               </div>
                               <div class="d-flex justify-content-between">
                                 <p class="mb-0 text-break">
-                                  <span>{{ comment.content }}</span>
+                                  <span style="white-space: pre-line">{{ comment.content }}</span>
                                 </p>
                                 <div class="d-flex align-items-end">
                                   <!-- 답글 삭제 Form -->

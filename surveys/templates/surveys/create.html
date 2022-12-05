@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
-
+{% load static %} 
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/servey.css' %}">
+<script defer src="{% static 'js/servey.js' %}"></script>
+{% endblock link %}
 {% block content %}
   <h1 class="text-center">설문조사</h1>
 
@@ -9,156 +13,182 @@
     {% bootstrap_form survey_form %}
     <input type="submit">
   </form> {% endcomment %}
-
+<div class="main">
 
   <form action="" method="POST">
     {% csrf_token %}
-    <div class="mb-3">
-      <label class="form-label" for="id_start_age">Start age</label>
-      <select name="start_age" class="form-select" required id="id_start_age">
-        <option value="" selected>---------</option>
-        <option value="10대">10대</option>
-        <option value="20대">20대</option>
-        <option value="30대">30대</option>
-        <option value="40대">40대</option>
-        <option value="50대">50대</option>
-        <option value="60대">60대</option>
-        <option value="70살 이상">70살 이상</option>
-      </select>
-    </div>
+    <div class='Qbox'>
+      <label for="id_start_age">처음 코딩을 시작한 나이 <img class='check1'  src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+      <div class="dropdown1">
+        <input type="text" class="text01" name="start_age" required readonly id="id_start_age" placeholder="-----">
+        <div class="option1">
+          <div onclick="show1('10대')">10대</div>
+          <div onclick="show1('20대')">20대</div>
+          <div onclick="show1('30대')">30대</div>
+          <div onclick="show1('40대')">40대</div>
+          </div>
+        </input>
+      </div>
+  </div>
     
-    <div class="mb-3">
-      <label class="form-label" for="id_career">Career</label>
-      <select name="career" class="form-select" required id="id_career">
-        <option value="" selected>---------</option>
-        <option value="1년 미만">1년 미만</option>
-        <option value="1년 이상">1년 이상</option>
-        <option value="2년 이상">2년 이상</option>
-        <option value="3년 이상">3년 이상</option>
-        <option value="4년 이상">4년 이상</option>
-        <option value="5년 이상">5년 이상</option>
-        <option value="시니어">시니어</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_developer_type">Developer type</label>
-      <select name="developer_type" class="form-select" required id="id_developer_type">
-        <option value="" selected>---------</option>
-        <option value="풀스택 개발자">풀스택 개발자</option>
-        <option value="백엔드 개발자">백엔드 개발자</option>
-        <option value="프론트엔드 개발자">프론트엔드 개발자</option>
-        <option value="기타">기타</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_desired_language">Desired language</label>
-      <select name="desired_language" class="form-select" required id="id_desired_language">
-        <option value="" selected>---------</option>
-        <option value="Python">Python</option>
-        <option value="C">C</option>
-        <option value="Java">Java</option>
-        <option value="JavaScript">JavaScript</option>
-        <option value="HTML/CSS">HTML/CSS</option>
-        <option value="기타">기타</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_most_using_language">Most using language</label>
-      <select name="most_using_language" class="form-select" required id="id_most_using_language">
-        <option value="" selected>---------</option>
-        <option value="Python">Python</option>
-        <option value="C">C</option>
-        <option value="Java">Java</option>
-        <option value="JavaScript">JavaScript</option>
-        <option value="HTML/CSS">HTML/CSS</option>
-        <option value="기타">기타</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_how_to_learn">How to learn</label>
-      <select name="how_to_learn" class="form-select" required id="id_how_to_learn">
-        <option value="" selected>---------</option>
-        <option value="학교">학교</option>
-        <option value="책">책</option>
-        <option value="코딩 부트캠프">코딩 부트캠프</option>
-        <option value="온라인 강의">온라인 강의</option>
-        <option value="기타 자료 (동영상, 블로그 등)">기타 자료 (동영상, 블로그 등)</option>
-        <option value="기타">기타</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_daily_learning_hours">Daily learning hours</label>
-      <select name="daily_learning_hours" class="form-select" required="" id="id_daily_learning_hours">
-        <option value="" selected="">---------</option>
-        <option value="1시간 미만">1시간 미만</option>
-        <option value="1시간 이상 3시간 미만">1시간 이상 3시간 미만</option>
-        <option value="3시간 이상 5시간 미만">3시간 이상 5시간 미만</option>
-        <option value="5시간 이상 10시간 미만">5시간 이상 10시간 미만</option>
-        <option value="10시간 이상">10시간 이상</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_education">Education</label>
-      <select name="education" class="form-select" required="" id="id_education">
-        <option value="" selected="">---------</option>
-        <option value="중졸 이하">중졸 이하</option>
-        <option value="고졸">고졸</option>
-        <option value="전문대졸">전문대졸</option>
-        <option value="대졸 이상">대졸 이상</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_degree">Degree</label>
-      <select name="degree" class="form-select" required="" id="id_degree">
-        <option value="" selected="">---------</option>
-        <option value="없음">없음</option>
-        <option value="전문학사">전문학사</option>
-        <option value="학사">학사</option>
-        <option value="석사">석사</option>
-        <option value="박사">박사</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_gender">Gender</label>
-      <select name="gender" class="form-select" required id="id_gender">
-        <option value="" selected>---------</option>
-        <option value="여성">여성</option>
-        <option value="남성">남성</option>
-        <option value="제3의 성">제3의 성</option>
-      </select>
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label" for="id_mbti">Mbti</label>
-      <select name="mbti" class="form-select" id="id_mbti">
-        <option value="" selected="">---------</option>
-        <option value="ISTJ">ISTJ</option>
-        <option value="ISFJ">ISFJ</option>
-        <option value="INFJ">INFJ</option>
-        <option value="INTJ">INTJ</option>
-        <option value="ISTP">ISTP</option>
-        <option value="ISFP">ISFP</option>
-        <option value="INFP">INFP</option>
-        <option value="INTP">INTP</option>
-        <option value="ESTJ">ESTJ</option>
-        <option value="ESFJ">ESFJ</option>
-        <option value="ENFJ">ENFJ</option>
-        <option value="ENTJ">ENTJ</option>
-        <option value="ESTP">ESTP</option>
-        <option value="ESFP">ESFP</option>
-        <option value="ENFP">ENFP</option>
-        <option value="ENTP">ENTP</option>
-      </select>
-    </div>
+  <div class='Qbox'>
+    <label for="id_career">개발 경력 <img class='check2'  src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+    <div class="dropdown2">
+      <input name="career" type="text" class="text02" readonly required id="id_career" placeholder="-----">
+      <div class="option2">
+        <div onclick="show2('1년 미만')">1년 미만</div>
+        <div onclick="show2('1년 이상')">1년 이상</div>
+        <div onclick="show2('2년 이상')">2년 이상</div>
+        <div onclick="show2('3년 이상')">3년 이상</div>
+        <div onclick="show2('4년 이상')">4년 이상</div>
+        <div onclick="show2('5년 이상')">5년 이상</div>
+        <div onclick="show2('시니어')">시니어</div>
+      </div>
+    </input>
+  </div>
+</div>
 
-    <input type="submit">
+  <div class='Qbox'>
+    <label for="id_developer_type">개발 분야 <img class='check3'  src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+    <div class="dropdown3">
+      <input name="developer_type" class="text03" readonly required id="id_developer_type" placeholder="-----">
+      <div class="option3">
+        <div onclick="show3('풀스택 개발자')">풀스택 개발자</div>
+        <div onclick="show3('백엔드 개발자')">백엔드 개발자</div>
+        <div onclick="show3('프론트엔드 개발자')">프론트엔드 개발자</div>
+        <div onclick="show3('기타')">기타</div>
+      </div> 
+    </input>
+    </div>
+  </div>
+    
+  
+  
+  <div class='Qbox'>
+    <label for="id_desired_language">배우고 싶은 언어 <img class='check4'  src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+    <div class="dropdown4">
+      <input name="desired_language" class="text04" readonly required id="id_desired_language" placeholder="-----">
+      <div class="option4">
+        <div onclick="show4('Python')">Python</div>
+        <div onclick="show4('C')">C</div>
+        <div onclick="show4('Java')">Java</div>
+        <div onclick="show4('JavaScript')">JavaScript</div>
+        <div onclick="show4('HTML/CSS')">HTML/CSS</div>
+        <div onclick="show4('기타')">기타</div>
+      </div>  
+    </input>
+  </div>
+</div>
+  
+
+
+  <div class='Qbox'> 
+    <label for="id_most_using_language">가장 많이 사용하는 언어 <img class='check5' src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+    <div class="dropdown5">
+      <input name="most_using_language" class="text05" readonly required placeholder="-----">
+        <div class="option5">
+          <div onclick="show5('Python')">Python</div>
+          <div onclick="show5('C')">C</div>
+          <div onclick="show5('Java')">Java</div>
+          <div onclick="show5('JavaScript')">JavaScript</div>
+          <div onclick="show5('HTML/CSS')">HTML/CSS</div>
+          <div onclick="show5('기타')">기타</div>
+        </div>  
+      </input>
+    </div>
+  </div>
+    
+  <div class='Qbox'>
+    <label for="id_how_to_learn">코딩을 배운 방법 <img class='check6' src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+    <div class="dropdown6">
+      <input name="how_to_learn" class="text06" readonly required placeholder="-----">
+        <div class="option6">
+          <div onclick="show6('학교')">학교</div>
+          <div onclick="show6('책')">책</div>
+          <div onclick="show6('코딩 부트캠프')">코딩 부트캠프</div>
+          <div onclick="show6('온라인 강의')">온라인 강의</div>
+          <div onclick="show6('기타 자료 (동영상, 블로그 등)')">기타 자료 (동영상, 블로그 등)</div>
+          <div onclick="기show6('기타')">기타</div>
+        </div>
+      </input>
+    </div>
+  </div>
+
+    {% comment %} 7 {% endcomment %}
+  <div class='Qbox'>
+    <label for="id_daily_learning_hours">하루 평균 코딩시간 <img class='check7' src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+    <div class="dropdown7">
+      <input name="daily_learning_hours" class="text07" readonly required placeholder="-----">
+        <div class="option7">
+          <div onclick="show7('1시간 미만')">1시간 미만</div>
+          <div onclick="show7('1시간 이상 3시간 미만')">1시간 이상 3시간 미만</div>
+          <div onclick="show7('3시간 이상 5시간 미만')">3시간 이상 5시간 미만</div>
+          <div onclick="show7('5시간 이상 10시간 미만')">5시간 이상 10시간 미만</div>
+          <div onclick="show7('10시간 이상')">10시간 이상</div>
+        </div>
+      </input>
+    </div>
+  </div>
+    
+    {% comment %} 8 {% endcomment %}
+  <div class='Qbox'>
+    <label for="id_degree">최종학력 <img class='check8' src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+    <div class="dropdown8">
+      <input name="degree" class="text08" readonly required placeholder="-----">
+        <div class="option8">
+          <div onclick="show8('고졸')">고졸</div>
+          <div onclick="show8('전문학사')">전문학사</div>
+          <div onclick="show8('학사')">학사</div>
+          <div onclick="show8('석사')">석사</div>
+          <div onclick="show8('박사')">박사</div>
+        </div>  
+      </input>
+    </div>
+  </div>
+  
+{% comment %} 9 {% endcomment %}
+<div class='Qbox'>
+  <label for="id_gender">성별 <img class='check9' src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+  <div class="dropdown9">
+    <input name="gender" class="text09" readonly required placeholder="-----">
+      <div class="option9">
+        <div onclick="show9('여성')">여성</div>
+        <div onclick="show9('남성')">남성</div>
+        <div onclick="show9('제3의 성')">제3의 성</div>
+      </div>
+    </input>
+  </div>
+</div>
+    {% comment %} 10 {% endcomment %}
+    <div class='Qbox'>
+      <label for="id_mbti">MBTI <img class='check10' src="{% static 'images/check-icon.png' %}" alt="" width='24px;'></label>
+      <div class="dropdown10">
+        <input name="mbti" class="text10" readonly required placeholder="-----">
+        <div class="option10">
+          <div onclick="show10('ISTJ')">ISTJ</div>
+          <div onclick="show10('ISTP')">ISTP</div>
+          <div onclick="show10('ISFP')">ISFP</div>
+          <div onclick="show10('ISFJ')">ISFJ</div>
+          <div onclick="show10('INTJ')">INTJ</div>
+          <div onclick="show10('INTP')">INTP</div>
+          <div onclick="show10('INFJ')">INFJ</div>
+          <div onclick="show10('INFP')">INFP</div>
+          <div onclick="show10('ESTJ')">ESTJ</div>
+          <div onclick="show10('ESTP')">ESTP</div>
+          <div onclick="show10('ESFJ')">ESFJ</div>
+          <div onclick="show10('ESFP')">ESFP</div>
+          <div onclick="show10('ENTJ')">ENTJ</div>
+          <div onclick="show10('ENTP')">ENTP</div>
+          <div onclick="show10('ENFJ')">ENFJ</div>
+          <div onclick="show10('ENFP')">ENFP</div>
+        </div>
+      </input>
+    </div>
+  </div>
+  <div class='btnBox'>
+    <input id='svbtn' type="submit">
+  </div>
   </form>
+</div>
+
 {% endblock content %}

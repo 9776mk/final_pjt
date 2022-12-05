@@ -42,7 +42,7 @@ function create_gb_article(form, user_pk) {
                 <div class="d-flex justify-content-between align-items-center">
                   <!-- 프로필 사진 2 -->
                   <div class="d-flex flex-column align-items-center">
-                    <a href="/accounts/${user_pk}/"><img src="${articleUserImage}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                    <a href="/accounts/${user_pk}/"><img src="${articleUserImage}" class="guestbook-img" alt=""></a>
                     <a href="/accounts/${user_pk}/"><p class="mt-2 mb-0">${articleUser}</p></a>
                   </div>
     
@@ -51,17 +51,17 @@ function create_gb_article(form, user_pk) {
                     <!-- 내용 & 날짜 -->
                     <div class="d-flex justify-content-between align-items-baseline mb-2">
                       <div class="me-3 text-break">
-                        <span>${articleContent}</span>
+                        <span style="white-space: pre-line">${articleContent}</span>
                       </div>
                       <div style="font-size: 12px;">${articleCreatedAt}</div>
                     </div>
     
                     <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
-                    <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
-                      <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-${articlePk}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                    <div class="d-flex justify-content-between align-items-center" style="font-size: 13px;">
+                      <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-${articlePk}" class="text-center">답글 달기</a>
                       
                       <form id="gb-article-delete-form-${articlePk}" onsubmit="event.preventDefault(); delete_gb_article(this, '${user_pk}', '${articlePk}')">
-                        <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">
+                        <input type="submit" class="btn-close" style="color:transparent;" onclick="return confirm('삭제하시겠습니까?');">
                       </form>
                     </div>
     
@@ -70,13 +70,13 @@ function create_gb_article(form, user_pk) {
                       <form onsubmit="event.preventDefault(); create_gb_comment(this, '${user_pk}', '${articlePk}')">
                         <div class="d-flex align-items-center my-2">
                           <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
-                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1" style="width: 50px; height: 40px; background-color: #f37c2c; color: white;">
+                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1 follow-btn-hover color-2">
                         </div>
                       </form>
     
                       <!-- 방명록 답글 비공개 -->
                       <div class="form">
-                        <button type="button" name="is_secret" data-is-secret="false" data-article-id="${articlePk}" class="comment-secret-btn" id="comment-secret-btn-${articlePk}" onclick="secretComment(this, '${articlePk}')">
+                        <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" data-article-id="${articlePk}" class="comment-secret-btn" id="comment-secret-btn-${articlePk}" onclick="secretComment(this, '${articlePk}')">
                           <span id="comment-secret-btn-icon-${articlePk}" class="bi bi-unlock"></span>
                         </button>
                         <label class="form-label" for="secret-btn">비밀글</label>
@@ -96,7 +96,7 @@ function create_gb_article(form, user_pk) {
                 <div class="d-flex justify-content-between align-items-center">
                   <!-- 프로필 사진 2 -->
                   <div class="d-flex flex-column align-items-center">
-                    <a href="/accounts/${user_pk}/"><img src="${articleUserImage}" style="border-radius: 70%; width: 50px;" alt=""></a>
+                    <a href="/accounts/${user_pk}/"><img src="${articleUserImage}" class="guestbook-img" alt=""></a>
                     <a href="/accounts/${user_pk}/"><p class="mt-2 mb-0">${articleUser}</p></a>
                   </div>
 
@@ -105,15 +105,15 @@ function create_gb_article(form, user_pk) {
                     <!-- 내용 & 날짜 -->
                     <div class="d-flex justify-content-between align-items-baseline mb-2">
                       <div class="me-3 text-break">
-                        <span>${articleContent}</span>
-                        <span class="bi bi-lock"></span>
+                        <p class="mb-2 text-muted" style="font-size: 13px;">🔒 비밀글</p>
+                        <span style="white-space: pre-line">${articleContent}</span>
                       </div>
                       <div style="font-size: 12px;">${articleCreatedAt}</div>
                     </div>
 
                     <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
-                    <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
-                      <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-${articlePk}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                    <div class="d-flex justify-content-between align-items-center" style="font-size: 13px;">
+                      <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-${articlePk}" class="text-center">답글 달기</a>
                       
                       <form id="gb-article-delete-form-${articlePk}" onsubmit="event.preventDefault(); delete_gb_article(this, '${user_pk}', '${articlePk}')">
                         <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">
@@ -125,7 +125,7 @@ function create_gb_article(form, user_pk) {
                       <form onsubmit="event.preventDefault(); create_gb_comment(this, '${user_pk}', '${articlePk}')">
                         <div class="d-flex align-items-center my-2">
                           <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
-                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1" style="width: 50px; height: 40px; background-color: #f37c2c; color: white;">
+                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1 follow-btn-hover color-2">
                         </div>
                       </form>
 
