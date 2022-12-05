@@ -45,6 +45,14 @@ thead {
   color: rgb(30, 225, 255);
 }
 
+.board_page a.bt.prev:hover {
+  color: rgb(255, 30, 30);
+}
+
+.board_page a.bt.next:hover {
+  color: rgb(255, 30, 30);
+}
+
 .board_page a.num {
   padding-top: 9px;
   font-size: 0.8rem;

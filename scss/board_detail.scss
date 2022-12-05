@@ -1,14 +1,13 @@
 .board_view {
   width: 100%;
-  border: 1px solid #ff8800;
-  // border-bottom: 1px solid #ff8800;
+  border: 1px solid #b7b7b7;
   background-color: white;
   border-radius: 20px;
   .writer {
     // 위부터 시계방향
     padding: 50px 60px 0px;
     a {
-      width: 280px;
+      width: 305px;
     }
     .writer_img {
       width: 18%;
@@ -49,6 +48,7 @@
 
 // 말풍선 모양
 // https://projects.verou.me/bubbly/
+/* 로그인 안했을때 댓글창 가면 있는 로그인이 필요합니다.. */
 .speech-bubble {
 	position: relative;
 	color: #ff8800;
@@ -56,16 +56,17 @@
   &:hover {
     color: #fff;
     background-color: #04188a;
+    &::after {
+      border-right-color: #04188a;
+    }
   }
   &::after {
-    content: '';
     position: absolute;
     left: 0;
     top: 50%;
     width: 0;
     height: 0;
     border: 32px solid transparent;
-    border-right-color: #ff8800;
     border-left: 0;
     border-bottom: 0;
     margin-top: -16px;
@@ -73,8 +74,26 @@
   }
 }
 
-.like_btn {
-  background-image : url('../static/images/likes.png');
-  background-repeat : no-repeat;
-  background-size : 50px;
+// 댓글 달기 접기
+details {
+  color: #a4a4a4;
+}
+
+// 댓글 목록
+.comment_box {
+  border: 1px solid #a4a4a4;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 20px;
+  height: auto;
+  .comment_writer {
+    padding: 10px;
+    a {
+      .writer_img {
+        width: 40px;
+        height: 40px;
+        border-radius: 70%;
+      }
+    }
+  }
 }
