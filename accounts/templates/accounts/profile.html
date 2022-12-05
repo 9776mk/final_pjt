@@ -40,8 +40,8 @@
       </div>
 
       <p class="mb-1">
-        <a type="button" data-bs-toggle="modal" data-bs-target="#followerModal">팔로워 <span id="followers-count">{{ user.followers.count }}</span></a>
-        <a type="button" data-bs-toggle="modal" data-bs-target="#followingModal">팔로잉 <span id="followings-count">{{ user.followings.count }}</span></a>
+        <a type="button" data-bs-toggle="modal" data-bs-target="#followerModal">팔로워 <span id="followers-count-{{ user.pk }}">{{ user.followers.count }}</span></a>
+        <a type="button" data-bs-toggle="modal" data-bs-target="#followingModal">팔로잉 <span id="followings-count-{{ user.pk }}">{{ user.followings.count }}</span></a>
       </p>
       {% if user.profile.language == 'Python' %}
       <p class="mb-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
@@ -88,46 +88,50 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel2">팔로워 목록</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body py-2">
-          {% for follower in followers %}
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center my-3">
-              <div class="mx-3">
-                <a href="{% url 'accounts:profile' follower.pk %}">
-                  {% if follower.profile.image|slugify|slice:'0:4' == 'http' %}
-                  <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-                  <img src="{{ follower.profile.image }}" class="modal-profile-img" alt="">
-                  {% elif follower.profile.image %}
-                  <!-- 파일로 추가한 이미지 /media/ -->
-                  <img src="{{ follower.profile.image.url }}" class="modal-profile-img" alt="">
-                  {% else %}
-                  <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
-                  {% endif %}
-                </a>
+        <div id="followers-box" class="modal-body py-2">
+          {% if followers %}
+            {% for follower in followers %}
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center my-3" id="user-{{ follower.pk }}">
+                  <div class="mx-3">
+                    <a href="{% url 'accounts:profile' follower.pk %}">
+                      {% if follower.profile.image|slugify|slice:'0:4' == 'http' %}
+                      <!-- 깃허브에서 가져온 이미지: https로 시작 -->
+                      <img src="{{ follower.profile.image }}" class="modal-profile-img" alt="">
+                      {% elif follower.profile.image %}
+                      <!-- 파일로 추가한 이미지 /media/ -->
+                      <img src="{{ follower.profile.image.url }}" class="modal-profile-img" alt="">
+                      {% else %}
+                      <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
+                      {% endif %}
+                    </a>
+                  </div>
+                  <div>
+                    <a href="{% url 'accounts:profile' follower.pk %}">
+                      <p class="mb-0"><b>{{ follower.profile.nickname }}</b></p>
+                      <p class="mb-0" style="font-size: 13px;">{{ follower }}</p>
+                    </a>
+                  </div>
+                </div>
+                <div class="me-3">
+                  {% if request.user.is_authenticated %}
+                    <form class="follow-forms-1" data-user-id="{{ follower.pk }}">
+                      {% csrf_token %}
+                      {% if request.user != follower %}
+                        {% if request.user in follower.followers.all %}
+                          <input id="follow-btn-1-{{ follower.pk }}" type="submit" class="btn px-3 bbtn" value="언팔로우">
+                        {% else %}
+                          <input id="follow-btn-1-{{ follower.pk }}" type="submit" class="btn px-3 bbtn" value="팔로우">
+                        {% endif %}
+                      {% endif %}
+                    </form>
+                  {% endif %}                 
+                </div>
               </div>
-              <div>
-                <a href="{% url 'accounts:profile' follower.pk %}">
-                  <p class="mb-0"><b>{{ follower.profile.nickname }}</b></p>
-                  <p class="mb-0" style="font-size: 13px;">{{ follower }}</p>
-                </a>
-              </div>
-            </div>
-            <div class="me-3">
-              {% if request.user.is_authenticated %}
-              <form id="follow-form1" data-user-id="{{ user.pk }}">
-                {% csrf_token %}
-                {% if request.user != follower %}
-                  {% if request.user in follower.user.followers.all %}
-                    <input id="follow-btn1" type="submit" class="btn px-3 bbtn" value="언팔로우">
-                  {% else %}
-                    <input id="follow-btn1" type="submit" class="btn px-3 bbtn" value="팔로우">
-                  {% endif %}
-                {% endif %}
-              </form>
-              {% endif %}                 
-            </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
+          {% else %}
+            <p id="no-followers" class="text-muted my-3">현재 나를 팔로우하는 유저가 없습니다.</p>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -141,46 +145,50 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel3">팔로잉 목록</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body py-2">
-          {% for following in followings %}
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center my-3">
-              <div class="mx-3">
-                <a href="{% url 'accounts:profile' following.pk %}">
-                  {% if following.profile.image|slugify|slice:'0:4' == 'http' %}
-                  <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-                  <img src="{{ following.profile.image }}" class="modal-profile-img" alt="">
-                  {% elif following.profile.image %}
-                  <!-- 파일로 추가한 이미지 /media/ -->
-                  <img src="{{ following.profile.image.url }}" class="modal-profile-img" alt="">
-                  {% else %}
-                  <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
+        <div id="followings-box" class="modal-body py-2">
+          {% if followings %}
+            {% for following in followings %}
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center my-3" id="user-{{ following.pk }}">
+                  <div class="mx-3">
+                    <a href="{% url 'accounts:profile' following.pk %}">
+                      {% if following.profile.image|slugify|slice:'0:4' == 'http' %}
+                      <!-- 깃허브에서 가져온 이미지: https로 시작 -->
+                      <img src="{{ following.profile.image }}" class="modal-profile-img" alt="">
+                      {% elif following.profile.image %}
+                      <!-- 파일로 추가한 이미지 /media/ -->
+                      <img src="{{ following.profile.image.url }}" class="modal-profile-img" alt="">
+                      {% else %}
+                      <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
+                      {% endif %}
+                    </a>
+                  </div>
+                  <div>
+                    <a href="{% url 'accounts:profile' following.pk %}">
+                      <p class="mb-0"><b>{{ following.profile.nickname }}</b></p>
+                      <p class="mb-0" style="font-size: 13px;">{{ following }}</p>
+                    </a>
+                  </div>
+                </div>
+                <div class="me-3">
+                  {% if request.user.is_authenticated %}
+                  <form class="follow-forms-2" data-user-id="{{ following.pk }}">
+                    {% csrf_token %}
+                    {% if request.user != following %}
+                      {% if request.user in following.followers.all %}
+                        <input id="follow-btn-2-{{ following.pk }}" type="submit" class="btn px-3 bbtn" value="언팔로우">
+                      {% else %}
+                        <input id="follow-btn-2--{{ following.pk }}" type="submit" class="btn px-3 bbtn" value="팔로우">
+                      {% endif %}
+                    {% endif %}
+                  </form>
                   {% endif %}
-                </a>
+                </div>
               </div>
-              <div>
-                <a href="{% url 'accounts:profile' following.pk %}">
-                  <p class="mb-0"><b>{{ following.profile.nickname }}</b></p>
-                  <p class="mb-0" style="font-size: 13px;">{{ following }}</p>
-                </a>
-              </div>
-            </div>
-            <div class="me-3">
-              {% if request.user.is_authenticated %}
-              <form id="follow-form2" data-user-id="{{ user.pk }}">
-                {% csrf_token %}
-                {% if request.user != following %}
-                  {% if request.user in following.followers.all %}
-                    <input id="follow-btn2" type="submit" class="btn px-3 bbtn" value="언팔로우">
-                  {% else %}
-                    <input id="follow-btn2" type="submit" class="btn px-3 bbtn" value="팔로우">
-                  {% endif %}
-                {% endif %}
-              </form>
-              {% endif %}
-            </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
+          {% else %}
+            <p id="no-followings" class="text-muted my-3">현재 내가 팔로우하는 유저가 없습니다.</p>
+          {% endif %}
         </div>
       </div>
     </div>
