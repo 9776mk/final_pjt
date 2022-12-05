@@ -53,7 +53,8 @@
             </div>
             {% endfor %}
             <div>
-                <a href="{% url 'surveys:create' %}">설문조사 하러가기!</a>
+                <a href="{% url 'surveys:create' %}">설문조사 하러가기!</a>&nbsp;|&nbsp;
+                <a href="{% url 'surveys:index' %}">통계자료</a>
             </div>
         </div>
     </div>

@@ -10,9 +10,6 @@ class Survey(models.Model):
         ("20대", "20대"),
         ("30대", "30대"),
         ("40대", "40대"),
-        ("50대", "50대"),
-        ("60대", "60대"),
-        ("70살 이상", "70살 이상"),
     )
     start_age = models.CharField(max_length=10, choices=START_AGE)
 
@@ -30,9 +27,9 @@ class Survey(models.Model):
 
     # 개발자 유형
     DEVELOPER_TYPE = (
-        ("풀스택 개발자", "풀스택 개발자"),
-        ("백엔드 개발자", "백엔드 개발자"),
-        ("프론트엔드 개발자", "프론트엔드 개발자"),
+        ("풀스택", "풀스택"),
+        ("백엔드", "백엔드"),
+        ("프론트엔드", "프론트엔드"),
         ("기타", "기타"),
     )
     developer_type = models.CharField(max_length=10, choices=DEVELOPER_TYPE)
@@ -64,19 +61,18 @@ class Survey(models.Model):
     HOW_TO_LEARN = (
         ("학교", "학교"),
         ("책", "책"),
-        ("코딩 부트캠프", "코딩 부트캠프"),
+        ("부트캠프", "부트캠프"),
         ("온라인 강의", "온라인 강의"),
-        ("기타 자료 (동영상, 블로그 등)", "기타 자료 (동영상, 블로그 등)"),
         ("기타", "기타"),
     )
     how_to_learn = models.CharField(max_length=20, choices=HOW_TO_LEARN)
 
     # 하루 평균 학습 시간
     DAILY_LEARNING_HOURS = (
-        ("1시간 미만", "1시간 미만"),
-        ("1시간 이상 3시간 미만", "1시간 이상 3시간 미만"),
-        ("3시간 이상 5시간 미만", "3시간 이상 5시간 미만"),
-        ("5시간 이상 10시간 미만", "5시간 이상 10시간 미만"),
+        ("1시간 이상", "1시간 이상"),
+        ("2시간 이상", "2시간 이상"),
+        ("3시간 이상", "3시간 이상"),
+        ("5시간 이상", "5시간 이상"),
         ("10시간 이상", "10시간 이상"),
     )
     daily_learning_hours = models.CharField(max_length=20, choices=DAILY_LEARNING_HOURS)
