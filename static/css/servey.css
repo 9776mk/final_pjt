@@ -1008,3 +1008,46 @@ label {
 #svbtn:hover {
     background: #ff7b00;
 }
+
+@media screen and (max-width: 1024px) {
+    .Label {
+        width: 70% !important;
+    }
+
+    .dropdown1,
+    .dropdown2,
+    .dropdown3,
+    .dropdown4,
+    .dropdown5,
+    .dropdown6,
+    .dropdown7,
+    .dropdown8,
+    .dropdown9,
+    .dropdown10 {
+        width: 70% !important;
+
+    }
+
+
+}
+
+@media screen and (max-width: 500px) {
+    .Label {
+        width: 90% !important;
+    }
+
+    .dropdown1,
+    .dropdown2,
+    .dropdown3,
+    .dropdown4,
+    .dropdown5,
+    .dropdown6,
+    .dropdown7,
+    .dropdown8,
+    .dropdown9,
+    .dropdown10 {
+        width: 90% !important;
+
+    }
+
+}
