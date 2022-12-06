@@ -77,9 +77,8 @@ main {
 #svbtn {
     display: inline-block;
     padding: 10px;
-    border: 1px solid #FF8E00;
-    background: #fff;
-    color: #FF8E00;
+    background: #FF8E00;
+    color: #fff;
     transition: all 0.4s;
     border-radius: 8px;
     text-align: center;
@@ -87,8 +86,8 @@ main {
 }
 
 #svbtn:hover {
-    background-color: #FF8E00;
-    color: white;
+    background: #ff7b00;
+    color: #fff;
 }
 
 #back-to-top {
@@ -112,8 +111,7 @@ main {
 }
 
 #back-to-top:hover {
-    background-color: #FF8E00;
-    color: white;
+    background-color: #ff7b00;
     padding: 1em 3em;
 }
 
