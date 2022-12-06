@@ -34,7 +34,7 @@
         <div class="writer">작성자</div>
         <div class="date">작성일</div>
       </div>
-      {% for article in articles.all %}
+      {% for article in articles %}
         <div>
           <div class="category">
             {% if article.category == '자료공유'%}
@@ -59,10 +59,49 @@
       {% endfor %}
     </div>
 
+    <!-- 페이징처리 시작 -->
+    <ul class='paginator justify-content-center'></ul>
+
     <!--페이지네이션-->
-    <div class="board_page">
-      <a href="#" class="bt first">
-        << </a> <a href="#" class="bt prev"> < </a> <a href="#" class="num on">1 </a> <a href="#" class="num">2</a> <a href="#" class="num">3</a> <a href="#" class="num">4</a> <a href="#" class="num">5</a> <a href="#" class="bt next"> > </a> <a href="#" class="bt last"> >>
+    <div class="paginator board_page">
+      <a href="?page=1" class="page-link bt first">
+        <i class="bi bi-chevron-bar-left"></i>
+      </a>
+      <!-- 이전 페이지 -->
+      {% if articles.has_previous %}
+        <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% endif %}
+
+      <!-- 페이지 리스트 -->
+      {% comment %}  {% endcomment %}
+      {% for page_number in articles.paginator.page_range %}
+        {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
+          {% if page_number == articles.number %}
+            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% else %}
+            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      <!-- 다음 페이지 -->
+      {% if articles.has_next %}
+        <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+      <a href="?page={{max_index}}" class="page-link bt last">
+        <i class="bi bi-chevron-bar-right"></i>
       </a>
     </div>
 
@@ -72,20 +111,6 @@
     </div>
   </div>
 
-  <!--페이지네이션 따라 만들기 하던거-->
-  {% comment %} <div class='page'>
-    <ul>
-      <li>
-        <a href="#" class='first'>맨 처음으로</a>
-      </li>
-      <li>
-        <a href="#" class='arrow left'>
-          <<</a> </li> <li><a href="#" class='active num'>1</a></li> <li><a href="#" class='num'>2</a></li> <li><a href="#" class='num'>3</a></li> <li><a href="#" class='num'>4</a></li> <li><a href="#" class='arrow right'>>></a>
-      </li>
-      <li>
-        <a href="#" class='last'>맨 마지막으로</a>
-      </li>
-    </ul>
-  </div> {% endcomment %}
-  
 {% endblock content %}
+
+{% block script %}{% endblock script %}

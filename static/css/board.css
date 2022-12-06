@@ -1,6 +1,5 @@
 a {
   text-decoration: none;
-  color: #000000;
 }
 
 thead {
@@ -133,26 +132,6 @@ thead {
 
 .board_list .date {
   width: 15%;
-}
-
-
-/* 페이지네이션 따라만들기 */
-.page {
-  /* div 사이즈 영역 안에서의 center */
-  text-align: center; 
-  width: 50%
-}
-
-.pagination { 
-  list-style: none;
-  display: inline-block;
-  padding: 0;
-  margin-top: 20px;
-}
-
-.pagination li {
-  display: inline;
-  text-align: center;
 }
 
 /* 숫자들에 대한 스타일 지정 */
