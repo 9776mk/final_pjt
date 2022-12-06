@@ -91,7 +91,7 @@ function numAnimation(item) {
     window.addEventListener('scroll', function () {
         let scrollAmt = this.scrollY;
         // console.log(initialRate, targetRate)
-        console.log(triggerPoint, scrollAmt)
+        //console.log(triggerPoint, scrollAmt)
 
         if (scrollAmt > triggerPoint) {
             if (!excuted) {
@@ -116,3 +116,29 @@ function numAnimation(item) {
         }, 20);
     }
 }
+
+var btt = document.getElementById('back-to-top'),
+    docElem = document.documentElement,
+    offset,
+    scrollPos,
+    docHeight;
+
+docHeight = Math.max(docElem.offsetHeight, docElem.scrollHeight); //둘중에 높은 값을 가져온다.
+// console.log(docHeight);
+
+scrollPos = docElem.scrollTop // 스크롤 양을 알 수 있음...
+
+if (docHeight != '') {
+    offset = docHeight / 4;
+}
+// 스크롤 이벤트 추가
+window.addEventListener('scroll', function () { // 스크롤 양을 실시간으로 보여줌...
+    scrollPos = docElem.scrollTop;
+
+    btt.className = (scrollPos > offset) ? 'visible' : '';
+
+});
+btt.addEventListener('click', function (e) {
+    e.preventDefault() // 링크의 본연의 기능을 막는다.
+    docElem.scrollTop = 0
+})
