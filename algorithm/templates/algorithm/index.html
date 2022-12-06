@@ -2,6 +2,105 @@
 {% block content %}
 <h1> 알고리즘 인덱스 페이지 </h1>
 
+
+<div class='bt_wrap'>
+  <a class='px-4' href="">브론즈</a>
+  <a class='px-4' href="">골드</a>
+  <a class='px-4' href="">구현</a>
+</div>
+
+
+<div style="width: 1070px; margin: 0 auto;">
+  <div class="d-flex align-items-center flex-column" style="margin: 40px; 0">
+    <div class="d-flex flex-column justify-content-center">
+      <p class='mb-2' style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51)">카테고리별 검색</p>
+      <p class="text-muted" style="font-size: 16px; font-weight:400;">아래 키워드를 클릭해보세요 </p>
+    </div>
+    <div class="d-flex" style="margin-bottom: 27px;">
+      <button class="category-title active mx-1" type="button" id="all"
+        style="padding: 10px 20px; border-radius: 22px; height: 40px; border: none;">
+        모두보기</button>
+      {% for category in categories %}
+      <button class="category-title mx-1" type="button" id="{{ category.category }}"
+        style="padding: 10px 20px; border-radius: 22px; height: 40px; border: none;" onClick="test()">
+        {{ category.category }}</button>
+      {% endfor %}
+    </div>
+    <div class="swiper-box posts-collect" style="position: relative">
+      <section class="swiper posts-main-container" id="test-slide">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper" id="category-div">
+          <!-- Slides -->
+          {% for product in products_name %}
+          <div class="productcard swiper-slide all {{ product.category }}"
+            style="border: 0px solid black; color: rgb(51, 51, 51);" data-group="{{ product.category }}">
+            <a href="{% url 'products:detail' product.pk %}" style="color:rgb(51, 51, 51)">
+              <div class="product-img" style="">
+                <img src="{{ product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
+                  style="object-fit: cover">
+              </div>
+              <div style="padding: 12px 10px 0 0">
+                <div class="d-flex justify-content-between">
+                  <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.brand }}</span><span
+                    class="m-0 category-bg" style="">{{ product.category }}</span>
+                </div>
+                <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ product.product_name }}
+                </p>
+                <p class="m-0" style="font-weight: 600; font-size: 16px; letter-spacing: -0.5px;">
+                  {{ product.price }} 원</p>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+  const categoryTitle = document.querySelectorAll('.category-title');
+  const allCategoryPosts = document.querySelectorAll('.all');
+
+  for (let i = 0; i < categoryTitle.length; i++) {
+    categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
+  }
+
+  function filterPosts(item) {
+    changeActivePosition(item);
+    for (let i = 0; i < allCategoryPosts.length; i++) {
+      if (allCategoryPosts[i].classList.contains(item.attributes.id.value)) {
+        allCategoryPosts[i].style.display = "block";
+      } else {
+        allCategoryPosts[i].style.display = "none";
+      }
+    }
+  }
+
+  function changeActivePosition(activeItem) {
+    for (let i = 0; i < categoryTitle.length; i++) {
+      categoryTitle[i].classList.remove('active');
+    }
+    activeItem.classList.add('active');
+  };
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <h2> 브론즈 </h2>
 {% for i in br %}
    <p> {{ i.number }} | <a href="https://www.acmicpc.net/problem/{{i.number}}" target='_blank'>{{ i.title }}  </p> </a>
@@ -11,5 +110,36 @@
 {% for i in si %}
    <p> {{ i.number }} | <a href="https://www.acmicpc.net/problem/{{i.number}}" target='_blank'>{{ i.title }} </p></a>
 {% endfor %}
+
+<script>
+  const categoryTitle = document.querySelectorAll('.category-title');
+  const allCategoryPosts = document.querySelectorAll('.all');
+
+  for (let i = 0; i < categoryTitle.length; i++) {
+    categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
+  }
+
+  function filterPosts(item) {
+    changeActivePosition(item);
+    for (let i = 0; i < allCategoryPosts.length; i++) {
+      if (allCategoryPosts[i].classList.contains(item.attributes.id.value)) {
+        allCategoryPosts[i].style.display = "block";
+      } else {
+        allCategoryPosts[i].style.display = "none";
+      }
+    }
+  }
+
+  function changeActivePosition(activeItem) {
+    for (let i = 0; i < categoryTitle.length; i++) {
+      categoryTitle[i].classList.remove('active');
+    }
+    activeItem.classList.add('active');
+  };
+</script>
+
+
+
+
 
 {% endblock %}
