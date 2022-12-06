@@ -12,21 +12,31 @@
         <table class="table bg-white">
           <thead>
             <tr>
-              <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
+              <th scope="col">
+                <a href="{% url 'notes:send' %}">쪽지 쓰기</a>
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
+              <th scope="row">
+                <a href="{% url 'notes:index' %}">받은 쪽지함</a>
+              </th>
             </tr>
             <tr>
-              <th scope="row"><a href="{% url 'notes:sent' %}">보낸 쪽지함</a></th>
+              <th scope="row">
+                <a href="{% url 'notes:sent' %}">보낸 쪽지함</a>
+              </th>
             </tr>
             <tr>
-              <th scope="row"><a href="{% url 'notes:important' %}">보관함</a></th>
+              <th scope="row">
+                <a href="{% url 'notes:important' %}">보관함</a>
+              </th>
             </tr>
             <tr>
-              <th scope="row"><a href="{% url 'notes:trash' %}">휴지통</a></th>
+              <th scope="row">
+                <a href="{% url 'notes:trash' %}">휴지통</a>
+              </th>
             </tr>
           </tbody>
         </table>
@@ -48,48 +58,67 @@
             {% for note in notes %}
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
-              <tr class="text-muted" id="{{note.pk}}">
-                <td>{{ note.from_user.profile.nickname }}</td>
-                <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
-                {% if note.read == 1 %}
-                <td>읽음</td>
-                {% else %}
-                <td>안읽음</td>
-                {% endif %}
-                {% if not note.important %}
-                <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
-                {% else %}
-                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1"></i></a></td>
-                {% endif %}
-                <td>
-                  <a href="{% url 'notes:delete' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                  </svg></a>
-                </td>
-              </tr>
-              {% else %}
-              <!-- 쪽지 안읽음 일때-->
-              <tr id="{{note.pk}}">
-                <td>{{ note.from_user.profile.nickname }}</td>
-                <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
-                {% if note.read == 1 %}
-                <td>읽음</td>
-                {% else %}
-                <td>안읽음</td>
-                {% endif %}
-                <td><a href="{% url 'notes:trash_return' note.pk %}"><i class="bi bi-recycle"></i></a>
-                </td>
-                <td>
-                  <form data-note-id="{{ note.pk }}" class="note-delete-forms">
-                    {% csrf_token %}
-                    <a href=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                <tr class="text-muted" id="{{note.pk}}">
+                  <td>{{ note.from_user.profile.nickname }}</td>
+                  <td>
+                    <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a>
+                  </td>
+                  <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                  {% if note.read == 1 %}
+                    <td>읽음</td>
+                  {% else %}
+                    <td>안읽음</td>
+                  {% endif %}
+                  {% if not note.important %}
+                    <td scope="row">
+                      <a href="{% url 'notes:important_check' note.id %}">
+                        <i class="bi bi-star mx-1"></i>
+                      </a>
+                    </td>
+                  {% else %}
+                    <td scope="row">
+                      <a href="{% url 'notes:important_return' note.id %}">
+                        <i class="bi bi-star-fill mx-1"></i>
+                      </a>
+                    </td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'notes:delete' note.pk %}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewbox="0 0 16 16">
                         <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                    </svg></a>
-                  </form>
-                </td>
-              </tr>
+                      </svg>
+                    </a>
+                  </td>
+                </tr>
+              {% else %}
+                <!-- 쪽지 안읽음 일때-->
+                <tr id="note-{{note.pk}}">
+                  <td>{{ note.from_user.profile.nickname }}</td>
+                  <td>
+                    <a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a>
+                  </td>
+                  <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                  {% if note.read == 1 %}
+                    <td>읽음</td>
+                  {% else %}
+                    <td>안읽음</td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'notes:trash_return' note.pk %}">
+                      <i class="bi bi-recycle"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <form data-note-id="{{ note.pk }}" class="note-delete-forms">
+                      {% csrf_token %}
+                      <button type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewbox="0 0 16 16">
+                          <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                        </svg>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
               {% endif %}
             {% endfor %}
           </tbody>
@@ -98,27 +127,36 @@
     </div>
   </div>
 {% endblock %}
+{% block script %}
+  <script>
+    const noteDeleteForms = document.querySelectorAll('.note-delete-forms')
+    noteDeleteForms.forEach(form => {
+      form.addEventListener('submit', event => {
+        event.preventDefault()
+        const csrfToken = document
+          .querySelector('[name=csrfmiddlewaretoken]')
+          .value
+        const noteId = event
+          .target
+          .dataset
+          .noteId
+          console
+          .log(noteId)
+        axios({
+          method: 'post',
+          url: `/notes/${noteId}/delete/`,
+          headers: {
+            'X-CSRFToken': csrfToken
+          }
+        }).then(response => {
+          const note = document.querySelector(`#note-${noteId}`)
+          const is_deleted = response.data.is_deleted
 
-<script>
-  const noteDeleteForms = document.querySelectorAll('.note-delete-forms')
-  noteDeleteForms.forEach(form => {
-    form.addEventListener('submit', event => {
-      event.preventDefault()
-      const noteId = event.target.dataset.noteId
-
-      axios({
-        method: 'post',
-        url: `/${noteId}/delete/`,
-        headers: {'X-CSRFToken': csrfToken},
-      })
-      .then(response => {
-        const note = document.querySelector(`#note-${noteId}`)
-        const is_deleted = response.data.is_deleted
-        
-        if (is_deleted === true) {
-          note.remove()
-        }
+          if (is_deleted === true) {
+            note.remove()
+          }
+        })
       })
     })
-  })
-</script>
+  </script>
+{% endblock script %}
