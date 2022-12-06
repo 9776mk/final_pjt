@@ -13,9 +13,12 @@ def index(request):
     notes = Notes.objects.filter(to_user_id=request.user.id, garbage=False).order_by(
         "-created_at"
     )
+    notes_counter= Notes.objects.filter(read=0).count()
     context = {
         "notes": notes,
+        # "notes_counter":notes_counter,
     }
+    print(notes_counter)
     return render(request, "notes/index.html", context)
 
 
@@ -70,7 +73,11 @@ def detail(request, pk):
 def delete(request, pk):
     note = get_object_or_404(Notes, pk=pk)
     note.delete()
-    return redirect("notes:trash")
+
+    context={
+        "is_deleted":True
+    }
+    return JsonResponse(context)
 
 
 @login_required
@@ -78,6 +85,8 @@ def trash_throw_away(request, pk):
     note = Notes.objects.get(pk=pk)
     note.garbage = True
     note.save()
+    if 'next' in request.POST:
+        return redirect(request.POST.get('next'))
     return redirect("notes:index")
 
 
@@ -91,8 +100,7 @@ def trash_return(request, pk):
 
 @login_required
 def trash(request):
-    trash_notes = Notes.objects.filter(to_user_id=request.user.id, 
-    garbage=True).order_by("-created_at")
+    trash_notes = Notes.objects.filter(to_user_id=request.user.id, garbage=True).order_by("-created_at")
     context = {
         "notes": trash_notes,
     }

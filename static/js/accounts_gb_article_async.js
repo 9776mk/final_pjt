@@ -69,18 +69,18 @@ function create_gb_article(form, user_pk) {
                       <!-- 답글 생성 Form -->
                       <form onsubmit="event.preventDefault(); create_gb_comment(this, '${user_pk}', '${articlePk}')">
                         <div class="d-flex align-items-center my-2">
-                          <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
-                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1 follow-btn-hover color-2">
+                          <div id="container" class="article-box d-flex align-items-center">
+                            <textarea name="content" cols="40" rows="1" class="form-control article-text" style="border: 0px;" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
+                            <!-- 방명록 답글 비공개 -->
+                            <div class="form cmt-lock-box">
+                              <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" data-article-id="${articlePk}" class="comment-secret-btn" id="comment-secret-btn-${articlePk}" onclick="secretComment(this, '${articlePk}')">
+                                <span id="comment-secret-btn-icon-${articlePk}" class="bi bi-unlock"></span>
+                              </button>
+                            </div>
+                          </div>
+                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-2 follow-btn-hover color-2">
                         </div>
                       </form>
-    
-                      <!-- 방명록 답글 비공개 -->
-                      <div class="form">
-                        <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" data-article-id="${articlePk}" class="comment-secret-btn" id="comment-secret-btn-${articlePk}" onclick="secretComment(this, '${articlePk}')">
-                          <span id="comment-secret-btn-icon-${articlePk}" class="bi bi-unlock"></span>
-                        </button>
-                        <label class="form-label" for="secret-btn">비밀글</label>
-                      </div>
     
                       <!-- 답글 -->
                       <div id="gb-comments-box-${articlePk}">
@@ -112,8 +112,8 @@ function create_gb_article(form, user_pk) {
                     </div>
 
                     <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
-                    <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
-                      <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-${articlePk}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                    <div class="d-flex justify-content-between align-items-center" style="font-size: 13px;">
+                      <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-${articlePk}" class="text-center">답글 달기</a>
                       
                       <form id="gb-article-delete-form-${articlePk}" onsubmit="event.preventDefault(); delete_gb_article(this, '${user_pk}', '${articlePk}')">
                         <input type="submit" class="btn-close" style="color:transparent; font:16px" onclick="return confirm('삭제하시겠습니까?');">

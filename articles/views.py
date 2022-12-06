@@ -4,6 +4,7 @@ from .forms import articleForm, ArticleCommentForm, ImageForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from accounts.models import Profile
+from django.core.paginator import Paginator 
 
 from datetime import date, datetime, timedelta
 
@@ -29,6 +30,7 @@ def home(request):
     Cp_re = 0
     JavaScript_re = 0
     PHP_re = 0
+
     python_re = 0
     C_re = 0
     Java_re = 0
@@ -60,16 +62,28 @@ def home(request):
         "Java": re_li[5],
     }
     sorted_dict = sorted(dic.items(), key=lambda item: item[1], reverse=True)
-
     context = {
-        "sorted_dict": sorted_dict,
+            "sorted_dict": sorted_dict,
     }
     return render(request, "articles/home.html", context)
 
 
 def index(request):
-    articles = Article.objects.all().order_by("-pk")
-    context = {"articles": articles}
+    # page = request.GET.get('page', '1')은 
+    # http://localhost:8000/pybo/?page=1 처럼 
+    # GET 방식으로 호출된 URL에서 page값을 가져올 때 사용한다. 
+    # 만약 http://localhost:8000/pybo/ 처럼 page값 없이 호출된 경우에는 
+    # 디폴트로 1이라는 값을 설정한다.
+    page = request.GET.get('page', '1') # 페이지
+    articles = Article.objects.order_by("-pk")
+    paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range) # 마지막 페이지 번호
+
+    context = {
+        'articles' : page_obj, 
+        'max_index' : max_index,
+    }
     return render(request, "articles/index.html", context)
 
 
@@ -197,10 +211,20 @@ def comments_create(request, article_pk):
                 comment.user = request.user
                 comment.article = article
                 comment.save()
+
+                if not comment.user.profile.image:
+                    comment_user_image = "/static/images/no-avatar.jpg"
+                elif str(comment.user.profile.image)[:4] == 'http':
+                    comment_user_image = str(comment.user.profile.image)
+                else:
+                    comment_user_image = str(comment.user.profile.image.url)
+
                 data = {
                     "pk": comment.pk,
                     "content": comment.content,
-                    "userName": comment.user.username,
+                    "userName": comment.user.profile.nickname,
+                    'userPk': comment.user.pk,
+                    'commentUserImage': comment_user_image,
                 }
                 return JsonResponse(data)
             return redirect("articles:detail", article_pk)

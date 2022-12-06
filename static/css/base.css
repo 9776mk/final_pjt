@@ -68,8 +68,57 @@ a:hover {
     overflow: hidden;
 }
 
+.bbtn {
+    height: 40px; 
+    background-color: #FF8E00; 
+    color: white;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 7px;
+    border: 0;
+    outline: 0;
+    transition: all 0.2s ;
+    padding: 1px 15px;
+}
 
-/* 프로필 */
+.bbtn:hover {
+    height: 40px; 
+    background-color: #ff7b00; 
+    color: white;
+}
+
+
+/* 게시판 버튼 */
+.bt_wrap {
+    margin: 30px auto;
+    text-align: center;
+    font-size: 0;
+    border-radius: 30rem;
+  }
+.bt_wrap a,
+.bt_wrap button,
+.bt_wrap input {
+display: inline-block;
+padding: 10px;
+border: 1px solid #FF8E00;
+border-radius: 2px;
+font-size: 0.9rem;
+background: #fff;
+color: #FF8E00;
+transition: all 0.4s;
+}
+.bt_wrap a:first-child,
+.bt_wrap button:first-child {
+margin-left: 0;
+}
+.bt_wrap a:hover,
+.bt_wrap button:hover {
+background-color: #FF8E00;
+color: white;
+}
+.bt_wrap a {
+margin-left: 15px;
+}
 
 .follow-buttons {
     margin: 10%;
@@ -110,237 +159,4 @@ a:hover {
 .follow-btn-hover.color-2 {
     background-image: linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19);
     box-shadow: 0 2px 5px 0 rgba(229, 66, 10, 0.75);
-}
-
-
-.bbtn {
-    height: 40px; 
-    background-color: #FF8E00; 
-    color: white;
-    font-weight: 400;
-    text-align: center;
-    border-radius: 7px;
-    border: 0;
-    outline: 0;
-    transition: all 0.2s ;
-    padding: 1px 15px;
-}
-
-.bbtn:hover {
-    height: 40px; 
-    background-color: #ff7b00; 
-    color: white;
-}
-
-
-/* 게시판 버튼 */
-.bt_wrap {
-    margin: 30px auto;
-    text-align: center;
-    font-size: 0;
-    border-radius: 30rem;
-  }
-.bt_wrap a,
-.bt_wrap button {
-display: inline-block;
-padding: 10px;
-border: 1px solid #FF8E00;
-border-radius: 2px;
-font-size: 0.9rem;
-background: #fff;
-color: #FF8E00;
-transition: all 0.4s;
-}
-.bt_wrap a:first-child,
-.bt_wrap button:first-child {
-margin-left: 0;
-}
-.bt_wrap a:hover,
-.bt_wrap button:hover {
-background-color: #FF8E00;
-color: white;
-}
-.bt_wrap a {
-margin-left: 15px;
-}
-
-
-
-  
-/* MBTI badge */
-
-.ISTJ-badge {
-    background-color: #bbbaba;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ISFJ-badge {
-    background-color: #fcc668;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.INFJ-badge {
-    background-color: #b3d0ff;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.INTJ-badge {
-    background-color: #BAB0FF;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ISTP-badge {
-    background-color: #3283a3;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ISFP-badge {
-    background-color: #A6BF6F;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.INFP-badge {
-    background-color: #3a9980;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.INTP-badge {
-    background-color: #7FC2F4;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ESTJ-badge {
-    background-color: #5c834d;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ESFJ-badge {
-    background-color: #ffc4c4;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ENFJ-badge {
-    background-color: #52CEB0;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ENTJ-badge {
-    background-color: #3462A3;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ESTP-badge {
-    background-color: #FF977B;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ESFP-badge {
-    background-color: #E0707E;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ENFP-badge {
-    background-color: #FFA348;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ENTP-badge {
-    background-color: #dd5843;
-    color: white;
-    padding: 4px 8px;
-    text-align: center;
-    border-radius: 6px;
-    font-size: 0.75em;
-    font-weight: 700;
-    letter-spacing: 1px;
 }

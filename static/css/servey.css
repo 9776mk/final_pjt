@@ -2,10 +2,20 @@
     padding: 30px;
 }
 
+label {
+    margin-bottom: 10px;
+    width: 40%;
+
+}
+
+.labelBox {
+    text-align: start !important;
+}
+
 /* 질문 1 */
 .dropdown1 {
     position: relative;
-    width: 60%;
+    width: 40%;
     height: 50px;
     margin-bottom: 30px;
 }
@@ -106,7 +116,7 @@
 /* 질문 2 */
 .dropdown2 {
     position: relative;
-    width: 60%;
+    width: 40%;
     height: 50px;
     margin-bottom: 30px;
 }
@@ -198,15 +208,11 @@
     visibility: hidden;
 }
 
-.check2.val {
-    visibility: visible;
-    opacity: 1;
-}
 
 /* 질문 3 */
 .dropdown3 {
     position: relative;
-    width: 60%;
+    width: 40%;
     height: 50px;
     margin-bottom: 30px;
 }
@@ -298,16 +304,13 @@
     visibility: hidden;
 }
 
-.val {
-    visibility: visible;
-    opacity: 1;
-}
+
 
 
 /* 질문 4 */
 .dropdown4 {
     position: relative;
-    width: 60%;
+    width: 40%;
     height: 50px;
     margin-bottom: 30px;
 }
@@ -399,15 +402,12 @@
     visibility: hidden;
 }
 
-.val {
-    visibility: visible;
-    opacity: 1;
-}
+
 
 /* 질문 5 */
 .dropdown5 {
     position: relative;
-    width: 60%;
+    width: 40%;
     height: 50px;
     margin-bottom: 30px;
 }
@@ -499,7 +499,555 @@
     visibility: hidden;
 }
 
-.val {
+
+
+/* 질문 6 */
+.dropdown6 {
+    position: relative;
+    width: 40%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown6::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown6.active::before {
+    right: 20px;
+}
+
+.dropdown6.active::after {
+    right: 28px;
+}
+
+.dropdown6::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown6 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown6 .option6 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown6.active .option6 {
+    /*클래스가 dropdown6 active 일때의 option에 대한 정의*/
     visibility: visible;
     opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown6 .option6 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown6 .option6 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check6 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+
+/* 질문 7 */
+.dropdown7 {
+    position: relative;
+    width: 40%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown7::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown7.active::before {
+    right: 20px;
+}
+
+.dropdown7.active::after {
+    right: 28px;
+}
+
+.dropdown7::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown7 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown7 .option7 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown7.active .option7 {
+    /*클래스가 dropdown7 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown7 .option7 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown7 .option7 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check7 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+/* 질문 8 */
+.dropdown8 {
+    position: relative;
+    width: 40%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown8::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown8.active::before {
+    right: 20px;
+}
+
+.dropdown8.active::after {
+    right: 28px;
+}
+
+.dropdown8::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown8 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown8 .option8 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown8.active .option8 {
+    /*클래스가 dropdown8 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown8 .option8 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown8 .option8 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check8 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+/* 질문 9 */
+.dropdown9 {
+    position: relative;
+    width: 40%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown9::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown9.active::before {
+    right: 20px;
+}
+
+.dropdown9.active::after {
+    right: 28px;
+}
+
+.dropdown9::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown9 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown9 .option9 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown9.active .option9 {
+    /*클래스가 dropdown9 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown9 .option9 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown9 .option9 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check9 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+
+/* 질문 10 */
+.dropdown10 {
+    position: relative;
+    width: 40%;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.dropdown10::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 28px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(40deg);
+    transition: 0.5s;
+}
+
+.dropdown10.active::before {
+    right: 20px;
+}
+
+.dropdown10.active::after {
+    right: 28px;
+}
+
+.dropdown10::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    width: 12px;
+    height: 2px;
+    background: #555;
+    z-index: 10;
+    transform: rotate(-40deg);
+    transition: 0.5s;
+}
+
+.dropdown10 input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    outline: none;
+    border: none;
+}
+
+.dropdown10 .option10 {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.dropdown10.active .option10 {
+    /*클래스가 dropdown10 active 일때의 option에 대한 정의*/
+    visibility: visible;
+    opacity: 1;
+    z-index: 1030;
+}
+
+.dropdown10 .option10 div {
+    padding: 12px 20px;
+    cursor: pointer;
+    /* div위로 커서가 올라가면 모양이 포인터로 바뀜 */
+
+}
+
+.dropdown10 .option10 div:hover {
+    background: #62baea;
+    color: #fff;
+}
+
+.check10 {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.Qbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btnBox {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+
+#svbtn {
+    border: none;
+    padding: 10px;
+    background-color: #FF8E00;
+    color: #fff;
+    transition: all 0.4s;
+    border-radius: 8px;
+    text-align: center;
+    width: 100px;
+    letter-spacing: 3px;
+}
+
+#svbtn:hover {
+    background: #ff7b00;
+}
+
+@media screen and (max-width: 1024px) {
+    .Label {
+        width: 70% !important;
+    }
+
+    .dropdown1,
+    .dropdown2,
+    .dropdown3,
+    .dropdown4,
+    .dropdown5,
+    .dropdown6,
+    .dropdown7,
+    .dropdown8,
+    .dropdown9,
+    .dropdown10 {
+        width: 70% !important;
+
+    }
+
+
+}
+
+@media screen and (max-width: 500px) {
+    .Label {
+        width: 90% !important;
+    }
+
+    .dropdown1,
+    .dropdown2,
+    .dropdown3,
+    .dropdown4,
+    .dropdown5,
+    .dropdown6,
+    .dropdown7,
+    .dropdown8,
+    .dropdown9,
+    .dropdown10 {
+        width: 90% !important;
+
+    }
+
 }

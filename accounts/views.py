@@ -306,9 +306,37 @@ def follow(request, user_pk):
             user.followers.add(request.user)
             is_following = True  # 팔로잉
 
+
+    if not request.user.profile.image:
+        my_image = "/static/images/no-avatar.jpg"
+    elif str(request.user.profile.image)[:4] == "http":
+        my_image = str(request.user.profile.image)
+    else:
+        my_image = str(request.user.profile.image.url)
+
+    if not user.profile.image:
+        user_image = "/static/images/no-avatar.jpg"
+    elif str(user.profile.image)[:4] == "http":
+        user_image = str(user.profile.image)
+    else:
+        user_image = str(user.profile.image.url)
+
     data = {
+        # 다른 유저 페이지에서 그 유저를 (언)팔로우
         "is_following": is_following,
         "followers_count": user.followers.count(),
+        "followings_count": user.followings.count(),
+        "my_image": my_image,
+        "my_username": request.user.username,
+        "my_nickname": request.user.profile.nickname,
+
+        # 나의 페이지에서 다른 유저를 (언)팔로우
+        "my_user_pk": request.user.pk,
+        "my_followers_count": request.user.followers.count(),
+        "my_followings_count": request.user.followings.count(),
+        "user_image": user_image,
+        "user_username": user.username,
+        "user_nickname": user.profile.nickname,
     }
 
     return JsonResponse(data)

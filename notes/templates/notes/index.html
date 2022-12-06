@@ -9,13 +9,14 @@
   <div class="container mt-5">
     <div id="main_in" class="row">
       <div class="col-3">
-        <table class="table bg-white" style="border-radius: 15px;">
+        <h4 class="text-center mb-4">✉️</h4>
+        <table class="table">
           <thead>
+          </thead>
+          <tbody>
             <tr>
               <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
             </tr>
-          </thead>
-          <tbody>
             <tr>
               <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
             </tr>
@@ -33,16 +34,16 @@
       </div>
       {% if request.resolver_match.url_name == 'index' %}
       <div class="col-9">
-        <table class="table bg-white">
+        <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">받은 쪽지함</h4>
+        <table class="table">
           <thead>
-            <th class="fw-bold">받은 쪽지함</th>
             <tr>
-              <th scope="col">보낸 사람</th>
-              <th scope="col">제목</th>
-              <th scope="col">받은 시간</th>
-              <th scope="col">읽음</th>
-              <th scope="col">보관</th>
-              <th scope="col">삭제</th>
+              <th scope="col-2">보낸 사람</th>
+              <th scope="col-5">제목</th>
+              <th scope="col-2">받은 시간</th>
+              <th scope="col-1">읽음</th>
+              <th scope="col-1">보관</th>
+              <th scope="col-1">삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -50,9 +51,9 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted" id="{{note.pk}}">
-                <td>{{ note.from_user.profile.nickname }}</td>
-                <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
@@ -61,20 +62,18 @@
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
                 {% else %}
-                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1"></i></a></td>
+                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                  </svg></a>
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
                 </td>
               </tr>
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr id="{{note.pk}}">
-                <td>{{ note.from_user.profile.nickname }}</td>
-                <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
@@ -83,12 +82,10 @@
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
                 {% else %}
-                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1"></i></a></td>
+                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                  </svg></a>
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
                 </td>
               </tr>
               {% endif %}
@@ -98,84 +95,95 @@
       </div>
       {% elif request.resolver_match.url_name == 'sent' %}
       <div class="col-9">
+        <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">보낸 쪽지함</h4>
         <table class="table bg-white">
           <thead>
-            <th class="fw-bold">보낸 쪽지함</th>
             <tr>
-              <th scope="col">받는 사람</th>
-              <th scope="col">제목</th>
-              <th scope="col">받은 시간</th>
-              <th scope="col">읽음</th>
-              <th scope="col">삭제</th>
+              <th scope="col-2">받는 사람</th>
+              <th scope="col-6">제목</th>
+              <th scope="col-2">받은 시간</th>
+              <th scope="col-1">읽음</th>
+              <th scope="col-1">삭제</th>
             </tr>
           </thead>
           <tbody>
             {% for note in to_notes %}
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
-              <tr class="text-muted" id="{{note.pk}}">
-                <td>{{ note.to_user.profile.nickname }}</td>
-                <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+              <tr class="text-muted" id="note-{{note.pk}}">
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
                 <td>안읽음</td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                  </svg></a>
+                  <form data-note-id="{{ note.pk }}" class="note-delete-forms">
+                    {% csrf_token %}
+                    <button type="submit" class="trash-btn" disabled>
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </form>
                 </td>
               </tr>
               {% else %}
               <!-- 쪽지 안읽음 일때-->
-              <tr id="{{note.pk}}">
-                <td>{{ note.to_user.profile.nickname }}</td>
-                <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+              <tr id="note-{{note.pk}}">
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
                 <td>안읽음</td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                  </svg></a>
+                  <form data-note-id="{{ note.pk }}" class="note-delete-forms">
+                    {% csrf_token %}
+                    <button type="submit" class="trash-btn" onclick="return confirm('삭제하시겠습니까?\n복구 불가능합니다.');">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </form>
                 </td>
               </tr>
               {% endif %}
             {% endfor %}
           </tbody>
         </table>
+        <p class="text-end text-muted">상대가 읽기 전에 삭제하면 상대 쪽지함에서도 삭제됩니다.</p>
       </div>
       {% endif %}
     </div>
   </div>
 {% endblock content %}
 
+
 {% block script %}
-{% comment %} <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-  function remove(event) {
-  console.log(event.target.dataset.noteId)
-  var delete_warning = confirm('쪽지를 삭제하시겠습니까?')
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-  if (delete_warning == true) {
-    axios({
-      method: 'post',
-      url: `/notes/${event.target.dataset.noteId}/trash_throw_away/`,
-      headers: {'X-CSRFToken': csrftoken},
-      data: {'note_pk': event.target.dataset.noteId},
+  <script>
+    const noteDeleteForms = document.querySelectorAll('.note-delete-forms')
+    noteDeleteForms.forEach(form => {
+      form.addEventListener('submit', event => {
+        event.preventDefault()
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        const noteId = event.target.dataset.noteId
+        console.log(noteId)
+        axios({
+          method: 'post',
+          url: `/notes/${noteId}/delete/`,
+          headers: {
+            'X-CSRFToken': csrfToken
+          }
+        }).then(response => {
+          const note = document.querySelector(`#note-${noteId}`)
+          const is_deleted = response.data.is_deleted
+
+          if (is_deleted === true) {
+            note.remove()
+          }
+        })
+      })
     })
-    .then(response => {
-      const resdata = response.data.pk
-      const div = document.getElementById(resdata)
-      console.log(div)
-      div.remove()
-    })
-  }
-}
-</script> {% endcomment %}
+  </script>
 {% endblock script %}

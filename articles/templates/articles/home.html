@@ -8,25 +8,25 @@
 <main>
     <div class='community'>
         <h1> 개발마당</h1>
-        <img src="https://via.placeholder.com/800x400" alt="">
+        <img src="https://via.placeholder.com/800x400" width="80%;"  alt="">
         <div class='com-text'>
             <div> 개발 마당의 소개글이 아마도 20자 정도 들어갈 것 같다는 지극히 
                 개인적인 생각이고 이거는 몇자일지 궁금해지는 순간이다라고 할 수도 있고 
                 안 할 수도있다.
             </div>
-            <div><a href="">개발마당</a></div>            
+            <div class='community-btn-frame'><a class='btnAll' href="{% url 'articles:index' %}">개발마당</a></div>            
         </div>
     </div>
     <div class="algo">
         <h1>알고리즘</h1>   
         <div class='algoboxs'>
-            <div >
+            <div class='algobox-frame'>
                 <div class='algobox'>
                     알고리즘 문제추천
                 </div>
                 <span>오늘의 알고리즘 추천문제</span>
             </div>
-            <div >
+            <div class='algobox-frame'>
                 <div class='algobox'>
                     오늘의 랜덤 문제
                 </div>
@@ -52,8 +52,9 @@
                 <span class='mx-3' style="width:5%;">0%</span>
             </div>
             {% endfor %}
-            <div>
-                <a href="">설문조사 하러가기!</a>
+            <div class='graph-btn-frame'>
+                <a class='btnAll' href="{% url 'surveys:create' %}">설문조사 하러가기!</a>
+                <a class='btnAll' href="{% url 'surveys:index' %}">통계자료 확인</a>
             </div>
         </div>
     </div>
@@ -64,10 +65,15 @@
         <h1>나와 잘 맞는 개발자를 찾아보세요.</h1>
         <div class='lay'>
             <div class='p-img'> <h2>사진</h2><img src="https://via.placeholder.com/500x340" alt=""> </div>
-            <div class='p-text'> <h2>소개</h2><p>사용하는 기술스텍과 MBTI가 나와 비슷한 혹은 정반대의 동료와 스터디 혹은 관심 분야에 이야기를 나누어보세요</p> <div class='btn-holder'><button>찾으러</button></div></div>
+            <div class='p-text'> <h2>소개</h2><p>사용하는 기술스텍과 MBTI가 나와 비슷한 혹은 정반대의 동료와 스터디 혹은 관심 분야에 이야기를 나누어보세요</p> <div class='btn-holder'>
+                <a class='btnAll' href="{% url 'articles:friend' %}">찾으러</a>
+            </div>
+        </div>
         </div>
         
     </div>
 </main>
-
+<footer>
+    <a id="back-to-top" href="#">Top</a>
+</footer>
 {% endblock%}

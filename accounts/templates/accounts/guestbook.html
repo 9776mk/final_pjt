@@ -22,22 +22,21 @@
             {% else %}
               <img src="{{ request.user.profile.image.url }}" class="me-3 guestbook-img" alt="">
             {% endif %}
-
-            <textarea name="content" cols="40" rows="3" class="form-control me-2" placeholder="방명록을 남겨주세요" required id="id_content"></textarea>
+            <div id="container" class="article-box">
+              <textarea name="content" cols="40" rows="3" class="form-control me-2 article-text" style="border: 0px;" placeholder="방명록을 남겨주세요" required id="id_content"></textarea>
+              <div class="form lock-box">
+                <!-- 방명록 글 비공개 -->
+                <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" id="article-secret-btn" onclick="secretArticle(this)">
+                  <span id="article-secret-btn-icon" class="bi bi-unlock text-muted"> 비밀글</span>
+                </button>
+              </div>
+            </div>
             
             {% if request.user.is_authenticated %}
-              <input type="submit" value="작성" name="gb_article_create" class="btn ms-1 follow-btn-hover color-2">
+              <input type="submit" value="작성" name="gb_article_create" class="btn ms-3 follow-btn-hover color-2">
             {% else %}
-              <input type="submit" value="작성" name="gb_article_create" class="btn ms-1 follow-btn-hover color-2" disabled>
+              <input type="submit" value="작성" name="gb_article_create" class="btn ms-3 follow-btn-hover color-2" disabled>
             {% endif %}
-          </div>
-
-          <!-- 방명록 글 비공개 -->
-          <div class="form">
-            <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" id="article-secret-btn" onclick="secretArticle(this)">
-              <span id="article-secret-btn-icon" class="bi bi-unlock"></span>
-            </button>
-            <label class="form-label" for="secret-btn">비밀글</label>
           </div>
         </div>
       </form>
@@ -116,17 +115,17 @@
                                     <!-- 프로필 사진 3 -->
                                     {% if not comment.user.profile.image %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="guestbook-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% elif comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" class="guestbook-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image }}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% else %}
                                       <div class="d-flex align-items-center">
-                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" class="guestbook-img" alt=""></a>
+                                        <a href="{% url 'accounts:profile' comment.user.pk %}"><img src="{{ comment.user.profile.image.url }}" class="comment-img" alt=""></a>
                                         <a href="{% url 'accounts:profile' comment.user.pk %}"><p class="ms-2 mb-0">{{ comment.user.profile.nickname }}</p></a>
                                       </div>
                                     {% endif %}
@@ -165,8 +164,8 @@
                   </div>
 
                   <!-- 답글 달기 토글 & 방명록 글 삭제 Form -->
-                  <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
-                    <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" style="font-size: 15px;" class="text-center">답글 달기</a>
+                  <div class="d-flex justify-content-between align-items-center" style="font-size: 13px;">
+                    <a data-bs-toggle="collapse" href="#collapse-gb-comment-form-{{ article.pk }}" class="text-center">답글 달기</a>
                     
                     {% if request.user == article.user %}
                       <form id="gb-article-delete-form-{{ article.pk }}" onsubmit="event.preventDefault(); delete_gb_article(this, '{{ user.pk }}', '{{ article.pk }}')">
@@ -181,19 +180,20 @@
                     {% if request.user.is_authenticated %}
                       <form onsubmit="event.preventDefault(); create_gb_comment(this, '{{ user.pk }}', '{{ article.pk }}')">
                         {% csrf_token %}
+
                         <div class="d-flex align-items-center my-2">
-                          <textarea name="content" cols="40" rows="1" class="form-control me-2" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
-                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-1" style="width: 50px; height: 40px; background-color: #f37c2c; color: white;">
+                          <div id="container" class="article-box d-flex align-items-center">
+                            <textarea name="content" cols="40" rows="1" class="form-control article-text" style="border: 0px;" placeholder="답글을 남겨주세요" required id="id_content"></textarea>
+                            <!-- 방명록 답글 비공개 -->
+                            <div class="form cmt-lock-box">
+                              <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" data-article-id="{{ article.pk }}" class="comment-secret-btn" id="comment-secret-btn-{{ article.pk }}" onclick="secretComment(this, '{{ article.pk }}')">
+                                <span id="comment-secret-btn-icon-{{ article.pk }}" class="bi bi-unlock"></span>
+                              </button>
+                            </div>
+                          </div>
+                          <input type="submit" value="작성" name="gb_comment_create" class="btn ms-2 follow-btn-hover color-2">
                         </div>
                       </form>
-
-                      <!-- 방명록 답글 비공개 -->
-                      <div class="form">
-                        <button type="button" class="lock-btn" name="is_secret" data-is-secret="false" data-article-id="{{ article.pk }}" class="comment-secret-btn" id="comment-secret-btn-{{ article.pk }}" onclick="secretComment(this, '{{ article.pk }}')">
-                          <span id="comment-secret-btn-icon-{{ article.pk }}" class="bi bi-unlock"></span>
-                        </button>
-                        <label class="form-label" for="secret-btn">비밀글</label>
-                      </div>
                     {% endif %}
 
                     <!-- 답글 -->
