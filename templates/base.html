@@ -1,4 +1,5 @@
 {% load django_bootstrap5 %}
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -87,11 +88,9 @@
               <!-- 쪽지 창 -->
               <li class='nav-item'>
                 <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
-
-                <i class="bi bi-bell"></i>
+                  <i class="bi bi-chat-left-dots"></i>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    1
-                    <span class="visually-hidden">unread messages</span>
+                    {{ request.user.message_number }}<span class="visually-hidden">unread messages</span>
                   </span>
                 </button>
               </li>
@@ -118,7 +117,7 @@
                 </a>
               </li>
 
-            <!-- 로그인이 되어있지 않으면 -->
+             <!-- 로그인이 되어있지 않으면 -->
             {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'accounts:signup' %}">

@@ -7,7 +7,7 @@ from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from imagekit.processors import ResizeToFill
 from multiselectfield import MultiSelectField
-
+from notes.models import Notes
 # Create your models here.
 class User(AbstractUser):
     # username = models.CharField(max_length=16, unique=True)
@@ -45,7 +45,7 @@ class User(AbstractUser):
     token = models.CharField(max_length=150, null=True, blank=True)
     notice_note = models.BooleanField(default=True)  # 쪽지
     note_notice = models.BooleanField(default=True)  # 쪽지
-
+    message_number = models.IntegerField(default=0)
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

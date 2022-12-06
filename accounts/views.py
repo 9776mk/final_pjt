@@ -82,7 +82,7 @@ def is_valid_id(request):
 
 
 def login(request):
-
+    notes_counter= Notes.objects.filter(read=0).count()
     status = 1
     # 이미 로그인 → 로그인 X
     if request.user.is_authenticated:
@@ -93,7 +93,10 @@ def login(request):
         login_form = AuthenticationForm(request, data=request.POST)
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
-            return redirect(request.GET.get("next") or "home")
+            response = redirect(request.GET.get("next") or "home")
+            request.user.message_number=notes_counter
+            request.user.save()
+            return response
         else:
             status = 0
             login_form = AuthenticationForm()
@@ -102,8 +105,7 @@ def login(request):
                 "login_form": login_form,
             }
 
-            return render(request, "accounts/login.html", context)
-
+            return  render(request, "accounts/login.html", context)
     else:
         login_form = AuthenticationForm()
 

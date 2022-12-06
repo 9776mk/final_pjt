@@ -13,12 +13,9 @@ def index(request):
     notes = Notes.objects.filter(to_user_id=request.user.id, garbage=False).order_by(
         "-created_at"
     )
-    notes_counter= Notes.objects.filter(read=0).count()
     context = {
         "notes": notes,
-        # "notes_counter":notes_counter,
     }
-    print(notes_counter)
     return render(request, "notes/index.html", context)
 
 
@@ -55,12 +52,17 @@ def send(request):
 @login_required
 def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
+    notes_counter= Notes.objects.filter(read=0).count()
+    print(notes_counter)
     if request.user == note.to_user:
         if not note.read:
             note.read =True
+            request.user.message_number=notes_counter
+            request.user.save()
             note.save()
         if not request.user.user_to.filter(read=False).exists():
             request.user.notice_note = True
+            request.user.message_number=notes_counter
             request.user.save()
         return render(request,"notes/detail.html",{"note":note})
     elif request.user == note.from_user:
