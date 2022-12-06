@@ -32,8 +32,8 @@
         </table>
       </div>
       <div class="col-9 bg-white">
-        <h5 class="mb-3">보낸 사람 : {{ note.from_user.profile.nickname }}
-        </h5>
+        <h5 class="mb-3">받는 사람 : {{ note.to_user.profile.nickname }}</h5>
+        <h5 class="mb-3">보낸 사람 : {{ note.from_user.profile.nickname }}</h5>
         <h5 class="mb-3">받은 시간 : {{ note.created_at|date:'y년 m월 d일 H시 m분' }}</h5>
         <h5 class="mb-3">제목 : {{ note.title }}</h5>
         <h5 class="mb-3">내용 : {{ note.content }}</h5>

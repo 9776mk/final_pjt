@@ -98,9 +98,7 @@ def trash_return(request, pk):
 
 @login_required
 def trash(request):
-    trash_notes = Notes.objects.filter(to_user_id=request.user.id, 
-    garbage=True).order_by("-created_at")
-    print(trash_notes)
+    trash_notes = Notes.objects.filter(to_user_id=request.user.id, garbage=True).order_by("-created_at")
     context = {
         "notes": trash_notes,
     }
