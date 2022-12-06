@@ -85,6 +85,8 @@ def trash_throw_away(request, pk):
     note = Notes.objects.get(pk=pk)
     note.garbage = True
     note.save()
+    if 'next' in request.POST:
+        return redirect(request.POST.get('next'))
     return redirect("notes:index")
 
 

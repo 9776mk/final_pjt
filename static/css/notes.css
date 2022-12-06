@@ -1,6 +1,38 @@
 table {
-    background-color: #f1f1f1;
+    background-color: #ffffff;
     border-radius: 15px;
+}
+
+table tbody tr:first-child>th:first-child {
+  border-top-left-radius:15px;
+}
+table tbody tr:first-child>th:last-child {
+  border-top-right-radius:15px;
+}
+table tbody tr:last-child>th:first-child {
+  border-bottom-left-radius:15px;
+}
+table tbody tr:last-child>th:last-child {
+  border-bottom-right-radius:15px;
+}
+table tbody tr:last-child>td:first-child {
+  border-bottom-left-radius:15px;
+}
+table tbody tr:last-child>td:last-child {
+  border-bottom-right-radius:15px;
+}
+
+tbody tr:hover {
+    background-color: #fff0dd;
+}
+
+table a {
+    width: 100%;
+    display: table;
+}
+
+table tbody tr .title {
+    text-align: left;
 }
 
 .trash-btn {
