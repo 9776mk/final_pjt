@@ -15,7 +15,9 @@ def index(request):
 
     for age in ages:
         ages_dict[age] += 1
-    total_people_cnt = len(ages)  # 설문에 응답한 총 사람의 수
+    
+    # 설문에 응답한 총 사람의 수
+    total_people_cnt = len(ages) if len(ages) > 0 else 1
 
     for k, v in ages_dict.items():
         ages_dict[k] = int(round(v / total_people_cnt, 2) * 100)
