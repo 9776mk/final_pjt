@@ -214,8 +214,7 @@ main .algo h1 {
 }
 
 #back-to-top:hover {
-  background-color: #FF8E00;
-  color: white;
+  background-color: #ff7b00;
   padding: 1em 3em;
 }
 
@@ -231,5 +230,6 @@ main .algo h1 {
 }
 
 .btnAll:hover {
-  color: #D9D9D9;
+  background-color: #ff7b00;
+  color: white;
 }/*# sourceMappingURL=mainpage.css.map */
