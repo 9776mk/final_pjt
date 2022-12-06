@@ -9,13 +9,14 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-3">
-        <table class="table bg-white">
+        <h4 class="text-center mb-4">✉️</h4>
+        <table class="table">
           <thead>
+          </thead>
+          <tbody>
             <tr>
               <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
             </tr>
-          </thead>
-          <tbody>
             <tr>
               <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
             </tr>
@@ -32,9 +33,9 @@
         </table>
       </div>
       <div class="col-9">
+        <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">보관함</h4>
         <table class="table bg-white">
           <thead>
-            <th class="fw-bold">보관함</th>
             <tr>
               <th scope="col">보낸 사람</th>
               <th scope="col">제목</th>
@@ -49,9 +50,9 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted" id="{{note.pk}}">
-                <td>{{ note.from_user.profile.nickname }}</td>
-                <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
@@ -60,18 +61,18 @@
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
                 {% else %}
-                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1"></i></a></td>
+                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}?next={{ request.path }}"><i class="bi bi-trash-fill"></i></a>
                 </td>
               </tr>
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr id="{{note.pk}}">
-                <td>{{ note.from_user.profile.nickname }}</td>
-                <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
@@ -80,10 +81,10 @@
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
                 {% else %}
-                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1"></i></a></td>
+                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}?next={{ request.path }}"><i class="bi bi-trash-fill"></i></a>
                 </td>
               </tr>
               {% endif %}
