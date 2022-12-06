@@ -1,9 +1,9 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 # Create your views here.
 
 
@@ -85,9 +85,7 @@ def trash_throw_away(request, pk):
     note = Notes.objects.get(pk=pk)
     note.garbage = True
     note.save()
-    if 'next' in request.POST:
-        return redirect(request.POST.get('next'))
-    return redirect("notes:index")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required

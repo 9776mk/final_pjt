@@ -64,7 +64,7 @@
                 <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}?next={{ request.path }}"><i class="bi bi-trash-fill"></i></a>
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
                 </td>
               </tr>
               {% else %}
@@ -84,7 +84,7 @@
                 <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}?next={{ request.path }}"><i class="bi bi-trash-fill"></i></a>
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
                 </td>
               </tr>
               {% endif %}
