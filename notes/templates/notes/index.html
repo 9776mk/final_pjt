@@ -9,13 +9,14 @@
   <div class="container mt-5">
     <div id="main_in" class="row">
       <div class="col-3">
-        <table class="table bg-white" style="border-radius: 15px;">
+        <h4 class="text-center mb-4">✉️</h4>
+        <table class="table">
           <thead>
+          </thead>
+          <tbody>
             <tr>
               <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
             </tr>
-          </thead>
-          <tbody>
             <tr>
               <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
             </tr>
@@ -33,16 +34,16 @@
       </div>
       {% if request.resolver_match.url_name == 'index' %}
       <div class="col-9">
-        <table class="table bg-white">
+        <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">받은 쪽지함</h4>
+        <table class="table">
           <thead>
-            <th class="fw-bold">받은 쪽지함</th>
             <tr>
-              <th scope="col">보낸 사람</th>
-              <th scope="col">제목</th>
-              <th scope="col">받은 시간</th>
-              <th scope="col">읽음</th>
-              <th scope="col">보관</th>
-              <th scope="col">삭제</th>
+              <th scope="col-2">보낸 사람</th>
+              <th scope="col-5">제목</th>
+              <th scope="col-2">받은 시간</th>
+              <th scope="col-1" style="min-width: 40px;">읽음</th>
+              <th scope="col-1">보관</th>
+              <th scope="col-1">삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -50,13 +51,13 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted" id="{{note.pk}}">
-                <td>{{ note.from_user.profile.nickname }}</td>
-                <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
-                <td>안읽음</td>
+                <td class="not_read">안읽음</td>
                 {% endif %}
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
@@ -70,18 +71,18 @@
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr id="{{note.pk}}">
-                <td>{{ note.from_user.profile.nickname }}</td>
-                <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
-                <td>안읽음</td>
+                <td class="not_read">안읽음</td>
                 {% endif %}
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
                 {% else %}
-                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1"></i></a></td>
+                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
                   <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
@@ -94,15 +95,15 @@
       </div>
       {% elif request.resolver_match.url_name == 'sent' %}
       <div class="col-9">
+        <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">보낸 쪽지함</h4>
         <table class="table bg-white">
           <thead>
-            <th class="fw-bold">보낸 쪽지함</th>
             <tr>
-              <th scope="col">받는 사람</th>
-              <th scope="col">제목</th>
-              <th scope="col">받은 시간</th>
-              <th scope="col">읽음</th>
-              <th scope="col">삭제</th>
+              <th scope="col-2">받는 사람</th>
+              <th scope="col-6">제목</th>
+              <th scope="col-2">받은 시간</th>
+              <th scope="col-1">읽음</th>
+              <th scope="col-1">삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -110,13 +111,13 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted" id="note-{{note.pk}}">
-                <td>{{ note.to_user.profile.nickname }}</td>
-                <td><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
-                <td>안읽음</td>
+                <td class="not_read">안읽음</td>
                 {% endif %}
                 <td>
                   <form data-note-id="{{ note.pk }}" class="note-delete-forms">
@@ -130,13 +131,13 @@
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr id="note-{{note.pk}}">
-                <td>{{ note.to_user.profile.nickname }}</td>
-                <td><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'o.m.d H:i' }}</td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
-                <td>안읽음</td>
+                <td class="not_read">안읽음</td>
                 {% endif %}
                 <td>
                   <form data-note-id="{{ note.pk }}" class="note-delete-forms">
@@ -151,7 +152,7 @@
             {% endfor %}
           </tbody>
         </table>
-        <p>상대가 읽기 전에 삭제하면 상대 쪽지함에서도 삭제됩니다.</p>
+        <p class="text-end text-muted">상대가 읽기 전에 삭제하면 상대 쪽지함에서도 삭제됩니다.</p>
       </div>
       {% endif %}
     </div>

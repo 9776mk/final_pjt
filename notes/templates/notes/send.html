@@ -9,13 +9,14 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-3">
-        <table class="table bg-white">
+        <h4 class="text-center mb-4">✉️</h4>
+        <table class="table">
           <thead>
+          </thead>
+          <tbody>
             <tr>
               <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
             </tr>
-          </thead>
-          <tbody>
             <tr>
               <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
             </tr>
@@ -32,6 +33,7 @@
         </table>
       </div>
       <div class="col-9">
+        <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">쪽지 쓰기</h4>
         <form action="{% url 'notes:send' %}" method="POST">
           {% csrf_token %}
           {% bootstrap_form form %}

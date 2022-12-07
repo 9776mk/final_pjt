@@ -65,7 +65,7 @@ page = {
 }
 
 # for i in range(1, 31):
-for i in range(15, 16):
+for i in range(6, 31):
     temp = {}
     result = {}
     level_ = []
@@ -75,8 +75,8 @@ for i in range(15, 16):
 
     driver.refresh()
     v = page[i]
-    for j in range(15, 16):
-        # for j in range(1, int(v) + 1):
+    # for j in range(1, 2):
+    for j in range(1, int(v) + 1):
         print(f"{i}레벨 {j}페이지 시작")
         URL = f"https://solved.ac/problems/level/{i}?page={j}"
         driver.get(url=URL)
@@ -151,7 +151,7 @@ for i in range(15, 16):
                 # print(tags.text)
                 li.append(tags.text.lstrip("#"))
                 # print(li)
-            else:
+            else:  # 태그 없을 때
                 pass
             tags_list.append(li)
             n.send_keys(Keys.ENTER)

@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+  <style>
+    .profile-img {
+      border-radius: 70%; 
+      max-width: 64px;
+    }
+
+    /* 주 사용언어 버튼 기본 색상 */
+    .category input[name=language-btns] {
+        display: none;
+    }
+
+    .category input[name=language-btns]+label {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #d1e4ff;
+        color: rgb(61, 61, 61);
+        padding: 10px 20px;
+        border-radius: 22px;
+        height: 40px;
+        border: none;
+    }
+
+    .category input[name=language-btns]:checked+label {
+        background-color: #7ab1ff;
+        color: white;
+    }
+
+    /* MBTI 버튼 기본 색상 */
+    .category input[name=mbti-btns] {
+        display: none;
+    }
+
+    .category input[name=mbti-btns]+label {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #f3d9d9;
+        color: rgb(61, 61, 61);
+        padding: 10px 20px;
+        border-radius: 22px;
+        height: 40px;
+        border: none;
+    }
+
+    .category input[name=mbti-btns]:checked+label {
+        background-color: #ff9c9c;
+        color: white;
+    }
+
+    /* MBTI badge */
+    .ISTJ-badge {
+        background-color: #bbbaba;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ISFJ-badge {
+        background-color: #fcc668;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .INFJ-badge {
+        background-color: #b3d0ff;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .INTJ-badge {
+        background-color: #BAB0FF;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ISTP-badge {
+        background-color: #3283a3;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ISFP-badge {
+        background-color: #A6BF6F;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .INFP-badge {
+        background-color: #3a9980;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .INTP-badge {
+        background-color: #7FC2F4;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ESTJ-badge {
+        background-color: #5c834d;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ESFJ-badge {
+        background-color: #ffc4c4;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ENFJ-badge {
+        background-color: #52CEB0;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ENTJ-badge {
+        background-color: #3462A3;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ESTP-badge {
+        background-color: #FF977B;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ESFP-badge {
+        background-color: #E0707E;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ENFP-badge {
+        background-color: #FFA348;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .ENTP-badge {
+        background-color: #dd5843;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+  </style>
+{% endblock link %}
+
+{% block content %}
+<div class="container my-5">
+  <h1 class="mb-5" style="font-family: 'HBIOS-SYS'">함께 할 개발자를 찾아보세요!</h1>
+
+  <!-- 카테고리 버튼 -->
+  <div id="language-btns" class="category mb-3">
+    <p class="mb-2">주 사용언어</p>
+    {% for lang in category_langs %}
+      <input id="{{ lang }}" class="" type="checkbox" name="language-btns">
+      <label for="{{ lang }}">{{ lang }}</label>
+    {% endfor %}
+  </div>
+  <div id="mbti-btns" class="category mb-3">
+    <p class="mb-2">MBTI</p>
+    {% for mbti in category_mbtis %}
+      <input id="{{ mbti }}" class="" type="checkbox" name="mbti-btns">
+      <label for="{{ mbti }}">{{ mbti }}</label>
+    {% endfor %}
+  </div>
+  
+  {% for user in users %}
+    <div class="all-users d-none d-flex align-items-center mb-3 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
+      <div class="me-3">
+        <a href="{% url 'accounts:profile' user.pk %}">
+          {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
+            <img src="{{ user.profile.image }}" class="profile-img" alt="">
+          {% elif user.profile.image %}
+            <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
+          {% else %}
+            <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
+          {% endif %}
+        </a>
+      </div>
+      <div>
+        <p class="m-0">닉네임: {{ user.profile.nickname }}</p>
+        {% if user.profile.language == 'Python' %}
+          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
+        {% elif user.profile.language == 'Java' %}
+          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
+        {% elif user.profile.language == 'C' %}
+          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
+        {% elif user.profile.language == 'JavaScript' %}
+          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
+        {% elif user.profile.language == 'C++' %}
+          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
+        {% elif user.profile.language == 'PHP' %}
+          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
+        {% endif %}
+        <p>백준티어: <img style="height:25px" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
+        <p class="m-0">MBTI: <span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/friends_category.js' %}"></script>
+{% endblock script %}

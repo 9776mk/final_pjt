@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="p-3 d-flex justify-content-center">
+  <div class="d-flex align-items-center">
+      <h3 class="m-0">{{ search }} 검색 결과</h3>
+  </div>
+</div>
+
+<div class="p-3 d-flex justify-content-center">
+  <div class="align-items-center">
+    {% for result in search_list %}
+      <span> {{ result.number }} </span> | <a href="https://www.acmicpc.net/problem/{{result.number}}"> {{ result.title }} | {{ result.tags }} | level:{{ result.level}}</a>
+      <br>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+{% endblock %}
