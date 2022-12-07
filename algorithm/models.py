@@ -46,3 +46,10 @@ class BJData_ru(models.Model):
     number = models.IntegerField()
     title = models.CharField(max_length=50)
     tags = models.CharField(max_length=50)
+
+
+class Tag(models.Model):
+    name = models.CharField("태그명", max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name

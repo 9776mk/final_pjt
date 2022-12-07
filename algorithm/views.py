@@ -1,21 +1,26 @@
 from django.shortcuts import render
 from .models import *
+from .forms import *
+from django.db.models import Q
+
+# 체크박스
+from django.views import generic
 
 
 def index(request):
     br = BJData_br.objects.order_by("pk")
     si = BJData_si.objects.order_by("pk")
 
-    tags = BJData_br.objects.values("tags")
-    print(tags)
-    print(type(tags))
-    category = []
-    for i in tags:
-        # print(i["tags"])
-        #    category.append(i["tags"])
+    # tags = BJData_br.objects.values("tags")
+    # print(tags)
+    # print(type(tags))
+    # category = []
+    # for i in tags:
+    #     # print(i["tags"])
+    #     #    category.append(i["tags"])
 
-        for j in i["tags"]:
-            print(j)
+    #     for j in i["tags"]:
+    #         print(j)
 
     # print(type(category))
     # print("categroy 출력")
@@ -52,6 +57,28 @@ def index(request):
     context = {
         "br": br,
         "si": si,
-        "tags": tags,
+        # "tags": tags,
     }
     return render(request, "algorithm/index.html", context)
+
+
+def search(request):
+    br = BJData_br.objects.order_by("pk")
+    search = request.GET.get("search")
+    if search:
+        search_list = br.filter(
+            Q(title__icontains=search)
+            | Q(number__icontains=search)
+            | Q(tags__icontains=search)
+        )
+        context = {
+            "search": search,
+            "search_list": search_list,
+        }
+    else:
+        context = {
+            "search": search,
+            "search_list": br,
+        }
+
+    return render(request, "algorithm/search.html", context)
