@@ -7,9 +7,6 @@ thead {
   color: rgb(0, 0, 0);
 }
 
-/* 탭 */
-
-
 /* 페이지네이션 */
 .board_page {
   margin-top: 30px;
@@ -81,12 +78,11 @@ thead {
 }
 
 .board_list > div {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid rgb(182, 182, 182);
   font-size: 0;
 }
 
 .board_list > div.top {
-  border-bottom: 1px solid #9b9b9b;
   border-top: 0;
   font-weight: bold;
   color: rgb(175, 175, 175);

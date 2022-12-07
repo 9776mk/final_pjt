@@ -5,6 +5,10 @@ app_name = "articles"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("index/1/", views.index_1, name="index_1"),
+    path("index/2/", views.index_2, name="index_2"),
+    path("index/3/", views.index_3, name="index_3"),
+    path("index/4/", views.index_4, name="index_4"),
     path("friend", views.friend, name="friend"),
     path("create/", views.create, name="create"),
     path("<int:pk>/", views.detail, name="detail"),
