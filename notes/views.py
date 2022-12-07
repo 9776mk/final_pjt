@@ -14,6 +14,9 @@ def index(request):
     notes = Notes.objects.filter(to_user_id=request.user.id, garbage=False).order_by(
         "-created_at"
     )
+    notes_counter= Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
+    request.user.message_number = notes_counter
+    request.user.save()
     context = {
         "notes": notes,
     }
@@ -35,7 +38,7 @@ def sent(request):
 @login_required
 def send(request):
     form = NotesForm(request.POST or None)
-    notes_counter= Notes.objects.filter(read=0).count()
+    notes_counter= Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     if form.is_valid():
         temp = form.save(commit=False)
         temp.from_user = request.user
@@ -43,8 +46,6 @@ def send(request):
         if temp.to_user.note_notice:
             temp.to_user.notice_note = False
             temp.to_user.save()
-            request.user.message_number=notes_counter+1
-            request.user.save()
         return redirect("notes:index")
     
     context = {
@@ -56,7 +57,7 @@ def send(request):
 @login_required
 def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
-    notes_counter= Notes.objects.filter(read=0).count()
+    notes_counter= Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     print(notes_counter)
     if request.user == note.to_user:
         if not note.read:
@@ -83,7 +84,7 @@ def delete(request, pk):
             "is_deleted":True
         }
         return JsonResponse(context)
-    elif request.user == note.from_user and note.read == "0":
+    elif request.user == note.from_user and note.read == False and request.method == "POST":
         note.delete()
         context={
             "is_deleted":True
