@@ -2,6 +2,7 @@
 {% load static %}   
 {% block link %}
 <link rel="stylesheet" href="{% static 'css/mainpage.css' %}">
+<script src="https://cdn.lordicon.com/fudrjiwc.js"></script>
 <script defer src="{% static 'js/mainpage.js' %}"></script>
 {% endblock link %}
 {% block content %}
@@ -22,13 +23,30 @@
         <div class='algoboxs'>
             <div class='algobox-frame'>
                 <div class='algobox'>
-                    알고리즘 문제추천
+                    <p>티어별 문제추천</p>
+                    <form id='algo-recom' method='get' action="">
+                        <p>티어</p> 
+                        <input class='ch' id='br' name='t' type="radio" value='br' checked>브론즈
+                        <input class='ch' id='si' name='t' type="radio" value='si'>실버
+                        <input class='ch' id='go' name='t' type="radio" value='go'>골드
+                        <input class='ch' id='pl' name='t' type="radio" value='pl'>플레티넘
+                        <input class='ch' id='di' name='t' type="radio" value='di'>다이아
+                        <input class='ch' id='ru' name='t' type="radio" value='ru'>루비
+                    </form>
+                    <div class="recom">
+
+                    </div>
                 </div>
                 <span>오늘의 알고리즘 추천문제</span>
             </div>
             <div class='algobox-frame'>
                 <div class='algobox'>
                     오늘의 랜덤 문제
+                        <lord-icon
+                            src="https://cdn.lordicon.com/jlvsilmg.json"
+                            trigger="hover"
+                            style="width:250px;height:250px">
+                        </lord-icon>
                 </div>
                 <span>오늘의 랜덤문제</span>
             </div>

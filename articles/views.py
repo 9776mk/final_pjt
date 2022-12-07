@@ -4,9 +4,17 @@ from .forms import articleForm, ArticleCommentForm, ImageForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from accounts.models import Profile
-from django.core.paginator import Paginator 
-
+from django.core.paginator import Paginator
+from algorithm.models import (
+    BJData_br,
+    BJData_si,
+    BJData_go,
+    BJData_pl,
+    BJData_di,
+    BJData_ru,
+)
 from datetime import date, datetime, timedelta
+import random
 
 # Create your views here.
 
@@ -62,27 +70,50 @@ def home(request):
         "Java": re_li[5],
     }
     sorted_dict = sorted(dic.items(), key=lambda item: item[1], reverse=True)
+    print(request.GET)
+
+    티어 = ["br", "si", "go", "pl", "di", "ru"]
+    DB_li = [BJData_br, BJData_si, BJData_go, BJData_pl, BJData_di, BJData_ru]
+    # 비동기 처리,,,
+    if "targetTi" in request.GET.keys():
+        cur = 0
+        nums = []
+        titles = []
+        print(request.GET["targetTi"])
+        ti = request.GET["targetTi"]
+        for i in range(6):
+            if ti == 티어[i]:
+                c = i
+                result = DB_li[i].objects.all()
+                for re in result:
+                    nums.append(re.number)
+        nums = random.choice(nums)
+        titles = DB_li[c].objects.get(number=nums).title
+        tags = DB_li[c].objects.get(number=nums).tags
+        data = {"num": nums, "title": titles, "tags": tags}
+        return JsonResponse(data)
+
     context = {
-            "sorted_dict": sorted_dict,
+        "sorted_dict": sorted_dict,
     }
     return render(request, "articles/home.html", context)
 
 
 def index(request):
-    # page = request.GET.get('page', '1')은 
-    # http://localhost:8000/pybo/?page=1 처럼 
-    # GET 방식으로 호출된 URL에서 page값을 가져올 때 사용한다. 
-    # 만약 http://localhost:8000/pybo/ 처럼 page값 없이 호출된 경우에는 
+    # page = request.GET.get('page', '1')은
+    # http://localhost:8000/pybo/?page=1 처럼
+    # GET 방식으로 호출된 URL에서 page값을 가져올 때 사용한다.
+    # 만약 http://localhost:8000/pybo/ 처럼 page값 없이 호출된 경우에는
     # 디폴트로 1이라는 값을 설정한다.
-    page = request.GET.get('page', '1') # 페이지
+    page = request.GET.get("page", "1")  # 페이지
     articles = Article.objects.order_by("-pk")
     paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
-    max_index = len(paginator.page_range) # 마지막 페이지 번호
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
     context = {
-        'articles' : page_obj, 
-        'max_index' : max_index,
+        "articles": page_obj,
+        "max_index": max_index,
     }
     return render(request, "articles/index.html", context)
 
@@ -214,7 +245,7 @@ def comments_create(request, article_pk):
 
                 if not comment.user.profile.image:
                     comment_user_image = "/static/images/no-avatar.jpg"
-                elif str(comment.user.profile.image)[:4] == 'http':
+                elif str(comment.user.profile.image)[:4] == "http":
                     comment_user_image = str(comment.user.profile.image)
                 else:
                     comment_user_image = str(comment.user.profile.image.url)
@@ -223,8 +254,8 @@ def comments_create(request, article_pk):
                     "pk": comment.pk,
                     "content": comment.content,
                     "userName": comment.user.profile.nickname,
-                    'userPk': comment.user.pk,
-                    'commentUserImage': comment_user_image,
+                    "userPk": comment.user.pk,
+                    "commentUserImage": comment_user_image,
                 }
                 return JsonResponse(data)
             return redirect("articles:detail", article_pk)

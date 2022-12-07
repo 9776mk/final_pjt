@@ -67,3 +67,44 @@ btt.addEventListener('click', function (e) {
     e.preventDefault() // 링크의 본연의 기능을 막는다.
     docElem.scrollTop = 0
 })
+
+//algo
+
+const ti = document.querySelectorAll('.ch')
+// console.log(ti)
+ti.forEach(form => {
+    form.addEventListener('click', e => {
+        var targetTi = e.target.value
+
+        axios({
+            method: 'get',
+            url: '',
+            params: { 'targetTi': targetTi }
+        })
+            .then(response => {
+                // console.log(response.data.num)
+                // console.log(response.data.title)
+                // console.log(response.data.tags)
+                const D = document.getElementById('ddd')
+                if (D) {
+                    D.remove()
+                }
+                const recom = document.querySelector('.recom')
+                const tags = response.data.tags
+                if (response.data.tags == '[]') {
+                    tags = '없음'
+                }
+                recom.insertAdjacentHTML('beforeend', `
+                <div id='ddd'>
+                <a  href="https://www.acmicpc.net/problem/${response.data.num}" target="_blank">
+                <span>제목: ${response.data.title}</span>
+                </a>
+                <p style="margin-bottom:0; margin-top:20px;"> 문제 유형</p>
+                <p>${tags}</p>
+                </div>
+                `)
+            })
+    })
+})
+
+
