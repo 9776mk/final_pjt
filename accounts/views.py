@@ -82,7 +82,7 @@ def is_valid_id(request):
 
 
 def login(request):
-    notes_counter= Notes.objects.filter(read=0).count()
+    notes_counter= Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     status = 1
     # 이미 로그인 → 로그인 X
     if request.user.is_authenticated:
