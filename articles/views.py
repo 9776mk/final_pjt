@@ -70,7 +70,6 @@ def home(request):
         "Java": re_li[5],
     }
     sorted_dict = sorted(dic.items(), key=lambda item: item[1], reverse=True)
-    print(request.GET)
 
     티어 = ["br", "si", "go", "pl", "di", "ru"]
     DB_li = [BJData_br, BJData_si, BJData_go, BJData_pl, BJData_di, BJData_ru]
@@ -79,7 +78,6 @@ def home(request):
         cur = 0
         nums = []
         titles = []
-        print(request.GET["targetTi"])
         ti = request.GET["targetTi"]
         for i in range(6):
             if ti == 티어[i]:

@@ -74,7 +74,7 @@ const ti = document.querySelectorAll('.ch')
 // console.log(ti)
 ti.forEach(form => {
     form.addEventListener('click', e => {
-        var targetTi = e.target.value
+        let targetTi = e.target.value
 
         axios({
             method: 'get',
@@ -85,12 +85,12 @@ ti.forEach(form => {
                 // console.log(response.data.num)
                 // console.log(response.data.title)
                 // console.log(response.data.tags)
-                const D = document.getElementById('ddd')
+                let D = document.getElementById('ddd')
                 if (D) {
                     D.remove()
                 }
-                const recom = document.querySelector('.recom')
-                const tags = response.data.tags
+                let recom = document.querySelector('.recom')
+                let tags = response.data.tags
                 if (response.data.tags == '[]') {
                     tags = '없음'
                 }
