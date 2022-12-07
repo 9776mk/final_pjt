@@ -27,4 +27,5 @@ urlpatterns = [
     path("notes/", include("notes.urls")),
     path("algorithm/", include("algorithm.urls")),
     path("surveys/", include("surveys.urls")),
+    path("friends/", include("friends.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

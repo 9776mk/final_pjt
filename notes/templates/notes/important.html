@@ -56,7 +56,7 @@
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
-                <td>안읽음</td>
+                <td class="not_read">안읽음</td>
                 {% endif %}
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
@@ -64,7 +64,7 @@
                 <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}?next={{ request.path }}"><i class="bi bi-trash-fill"></i></a>
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
                 </td>
               </tr>
               {% else %}
@@ -76,7 +76,7 @@
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
-                <td>안읽음</td>
+                <td class="not_read">안읽음</td>
                 {% endif %}
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
@@ -84,7 +84,7 @@
                 <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
                 {% endif %}
                 <td>
-                  <a href="{% url 'notes:trash_throw_away' note.pk %}?next={{ request.path }}"><i class="bi bi-trash-fill"></i></a>
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
                 </td>
               </tr>
               {% endif %}

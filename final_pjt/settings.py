@@ -40,6 +40,7 @@ CUSTOM_APPS = [
     "accounts",
     "articles",
     "surveys",
+    "friends",  # 벗 삼기/찾기
     "django_bootstrap5",
     "django_extensions",
     "imagekit",
@@ -152,3 +153,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 MEDIA_URL = "/media/"
 
+# Message Framework
+# https://docs.djangoproject.com/en/4.1/ref/contrib/messages/
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+
+from django.contrib.messages import constants as messages_constants
+
+MESSAGE_LEVEL = messages_constants.DEBUG
