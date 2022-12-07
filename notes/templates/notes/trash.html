@@ -58,7 +58,7 @@
                   {% if note.read == 1 %}
                     <td>읽음</td>
                   {% else %}
-                    <td>안읽음</td>
+                    <td class="not_read">안읽음</td>
                   {% endif %}
                     <td scope="row">
                       <a href="{% url 'notes:trash_return' note.pk %}">
@@ -85,7 +85,7 @@
                   {% if note.read == 1 %}
                     <td>읽음</td>
                   {% else %}
-                    <td>안읽음</td>
+                    <td class="not_read">안읽음</td>
                   {% endif %}
                   <td>
                     <a href="{% url 'notes:trash_return' note.pk %}">

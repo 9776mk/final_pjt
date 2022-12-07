@@ -32,12 +32,31 @@
           </tbody>
         </table>
       </div>
-      <div class="col-9 bg-white">
-        <h5 class="mb-3">받는 사람 : {{ note.to_user.profile.nickname }}</h5>
-        <h5 class="mb-3">보낸 사람 : {{ note.from_user.profile.nickname }}</h5>
-        <h5 class="mb-3">받은 시간 : {{ note.created_at|date:'y년 m월 d일 H시 m분' }}</h5>
-        <h5 class="mb-3">제목 : {{ note.title }}</h5>
-        <h5 class="mb-3">내용 : {{ note.content }}</h5>
+      <div class="col-9">
+        <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">쪽지</h4>
+        <div class="note-detail">
+          {% comment %} <div class="paper pink">
+            <div class="tape-section"></div>
+            <p>drink more water</p>
+            <div class="tape-section"></div>
+          </div> {% endcomment %}
+          <div class="paper blue">
+            {% comment %} <div class="top-tape"></div> {% endcomment %}
+            <div class="tape-section"></div>
+            <div class="p-5 w-100">
+              <p class="mb-3 note-font">To. {{ note.to_user.profile.nickname }} ({{ note.to_user.username }})</p>
+              <p class="mb-3 note-font">제목 : {{ note.title }}</p>
+              <p class="mb-3 note-font" style="white-space: pre-line">{{ note.content }}</p>
+              <p class="mb-0 text-end">
+                <a href="{% url 'accounts:profile' note.from_user.pk %}" class="note-font">
+                  From {{ note.from_user.profile.nickname }} ({{ note.from_user.username }})
+                </a>
+                </p>
+              <p class="mb-0 text-end note-font" style="font-size: 15px;">{{ note.created_at|date:'y년 m월 d일 H:m' }}</p>
+            </div>
+            <div class="tape-section"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
