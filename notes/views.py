@@ -34,6 +34,7 @@ def sent(request):
 @login_required
 def send(request):
     form = NotesForm(request.POST or None)
+    notes_counter= Notes.objects.filter(read=0).count()
     if form.is_valid():
         temp = form.save(commit=False)
         temp.from_user = request.user
@@ -41,6 +42,8 @@ def send(request):
         if temp.to_user.note_notice:
             temp.to_user.notice_note = False
             temp.to_user.save()
+            request.user.message_number=notes_counter+1
+            request.user.save()
         return redirect("notes:index")
 
     context = {
@@ -57,12 +60,11 @@ def detail(request, pk):
     if request.user == note.to_user:
         if not note.read:
             note.read =True
-            request.user.message_number=notes_counter
+            request.user.message_number=notes_counter-1
             request.user.save()
             note.save()
         if not request.user.user_to.filter(read=False).exists():
             request.user.notice_note = True
-            request.user.message_number=notes_counter
             request.user.save()
         return render(request,"notes/detail.html",{"note":note})
     elif request.user == note.from_user:
