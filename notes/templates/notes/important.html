@@ -56,7 +56,7 @@
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
-                <td>안읽음</td>
+                <td class="not_read">안읽음</td>
                 {% endif %}
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
@@ -76,7 +76,7 @@
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
-                <td>안읽음</td>
+                <td class="not_read">안읽음</td>
                 {% endif %}
                 {% if not note.important %}
                 <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
