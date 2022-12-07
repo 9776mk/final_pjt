@@ -32,17 +32,19 @@ if (followForm) {
                 const myNickname = response.data.my_nickname
                 const followersBox = document.querySelector('#followers-box')
                 followersBox.insertAdjacentHTML('beforeend', `
-                    <div class="d-flex align-items-center my-3" id="user-${myUserId}">
-                      <div class="mx-3">
-                        <a href="/accounts/profile/${myUserId}/">
-                          <img src="${myImage}" class="modal-profile-img" alt="">
-                        </a>
-                      </div>
-                      <div>
-                        <a href="/accounts/profile/${myUserId}/">
-                          <p class="mb-0"><b>${myNickname}</b></p>
-                          <p class="mb-0" style="font-size: 13px;">${myUsername}</p>
-                        </a>
+                    <div class="d-flex justify-content-between align-items-center" id="user-${myUserId}">
+                      <div class="d-flex align-items-center my-3">
+                        <div class="mx-3">
+                          <a href="/accounts/${myUserId}/">
+                            <img src="${myImage}" class="modal-profile-img" alt="">
+                          </a>
+                        </div>
+                        <div>
+                          <a href="/accounts/${myUserId}/">
+                            <p class="mb-0"><b>${myNickname}</b></p>
+                            <p class="mb-0" style="font-size: 13px;">${myUsername}</p>
+                          </a>
+                        </div>
                       </div>
                     </div>
                 `)
@@ -93,42 +95,44 @@ if (followForms1) {
                 if (isFollowing === true) {
                     followBtn1.value = '언팔로우'
 
-                    const noFollowings = document.querySelector('#no-followings')
-                    if (noFollowings) {
-                        noFollowings.remove()
-                    }
-
-                    // 나의 팔로잉 목록에 팔로우한 유저 추가
                     const userImage = response.data.user_image
                     const userUsername = response.data.user_username
                     const userNickname = response.data.user_nickname
-
+                    
                     const followingsBox = document.querySelector('#followings-box')
-                    followingsBox.insertAdjacentHTML('beforeend', `
-                        <div class="d-flex justify-content-between align-items-center">
-                          <div class="d-flex align-items-center my-3" id="user-${userId}">
-                            <div class="mx-3">
-                              <a href="/accounts/profile/${userId}/">
-                                <img src="${userImage}" class="modal-profile-img" alt="">
-                              </a>
-                            </div>
-                            <div>
-                              <a href="/accounts/profile/${userId}/">
-                                <p class="mb-0"><b>${userNickname}</b></p>
-                                <p class="mb-0" style="font-size: 13px;">${userUsername}</p>
-                              </a>
-                            </div>
-                          </div>
 
-                          <!-- 비동기로 생긴 건 3 -->
-                          <div class="me-3">
-                            <form class="follow-forms-3" data-user-id="${userId}">
-                              <input id="follow-btn-3-${userId}" type="submit" class="btn px-3 bbtn" value="언팔로우">
-                            </form>
-                          </div>
-                        </div>
-                    `)
+                    // '나'의 팔로잉 목록에 '내가' 팔로우한 유저 추가
+                    if (response.data.my_user_pk === Number(followingsBox.getAttribute('data-followings-box-id'))) {
+                        const noFollowings = document.querySelector('#no-followings')
+                        if (noFollowings) {
+                            noFollowings.remove()
+                        }
+                        
+                        followingsBox.insertAdjacentHTML('beforeend', `
+                            <div class="d-flex justify-content-between align-items-center" id="user-${userId}">
+                            <div class="d-flex align-items-center my-3">
+                                <div class="mx-3">
+                                <a href="/accounts/${userId}/">
+                                    <img src="${userImage}" class="modal-profile-img" alt="">
+                                </a>
+                                </div>
+                                <div>
+                                <a href="/accounts/${userId}/">
+                                    <p class="mb-0"><b>${userNickname}</b></p>
+                                    <p class="mb-0" style="font-size: 13px;">${userUsername}</p>
+                                </a>
+                                </div>
+                            </div>
 
+                            <!-- 비동기로 생긴 건 3 -->
+                            <div class="me-3">
+                                <form class="follow-forms-3" data-user-id="${userId}">
+                                <input id="follow-btn-3-${userId}" type="submit" class="btn px-3 bbtn" value="언팔로우">
+                                </form>
+                            </div>
+                            </div>
+                        `)
+                    }
 
                     // 3. 팔로잉 목록에서 팔로우/언팔로우 (목록은 새로고침 후 변경)
                     const followForms3 = document.querySelectorAll('.follow-forms-3')
@@ -167,6 +171,13 @@ if (followForms1) {
                     }
                 } else {
                     followBtn1.value = '팔로우'
+
+                    // 팔로워 목록에서 여러 번 팔/언팔 시
+                    // 팔로잉 목록에 계속 유저가 추가되는 것을 방지
+                    const user = document.querySelector(`#followings-box > #user-${userId}`)
+                    if (user) {
+                        user.remove()
+                    }
                 }
 
                 // 내 페이지에서 나의 팔로잉 유저의 수를 변경

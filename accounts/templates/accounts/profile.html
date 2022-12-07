@@ -88,11 +88,11 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel2">팔로워 목록</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div id="followers-box" class="modal-body py-2">
+        <div id="followers-box" data-followers-box-id="{{ user.pk }}" class="modal-body py-2">
           {% if followers %}
             {% for follower in followers %}
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center my-3" id="user-{{ follower.pk }}">
+              <div class="d-flex justify-content-between align-items-center" id="user-{{ follower.pk }}">
+                <div class="d-flex align-items-center my-3" >
                   <div class="mx-3">
                     <a href="{% url 'accounts:profile' follower.pk %}">
                       {% if follower.profile.image|slugify|slice:'0:4' == 'http' %}
@@ -145,11 +145,11 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel3">팔로잉 목록</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div id="followings-box" class="modal-body py-2">
+        <div id="followings-box" data-followings-box-id="{{ user.pk }}" class="modal-body py-2">
           {% if followings %}
             {% for following in followings %}
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center my-3" id="user-{{ following.pk }}">
+              <div class="d-flex justify-content-between align-items-center" id="user-{{ following.pk }}">
+                <div class="d-flex align-items-center my-3">
                   <div class="mx-3">
                     <a href="{% url 'accounts:profile' following.pk %}">
                       {% if following.profile.image|slugify|slice:'0:4' == 'http' %}
@@ -178,7 +178,7 @@
                       {% if request.user in following.followers.all %}
                         <input id="follow-btn-2-{{ following.pk }}" type="submit" class="btn px-3 bbtn" value="언팔로우">
                       {% else %}
-                        <input id="follow-btn-2--{{ following.pk }}" type="submit" class="btn px-3 bbtn" value="팔로우">
+                        <input id="follow-btn-2-{{ following.pk }}" type="submit" class="btn px-3 bbtn" value="팔로우">
                       {% endif %}
                     {% endif %}
                   </form>
