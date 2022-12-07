@@ -4,6 +4,7 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
+from django.contrib import messages
 # Create your views here.
 
 
@@ -45,7 +46,7 @@ def send(request):
             request.user.message_number=notes_counter+1
             request.user.save()
         return redirect("notes:index")
-
+    
     context = {
         "form": form,
     }
@@ -76,12 +77,21 @@ def detail(request, pk):
 @login_required
 def delete(request, pk):
     note = get_object_or_404(Notes, pk=pk)
-    note.delete()
-
-    context={
-        "is_deleted":True
-    }
-    return JsonResponse(context)
+    if request.user == note.to_user and request.method == "POST":
+        note.delete()
+        context={
+            "is_deleted":True
+        }
+        return JsonResponse(context)
+    elif request.user == note.from_user and note.read == "0":
+        note.delete()
+        context={
+            "is_deleted":True
+        }
+        return JsonResponse(context)
+    else:
+        messages.warning(request, "삭제 불가능한 쪽지 입니다.")
+        return redirect("notes:index")
 
 
 @login_required
