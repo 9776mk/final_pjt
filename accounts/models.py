@@ -104,6 +104,8 @@ class Profile(models.Model):
     # 깃허브, 백준 ID
     github_id = models.CharField(blank=True, max_length=20)
     boj_id = models.CharField(blank=True, max_length=20)
+    # 백준 티어
+    boj_tier = models.IntegerField(blank=True, default=0)
 
 
 # 방명록 (User와 1:1)

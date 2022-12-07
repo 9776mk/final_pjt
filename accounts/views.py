@@ -141,6 +141,9 @@ def profile(request, user_pk):
             tier = -1
     else:
         tier = 0
+    
+    profile_info.boj_tier = tier
+    profile_info.save()
 
     context = {
         "user": user,
