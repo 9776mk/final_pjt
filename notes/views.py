@@ -10,11 +10,8 @@ from django.contrib import messages
 
 @login_required
 def index(request):
-    # notes = request.user.user_to.order_by("-created_at")
-    notes = Notes.objects.filter(to_user_id=request.user.id, garbage=False).order_by(
-        "-created_at"
-    )
-    notes_counter= Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
+    notes = Notes.objects.filter(to_user_id=request.user.id, garbage=False).order_by("-created_at")
+    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     request.user.message_number = notes_counter
     request.user.save()
     context = {
@@ -25,10 +22,7 @@ def index(request):
 
 @login_required
 def sent(request):
-    # to_notes = request.user.user_from.order_by("-created_at")
-    to_notes = Notes.objects.filter(from_user_id=request.user.id, garbage=False).order_by(
-        "-created_at"
-    )
+    to_notes = Notes.objects.filter(from_user_id=request.user.id, garbage=False).order_by("-created_at")
     context = {
         "to_notes":to_notes,
     }
@@ -38,7 +32,7 @@ def sent(request):
 @login_required
 def send(request):
     form = NotesForm(request.POST or None)
-    notes_counter= Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
+    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     if form.is_valid():
         temp = form.save(commit=False)
         temp.from_user = request.user
@@ -57,12 +51,12 @@ def send(request):
 @login_required
 def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
-    notes_counter= Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
+    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     print(notes_counter)
     if request.user == note.to_user:
         if not note.read:
             note.read =True
-            request.user.message_number=notes_counter-1
+            request.user.message_number = notes_counter-1
             request.user.save()
             note.save()
         if not request.user.user_to.filter(read=False).exists():

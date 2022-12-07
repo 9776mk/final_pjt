@@ -89,9 +89,11 @@
               <li class='nav-item'>
                 <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
                   <i class="bi bi-chat-left-dots"></i>
+                  {% if request.user.message_number != 0 %}
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {{ request.user.message_number }}<span class="visually-hidden">unread messages</span>
                   </span>
+                  {% endif %}
                 </button>
               </li>
 
