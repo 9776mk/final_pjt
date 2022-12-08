@@ -23,6 +23,8 @@
         <div class='algoboxs'>
             <div class='algobox-frame'>
                 <div class='algobox'>
+                <h3>티어별 문제추천</h3>
+
                     <form id='algo-recom' method='get' action="">
                         <input class='ch' id='br' name='t' type="radio" value='br' checked>
                         <label for="br">브론즈</label>
@@ -41,7 +43,6 @@
 
                     </div>
                 </div>
-                <span>티어별 문제추천</span>
             </div>
             <div class='algobox-frame'>
                 <div class='algobox'>
@@ -89,7 +90,7 @@
         <div class='lay'>
             <div class='p-img'> <h2>사진</h2><img src="https://via.placeholder.com/500x340" alt=""> </div>
             <div class='p-text'> <h2>소개</h2><p>사용하는 기술스텍과 MBTI가 나와 비슷한 혹은 정반대의 동료와 스터디 혹은 관심 분야에 이야기를 나누어보세요</p> <div class='btn-holder'>
-                <a class='btnAll' href="{% url 'articles:friend' %}">찾으러</a>
+                <a class='btnAll' href="{% url 'friends:index' %}">찾으러</a>
             </div>
         </div>
         </div>
