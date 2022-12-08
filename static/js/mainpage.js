@@ -96,11 +96,11 @@ ti.forEach(form => {
                 }
                 recom.insertAdjacentHTML('beforeend', `
                 <div id='ddd'>
-                <a  href="https://www.acmicpc.net/problem/${response.data.num}" target="_blank">
-                <span>제목: ${response.data.title}</span>
+                <a  href="https://www.acmicpc.net/problem/${response.data.num}" style="display: inline-block;" target="_blank">
+                <h3>${response.data.title}</h3>
                 </a>
                 <p style="margin-bottom:0; margin-top:20px;"> 문제 유형</p>
-                <p>${tags}</p>
+                <p>#${tags}</p>
                 </div>
                 `)
             })
@@ -108,3 +108,23 @@ ti.forEach(form => {
 })
 
 
+// gift
+
+let gift = document.getElementById('gift')
+gift.addEventListener('click', e => {
+    const userPk = gift.attributes.value.value
+    if (userPk == 'None') {
+        const message = document.getElementById('giftM')
+        message.style.display = 'block'
+
+    }
+    axios({
+        method: 'get',
+        url: '',
+        params: { 'userPk': userPk }
+    })
+        .then(response => {
+            var link = `https://www.acmicpc.net/problem/${response.data.problem}`
+            window.open(link);
+        })
+})
