@@ -35,7 +35,17 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            알람내용
+            <!-- 팔로워 알림 -->
+            {% for message in messages %}
+            {{ message.tag }}
+            <p>{{ user.username }}{{ message }}</p>
+            {% endfor %}
+
+            {% comment %} {% if user.followers.pk == user.pk %}
+            <p>1</p>
+            {% endif %}
+            {{ user.followers }}
+            {{ user.username }} {% endcomment %}
           </div>
         </div>
       </div>

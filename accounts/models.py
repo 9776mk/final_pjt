@@ -45,7 +45,8 @@ class User(AbstractUser):
     token = models.CharField(max_length=150, null=True, blank=True)
     notice_note = models.BooleanField(default=True)  # 쪽지
     note_notice = models.BooleanField(default=True)  # 쪽지
-    message_number = models.IntegerField(default=0)
+    message_number = models.IntegerField(default=0) #쪽지 알람
+    
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
