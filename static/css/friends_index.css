@@ -246,4 +246,21 @@ hr {
   padding: 10px;
   border-radius: 20px;
   height: auto;
+}
+
+.bbtn_rec {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #a4a4a4;
+  border-radius: 2px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #a4a4a4;
+  transition: all 0.4s;
+  border-radius: 10px;
+}
+
+.bbtn_rec:hover {
+  background-color: #a4a4a4;
+  color: white;
 }/*# sourceMappingURL=friends_index.css.map */

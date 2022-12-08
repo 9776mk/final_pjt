@@ -130,7 +130,7 @@ def index(request):
     # 디폴트로 1이라는 값을 설정한다.
     page = request.GET.get("page", "1")  # 페이지
     articles = Article.objects.order_by("-pk")
-    paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
+    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -143,9 +143,9 @@ def index(request):
 
 # 카테고리 별
 def index_1(request):
-    articles = Article.objects.filter(category="자료공유").order_by("-pk")
-    page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
+    articles = Article.objects.filter(category="자료공유").order_by('-pk')
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -157,9 +157,9 @@ def index_1(request):
 
 
 def index_2(request):
-    articles = Article.objects.filter(category="질문").order_by("-pk")
-    page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
+    articles = Article.objects.filter(category="질문").order_by('-pk')
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -171,9 +171,9 @@ def index_2(request):
 
 
 def index_3(request):
-    articles = Article.objects.filter(category="취업").order_by("-pk")
-    page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
+    articles = Article.objects.filter(category="취업").order_by('-pk')
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -185,9 +185,9 @@ def index_3(request):
 
 
 def index_4(request):
-    articles = Article.objects.filter(category="잡담").order_by("-pk")
-    page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
+    articles = Article.objects.filter(category="잡담").order_by('-pk')
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 

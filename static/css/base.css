@@ -69,23 +69,18 @@ a:hover {
 }
 
 .bbtn {
-    height: 40px; 
-    background-color: #FF8E00; 
-    color: white;
-    font-weight: 400;
-    text-align: center;
-    border-radius: 7px;
-    border: 0;
-    outline: 0;
-    transition: all 0.2s ;
-    padding: 1px 15px;
-    display: flex;
-    align-items: center;
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #FF8E00;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: #FF8E00;
+    transition: all 0.4s;
 }
 
 .bbtn:hover {
-    height: 40px; 
-    background-color: #ff7b00; 
+    background-color: #FF8E00;
     color: white;
 }
 
@@ -114,30 +109,30 @@ a:hover {
     text-align: center;
     font-size: 0;
     border-radius: 30rem;
-  }
+}
 .bt_wrap a,
 .bt_wrap button,
 .bt_wrap input {
-display: inline-block;
-padding: 10px;
-border: 1px solid #FF8E00;
-border-radius: 2px;
-font-size: 0.9rem;
-background: #fff;
-color: #FF8E00;
-transition: all 0.4s;
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #FF8E00;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: #FF8E00;
+    transition: all 0.4s;
 }
 .bt_wrap a:first-child,
 .bt_wrap button:first-child {
-margin-left: 0;
+    margin-left: 0;
 }
 .bt_wrap a:hover,
 .bt_wrap button:hover {
-background-color: #FF8E00;
-color: white;
+    background-color: #FF8E00;
+    color: white;
 }
 .bt_wrap a {
-margin-left: 15px;
+    margin-left: 15px;
 }
 
 .follow-buttons {
