@@ -7,7 +7,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 import json
 from django.http import JsonResponse
-
+from django.contrib import messages
 # 깃로그인
 import os
 from dotenv import load_dotenv
@@ -293,7 +293,7 @@ def github_login_callback(request):
 
 
 # 유저 팔로우/언팔로우
-def follow(request, user_pk):
+def follow(request,user_pk):
     if not request.user.is_authenticated:
         return redirect("accounts:profile", user.pk)
 
@@ -304,10 +304,18 @@ def follow(request, user_pk):
         if user.followers.filter(pk=request.user.pk).exists():
             user.followers.remove(request.user)
             is_following = False  # 팔로잉 취소
+            messages.warning(request,"님 팔로워 취소함")
+            # messages.warning(user,"님 팔로워 취소함")
+            print(request.user)# 클릭하는 유저
+            print(user.username)# 클릭하는 유저가 팔로잉 취소한 유저
         else:
             user.followers.add(request.user)
             is_following = True  # 팔로잉
-
+            messages.warning(request,"님 팔로워함")
+            # messages.warning(user,"님 팔로워함")
+            print('messages')
+            print(request.user)# 클릭하는 유저
+            print(user.username)# 클릭하는 유저가 팔로잉한 유저
 
     if not request.user.profile.image:
         my_image = "/static/images/no-avatar.jpg"
