@@ -24,12 +24,18 @@
             <div class='algobox-frame'>
                 <div class='algobox'>
                     <form id='algo-recom' method='get' action="">
-                        <input class='ch' id='br' name='t' type="radio" value='br' checked>브론즈
-                        <input class='ch' id='si' name='t' type="radio" value='si'>실버
-                        <input class='ch' id='go' name='t' type="radio" value='go'>골드
-                        <input class='ch' id='pl' name='t' type="radio" value='pl'>플레티넘
-                        <input class='ch' id='di' name='t' type="radio" value='di'>다이아
-                        <input class='ch' id='ru' name='t' type="radio" value='ru'>루비
+                        <input class='ch' id='br' name='t' type="radio" value='br' checked>
+                        <label for="br">브론즈</label>
+                        <input class='ch' id='si' name='t' type="radio" value='si'>
+                        <label for="si">실버</label>
+                        <input class='ch' id='go' name='t' type="radio" value='go'>
+                        <label for="go">골드</label>
+                        <input class='ch' id='pl' name='t' type="radio" value='pl'>
+                        <label for="pl">플레티넘</label>
+                        <input class='ch' id='di' name='t' type="radio" value='di'>
+                        <label for="di">다이아</label>
+                        <input class='ch' id='ru' name='t' type="radio" value='ru'>
+                        <label for="ru">루비</label>
                     </form>
                     <div class="recom">
 
@@ -39,13 +45,15 @@
             </div>
             <div class='algobox-frame'>
                 <div class='algobox'>
-                        <lord-icon
-                            src="https://cdn.lordicon.com/jlvsilmg.json"
-                            trigger="hover"
-                            style="width:250px;height:250px">
-                        </lord-icon>
+                <h3>오늘의 도전 문제</h3>
+                    <lord-icon
+                    src="https://cdn.lordicon.com/nkmsrxys.json"
+                    trigger="hover"
+                    colors="primary:#121331,secondary:#ff7b00"
+                    style="width:250px;height:250px; cursor: pointer;" id="gift" value="{{request.user.pk}}">
+                </lord-icon>
+                <h3 id='giftM' style='color:#ff0000; display:none;'>로그인을 하시면 이용할 수 있습니다!</h3>
                 </div>
-                <span>오늘의 도전 문제</span>
             </div>
         </div>
     </div>
