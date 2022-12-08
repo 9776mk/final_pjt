@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('<int:user_pk>/', views.profile, name='profile'),
     path('<int:user_pk>/update/', views.profile_update, name='profile_update'),
+    path("password/", views.password, name='password'),
     path('<int:user_pk>/follow/', views.follow, name='follow'),
     path('<int:user_pk>/guestbook/', views.guestbook, name='guestbook'),    # 방명록
     path('<int:user_pk>/guestbook/article_create/', views.gb_article_create, name='gb_article_create'), # 방명록 글 작성

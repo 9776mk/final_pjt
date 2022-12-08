@@ -9,6 +9,7 @@
         {% csrf_token %}
         {% bootstrap_form profile_form %}
         <div class="mt-1 d-flex justify-content-end">
+          <a href="{% url 'accounts:password' %}" class="bbtn">비밀번호 변경</a>
           <input type="submit" value="완료" class="bbtn">
         </div>
       </form>
