@@ -109,32 +109,63 @@
         </table> 
       </div>
     </div>
-    <a class="" data-bs-toggle="collapse" href="#commentcollapse" 
-    role="button" aria-expanded="false" aria-controls="commentcollapse" style="font-size: 20px;">
-    작성 댓글  <b>{{ request.user.articlecomment_set.all.count }}</b>
-    </a>
-    <div class="collapse" id="commentcollapse">
-      <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
-        <thead>
-          <tr>
-            <th scope="col" class="col-1"></th>
-            <th scope="col" class="col-7">내용</th>
-            <th scope="col" class="col-2">작성일</th>
-            <th scope="col" class="col-1">삭제</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for comment in request.user.articlecomment_set.all %}
-          <tr>
-            {% comment %} {{ forloop.revcounter }} {% endcomment %}
-            <th scope="row">{{ comment.pk }}</th>
-            <td><a href="{% url 'articles:detail' comment.article.pk %}">{{ comment.content }}</a></td>
-            <td>{{ comment.create_at|date:'Y-m-d' }}</td>
-            <td><a href=""><i class="bi bi-trash-fill"></i></a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="mb-2">
+      <a class="" data-bs-toggle="collapse" href="#commentcollapse" 
+      role="button" aria-expanded="false" aria-controls="commentcollapse" style="font-size: 20px;">
+      작성 댓글  <b>{{ request.user.articlecomment_set.all.count }}</b>
+      </a>
+      <div class="collapse" id="commentcollapse">
+        <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
+          <thead>
+            <tr>
+              <th scope="col" class="col-1"></th>
+              <th scope="col" class="col-7">내용</th>
+              <th scope="col" class="col-2">작성일</th>
+              <th scope="col" class="col-1">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for comment in request.user.articlecomment_set.all %}
+            <tr>
+              {% comment %} {{ forloop.revcounter }} {% endcomment %}
+              <th scope="row">{{ comment.pk }}</th>
+              <td><a href="{% url 'articles:detail' comment.article.pk %}">{{ comment.content }}</a></td>
+              <td>{{ comment.create_at|date:'Y-m-d' }}</td>
+              <td><a href=""><i class="bi bi-trash-fill"></i></a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mb-2">
+      <a data-bs-toggle="collapse" href="#likecollapse" 
+      role="button" aria-expanded="false" aria-controls="likecollapse" style="font-size: 20px;">
+      좋아요 누른 글  <b>{{ request.user.article_like.all.count }}</b>
+      </a>
+      <div class="collapse" id="likecollapse">
+        <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
+          <thead>
+            <tr>
+              <th scope="col" class="col-1"></th>
+              <th scope="col" class="col-7">제목</th>
+              <th scope="col" class="col-2">작성일</th>
+              <th scope="col" class="col-1">조회</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for article in request.user.article_like.all %}
+            <tr>
+              {% comment %} {{ forloop.revcounter }} {% endcomment %}
+              <th scope="row">{{ article.pk }}</th>
+              <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></td>
+              <td>{{ article.create_at|date:'Y-m-d' }}</td>
+              <td>{{ article.hits }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table> 
+      </div>
     </div>
   </div>
 
