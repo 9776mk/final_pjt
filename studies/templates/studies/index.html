@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div>
+    {% for study in studies %}
+      <div class="card" style="width: 18rem;">
+        <a href="{% url 'studies:detail' study.pk %}">
+          <img src="{{ study.image.url }}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">{{ study.title }}</h5>
+            <p class="card-text">{{ study.host_user }}</p>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  <a href="{% url 'studies:create' %}" class="btn btn-primary">스터디 생성</a>
+{% endblock content %}
