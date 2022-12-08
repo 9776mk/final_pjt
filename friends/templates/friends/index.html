@@ -11,7 +11,7 @@
 
     <div class='btn-board px-4 pt-4'>
       <!-- 카테고리 버튼 -->
-      <div id="language-btns" class="category mb-3">
+      <div id="language-btns" class="category mb-2">
         <p class="mb-2">주 사용언어</p>
         {% for lang in category_langs %}
           <input id="{{ lang }}" class="" type="checkbox" name="language-btns">
@@ -21,12 +21,19 @@
       
       <hr style='border-top: 0;'>
 
-      <div id="mbti-btns" class="category mb-3">
+      <div id="mbti-btns" class="category mb-2">
         <p class="mb-2">MBTI</p>
         {% for mbti in category_mbtis %}
           <input id="{{ mbti }}" class="" type="checkbox" name="mbti-btns">
           <label for="{{ mbti }}">{{ mbti }}</label>
         {% endfor %}
+      </div>
+
+      <div class='d-flex justify-content-end'>
+        <form action="{% url 'friends:recommend' %}" method="POST">
+          {% csrf_token %}
+          <a class='bbtn mb-3' onclick="location.href='{% url "friends:recommend" %}'">랜덤 조 구성하러 가기❗️</a>
+        </form>
       </div>
     </div>
     
@@ -43,8 +50,9 @@
     <!-- 사용자들 -->
     <div class="row mx-3">
     {% for user in users %}
-      <a class='col-lg-6' href="{% url 'accounts:profile' user.pk %}">
+      <a class='col-lg-4' href="{% url 'accounts:profile' user.pk %}">
         <div class="all-users user_box d-none d-flex align-items-center justify-content-around mb-3 mx-1 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
+          <!-- 프로필 이미지-->
           <div>
             {% comment %}  {% endcomment %}
             {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
@@ -56,9 +64,8 @@
             {% endif %}
           </div>
           <div>
+            <!-- 닉네임 -->
             <p class="m-0">{{ user.profile.nickname }}</p>
-          </div>
-          <div>
             <!-- 주 사용언어 -->
             {% if user.profile.language == 'Python' %}
               <p class="my-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
@@ -73,10 +80,12 @@
             {% elif user.profile.language == 'PHP' %}
               <p class="my-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
             {% endif %}
-            <!-- 백준티어 -->
-            <p class='mb-1'><img style="height:25px;" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
-            <!-- MBTI -->
-            <p class="m-0"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+            <div class='d-flex'>
+              <!-- 백준티어 -->
+              <p class='mb-1 me-2'><img style="height:25px;" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
+              <!-- MBTI -->
+              <p class="m-0"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+            </div>
           </div>
         </div>
       </a>
