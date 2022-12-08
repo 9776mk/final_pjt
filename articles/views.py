@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article, ArticleComment, Image
 from .forms import articleForm, ArticleCommentForm, ImageForm
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from accounts.models import Profile
 from django.core.paginator import Paginator
 from algorithm.models import (
@@ -277,7 +277,7 @@ def delete(request, pk):
     articles = get_object_or_404(Article, pk=pk)
     if request.user == articles.user:
         articles.delete()
-        return redirect("articles:index")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     else:
         return redirect("articles:index")
 
