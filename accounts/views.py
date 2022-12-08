@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from .forms import *
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -179,6 +179,33 @@ def profile_update(request, user_pk):
     return render(request, "accounts/profile_update.html", context)
 
 
+# 비밀번호 변경
+@login_required
+def password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)  # 로그인 유지
+            return redirect("accounts:profile", request.user.pk)
+    else:
+        form = PasswordChangeForm(request.user)
+    context = {
+        "form": form,
+    }
+    return render(request, "accounts/password.html", context)
+
+
+# 회원 탈퇴
+@login_required
+def delete(request, pk):
+    user = get_user_model().objects.get(pk=pk)
+    if request.user == user:
+        user.delete()
+        auth_logout(request)
+    return redirect("home")
+
+
 # 깃 로그인용
 load_dotenv()
 GITHUB_CLIENT_ID = os.getenv("GIT_ID")
@@ -307,14 +334,14 @@ def follow(request,user_pk):
         if user.followers.filter(pk=request.user.pk).exists():
             user.followers.remove(request.user)
             is_following = False  # 팔로잉 취소
-            messages.warning(request,"님 팔로워 취소함")
+            # messages.warning(request,"님 팔로워 취소함")
             # messages.warning(user,"님 팔로워 취소함")
             print(request.user)# 클릭하는 유저
             print(user.username)# 클릭하는 유저가 팔로잉 취소한 유저
         else:
             user.followers.add(request.user)
             is_following = True  # 팔로잉
-            messages.warning(request,"님 팔로워함")
+            # messages.warning(request,"님 팔로워함")
             # messages.warning(user,"님 팔로워함")
             print('messages')
             print(request.user)# 클릭하는 유저

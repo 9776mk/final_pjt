@@ -84,7 +84,25 @@ a:hover {
     color: white;
 }
 
+.bbtn-white {
+    height: 40px; 
+    background: white;
+    color: #FF8E00;;
+    border: 1px solid #FF8E00;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 7px;
+    outline: 0;
+    transition: all 0.2s ;
+    padding: 1px 15px;
+    display: flex;
+    align-items: center;
+}
 
+.bbtn-white:hover {
+    background-color: #FF8E00;
+    color: white;
+}
 /* 게시판 버튼 */
 .bt_wrap {
     margin: 30px auto;

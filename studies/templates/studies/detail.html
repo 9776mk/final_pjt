@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load mathfilters %}
+{% load static %}
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %} 
+  <div class='container py-5'>
+    <div class="board_view">
+      <!-- 작성자 -->
+      <div class="writer">
+        <div class='writer_profile'>
+          <a class='d-flex align-items-center' href="{% url 'accounts:profile' study.host_user.pk %}">
+            {% if study.host_user.profile.image|slugify|slice:'0:4' == 'http' %}
+              <!-- 깃허브에서 가져온 이미지: https로 시작 -->
+              <img class='writer_img' src="{{ study.host_user.profile.image }}">
+            {% elif study.host_user.profile.image %}
+              <!-- 파일로 추가한 이미지 /media/ -->
+              <img class='writer_img' src="{{ study.host_user.profile.image.url }}">
+            {% else %}
+              <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
+            {% endif %}
+            <div>
+              <div class='mb-1'>{{ study.host_user.profile.nickname }}</div>
+              <div>
+                {% if study.host_user.profile.language == 'Python' %}
+                  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff">
+                {% elif study.host_user.profile.language == 'Java' %}
+                  <img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white">
+                {% elif study.host_user.profile.language == 'C' %}
+                  <img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white">
+                {% elif study.host_user.profile.language == 'JavaScript' %}
+                  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+                {% elif study.host_user.profile.language == 'C++' %}
+                  <img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white">
+                {% elif study.host_user.profile.language == 'PHP' %}
+                  <img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white">
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 스터디 종류 & 이름 & 가입신청 버튼 -->
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="info">
+          <p style="text-align: start;">{{ study.category }}</p>
+          <div class="title d-flex align-items-center">
+            <span>{{ study.title }}</span>
+            <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+          </div>
+        </div>
+
+        <form action="" style="padding: 40px 80px;">
+          <input type="submit" value="가입신청" class="btn btn-success">
+        </form>
+      </div>
+
+      <!-- 모집 여부 & 인원 & 가입신청 버튼 -->
+      <div class="d-flex justify-content-start align-items-center mb-5" style="padding: 0 80px">
+        <div>
+          <!-- is_closed == False && 정원 미달 -->
+          <div class="title d-flex align-items-center">
+            <span>모집여부: </span>
+            <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+          </div>
+          <p class="m-0">인원: 3 / {{ study.limit }}</p>
+          <p class="m-0">{{ study.content }}</p>
+        </div>
+      </div>
+      
+      <!-- 사진 -->
+      <img class="d-block mx-auto board_img" src="{{ study.image.url }}" alt="{{ study.image }}" style='margin-bottom: 20px;'>
+
+      <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
+      {% if request.user == study.host_user %}
+        <!-- 삭제, 수정, 뒤로가기 버튼들 -->
+        <form action="{% url 'studies:delete' study.pk %}" method="POST">
+          {% csrf_token %}
+          <div class="bt_wrap my-5">
+            <input type="submit" value="삭제" class="on">
+            <a href="{% url 'studies:update' study.pk %}" class="on">수정</a>
+            <a href="{% url 'studies:index' %}" class="on">뒤로</a>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+{% endblock content %}

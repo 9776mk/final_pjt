@@ -141,12 +141,62 @@ main {
         display: flex;
         justify-content: space-around;
 
+        .algobox-frame {
+            &:nth-child(2) {
+                .algobox {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+
         .algobox {
             margin-bottom: 10px;
             border: 1px solid #000;
             box-sizing: border-box;
             width: 400px;
             height: 400px;
+
+            #algo-recom {
+                input {
+                    display: none;
+                }
+
+                label {
+                    margin: 20px 20px 0 20px;
+                    padding: 5px 10px;
+                    cursor: pointer;
+                    color: #fff;
+                    border-radius: 8px;
+
+                    &:nth-child(2) {
+                        background-color: #A85300;
+                    }
+
+                    &:nth-child(4) {
+                        background-color: #415C76;
+                    }
+
+                    &:nth-child(6) {
+                        background-color: #E59500;
+                    }
+
+                    &:nth-child(8) {
+                        background-color: #27E2A4;
+                    }
+
+                    &:nth-child(10) {
+                        background-color: #00AEF4;
+                    }
+
+                    &:nth-child(12) {
+                        background-color: #FF0867;
+                    }
+                }
+            }
+
 
 
             .recom {

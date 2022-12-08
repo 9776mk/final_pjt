@@ -58,11 +58,15 @@
       {% endif %}
       <p class="mt-1 mb-1"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
       {% if tier %}
-      <p> <img style="height:25px" src="https://static.solved.ac/tier_small/{{ tier }}.svg"> </p>
+      <p class="mt-1 mb-1"><img style="height:25px" src="https://static.solved.ac/tier_small/{{ tier }}.svg"> </p>
       {% else %}
-      <p> 백준 아이디 등록하세요. </p>
+      <p class="text-muted mt-1 mb-1"> 백준 아이디를 등록해주세요 </p>
       {% endif %}
       <p class="mb-1">{{ user.profile.intro }}</p>
+      <div class="d-flex justify-content-end">
+        <a href="{% url 'notes:send' %}" class="bbtn me-2 h-100">쪽지 보내기</a>
+        <a href="{% url 'accounts:guestbook' user.pk %}" class="bbtn h-100">방명록</a>
+      </div>
     </div>
   </div>
   <hr>
@@ -71,13 +75,98 @@
     <!-- 16진수 색상표 https://jasmintime.com/244 -->
     <!-- <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100"> -->
     {% if user.profile.github_id %}
-    <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3">
+    <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3" 
+    onclick="window.open('https://github.com/{{ user.profile.github_id }}')" style="cursor: pointer;" target="_blank" >
     {% endif %}
-    <h5>작성 글</h5>
-    <h5>작성 댓글</h5>
-    <a href="{% url 'accounts:guestbook' user.pk %}">
-      <h5>방명록</h5>
-    </a>
+    <div class="mb-2" >
+      <a data-bs-toggle="collapse" href="#articlecollapse" 
+      role="button" aria-expanded="false" aria-controls="articlecollapse" style="font-size: 20px;">
+      작성 글  <b>{{ request.user.article_set.all.count }}</b>
+      </a>
+      <div class="collapse" id="articlecollapse">
+        <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
+          <thead>
+            <tr>
+              <th scope="col" class="col-1"></th>
+              <th scope="col" class="col-7">제목</th>
+              <th scope="col" class="col-2">작성일</th>
+              <th scope="col" class="col-1">조회</th>
+              <th scope="col" class="col-1">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for article in request.user.article_set.all %}
+            <tr>
+              {% comment %} {{ forloop.revcounter }} {% endcomment %}
+              <th scope="row">{{ article.pk }}</th>
+              <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></td>
+              <td>{{ article.create_at|date:'Y-m-d' }}</td>
+              <td>{{ article.hits }}</td>
+              <td><a href="{% url 'articles:delete' article.pk %}"><i class="bi bi-trash-fill"></i></a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table> 
+      </div>
+    </div>
+    <div class="mb-2">
+      <a class="" data-bs-toggle="collapse" href="#commentcollapse" 
+      role="button" aria-expanded="false" aria-controls="commentcollapse" style="font-size: 20px;">
+      작성 댓글  <b>{{ request.user.articlecomment_set.all.count }}</b>
+      </a>
+      <div class="collapse" id="commentcollapse">
+        <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
+          <thead>
+            <tr>
+              <th scope="col" class="col-1"></th>
+              <th scope="col" class="col-7">내용</th>
+              <th scope="col" class="col-2">작성일</th>
+              <th scope="col" class="col-1">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for comment in request.user.articlecomment_set.all %}
+            <tr>
+              {% comment %} {{ forloop.revcounter }} {% endcomment %}
+              <th scope="row">{{ comment.pk }}</th>
+              <td><a href="{% url 'articles:detail' comment.article.pk %}">{{ comment.content }}</a></td>
+              <td>{{ comment.create_at|date:'Y-m-d' }}</td>
+              <td><a href=""><i class="bi bi-trash-fill"></i></a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mb-2">
+      <a data-bs-toggle="collapse" href="#likecollapse" 
+      role="button" aria-expanded="false" aria-controls="likecollapse" style="font-size: 20px;">
+      좋아요 누른 글  <b>{{ request.user.article_like.all.count }}</b>
+      </a>
+      <div class="collapse" id="likecollapse">
+        <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
+          <thead>
+            <tr>
+              <th scope="col" class="col-1"></th>
+              <th scope="col" class="col-7">제목</th>
+              <th scope="col" class="col-2">작성일</th>
+              <th scope="col" class="col-1">조회</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for article in request.user.article_like.all %}
+            <tr>
+              {% comment %} {{ forloop.revcounter }} {% endcomment %}
+              <th scope="row">{{ article.pk }}</th>
+              <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></td>
+              <td>{{ article.create_at|date:'Y-m-d' }}</td>
+              <td>{{ article.hits }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table> 
+      </div>
+    </div>
   </div>
 
   <!-- 팔로워 modal -->

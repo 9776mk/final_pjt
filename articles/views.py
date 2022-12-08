@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article, ArticleComment, Image
 from .forms import articleForm, ArticleCommentForm, ImageForm
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from accounts.models import Profile
 from django.core.paginator import Paginator
 from algorithm.models import (
@@ -88,13 +88,38 @@ def home(request):
         nums = random.choice(nums)
         titles = DB_li[c].objects.get(number=nums).title
         tags = DB_li[c].objects.get(number=nums).tags
+        tags = tags.replace("[", "")
+        tags = tags.replace("]", "")
+        tags = tags.replace("'", "")
+        tags = tags.replace(", ", "  #")
         data = {"num": nums, "title": titles, "tags": tags}
+        return JsonResponse(data)
+    # gift
+    if "userPk" in request.GET.keys():
+        user_level = Profile.objects.get(id=request.GET["userPk"]).boj_tier
+        tier = [5, 10, 15, 20, 25, 30]
+        problem_li = []
+        for i in range(6):
+            if user_level < tier[i]:  #
+                user_level = user_level + 1
+                problems = DB_li[i].objects.filter(level=user_level)
+                for p in problems:
+                    problem_li.append(p.number)
+            elif user_level == 30:
+                problems = BJData_ru.objects.filter(level=user_level)
+                for p in problems:
+                    problem_li.append(p.number)
+
+        problem = random.choice(problem_li)
+        # print(problem)
+        data = {"problem": problem}
         return JsonResponse(data)
 
     context = {
         "sorted_dict": sorted_dict,
     }
     return render(request, "articles/home.html", context)
+
 
 # 메인, 전체 카테고리 게시판
 def index(request):
@@ -115,56 +140,60 @@ def index(request):
     }
     return render(request, "articles/index.html", context)
 
+
 # 카테고리 별
 def index_1(request):
     articles = Article.objects.filter(category="자료공유").order_by('-pk')
     page = request.GET.get('page', '1') # 페이지
     paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
-    max_index = len(paginator.page_range) # 마지막 페이지 번호
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
     context = {
         "articles": page_obj,
-        'max_index' : max_index,
+        "max_index": max_index,
     }
     return render(request, "articles/index.html", context)
+
 
 def index_2(request):
     articles = Article.objects.filter(category="질문").order_by('-pk')
     page = request.GET.get('page', '1') # 페이지
     paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
-    max_index = len(paginator.page_range) # 마지막 페이지 번호
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
     context = {
         "articles": page_obj,
-        'max_index' : max_index,
+        "max_index": max_index,
     }
     return render(request, "articles/index.html", context)
+
 
 def index_3(request):
     articles = Article.objects.filter(category="취업").order_by('-pk')
     page = request.GET.get('page', '1') # 페이지
     paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
-    max_index = len(paginator.page_range) # 마지막 페이지 번호
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
     context = {
         "articles": page_obj,
-        'max_index' : max_index,
+        "max_index": max_index,
     }
     return render(request, "articles/index.html", context)
+
 
 def index_4(request):
     articles = Article.objects.filter(category="잡담").order_by('-pk')
     page = request.GET.get('page', '1') # 페이지
     paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
-    max_index = len(paginator.page_range) # 마지막 페이지 번호
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
     context = {
         "articles": page_obj,
-        'max_index' : max_index,
+        "max_index": max_index,
     }
     return render(request, "articles/index.html", context)
 
@@ -277,7 +306,7 @@ def delete(request, pk):
     articles = get_object_or_404(Article, pk=pk)
     if request.user == articles.user:
         articles.delete()
-        return redirect("articles:index")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     else:
         return redirect("articles:index")
 
