@@ -231,65 +231,54 @@
 
 {% block content %}
 <div class="container my-5">
-  <h1 class="mb-5" style="font-family: 'HBIOS-SYS'">함께 할 개발자를 찾아보세요!</h1>
-
-  <!-- 카테고리 버튼 -->
-  <div id="language-btns" class="category mb-3">
-    <p class="mb-2">주 사용언어</p>
-    {% for lang in category_langs %}
-      <input id="{{ lang }}" class="" type="checkbox" name="language-btns">
-      <label for="{{ lang }}">{{ lang }}</label>
-    {% endfor %}
-  </div>
-  <div id="mbti-btns" class="category mb-3">
-    <p class="mb-2">MBTI</p>
-    {% for mbti in category_mbtis %}
-      <input id="{{ mbti }}" class="" type="checkbox" name="mbti-btns">
-      <label for="{{ mbti }}">{{ mbti }}</label>
-    {% endfor %}
-  </div>
+  <h1 class="mb-5" style="font-family: 'HBIOS-SYS'">개발자 랜덤 추천 결과입니다!</h1>
   
   <!-- 랜덤 추첨 -->
   <form action="{% url 'friends:recommend' %}" method="POST">
     {% csrf_token %}
     <input type="number" class="form-control" name="num-of-people" min="1" max="10" value="0">
-    <input type="submit" class="btn btn-primary" value="추천 받기">
+    <input type="submit" class="btn btn-primary" value="다시 추천 받기">
   </form>
 
-  <!-- 사용자들 -->
-  {% for user in users %}
-    <div class="all-users d-none d-flex align-items-center mb-3 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
-      <div class="me-3">
-        <a href="{% url 'accounts:profile' user.pk %}">
-          {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
-            <img src="{{ user.profile.image }}" class="profile-img" alt="">
-          {% elif user.profile.image %}
-            <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
-          {% else %}
-            <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
+  <p>{{ warning }}</p>
+  <!-- 랜덤으로 추천받은 유저들 -->
+  <div id="recommended-users">
+    {% for user in recommended_users %}
+      <div class="recommended-users d-flex align-items-center mb-3 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
+        <div class="me-3">
+          <a href="{% url 'accounts:profile' user.pk %}">
+            {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
+              <img src="{{ user.profile.image }}" class="profile-img" alt="">
+            {% elif user.profile.image %}
+              <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
+            {% else %}
+              <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
+            {% endif %}
+          </a>
+        </div>
+        <div>
+          <p class="m-0">닉네임: {{ user.profile.nickname }}</p>
+          {% if user.profile.language == 'Python' %}
+            <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
+          {% elif user.profile.language == 'Java' %}
+            <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
+          {% elif user.profile.language == 'C' %}
+            <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
+          {% elif user.profile.language == 'JavaScript' %}
+            <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
+          {% elif user.profile.language == 'C++' %}
+            <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
+          {% elif user.profile.language == 'PHP' %}
+            <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
           {% endif %}
-        </a>
+          <p>백준티어: <img style="height:25px" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
+          <p class="m-0">MBTI: <span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+        </div>
       </div>
-      <div>
-        <p class="m-0">닉네임: {{ user.profile.nickname }}</p>
-        {% if user.profile.language == 'Python' %}
-          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
-        {% elif user.profile.language == 'Java' %}
-          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
-        {% elif user.profile.language == 'C' %}
-          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
-        {% elif user.profile.language == 'JavaScript' %}
-          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
-        {% elif user.profile.language == 'C++' %}
-          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
-        {% elif user.profile.language == 'PHP' %}
-          <p class="m-0">주 사용언어: <img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
-        {% endif %}
-        <p>백준티어: <img style="height:25px" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
-        <p class="m-0">MBTI: <span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
-      </div>
-    </div>
-  {% endfor %}
+    {% endfor %}
+  </div>
+
+  <a href="{% url 'friends:index' %}" class="btn btn-primary">돌아가기</a>
 </div>
 {% endblock content %}
 
