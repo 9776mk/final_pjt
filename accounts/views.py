@@ -196,6 +196,16 @@ def password(request):
     return render(request, "accounts/password.html", context)
 
 
+# 회원 탈퇴
+@login_required
+def delete(request, pk):
+    user = get_user_model().objects.get(pk=pk)
+    if request.user == user:
+        user.delete()
+        auth_logout(request)
+    return redirect("home")
+
+
 # 깃 로그인용
 load_dotenv()
 GITHUB_CLIENT_ID = os.getenv("GIT_ID")
