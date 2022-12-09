@@ -34,7 +34,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 CUSTOM_APPS = [
-    'ckeditor',
     "algorithm",
     "notes",  # 쪽지
     "accounts",
