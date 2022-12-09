@@ -105,3 +105,98 @@ textarea::placeholder {
   padding: 5px 5px 5px 0px; 
   font-size: 14px; 
 }
+
+
+/* 페이지네이션 */
+.board_page {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0;
+}
+
+.board_page a {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  border-left: 0;
+  line-height: 100%;
+  color: rgb(178, 178, 178);
+  
+}
+
+.board_page a.bt {
+  padding-top: 10px;
+  font-size: 0.8rem;
+  letter-spacing: -1px;
+  color: rgb(178, 178, 178);
+}
+
+.board_page a.bt.first:hover {
+  color: rgb(30, 225, 255);
+}
+
+.board_page a.bt.last:hover {
+  color: rgb(30, 225, 255);
+}
+
+.board_page a.bt.prev:hover {
+  color: rgb(255, 30, 30);
+}
+
+.board_page a.bt.next:hover {
+  color: rgb(255, 30, 30);
+}
+
+.board_page a.num {
+  padding-top: 9px;
+  font-size: 0.8rem;
+}
+
+.board_page a.num.on {
+  cursor: default;
+  color: #fff;
+  border-color: #FF8E00;
+  border-radius: 40rem;
+  background: #FF8E00;
+}
+
+/* 숫자들에 대한 스타일 지정 */
+.pagination a {
+  float: left;
+  display: block;
+  font-size: 14px;
+  text-decoration: none;
+  padding: 5px 12px;
+  color: #96a0ad;
+  line-height: 1.5; 
+}
+
+.first {
+  margin-right: 15px;
+}
+
+.last { 
+  margin-left: 15px;
+}
+
+.first:hover, .last:hover, .left:hover, .right:hover {
+  color: #2e9cdf;
+}
+
+.pagination a.active { 
+  cursor: default;
+  color: #ffffff;
+}
+
+.pagination a:active {
+  outline: none;
+}
+
+.modal .num {
+  margin-left: 3px;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+}
