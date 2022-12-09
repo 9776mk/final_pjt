@@ -16,7 +16,7 @@ a {
     margin-left: 15px;
   }
   .title, 
-  .info,
+  .image,
   .category {
     padding: 15px;
     dt, 
@@ -41,9 +41,10 @@ a {
     font-size: 0;
     dl {
       margin-bottom: 0;
+      padding-right: 15px;
     }
   }
-  .info {
+  .image {
     border-top: 1px dashed #ddd;
     border-bottom: 1px dashed #ddd;
     font-size: 0;
@@ -52,13 +53,14 @@ a {
       width: 100%;
       vertical-align: middle;
       margin-bottom: 0;
+      padding-right: 30px;
     }
   }
   .title {
-    // border-top: 2px solid #000;
     dl {
       font-size: 0;
       margin-bottom: 0;
+      padding-right: 15px;
     }
     dd {
       width: calc(100% - 100px);
@@ -68,7 +70,6 @@ a {
     }
   }
   .cont {
-    // border-bottom: 1px solid #000;
     textarea {
       display: block;
       width: 100%;

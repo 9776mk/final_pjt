@@ -27,6 +27,7 @@
 .board_view .info .title {
   font-size: 1.5rem;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 .board_view .info p {
   padding-right: 5px;
@@ -40,13 +41,6 @@
   padding: 20px 80px 60px;
   line-height: 160%;
   font-size: 1rem;
-}
-.board_view .board_img {
-  -o-object-fit: cover;
-     object-fit: cover;
-  height: 480px;
-  width: 100%;
-  max-width: 1000px;
 }
 
 /* 로그인 안했을때 댓글창 가면 있는 로그인이 필요합니다.. */
@@ -89,7 +83,6 @@ details {
   background-color: #fff;
   padding: 10px;
   border-radius: 20px;
-  height: auto;
 }
 .comment_box .comment_writer {
   padding: 10px;
@@ -121,4 +114,10 @@ details {
 .bbtn_com:hover {
   background-color: #a4a4a4;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .info .category {
+    display: none;
+  }
 }/*# sourceMappingURL=board_detail.css.map */

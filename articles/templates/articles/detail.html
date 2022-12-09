@@ -47,16 +47,16 @@
 
       <!-- 제목 작성일 -->
       <div class="info">
-        <p style='text-align: start;'>{{ articles.category }}</p>
+        <p class='category' style='text-align: start;'>{{ articles.category }}</p>
         <div class='title'>{{ articles.title }}</div>
         <p>{{ articles.create_at|date:'Y-m-d H:i' }}</p>
         <p>조회수 : {{ articles.hits }}</p>
       </div>
       
       <!-- 사진 -->
-      <div class='p-2'>
+      <div style='margin: 30px 60px;'>
         {% for image in articles.image_set.all %}
-          <img class="d-block mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}" style='margin-bottom: 20px;' width="100%">
+          <img class="d-block mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}" width="100%">
         {% endfor %}
       </div>
 
@@ -138,7 +138,8 @@
                 <div class='mx-3'>{{ comment.user.profile.nickname }}</div>
               </a>
             </div>
-            <p class='bubble-comment m-3'>{{ comment.content }}</p>
+
+            <div class='m-3 pe-3 text-break'>{{ comment.content }}</div>
 
             <!-- 댓글 작성한 당사자만 삭제할 수 있게 -->
             {% if request.user == comment.user %}

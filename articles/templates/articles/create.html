@@ -31,7 +31,7 @@
             <dd>{{ article_form.category|add_class:'form-select' }}</dd>
           </dl>
         </div>
-        <div class="info">
+        <div class="image">
           <dl class='d-flex align-items-center'>
             <dt>이미지</dt>
             <dd>{{ image_form.image|add_class:'form-control' }}</dd>
@@ -54,14 +54,4 @@
       </div>
     </form>
   </div>
-
-  {% comment %} <div class="container">
-    <form action="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ article_form.media }}
-      {{ article_form.as_p }}
-      <br>
-      <input type="submit" value="제출">
-    </form>
-  </div> {% endcomment %}
 {% endblock content %}
