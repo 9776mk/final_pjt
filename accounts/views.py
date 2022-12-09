@@ -335,11 +335,11 @@ def follow(request,user_pk):
         if user.followers.filter(pk=request.user.pk).exists():
             user.followers.remove(request.user)
             is_following = False  # 팔로잉 취소
-            messages.warning(request,"님 팔로워 취소함")
+            # messages.warning(request,"님 팔로워 취소함")
         else:
             user.followers.add(request.user)
             is_following = True  # 팔로잉
-            messages.warning(request,"님 팔로워함")
+            # messages.warning(request,"님 팔로워함")
 
     if not request.user.profile.image:
         my_image = "/static/images/no-avatar.jpg"

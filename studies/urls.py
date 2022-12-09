@@ -16,4 +16,5 @@ urlpatterns = [
     path('<int:study_pk>/user/<int:user_pk>/deny/', views.deny, name='deny'),   # 신청 거절 (방장)
     path('<int:study_pk>/user/<int:user_pk>/kick/', views.kick, name='kick'),   # 스터디 추방 (방장)
     path('<int:study_pk>/withdraw/', views.withdraw, name='withdraw'),   # 스터디 탈퇴 (방장 제외)
+    path('<int:notice_pk>/notice_delete/', views.notice_delete, name='notice_delete'), # 알림 삭제
 ]

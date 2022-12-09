@@ -8,6 +8,8 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from imagekit.processors import ResizeToFill
 from multiselectfield import MultiSelectField
 from notes.models import Notes
+from studies.models import StudyNotice
+
 # Create your models here.
 class User(AbstractUser):
     # username = models.CharField(max_length=16, unique=True)
@@ -47,6 +49,23 @@ class User(AbstractUser):
     note_notice = models.BooleanField(default=True)  # 쪽지
     message_number = models.IntegerField(default=0) #쪽지 알람
     
+    # 스터디 알림 개수
+    @property
+    def get_study_notice_cnt(self):
+        study_notice_cnt = StudyNotice.objects.filter(user=self, read=False).count()
+        return study_notice_cnt
+
+    # 스터디 알림 리스트
+    @property
+    def get_study_notice(self):
+        study_notice_list = StudyNotice.objects.filter(user=self)
+
+        # 읽음 처리
+        # for notice in study_notice_list:
+        #     notice.read = True
+        #     notice.save()
+        
+        return study_notice_list
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
