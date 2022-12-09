@@ -40,3 +40,9 @@ class Study(models.Model):
         format='JPEG',
         options={'quality': 60}
     )
+
+
+class List(models.Model):
+    study = models.ForeignKey(Study, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    is_accepted = models.BooleanField(default=False)    # False: 가입 대기, True: 가입 승인
