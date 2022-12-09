@@ -72,7 +72,7 @@ a:hover {
     display: inline-block;
     padding: 10px;
     border: 1px solid #FF8E00;
-    border-radius: 2px;
+    border-radius: 10px;
     font-size: 0.9rem;
     background: #fff;
     color: #FF8E00;
@@ -121,6 +121,7 @@ a:hover {
     background: #fff;
     color: #FF8E00;
     transition: all 0.4s;
+    border-radius: 10px;
 }
 .bt_wrap a:first-child,
 .bt_wrap button:first-child {
