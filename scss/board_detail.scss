@@ -25,6 +25,7 @@
     .title {
       font-size: 1.5rem;
       font-weight: bold;
+      margin-bottom: 10px;
     }
     p {
       padding-right: 5px;
@@ -39,12 +40,6 @@
     padding: 20px 80px 60px;
     line-height: 160%;
     font-size: 1.0rem;
-  }
-  .board_img {
-    object-fit: cover;
-    height: 480px;
-    width: 100%;
-    max-width: 1000px;
   }
 }
 
@@ -93,7 +88,6 @@ details {
   background-color: #fff;
   padding: 10px;
   border-radius: 20px;
-  height: auto;
   .comment_writer {
     padding: 10px;
     a {
@@ -132,4 +126,13 @@ details {
 .bbtn_com:hover {
   background-color: #a4a4a4;
   color: white;
+}
+
+
+@media (max-width : 768px) {
+  .info {
+    .category {
+      display: none;
+    }
+  }
 }

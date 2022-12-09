@@ -17,14 +17,14 @@ a {
   margin-left: 15px;
 }
 .board_write .title,
-.board_write .info,
+.board_write .image,
 .board_write .category {
   padding: 15px;
 }
 .board_write .title dt,
 .board_write .title dd,
-.board_write .info dt,
-.board_write .info dd,
+.board_write .image dt,
+.board_write .image dd,
 .board_write .category dt,
 .board_write .category dd {
   display: inline-block;
@@ -32,17 +32,17 @@ a {
   font-size: 0.9rem;
 }
 .board_write .title dt,
-.board_write .info dt,
+.board_write .image dt,
 .board_write .category dt {
   width: 100px;
 }
 .board_write .title dd,
-.board_write .info dd,
+.board_write .image dd,
 .board_write .category dd {
   margin-top: 8px;
 }
 .board_write .title input[type=text],
-.board_write .info input[type=text],
+.board_write .image input[type=text],
 .board_write .category input[type=text] {
   padding: 10px;
   box-sizing: border-box;
@@ -53,21 +53,24 @@ a {
 }
 .board_write .category dl {
   margin-bottom: 0;
+  padding-right: 15px;
 }
-.board_write .info {
+.board_write .image {
   border-top: 1px dashed #ddd;
   border-bottom: 1px dashed #ddd;
   font-size: 0;
 }
-.board_write .info dl {
+.board_write .image dl {
   display: inline-block;
   width: 100%;
   vertical-align: middle;
   margin-bottom: 0;
+  padding-right: 30px;
 }
 .board_write .title dl {
   font-size: 0;
   margin-bottom: 0;
+  padding-right: 15px;
 }
 .board_write .title dd {
   width: calc(100% - 100px);
