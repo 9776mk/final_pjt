@@ -49,6 +49,24 @@ def send(request):
 
 
 @login_required
+def reply(request, pk):
+    note = get_object_or_404(Notes,pk=pk)
+    form = NotesReplyForm(request.POST or None)
+    if form.is_valid():
+        temp = form.save(commit=False)
+        temp.from_user = request.user
+        temp.to_user = note.from_user
+        temp.save()
+        messages.success(request, "쪽지가 전송되었습니다.")
+        return redirect("notes:sent")
+    context = {
+        "form": form,
+        "note": note,
+    }
+    return render(request, "notes/reply.html", context)
+
+
+@login_required
 def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
     notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()

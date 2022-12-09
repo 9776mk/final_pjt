@@ -57,6 +57,11 @@
             <div class="tape-section"></div>
           </div>
         </div>
+        {% if note.from_user != request.user %}
+        <div class="d-flex justify-content-center mt-3">
+          <a href="{% url 'notes:reply' note.pk %}" class="bbtn">답장하기</a>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>

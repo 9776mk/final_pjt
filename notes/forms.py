@@ -11,3 +11,12 @@ class NotesForm(forms.ModelForm):
             "title": "제목",
             "content": "내용",
         }
+
+class NotesReplyForm(forms.ModelForm):
+    class Meta:
+        model = Notes
+        fields = ("title", "content")
+        labels = {
+            "title": "제목",
+            "content": "내용",
+        }

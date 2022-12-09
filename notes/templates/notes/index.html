@@ -51,7 +51,7 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted" id="{{note.pk}}">
-                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
                 <td class="title"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
                 <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
@@ -71,7 +71,7 @@
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr id="{{note.pk}}">
-                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
                 <td class="title"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
                 <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
