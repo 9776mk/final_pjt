@@ -33,7 +33,7 @@
               {% for notice in request.user.get_study_notice %}
                 <div id="notice-{{ notice.pk }}" class="d-flex justify-content-between align-items-center my-3">
                   <p class="m-0">{{ notice.content }}</p>
-                  
+
                   <!-- 알림 삭제 버튼 -->
                   <form id="notice-delete-form" onsubmit="event.preventDefault(); noticeDelete(this, '{{ notice.pk }}')">
                     {% csrf_token %}
@@ -48,8 +48,9 @@
         </div>
       </div>
     </div>
-    
+
     <div id="wrap">
+      <!-- navbar -->
       <nav class="navbar navbar-expand-lg bg-white sticky-top">
         <div class="container-fluid">
           <a class="navbar-brand ms-4" href="{% url "home" %}">
@@ -58,7 +59,7 @@
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          
+
           <!-- 메뉴 -->
           <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
             <ul class="navbar-nav align-items-center">
@@ -75,6 +76,11 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'friends:index' %}">
                   벗삼기/찾기
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'studies:index' %}">
+                  스터디
                 </a>
               </li>
               <li class="nav-item">
@@ -105,9 +111,10 @@
                   <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
                     <i class="bi bi-chat-left-dots"></i>
                     {% if request.user.message_number != 0 %}
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      {{ request.user.message_number }}<span class="visually-hidden">unread messages</span>
-                    </span>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ request.user.message_number }}
+                        <span class="visually-hidden">unread messages</span>
+                      </span>
                     {% endif %}
                   </button>
                 </li>
@@ -116,6 +123,7 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'accounts:profile' request.user.pk %}">
                     <div class="box">
+                      {% comment %}  {% endcomment %}
                       {% if request.user.profile.image|slugify|slice:'0:4' == 'http' %}
                         <!-- 깃허브에서 가져온 이미지: https로 시작 -->
                         <img src="{{ request.user.profile.image }}" style="border-radius: 70%; max-width: 100%;" alt="">
@@ -134,7 +142,7 @@
                   </a>
                 </li>
 
-              <!-- 로그인이 되어있지 않으면 -->
+                <!-- 로그인이 되어있지 않으면 -->
               {% else %}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'accounts:signup' %}">
@@ -152,8 +160,7 @@
         </div>
       </nav>
       {% include "messages.html" %}
-      {% block content%}
-      {% endblock content %}
+      {% block content%}{% endblock content %}
     </div>
     <!-- Footer -->
     <footer class="text-center">
@@ -218,14 +225,13 @@
         giftFocus.addEventListener('click', btn => {
           btn.preventDefault();
           let link = `${base.origin}#fo_gift`; //홈으로 이동을 먼저하고
-        location.href=link;
-          })
+          location.href = link;
+        })
       }
-
     </script>
-    {% block script %}
-    {% endblock script %}
+    {% block script %}{% endblock script %}
     <!-- 알림 삭제 비동기 -->
     <script type="text/javascript" src="{% static 'js/base_notice_delete.js' %}"></script>
   </body>
+
 </html>
