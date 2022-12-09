@@ -93,6 +93,14 @@ main .algo h1 {
     bottom: 1em !important;
   }
 }
+@media screen and (max-width: 905px) {
+  .algo h2 span {
+    width: 30% !important;
+  }
+  .algo .rank .info {
+    width: 60% !important;
+  }
+}
 .community .com-text {
   margin: 15px 150px;
   text-align: start;
@@ -111,6 +119,56 @@ main .algo h1 {
 .algo h1 {
   margin: 30px 0 50px 0 !important;
 }
+.algo h2 {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+.algo h2 hr {
+  width: 35%;
+  border-top: 5px solid;
+}
+.algo h2 span {
+  width: 20%;
+}
+.algo .rank {
+  margin-bottom: 50px;
+}
+.algo .rank .rankinfo_frame:first-child .info .prof {
+  position: relative;
+}
+.algo .rank .rankinfo_frame:first-child .info .prof .crown {
+  margin: 0;
+  position: absolute;
+  background: url("../images/crown.png");
+  background-repeat: no-repeat;
+  top: -86%;
+  right: -12px;
+  transform: rotate(15deg);
+  z-index: 1030;
+  width: 47px;
+  height: 40px;
+}
+.algo .rank .rankinfo_frame {
+  margin-top: 20px;
+}
+.algo .rank .rankinfo_frame .info {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  margin: auto;
+}
+.algo .rank .rankinfo_frame .info .fcnt {
+  width: 20%;
+  font-size: 28px;
+}
+.algo .rank .rankinfo_frame .info .set {
+  margin-left: 20px;
+  width: auto;
+}
+.algo .rank img {
+  border-radius: 50%;
+}
 .algo .algoboxs {
   display: flex;
   justify-content: space-around;
@@ -125,7 +183,7 @@ main .algo h1 {
   display: none;
 }
 .algo .algoboxs .algobox #algo-recom label {
-  margin: 20px 20px 0 20px;
+  margin: 20px 10px 0 10px;
   padding: 5px 10px;
   cursor: pointer;
   color: #fff;

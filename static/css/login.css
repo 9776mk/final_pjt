@@ -20,6 +20,7 @@
 }
 
 .inputBox {
+    margin: auto;
     position: relative;
     width: 500px;
 }

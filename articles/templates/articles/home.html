@@ -57,6 +57,29 @@
                 </div>
             </div>
         </div>
+        <h2><hr><span>현재 순위</span><hr></h2>
+        <div class="rank">
+            {% for rankinfo in rank %}
+            <div class='rankinfo_frame'>
+                <div class="info">
+                    <div class='fcnt'>
+                        <span> {{ forloop.counter}}위</span>
+                    </div>
+                    <div class="prof">
+                        <div class="crown"></div><a href="{% url 'accounts:profile' rankinfo.4 %}"><img src="{{rankinfo.2}}" width='42px;' alt="프사"></a>
+                    </div>
+                    
+                    <div class="set">
+                        <p style='margin-bottom:10px; text-align: start;'><img style="height:25px" src="https://static.solved.ac/tier_small/{{rankinfo.0}}.svg"><span style='margin-left:10px;'>{{rankinfo.1}}</span></p>
+                        
+                        <div>
+                            <p style='margin-bottom:0; text-align: start;'>사용 언어: {{rankinfo.3}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="graph">
