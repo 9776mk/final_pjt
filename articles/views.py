@@ -105,7 +105,8 @@ def home(request):
                 problems = DB_li[i].objects.filter(level=user_level)
                 for p in problems:
                     problem_li.append(p.number)
-            elif user_level == 30:
+            elif user_level >= 30:
+                user_level = 30
                 problems = BJData_ru.objects.filter(level=user_level)
                 for p in problems:
                     problem_li.append(p.number)
@@ -391,4 +392,3 @@ def likes(request, article_pk):
         data = {"is_liked": is_liked}
         return JsonResponse(data)
     return redirect("accounts:login")
-
