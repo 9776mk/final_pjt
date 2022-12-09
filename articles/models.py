@@ -2,12 +2,11 @@ from django.db import models
 from imagekit.models import ProcessedImageField
 from django.contrib.auth import get_user_model
 from accounts.models import User
-from ckeditor.fields import RichTextField
 # Create your models here.
 
 class Article(models.Model):
     title = models.CharField(max_length=30)
-    content = RichTextField(blank=True, null=True)
+    content = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     # image = ProcessedImageField()
     create_at = models.DateTimeField(auto_now_add=True)

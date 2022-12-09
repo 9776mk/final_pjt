@@ -334,18 +334,11 @@ def follow(request,user_pk):
         if user.followers.filter(pk=request.user.pk).exists():
             user.followers.remove(request.user)
             is_following = False  # 팔로잉 취소
-            # messages.warning(request,"님 팔로워 취소함")
-            # messages.warning(user,"님 팔로워 취소함")
-            print(request.user)# 클릭하는 유저
-            print(user.username)# 클릭하는 유저가 팔로잉 취소한 유저
+            messages.warning(request,"님 팔로워 취소함")
         else:
             user.followers.add(request.user)
             is_following = True  # 팔로잉
-            # messages.warning(request,"님 팔로워함")
-            # messages.warning(user,"님 팔로워함")
-            print('messages')
-            print(request.user)# 클릭하는 유저
-            print(user.username)# 클릭하는 유저가 팔로잉한 유저
+            messages.warning(request,"님 팔로워함")
 
     if not request.user.profile.image:
         my_image = "/static/images/no-avatar.jpg"
@@ -514,3 +507,5 @@ def gb_comment_delete(request, user_pk, gb_article_pk, gb_comment_pk):
     }
 
     return JsonResponse(data)
+
+

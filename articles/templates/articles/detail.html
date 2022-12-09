@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% load mathfilters %}
+{% load filter %} <!-- 마크다운 -->
 {% load static %}
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
@@ -59,7 +60,7 @@
 
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
-        {{ articles.content|safe  }}
+        {{ articles.content|mark  }}
       </div>
 
       <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
