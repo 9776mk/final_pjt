@@ -263,26 +263,50 @@ main {
 
                     &:nth-child(2) {
                         background-color: #A85300;
+
+                        &:hover {
+                            background-color: #884400;
+                        }
                     }
 
                     &:nth-child(4) {
                         background-color: #415C76;
+
+                        &:hover {
+                            background-color: #364d62;
+                        }
                     }
 
                     &:nth-child(6) {
                         background-color: #E59500;
+
+                        &:hover {
+                            background-color: #bd7c03;
+                        }
                     }
 
                     &:nth-child(8) {
                         background-color: #27E2A4;
+
+                        &:hover {
+                            background-color: #22b584;
+                        }
                     }
 
                     &:nth-child(10) {
                         background-color: #00AEF4;
+
+                        &:hover {
+                            background-color: #008dc4;
+                        }
                     }
 
                     &:nth-child(12) {
                         background-color: #FF0867;
+
+                        &:hover {
+                            background-color: #c00c51;
+                        }
                     }
                 }
             }

@@ -45,32 +45,39 @@
   -o-object-fit: cover;
      object-fit: cover;
   height: 480px;
+  width: 100%;
+  max-width: 1000px;
 }
 
 /* 로그인 안했을때 댓글창 가면 있는 로그인이 필요합니다.. */
 .speech-bubble {
   position: relative;
   color: #ff8800;
+  background-color: #fff;
   border-radius: 0.4em;
+  padding: 20px;
 }
 .speech-bubble:hover {
   color: #fff;
   background-color: #04188a;
+  border: 0;
 }
 .speech-bubble:hover::after {
   border-right-color: #04188a;
 }
 .speech-bubble::after {
+  content: "";
   position: absolute;
   left: 0;
   top: 50%;
   width: 0;
   height: 0;
-  border: 32px solid transparent;
+  border: 17px solid transparent;
+  border-right-color: #fff;
   border-left: 0;
   border-bottom: 0;
-  margin-top: -16px;
-  margin-left: -32px;
+  margin-top: -8.5px;
+  margin-left: -17px;
 }
 
 details {
@@ -91,4 +98,27 @@ details {
   width: 40px;
   height: 40px;
   border-radius: 70%;
+}
+
+.input_com {
+  width: 500px;
+  border-radius: 50px;
+  border: 1px solid #b7b7b7;
+}
+
+.bbtn_com {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #a4a4a4;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #a4a4a4;
+  transition: all 0.4s;
+  border-radius: 10px;
+}
+
+.bbtn_com:hover {
+  background-color: #a4a4a4;
+  color: white;
 }/*# sourceMappingURL=board_detail.css.map */

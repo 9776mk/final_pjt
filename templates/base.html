@@ -17,12 +17,6 @@
     <title>
       비밀병기팀의 최종병기
     </title>
-
-    <style>
-      a {
-        text-decoration: none;
-      }
-    </style>
   </head>
 
   <body>
@@ -54,110 +48,181 @@
         </div>
       </div>
     </div>
-
-    <nav class="navbar navbar-expand-lg bg-white sticky-top">
-      <div class="container-fluid">
-        <a class="navbar-brand ms-4" href="{% url "home" %}">
-          <img src="{% static 'images/로고.png' %}" alt="" style='width: 90px'>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <!-- 메뉴 -->
-        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
-          <ul class="navbar-nav mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'articles:index' %}">
-                개발마당
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'algorithm:index' %}">
-                알고리즘
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'friends:index' %}">
-                벗삼기/찾기
-              </a>
-            </li>
-          </ul>
-
-          <!-- 회원 -->
-          <ul class="navbar-nav align-items-center">
-            <!-- 로그인이 되어 있으면 -->
-            {% if request.user.is_authenticated %}
-              <!-- 알림 창 -->
-              <li class='nav-item'>
-                <button id='testBtn' type="button" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
-                  <i class="bi bi-bell"></i>
-                  {% if request.user.get_study_notice_cnt != 0 %}
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      {{ request.user.get_study_notice_cnt }}
-                    </span>
-                  {% endif %}
-                </button>
-              </li>
-
-              <!-- 쪽지 창 -->
-              <li class='nav-item'>
-                <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
-                  <i class="bi bi-chat-left-dots"></i>
-                  {% if request.user.message_number != 0 %}
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{ request.user.message_number }}<span class="visually-hidden">unread messages</span>
-                  </span>
-                  {% endif %}
-                </button>
-              </li>
-
-              <!-- 프로필 사진 -->
+    
+    <div id="wrap">
+      <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container-fluid">
+          <a class="navbar-brand ms-4" href="{% url "home" %}">
+            <img src="{% static 'images/로고.png' %}" alt="" style='width: 90px'>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <!-- 메뉴 -->
+          <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <ul class="navbar-nav align-items-center">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:profile' request.user.pk %}">
-                  <div class="box">
-                    {% if request.user.profile.image|slugify|slice:'0:4' == 'http' %}
-                      <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-                      <img src="{{ request.user.profile.image }}" style="border-radius: 70%; max-width: 100%;" alt="">
-                    {% elif request.user.profile.image %}
-                      <!-- 파일로 추가한 이미지 /media/ -->
-                      <img src="{{ request.user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
-                    {% else %}
-                      <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 100%; border: 2px solid #b9b9b9;" alt="">
+                <a class="nav-link" href="{% url 'articles:index' %}">
+                  개발마당
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'algorithm:index' %}">
+                  알고리즘
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'friends:index' %}">
+                  벗삼기/찾기
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='' id='giftFocus'>
+                  도전 문제
+                </a>
+              </li>
+            </ul>
+
+            <!-- 회원 -->
+            <ul class="navbar-nav align-items-center">
+              <!-- 로그인이 되어 있으면 -->
+              {% if request.user.is_authenticated %}
+                <!-- 알림 창 -->
+                <li class='nav-item'>
+                  <button id='testBtn' type="button" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
+                    <i class="bi bi-bell"></i>
+                    {% if request.user.get_study_notice_cnt != 0 %}
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ request.user.get_study_notice_cnt }}
+                      </span>
                     {% endif %}
-                  </div>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:logout' %}">
-                  로그아웃
-                </a>
-              </li>
+                  </button>
+                </li>
 
-             <!-- 로그인이 되어있지 않으면 -->
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:signup' %}">
-                  회원가입
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:login' %}">
-                  로그인
-                </a>
-              </li>
-            {% endif %}
-          </ul>
+                <!-- 쪽지 창 -->
+                <li class='nav-item'>
+                  <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
+                    <i class="bi bi-chat-left-dots"></i>
+                    {% if request.user.message_number != 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {{ request.user.message_number }}<span class="visually-hidden">unread messages</span>
+                    </span>
+                    {% endif %}
+                  </button>
+                </li>
+
+                <!-- 프로필 사진 -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'accounts:profile' request.user.pk %}">
+                    <div class="box">
+                      {% if request.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                        <!-- 깃허브에서 가져온 이미지: https로 시작 -->
+                        <img src="{{ request.user.profile.image }}" style="border-radius: 70%; max-width: 100%;" alt="">
+                      {% elif request.user.profile.image %}
+                        <!-- 파일로 추가한 이미지 /media/ -->
+                        <img src="{{ request.user.profile.image.url }}" style="border-radius: 70%; max-width: 100%;" alt="">
+                      {% else %}
+                        <img src="{% static 'images/no-avatar.jpg' %}" style="border-radius: 70%; max-width: 100%; border: 2px solid #b9b9b9;" alt="">
+                      {% endif %}
+                    </div>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'accounts:logout' %}">
+                    로그아웃
+                  </a>
+                </li>
+
+              <!-- 로그인이 되어있지 않으면 -->
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'accounts:signup' %}">
+                    회원가입
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'accounts:login' %}">
+                    로그인
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+      {% include "messages.html" %}
+      {% block content%}
+      {% endblock content %}
+    </div>
+    <!-- Footer -->
+    <footer class="text-center">
+      <!-- Grid container -->
+      <div class="container p-4 justify-content-center align-items-center d-flex">
+        <div class="me-3">
+          <img style='width: 7rem;' src="{% static 'images/logo-orange.png' %}" alt="Logo">
+        </div>
+        <div class="d-flex mx-5">
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/buzzzlight">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/김수빈.jfif' %}" alt="김수빈">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/9776mk">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/문경욱.jfif' %}" alt="문경욱">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/sunbongE">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/박태호.png' %}" alt="박태호">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/ANDONGWOO">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/안동우.png' %}" alt="안동우">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/jupiter6676">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/최보영.jfif' %}" alt="최보영">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/yangu1455">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/황지선.jfif' %}" alt="황지선">
+            </a>
+          </div>
         </div>
       </div>
-    </nav>
-    {% include "messages.html" %}
-    {% block content%}{% endblock content %}
+      <!-- Grid container -->
+
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright:
+        <a class="text-white" href="https://nullddigi.com/">nullddigi.com</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <!-- Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const giftFocus = document.getElementById('giftFocus')
+      var base = window.location;
+      if (giftFocus) {
+
+        giftFocus.addEventListener('click', btn => {
+          btn.preventDefault();
+          let link = `${base.origin}#fo_gift`; //홈으로 이동을 먼저하고
+        location.href=link;
+          })
+      }
+
+    </script>
     {% block script %}
     {% endblock script %}
     <!-- 알림 삭제 비동기 -->
