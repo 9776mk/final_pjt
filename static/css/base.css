@@ -184,3 +184,23 @@ a:hover {
     background-image: linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19);
     box-shadow: 0 2px 5px 0 rgba(229, 66, 10, 0.75);
 }
+
+
+/* footer */
+
+.developer {
+    opacity: 1.0;
+}
+
+.developer:hover {
+    opacity: 0.6;
+    transition: all .2s ease-in-out;
+}
+
+footer {
+    width: 100%;
+    bottom: 0;
+    color: #ffffff;
+    border-top: 1px solid #979797;
+    background-color: #212529;
+}
