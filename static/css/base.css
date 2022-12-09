@@ -70,13 +70,18 @@ a:hover {
 
 .bbtn {
     display: inline-block;
-    padding: 10px;
+    padding: 8px 10px;
     border: 1px solid #FF8E00;
     border-radius: 10px;
     font-size: 0.9rem;
     background: #fff;
     color: #FF8E00;
     transition: all 0.4s;
+    height: 40px; 
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 .bbtn:hover {
@@ -84,26 +89,28 @@ a:hover {
     color: white;
 }
 
-.bbtn-white {
+
+.bbtn-gray {
+    display: inline-block;
+    padding: 8px 10px;
+    border: 1px solid #a5a5a5;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: #a5a5a5;
+    transition: all 0.4s;
     height: 40px; 
-    background: white;
-    color: #FF8E00;
-    border: 1px solid #FF8E00;
-    font-weight: 400;
+    font-weight: 500;
     text-align: center;
-    border-radius: 7px;
-    outline: 0;
-    transition: all 0.2s ;
-    padding: 1px 15px;
     display: flex;
     align-items: center;
-    font-size: 0.9rem;
 }
 
-.bbtn-white:hover {
-    background-color: #FF8E00;
+.bbtn-gray:hover {
+    background-color: #a5a5a5;
     color: white;
 }
+
 /* 게시판 버튼 */
 .bt_wrap {
     margin: 30px auto;

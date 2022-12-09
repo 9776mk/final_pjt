@@ -8,6 +8,7 @@ urlpatterns = [
     path("sent/", views.sent, name="sent"),
     path("send/", views.send, name="send"),
     path("<int:pk>/reply/", views.reply, name="reply"),
+    path("<int:user_pk>/send", views.send_to, name="send_to"),
     path("<int:pk>/", views.detail, name="detail"),
     path("<int:pk>/delete/", views.delete, name="delete"),
     path("trash/", views.trash, name="trash"),

@@ -507,5 +507,3 @@ def gb_comment_delete(request, user_pk, gb_article_pk, gb_comment_pk):
     }
 
     return JsonResponse(data)
-
-
