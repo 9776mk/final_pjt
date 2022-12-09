@@ -6,10 +6,10 @@
 {% endblock link %}
 
 {% block content %}
-  <div class="container my-5">
+  <div class="container py-5">
     <h1 class="mx-3 mb-4" style="font-family: 'HBIOS-SYS'">함께 할 개발자를 찾아보세요!</h1>
 
-    <div class='btn-board px-4 pt-4'>
+    <div class='btn-board px-4 pt-4 mb-4'>
       <!-- 카테고리 버튼 -->
       <div id="language-btns" class="category mb-2">
         <p class="mb-2">주 사용언어</p>
@@ -29,68 +29,61 @@
         {% endfor %}
       </div>
 
-      <div class='d-flex justify-content-end'>
-        <form action="{% url 'friends:recommend' %}" method="POST">
-          {% csrf_token %}
-          <a class='bbtn mb-3' onclick="location.href='{% url "friends:recommend" %}'">랜덤 조 구성하러 가기❗️</a>
-        </form>
-      </div>
-    </div>
-    
-    <!-- 랜덤 추첨 -->
-    <details>
-      <summary>랜덤 조 구성</summary>
+      <!-- 랜덤 추첨 -->
       <form action="{% url 'friends:recommend' %}" method="POST">
         {% csrf_token %}
-        <input type="number" class="form-control" name="num-of-people" min="1" max="10" value="0">
-        <input type="submit" class="btn btn-primary" value="추천 받기">
+        <div class='d-flex justify-content-end align-items-center mb-3'>
+          <input type="number" class="form-control" name="num-of-people" min="1" max="10" value="0" style='width: 60px;'>
+          <p class='mb-0 mx-2'>명</p>
+          <input type="submit" class="bbtn ms-2" value="랜덤 조 구성하러 가기❗️" style='padding: 8px;'>
+        </div>
       </form>
-    </details>
+    </div>
 
     <!-- 사용자들 -->
-    <div class="row mx-3">
-    {% for user in users %}
-      <a class='col-lg-4' href="{% url 'accounts:profile' user.pk %}">
-        <div class="all-users user_box d-none d-flex align-items-center justify-content-around mb-3 mx-1 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
-          <!-- 프로필 이미지-->
-          <div>
-            {% comment %}  {% endcomment %}
-            {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
-              <img src="{{ user.profile.image }}" class="profile-img" alt="">
-            {% elif user.profile.image %}
-              <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
-            {% else %}
-              <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
-            {% endif %}
-          </div>
-          <div>
-            <!-- 닉네임 -->
-            <p class="m-0">{{ user.profile.nickname }}</p>
-            <!-- 주 사용언어 -->
-            {% if user.profile.language == 'Python' %}
-              <p class="my-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
-            {% elif user.profile.language == 'Java' %}
-              <p class="my-1"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
-            {% elif user.profile.language == 'C' %}
-              <p class="my-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
-            {% elif user.profile.language == 'JavaScript' %}
-              <p class="my-1"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
-            {% elif user.profile.language == 'C++' %}
-              <p class="my-1"><img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
-            {% elif user.profile.language == 'PHP' %}
-              <p class="my-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
-            {% endif %}
-            <div class='d-flex'>
-              <!-- 백준티어 -->
-              <p class='mb-1 me-2'><img style="height:25px;" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
-              <!-- MBTI -->
-              <p class="m-0"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+    <div>
+      {% for user in users %}
+        <div class="all-users user_box d-none {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
+          <a href="{% url 'accounts:profile' user.pk %}" class='d-flex align-items-center justify-content-around'>
+            <!-- 프로필 이미지-->
+            <div>
+              {% comment %}  {% endcomment %}
+              {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
+                <img src="{{ user.profile.image }}" class="profile-img" alt="">
+              {% elif user.profile.image %}
+                <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
+              {% else %}
+                <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
+              {% endif %}
             </div>
-          </div>
+            <div>
+              <!-- 닉네임 -->
+              <p class="m-0">{{ user.profile.nickname }}</p>
+              <!-- 주 사용언어 -->
+              {% if user.profile.language == 'Python' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
+              {% elif user.profile.language == 'Java' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
+              {% elif user.profile.language == 'C' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
+              {% elif user.profile.language == 'JavaScript' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
+              {% elif user.profile.language == 'C++' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
+              {% elif user.profile.language == 'PHP' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
+              {% endif %}
+              <div class='d-flex'>
+                <!-- 백준티어 -->
+                <p class='mb-1 me-2'><img style="height:25px;" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
+                <!-- MBTI -->
+                <p class="m-0"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+              </div>
+            </div>
+          </a>
         </div>
-      </a>
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
 {% endblock content %}
 
 {% block script %}
