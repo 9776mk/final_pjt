@@ -290,4 +290,11 @@ hr {
   border-bottom: 0;
   margin-top: -16px;
   margin-left: -32px;
+}
+
+.warning_rec {
+  font-family: "HBIOS-SYS";
+  color: #ff8800;
+  margin-left: 37px;
+  margin-bottom: 20px;
 }/*# sourceMappingURL=friends_index.css.map */

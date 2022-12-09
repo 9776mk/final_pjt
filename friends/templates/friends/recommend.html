@@ -17,13 +17,12 @@
       </div>
     </form>
 
-
-    <p class='speech-bubble'>{{ warning }}</p>
+    <p class='warning_rec'>{{ warning }}</p>
 
     <!-- 랜덤으로 추천받은 유저들 -->
     <div class="row mx-3" id="recommended-users">
       {% for user in recommended_users %}
-        <a class='col-lg-4' href="{% url 'accounts:profile' user.pk %}">
+        <a class='col-lg-4 col-md-6' href="{% url 'accounts:profile' user.pk %}">
           <div class="recommended-users user_box_rec d-flex align-items-center justify-content-around mb-3 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
             <!-- 프로필 이미지-->
             <div>
