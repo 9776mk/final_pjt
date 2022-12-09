@@ -192,20 +192,38 @@ main .algo h1 {
 .algo .algoboxs .algobox #algo-recom label:nth-child(2) {
   background-color: #A85300;
 }
+.algo .algoboxs .algobox #algo-recom label:nth-child(2):hover {
+  background-color: #884400;
+}
 .algo .algoboxs .algobox #algo-recom label:nth-child(4) {
   background-color: #415C76;
+}
+.algo .algoboxs .algobox #algo-recom label:nth-child(4):hover {
+  background-color: #364d62;
 }
 .algo .algoboxs .algobox #algo-recom label:nth-child(6) {
   background-color: #E59500;
 }
+.algo .algoboxs .algobox #algo-recom label:nth-child(6):hover {
+  background-color: #bd7c03;
+}
 .algo .algoboxs .algobox #algo-recom label:nth-child(8) {
   background-color: #27E2A4;
+}
+.algo .algoboxs .algobox #algo-recom label:nth-child(8):hover {
+  background-color: #22b584;
 }
 .algo .algoboxs .algobox #algo-recom label:nth-child(10) {
   background-color: #00AEF4;
 }
+.algo .algoboxs .algobox #algo-recom label:nth-child(10):hover {
+  background-color: #008dc4;
+}
 .algo .algoboxs .algobox #algo-recom label:nth-child(12) {
   background-color: #FF0867;
+}
+.algo .algoboxs .algobox #algo-recom label:nth-child(12):hover {
+  background-color: #c00c51;
 }
 .algo .algoboxs .algobox .recom {
   margin-top: 30px;
