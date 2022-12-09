@@ -58,24 +58,24 @@
           <div class="title d-flex align-items-center">
             <span>{{ study.title }}</span>
             {% if study.is_closed == False %}
-              <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+              <span class="status-badges badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
             {% else %}
-              <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+              <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
             {% endif %}
           </div>
         </div>
 
         <!-- 방장: 모집 시작/마감 -->
         {% if request.user == study.host_user %}
-          <form action="{% url 'studies:close' study.pk %}" style="padding: 40px 80px;" method="POST">
+          <form style="padding: 40px 80px;" onsubmit="event.preventDefault(); studyClose(this, '{{ study.pk }}')">
             {% csrf_token %}
             {% if study.is_closed == False %}
-              <input type="submit" value="모집마감" class="btn btn-danger">
+              <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집마감" class="btn btn-danger">
             {% else %}
               {% if study.limit == accepted_list.count %}
-                <input type="submit" value="모집시작" class="btn btn-success" disabled>
+                <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집완료" class="btn btn-success" disabled>
               {% else %}
-                <input type="submit" value="모집시작" class="btn btn-success">
+                <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집시작" class="btn btn-success">
               {% endif %}
             {% endif %}
           </form>
@@ -125,9 +125,9 @@
           <div class="title d-flex align-items-center">
             <span>모집여부: </span>
             {% if study.is_closed == False %}
-              <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+              <span class="status-badges badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
             {% else %}
-              <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+              <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
             {% endif %}
           </div>
           <p class="m-0">인원: {{ accepted_list.count }} / {{ study.limit }}</p>
@@ -258,3 +258,7 @@
     </div>
   </div>
 {% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/studies_close_async.js' %}"></script>
+{% endblock script %}

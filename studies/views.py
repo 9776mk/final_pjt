@@ -113,16 +113,27 @@ def delete(request, study_pk):
 @login_required
 def close(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
+    accepted_cnt = List.objects.filter(study=study, is_accepted=True).count()
 
     if request.user == study.host_user and request.method == 'POST':
         if study.is_closed == False:
             study.is_closed = True
             study.save()
+            is_closed = True
+            is_full = True if accepted_cnt == study.limit else False
         else:
             study.is_closed = False
             study.save()
+            is_closed = False
+            is_full = False
 
-    return redirect('studies:detail', study_pk)
+    data = {
+        'is_closed': is_closed,
+        'is_full': is_full,
+    }
+
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 스터디 가입 신청 (방장 제외)
