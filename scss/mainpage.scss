@@ -115,6 +115,24 @@ main {
     }
 }
 
+@media screen and (max-width:905px) {
+    .algo {
+        h2 {
+            span {
+
+                width: 30% !important;
+            }
+        }
+
+        .rank {
+            .info {
+                width: 60% !important;
+            }
+        }
+    }
+}
+
+
 .community {
 
     .com-text {
@@ -141,6 +159,83 @@ main {
         margin: 30px 0 50px 0 !important;
     }
 
+    h2 {
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+
+        hr {
+            width: 35%;
+            border-top: 5px solid;
+        }
+
+        span {
+            width: 20%;
+        }
+    }
+
+
+    .rank {
+        .rankinfo_frame:first-child {
+            .info {
+                .prof {
+                    position: relative;
+
+                    .crown {
+                        margin: 0;
+                        position: absolute;
+                        background: url('../images/crown.png');
+                        background-repeat: no-repeat;
+                        top: -86%;
+                        right: -12px;
+                        transform: rotate(15deg);
+                        z-index: 1030;
+                        width: 47px;
+                        height: 40px;
+                    }
+
+                }
+            }
+
+        }
+
+        margin-bottom: 50px;
+
+
+
+        .rankinfo_frame {
+
+
+            margin-top: 20px;
+
+            .info {
+                width: 40%;
+                display: flex;
+                align-items: center;
+                margin: auto;
+
+
+
+                .fcnt {
+                    width: 20%;
+                    font-size: 28px;
+                }
+
+
+
+                .set {
+                    margin-left: 20px;
+                    width: auto;
+                }
+            }
+        }
+
+        img {
+            border-radius: 50%;
+        }
+
+    }
+
     .algoboxs {
         display: flex;
         justify-content: space-around;
@@ -160,7 +255,7 @@ main {
                 }
 
                 label {
-                    margin: 20px 20px 0 20px;
+                    margin: 20px 10px 0 10px;
                     padding: 5px 10px;
                     cursor: pointer;
                     color: #fff;
