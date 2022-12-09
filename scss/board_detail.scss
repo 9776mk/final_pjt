@@ -124,14 +124,14 @@ details {
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
+  &:hover {
+    background-color: #a4a4a4;
+    color: white;
+  }
 }
 
-.bbtn_com:hover {
-  background-color: #a4a4a4;
-  color: white;
-}
 
-
+// 반응형
 @media (max-width : 768px) {
   .info {
     .category {
