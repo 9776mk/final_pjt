@@ -7,6 +7,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("sent/", views.sent, name="sent"),
     path("send/", views.send, name="send"),
+    path("<int:pk>/reply/", views.reply, name="reply"),
     path("<int:pk>/", views.detail, name="detail"),
     path("<int:pk>/delete/", views.delete, name="delete"),
     path("trash/", views.trash, name="trash"),

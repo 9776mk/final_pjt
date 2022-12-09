@@ -87,7 +87,7 @@ a:hover {
 .bbtn-white {
     height: 40px; 
     background: white;
-    color: #FF8E00;;
+    color: #FF8E00;
     border: 1px solid #FF8E00;
     font-weight: 400;
     text-align: center;
@@ -97,6 +97,7 @@ a:hover {
     padding: 1px 15px;
     display: flex;
     align-items: center;
+    font-size: 0.9rem;
 }
 
 .bbtn-white:hover {
