@@ -26,8 +26,8 @@
   </head>
 
   <body>
-    <!-- 알림 Modal 창 내용 -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- 스터디 알림 Modal 창 내용 -->
+    <div class="modal fade" id="study-notice-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -35,17 +35,21 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <!-- 팔로워 알림 -->
-            {% for message in messages %}
-            {{ message.tag }}
-            <p>{{ user.username }}{{ message }}</p>
-            {% endfor %}
-
-            {% comment %} {% if user.followers.pk == user.pk %}
-            <p>1</p>
+            {% if request.user.get_study_notice %}
+              {% for notice in request.user.get_study_notice %}
+                <div id="notice-{{ notice.pk }}" class="d-flex justify-content-between align-items-center my-3">
+                  <p class="m-0">{{ notice.content }}</p>
+                  
+                  <!-- 알림 삭제 버튼 -->
+                  <form id="notice-delete-form" onsubmit="event.preventDefault(); noticeDelete(this, '{{ notice.pk }}')">
+                    {% csrf_token %}
+                    <input type="submit" class="btn-close" style="color:transparent;">
+                  </form>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p id="no-notices" class="py-5 text-center text-muted">아직 알림이 없어요</p>
             {% endif %}
-            {{ user.followers }}
-            {{ user.username }} {% endcomment %}
           </div>
         </div>
       </div>
@@ -86,12 +90,13 @@
             {% if request.user.is_authenticated %}
               <!-- 알림 창 -->
               <li class='nav-item'>
-                <button id='testBtn' type="button" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button id='testBtn' type="button" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
                   <i class="bi bi-bell"></i>
-                  {% comment %} <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    99+
-                    <span class="visually-hidden">unread messages</span>
-                  </span> {% endcomment %}
+                  {% if request.user.get_study_notice_cnt != 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {{ request.user.get_study_notice_cnt }}
+                    </span>
+                  {% endif %}
                 </button>
               </li>
 
@@ -155,6 +160,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     {% block script %}
     {% endblock script %}
+    <!-- 알림 삭제 비동기 -->
+    <script type="text/javascript" src="{% static 'js/base_notice_delete.js' %}"></script>
   </body>
-
 </html>

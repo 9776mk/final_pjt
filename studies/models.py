@@ -18,7 +18,7 @@ class Study(models.Model):
     category = models.CharField(max_length=10, choices=CATEGORY)
 
     # 3. 스터디명
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=10)
 
     # 4. 스터디 소개
     content = models.TextField()
@@ -34,7 +34,6 @@ class Study(models.Model):
 
     # 8. 이미지
     image = ProcessedImageField(
-        blank=True,
         upload_to = 'study_images/',
         processors=[Thumbnail(300, 300)],
         format='JPEG',
@@ -46,3 +45,11 @@ class List(models.Model):
     study = models.ForeignKey(Study, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default=False)    # False: 가입 대기, True: 가입 승인
+
+
+class StudyNotice(models.Model):
+    study_title = models.CharField(max_length=10)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.CharField(max_length=50)
+    noticed_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)

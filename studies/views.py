@@ -4,6 +4,7 @@ from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 
 # Create your views here.
 def index(request):
@@ -93,6 +94,16 @@ def delete(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
 
     if request.user == study.host_user and request.method == 'POST':
+        # 만약 스터디 인원이 있다면, 그 인원에게 알림
+        study_members = List.objects.filter(study=study).values_list('user', flat=True)
+        if study_members:
+            for pk in study_members:
+                member = get_object_or_404(get_user_model(), pk=pk)
+
+                if member != study.host_user:
+                    notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디를 삭제하였습니다.'
+                    StudyNotice.objects.create(study_title=study.title, user=member, content=notice)
+
         study.delete()
         
     return redirect('studies:index')
@@ -110,7 +121,6 @@ def close(request, study_pk):
         else:
             study.is_closed = False
             study.save()
-            # messages.warning(request, '이미 모집이 마감된 스터디입니다.')
 
     return redirect('studies:detail', study_pk)
 
@@ -127,6 +137,11 @@ def apply(request, study_pk):
             # 아직 신청하지 않았으면, 유저를 List에 추가
             if not request.user.pk in user_pks:
                 List.objects.create(user=request.user, study=study)
+
+                # 방장에게 알림
+                notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디에 가입을 신청하였습니다.'
+                StudyNotice.objects.create(study_title=study.title, user=study.host_user, content=notice)
+
         else:
             messages.warning(request, '이미 모집이 마감된 스터디입니다.')
 
@@ -141,6 +156,10 @@ def apply_cancel(request, study_pk):
     if request.user != study.host_user and request.method == 'POST':
         list_user = List.objects.get(user=request.user, study=study)
         list_user.delete()
+
+        # 방장에게 알림
+        notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디에 가입을 취소하였습니다.'
+        StudyNotice.objects.create(study_title=study.title, user=study.host_user, content=notice)
 
     return redirect('studies:detail', study_pk)
 
@@ -164,6 +183,10 @@ def accept(request, study_pk, user_pk):
                 study.is_closed = True
                 study.save()
 
+            # 신청자에게 알림
+            notice = f'\'{study.title}\' 스터디에 가입되었습니다.'
+            StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
+
     return redirect('studies:detail', study_pk)
 
 
@@ -176,6 +199,10 @@ def deny(request, study_pk, user_pk):
     if request.user == study.host_user and request.method == 'POST':
         list_user = List.objects.get(user=user, study=study)
         list_user.delete()
+
+        # 신청자에게 알림
+        notice = f'\'{study.title}\' 스터디 가입이 거절되었습니다.'
+        StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
 
     return redirect('studies:detail', study_pk)
 
@@ -195,6 +222,10 @@ def kick(request, study_pk, user_pk):
         # study.is_closed = False
         study.save()
 
+        # 신청자에게 알림
+        notice = f'\'{study.title}\' 스터디에서 추방되었습니다.'
+        StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
+
     return redirect('studies:detail', study_pk)
 
 
@@ -212,4 +243,26 @@ def withdraw(request, study_pk):
         # study.is_closed = False
         study.save()
 
+        # 방장에게 알림
+        notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디에서 탈퇴하였습니다.'
+        StudyNotice.objects.create(study_title=study.title, user=study.host_user, content=notice)
+
     return redirect('studies:detail', study_pk)
+
+
+# 알림 삭제
+@login_required
+def notice_delete(request, notice_pk):
+    is_deleted = False
+
+    if request.user.is_authenticated and request.method == 'POST':
+        notice = get_object_or_404(StudyNotice, pk=notice_pk)
+        notice.delete()
+        is_deleted = True
+
+    data = {
+        'is_deleted': is_deleted,
+    }
+
+    # return redirect('home')
+    return JsonResponse(data)
