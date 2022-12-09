@@ -40,6 +40,7 @@ CUSTOM_APPS = [
     "articles",
     "surveys",
     "friends",  # 벗 삼기/찾기
+    "studies",
     "django_bootstrap5",
     "django_extensions",
     "imagekit",

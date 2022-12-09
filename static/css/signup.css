@@ -62,7 +62,7 @@
 }
 
 .typing::before {
-    content: "널뛰기에 오신것을 환영합니다.";
+    content: "널뛰기에 오신것을 환영합니다. ";
     position: absolute;
     top: 0;
     left: 0;
@@ -71,7 +71,7 @@
     color: #00cfc8;
     overflow: hidden;
     border-right: 3px solid white;
-    animation: typing 2s steps(20);
+    animation: typing 2s steps(15), blink .5s step-end infinite alternate;
 }
 
 @keyframes typing {
@@ -88,6 +88,11 @@
     }
 }
 
+@keyframes blink {
+    50% {
+        border-color: transparent
+    }
+}
 
 
 
