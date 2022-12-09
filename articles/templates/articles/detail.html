@@ -103,9 +103,9 @@
         <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{articles.pk}}')">
           <!-- create_comment:함수명 -->
           {% csrf_token %}
-          <div class='d-flex justify-content-center my-5'>
+          <div class='d-flex justify-content-center my-5' style='height: 44px;'>
             <input name='content' type="text" class="input_com me-3 px-3" required id='id_content'>
-            <button class='bbtn_com' type="submit" id="content-{{ articles.pk }}">댓글 쓰기</button>
+            <button class='bbtn_com text-break' type="submit" id="content-{{ articles.pk }}">댓글 쓰기</button>
           </div>
         </form>
       {% else %}
@@ -118,7 +118,6 @@
 
     <!-- 댓글 목록 삭제-->
     <!-- 회원이라면 보여주고 -->
-    {% if request.user.is_authenticated %}
       <div id="box">
         {% for comment in comments.all %}
           <div class='comment_box position-relative my-3 mx-5' id="article-{{comment.pk}}">
@@ -151,7 +150,6 @@
           </div>
         {% endfor %}
       </div>
-    {% endif %}
   </div>
 {% endblock content %}
 
