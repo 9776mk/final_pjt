@@ -8,6 +8,7 @@ from django.contrib.auth import logout as auth_logout
 import json
 from django.http import JsonResponse
 from django.contrib import messages
+from django.core.paginator import Paginator
 # 깃로그인
 import os
 from dotenv import load_dotenv
@@ -380,11 +381,16 @@ def guestbook(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
     gb_articles = user.guestbook.guestbookarticle_set.all().order_by("-pk")
     gb_comments = user.guestbook.guestbookcomment_set.all()
-
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(gb_articles, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
     context = {
         "user": user,
-        "gb_articles": gb_articles,
+        # "gb_articles": gb_articles,
         "gb_comments": gb_comments,
+        "max_index": max_index,
+        "gb_articles": page_obj,
     }
 
     return render(request, "accounts/guestbook.html", context)
@@ -507,5 +513,3 @@ def gb_comment_delete(request, user_pk, gb_article_pk, gb_comment_pk):
     }
 
     return JsonResponse(data)
-
-

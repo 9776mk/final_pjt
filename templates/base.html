@@ -147,7 +147,59 @@
       </div>
     </nav>
     {% include "messages.html" %}
-    {% block content%}{% endblock content %}
+    {% block content%}
+    {% endblock content %}
+    
+    {% comment %} <!-- Footer -->
+    <footer class="text-center">
+      <!-- Grid container -->
+      <div class="container p-4 justify-content-center align-items-center d-flex">
+        <div class="me-3">
+          <img style='width: 7rem;' src="{% static 'images/logo-orange.png' %}" alt="Logo">
+        </div>
+        <div class="d-flex mx-5">
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/buzzzlight">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/김수빈.jfif' %}" alt="김수빈">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/9776mk">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/문경욱.jfif' %}" alt="문경욱">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/sunbongE">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/박태호.png' %}" alt="박태호">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/ANDONGWOO">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/안동우.png' %}" alt="안동우">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/jupiter6676">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/최보영.jfif' %}" alt="최보영">
+            </a>
+          </div>
+          <div class='d-flex flex-column m-1'>
+            <a href="https://github.com/yangu1455">
+              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/황지선.jfif' %}" alt="황지선">
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Grid container -->
+
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright:
+        <a class="text-white" href="https://nullddigi.com/">nullddigi.com</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- Footer --> {% endcomment %}
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
