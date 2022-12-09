@@ -4,6 +4,13 @@
 {% load static %}
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+  
+  <style>
+    .modal-profile-img {
+      border-radius: 70%; 
+      max-width: 50px;
+    }
+  </style>
 {% endblock link %}
 
 {% block content %} 
@@ -44,31 +51,192 @@
         </div>
       </div>
 
-      <!-- 스터디 종류 & 이름 & 가입신청 버튼 -->
+      <!-- 스터디 종류 & 이름 & 가입신청/마감 버튼 -->
       <div class="d-flex justify-content-between align-items-center">
         <div class="info">
           <p style="text-align: start;">{{ study.category }}</p>
           <div class="title d-flex align-items-center">
             <span>{{ study.title }}</span>
-            <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+            {% if study.is_closed == False %}
+              <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+            {% else %}
+              <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+            {% endif %}
           </div>
         </div>
 
-        <form action="" style="padding: 40px 80px;">
-          <input type="submit" value="가입신청" class="btn btn-success">
-        </form>
+        <!-- 방장: 모집 시작/마감 -->
+        {% if request.user == study.host_user %}
+          <form action="{% url 'studies:close' study.pk %}" style="padding: 40px 80px;" method="POST">
+            {% csrf_token %}
+            {% if study.is_closed == False %}
+              <input type="submit" value="모집마감" class="btn btn-danger">
+            {% else %}
+              {% if study.limit == accepted_list.count %}
+                <input type="submit" value="모집시작" class="btn btn-success" disabled>
+              {% else %}
+                <input type="submit" value="모집시작" class="btn btn-success">
+              {% endif %}
+            {% endif %}
+          </form>
+        <!-- 방장 X -->
+        {% else %}
+          <!-- 1. 이미 스터디원이면 탈퇴 버튼 -->
+          {% if request.user.pk in accepted_user_list %}
+            <form action="{% url 'studies:withdraw' study.pk %}" method="POST" style="padding: 40px 80px;">
+              {% csrf_token %}
+              <input type="submit" value="스터디 탈퇴" class="btn btn-secondary">
+            </form>
+          <!-- 2. 신청 후 가입 대기중이면 신청 취소 버튼 -->
+          {% elif request.user.pk in waiting_user_list %}
+            <form action="{% url 'studies:apply_cancel' study.pk %}" method="POST" style="padding: 40px 80px;">
+              {% csrf_token %}
+              <input type="submit" value="가입신청 취소" class="btn btn-secondary">
+            </form>
+          <!-- 3. 신청을 안 한 상태면 -->
+          {% else %}
+            <form action="{% url 'studies:apply' study.pk %}" style="padding: 40px 80px;" method="POST">
+              {% csrf_token %}
+              
+              {% if study.is_closed == False %}
+                <input type="submit" value="가입신청" class="btn btn-success">
+              {% else %}
+                <input type="submit" value="가입불가" class="btn btn-danger disabled" disabled>
+              {% endif %}
+            </form>
+          {% endif %}
+
+          <!-- 신청을 눌렀는데 마감되었을 시 메시지 출력 -->
+          {% if study.is_closed == False %}
+            {% if messages %}
+              {% for message in messages %}
+                {{ message.tags }}
+                {{ message.message }}
+              {% endfor %}
+            {% endif %}
+          {% endif %}
+        {% endif %}
       </div>
 
-      <!-- 모집 여부 & 인원 & 가입신청 버튼 -->
+      <!-- 모집 여부 & 인원 & 설명 -->
       <div class="d-flex justify-content-start align-items-center mb-5" style="padding: 0 80px">
         <div>
           <!-- is_closed == False && 정원 미달 -->
           <div class="title d-flex align-items-center">
             <span>모집여부: </span>
-            <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+            {% if study.is_closed == False %}
+              <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+            {% else %}
+              <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+            {% endif %}
           </div>
-          <p class="m-0">인원: 3 / {{ study.limit }}</p>
+          <p class="m-0">인원: {{ accepted_list.count }} / {{ study.limit }}</p>
           <p class="m-0">{{ study.content }}</p>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#waiting-list">신청 인원</button>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accepted-list">스터디 인원</button>
+
+      <!-- 가입 대기 인원 -->
+      <div class="modal fade" id="waiting-list" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel2">가입 대기 인원</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="waiting-box" data-waiting-box-id="{{ elem.user.pk }}" class="modal-body py-2">
+              {% if waiting_list %}
+                {% for elem in waiting_list %}
+                  <div class="d-flex justify-content-between align-items-center" id="user-{{ elem.user.pk }}">
+                    <div class="d-flex align-items-center my-3" >
+                      <div class="mx-3">
+                        <a href="{% url 'accounts:profile' elem.user.pk %}">
+                          {% if elem.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                            <img src="{{ elem.user.profile.image }}" class="modal-profile-img" alt="">
+                          {% elif elem.user.profile.image %}
+                            <img src="{{ elem.user.profile.image.url }}" class="modal-profile-img" alt="">
+                          {% else %}
+                            <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
+                          {% endif %}
+                        </a>
+                      </div>
+                      <div>
+                        <a href="{% url 'accounts:profile' elem.user.pk %}">
+                          <p class="mb-0"><b>{{ elem.user.profile.nickname }}</b></p>
+                          <p class="mb-0" style="font-size: 13px;">{{ elem.user }}</p>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="me-3">
+                      {% if request.user == study.host_user %}
+                        <form action="{% url 'studies:accept' study.pk elem.user.pk %}" method="POST">
+                          {% csrf_token %}
+                          <input type="submit" value="승인" class="btn btn-primary">
+                        </form>
+                        <form action="{% url 'studies:deny' study.pk elem.user.pk %}" method="POST">
+                          {% csrf_token %}
+                          <input type="submit" value="거절" class="btn btn-danger">
+                        </form>
+                      {% endif %}               
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <p id="no-waitings" class="py-5 text-center text-muted">아직 신청 인원이 없어요</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 스터디(가입 완료) 인원 -->
+      <div class="modal fade" id="accepted-list" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel2">가입 대기 인원</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="accepted-box" data-accepted-box-id="{{ elem.user.pk }}" class="modal-body py-2">
+              {% if accepted_list %}
+                {% for elem in accepted_list %}
+                  <div class="d-flex justify-content-between align-items-center" id="user-{{ elem.user.pk }}">
+                    <div class="d-flex align-items-center my-3" >
+                      <div class="mx-3">
+                        <a href="{% url 'accounts:profile' elem.user.pk %}">
+                          {% if elem.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                            <img src="{{ elem.user.profile.image }}" class="modal-profile-img" alt="">
+                          {% elif elem.user.profile.image %}
+                            <img src="{{ elem.user.profile.image.url }}" class="modal-profile-img" alt="">
+                          {% else %}
+                            <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
+                          {% endif %}
+                        </a>
+                      </div>
+                      <div>
+                        <a href="{% url 'accounts:profile' elem.user.pk %}">
+                          <p class="mb-0"><b>{{ elem.user.profile.nickname }}</b></p>
+                          <p class="mb-0" style="font-size: 13px;">{{ elem.user }}</p>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="me-3">
+                      {% if request.user == study.host_user %}
+                        <form action="{% url 'studies:kick' study.pk elem.user.pk %}" method="POST">
+                          {% csrf_token %}
+                          <input type="submit" value="추방" class="btn btn-danger">
+                        </form>
+                      {% endif %}               
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <p id="no-accepted" class="py-5 text-center text-muted">아직 스터디 인원이 없어요</p>
+              {% endif %}
+            </div>
+          </div>
         </div>
       </div>
       

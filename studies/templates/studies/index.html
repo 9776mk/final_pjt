@@ -7,7 +7,15 @@
         <a href="{% url 'studies:detail' study.pk %}">
           <img src="{{ study.image.url }}" class="card-img-top">
           <div class="card-body">
-            <h5 class="card-title">{{ study.title }}</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title m-0">{{ study.title }}</h5>
+
+              {% if study.is_closed == False %}
+                <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+              {% else %}
+                <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+              {% endif %}
+            </div>
             <p class="card-text">{{ study.host_user }}</p>
           </div>
         </a>
