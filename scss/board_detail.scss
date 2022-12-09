@@ -102,8 +102,7 @@ details {
 
 
 // 댓글 생성 폼
-.input_com {
-  width: 500px;  
+.input_com { 
   border-radius: 50px; 
   border: 1px solid #b7b7b7;
 }
@@ -121,6 +120,10 @@ details {
   color: #a4a4a4;
   transition: all 0.4s;
   border-radius: 10px;
+  width: 76px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .bbtn_com:hover {
@@ -134,5 +137,14 @@ details {
     .category {
       display: none;
     }
+  }
+  .input_com { 
+    width: 370px; 
+  }
+}
+
+@media (min-width : 768px) {
+  .input_com { 
+    width: 500px; 
   }
 }
