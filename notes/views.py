@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -14,8 +15,12 @@ def index(request):
     notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     request.user.message_number = notes_counter
     request.user.save()
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(notes, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
     context = {
-        "notes": notes,
+        "notes": page_obj,
     }
     return render(request, "notes/index.html", context)
 
@@ -23,8 +28,12 @@ def index(request):
 @login_required
 def sent(request):
     to_notes = Notes.objects.filter(from_user_id=request.user.id, garbage=False).order_by("-created_at")
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(to_notes, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
     context = {
-        "to_notes":to_notes,
+        "to_notes":page_obj,
     }
     return render(request, "notes/index.html", context)
 
@@ -144,8 +153,12 @@ def trash_return(request, pk):
 @login_required
 def trash(request):
     trash_notes = Notes.objects.filter(to_user_id=request.user.id, garbage=True).order_by("-created_at")
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(trash_notes, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
     context = {
-        "notes": trash_notes,
+        "notes": page_obj,
     }
     return render(request, "notes/trash.html", context)
 
@@ -170,7 +183,11 @@ def important_return(request, pk):
 def important(request):
     important_notes = Notes.objects.filter(to_user_id=request.user.id, 
     garbage=False, important=True).order_by("-created_at")
+    page = request.GET.get('page', '1') # 페이지
+    paginator = Paginator(important_notes, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
     context = {
-        "notes": important_notes,
+        "notes": page_obj,
     }
     return render(request, "notes/important.html", context)
