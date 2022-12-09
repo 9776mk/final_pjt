@@ -4,7 +4,7 @@
 {% load static %}
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
-  
+  <link rel="stylesheet" href="{% static 'css/studies.css' %}" type="text/css">
   <style>
     .modal-profile-img {
       border-radius: 70%; 
@@ -20,6 +20,7 @@
       <div class="writer">
         <div class='writer_profile'>
           <a class='d-flex align-items-center' href="{% url 'accounts:profile' study.host_user.pk %}">
+            {% comment %}  {% endcomment %}
             {% if study.host_user.profile.image|slugify|slice:'0:4' == 'http' %}
               <!-- 깃허브에서 가져온 이미지: https로 시작 -->
               <img class='writer_img' src="{{ study.host_user.profile.image }}">
@@ -135,8 +136,10 @@
         </div>
       </div>
 
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#waiting-list">신청 인원</button>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accepted-list">스터디 인원</button>
+      <div class='d-flex justify-content-center mb-3' style="padding: 0 80px">
+        <button class="bbtn_stu me-2" data-bs-toggle="modal" data-bs-target="#waiting-list">신청 인원</button>
+        <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디 인원</button>
+      </div>
 
       <!-- 가입 대기 인원 -->
       <div class="modal fade" id="waiting-list" tabindex="-1" aria-hidden="true">
