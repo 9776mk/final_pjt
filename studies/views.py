@@ -292,7 +292,12 @@ def withdraw(request, study_pk):
         notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디에서 탈퇴하였습니다.'
         StudyNotice.objects.create(study_title=study.title, user=study.host_user, content=notice)
 
-    return redirect('studies:detail', study_pk)
+    data = {
+        'accepted_cnt': List.objects.filter(study=study, is_accepted=True).count(),
+    }
+    
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 알림 삭제
