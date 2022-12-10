@@ -158,4 +158,5 @@ main .sData h1 {
 
 #back-to-top.visible {
   opacity: 1;
+  z-index: 1030;
 }/*# sourceMappingURL=surveyIndex.css.map */
