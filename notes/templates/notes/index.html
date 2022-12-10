@@ -33,7 +33,7 @@
         </table>
       </div>
       {% if request.resolver_match.url_name == 'index' %}
-      <div class="col-9">
+      <div class="col-9" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">받은 쪽지함</h4>
         <table class="table">
           <thead>
@@ -136,7 +136,7 @@
         </div>
       </div>
       {% elif request.resolver_match.url_name == 'sent' %}
-      <div class="col-9">
+      <div class="col-9" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">보낸 쪽지함</h4>
         <table class="table bg-white">
           <thead>
