@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class='container py-5'>
-    <div class='row justify-content-between'>
+    <div class='row justify-content-center'>
       {% for study in studies %}
         <div class="card m-3 col-lg-6" style="width: 21rem;">
           <a href="{% url 'studies:detail' study.pk %}">

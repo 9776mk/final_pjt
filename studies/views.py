@@ -84,9 +84,10 @@ def update(request, study_pk):
 
     context = {
         'study_form': study_form,
+        'study_pk': study_pk,
     }
 
-    return render(request, 'studies/create.html', context)
+    return render(request, 'studies/update.html', context)
 
 
 @login_required

@@ -18,7 +18,9 @@ a {
 }
 .board_write .title,
 .board_write .image,
-.board_write .category {
+.board_write .category,
+.board_write .contact,
+.board_write .limit {
   padding: 15px;
 }
 .board_write .title dt,
@@ -26,24 +28,34 @@ a {
 .board_write .image dt,
 .board_write .image dd,
 .board_write .category dt,
-.board_write .category dd {
+.board_write .category dd,
+.board_write .contact dt,
+.board_write .contact dd,
+.board_write .limit dt,
+.board_write .limit dd {
   display: inline-block;
   vertical-align: middle;
   font-size: 0.9rem;
 }
 .board_write .title dt,
 .board_write .image dt,
-.board_write .category dt {
+.board_write .category dt,
+.board_write .contact dt,
+.board_write .limit dt {
   width: 100px;
 }
 .board_write .title dd,
 .board_write .image dd,
-.board_write .category dd {
+.board_write .category dd,
+.board_write .contact dd,
+.board_write .limit dd {
   margin-top: 8px;
 }
 .board_write .title input[type=text],
 .board_write .image input[type=text],
-.board_write .category input[type=text] {
+.board_write .category input[type=text],
+.board_write .contact input[type=text],
+.board_write .limit input[type=text] {
   padding: 10px;
   box-sizing: border-box;
 }
@@ -78,7 +90,7 @@ a {
 .board_write .title input[type=text] {
   width: 90%;
 }
-.board_write .cont textarea {
+.board_write .content textarea {
   display: block;
   width: 100%;
   height: 400px;
@@ -86,4 +98,12 @@ a {
   box-sizing: border-box;
   border: 0;
   resize: vertical;
+}
+.board_write .contact {
+  border-top: 1px dashed #ddd;
+  font-size: 0;
+}
+.board_write .limit {
+  border-top: 1px dashed #ddd;
+  font-size: 0;
 }/*# sourceMappingURL=board_create.css.map */
