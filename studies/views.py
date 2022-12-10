@@ -172,7 +172,7 @@ def apply(request, study_pk):
         else:
             # messages.warning(request, '이미 모집이 마감된 스터디입니다.')
             is_closed = True
-
+    
     data = {
         'is_closed': is_closed,
         'is_applied': is_applied,
@@ -205,7 +205,24 @@ def accept(request, study_pk, user_pk):
             notice = f'\'{study.title}\' 스터디에 가입되었습니다.'
             StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
 
-    return redirect('studies:detail', study_pk)
+    # 수락한 유저의 프로필 이미지
+    if not user.profile.image:
+        user_image = "/static/images/no-avatar.jpg"
+    elif str(user.profile.image)[:4] == "http":
+        user_image = str(user.profile.image)
+    else:
+        user_image = str(user.profile.image.url)
+    
+    data = {
+        'user_image': user_image,
+        'user_nickname': user.profile.nickname,
+        'user_username': user.username,
+        'waiting_cnt': List.objects.filter(study=study, is_accepted=False).count(),
+        'accepted_cnt': List.objects.filter(study=study, is_accepted=True).count(),
+    }
+
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 스터디 가입 신청 거절 (방장)
@@ -222,7 +239,12 @@ def deny(request, study_pk, user_pk):
         notice = f'\'{study.title}\' 스터디 가입이 거절되었습니다.'
         StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
 
-    return redirect('studies:detail', study_pk)
+    data = {
+        'waiting_cnt': List.objects.filter(study=study, is_accepted=False).count()
+    }
+
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 스터디 추방 (방장)
@@ -244,7 +266,12 @@ def kick(request, study_pk, user_pk):
         notice = f'\'{study.title}\' 스터디에서 추방되었습니다.'
         StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
 
-    return redirect('studies:detail', study_pk)
+    data = {
+        'accepted_cnt': List.objects.filter(study=study, is_accepted=True).count(),
+    }
+    
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 스터디 탈퇴 (방장 제외)
