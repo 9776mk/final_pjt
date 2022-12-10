@@ -47,8 +47,8 @@ class User(AbstractUser):
     token = models.CharField(max_length=150, null=True, blank=True)
     notice_note = models.BooleanField(default=True)  # 쪽지
     note_notice = models.BooleanField(default=True)  # 쪽지
-    message_number = models.IntegerField(default=0) #쪽지 알람
-    
+    message_number = models.IntegerField(default=0)  # 쪽지 알람
+
     # 스터디 알림 개수
     @property
     def get_study_notice_cnt(self):
@@ -64,8 +64,9 @@ class User(AbstractUser):
         # for notice in study_notice_list:
         #     notice.read = True
         #     notice.save()
-        
+
         return study_notice_list
+
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -103,21 +104,21 @@ class Profile(models.Model):
     # MBTI 유형 선택
     MBTI_CHOICE = (
         ("ISTJ", "ISTJ"),
-        ("ISFJ", "ISFJ"),
-        ("INFJ", "INFJ"),
-        ("INTJ", "INTJ"),
         ("ISTP", "ISTP"),
+        ("ISFJ", "ISFJ"),
         ("ISFP", "ISFP"),
-        ("INFP", "INFP"),
+        ("INTJ", "INTJ"),
         ("INTP", "INTP"),
+        ("INFJ", "INFJ"),
+        ("INFP", "INFP"),
         ("ESTJ", "ESTJ"),
-        ("ESFJ", "ESFJ"),
-        ("ENFJ", "ENFJ"),
-        ("ENTJ", "ENTJ"),
         ("ESTP", "ESTP"),
+        ("ESFJ", "ESFJ"),
         ("ESFP", "ESFP"),
-        ("ENFP", "ENFP"),
+        ("ENTJ", "ENTJ"),
         ("ENTP", "ENTP"),
+        ("ENFJ", "ENFJ"),
+        ("ENFP", "ENFP"),
     )
     mbti = models.CharField(blank=True, max_length=4, choices=MBTI_CHOICE)
 
