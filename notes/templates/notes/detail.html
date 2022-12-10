@@ -32,7 +32,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-9">
+      <div class="col-9" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">쪽지</h4>
         <div class="note-detail">
           {% comment %} <div class="paper pink">
@@ -57,6 +57,13 @@
             <div class="tape-section"></div>
           </div>
         </div>
+        {% if note.from_user != request.user %}
+        <div class="d-flex justify-content-center mt-3">
+          <a href="{% url 'notes:reply' note.pk %}" class="bbtn" style="margin-bottom: 100px;">답장하기</a>
+        </div>
+        {% else %}
+        <div style="margin-bottom: 100px;"></div>
+        {% endif %}
       </div>
     </div>
   </div>

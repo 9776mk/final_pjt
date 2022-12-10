@@ -105,7 +105,8 @@ def home(request):
                 problems = DB_li[i].objects.filter(level=user_level)
                 for p in problems:
                     problem_li.append(p.number)
-            elif user_level == 30:
+            elif user_level >= 30:
+                user_level = 30
                 problems = BJData_ru.objects.filter(level=user_level)
                 for p in problems:
                     problem_li.append(p.number)
@@ -114,8 +115,29 @@ def home(request):
         # print(problem)
         data = {"problem": problem}
         return JsonResponse(data)
-
+    # rank
+    allU = Profile.objects.all().order_by("-boj_tier")[:5]
+    rank_list = []
+    for allu in allU:
+        Tier = allu.boj_tier
+        Nicknam = allu.nickname
+        user_ = allu.user_id
+        if allu.language:
+            language = allu.language
+        else:
+            language = "없음"
+        if allu.image and str(allu.image)[:4] != "http":
+            P_img = allu.image.url
+            rank_list.append((Tier, Nicknam, P_img, language, user_))
+        elif str(allu.image)[:4] == "http" and allu.image:
+            P_img = allu.image
+            rank_list.append((Tier, Nicknam, P_img, language, user_))
+        else:
+            P_img = "./static/images/no-avatar.jpg"
+            rank_list.append((Tier, Nicknam, P_img, language, user_))
+    # print(rank_list)
     context = {
+        "rank": rank_list,
         "sorted_dict": sorted_dict,
     }
     return render(request, "articles/home.html", context)
@@ -143,8 +165,8 @@ def index(request):
 
 # 카테고리 별
 def index_1(request):
-    articles = Article.objects.filter(category="자료공유").order_by('-pk')
-    page = request.GET.get('page', '1') # 페이지
+    articles = Article.objects.filter(category="자료공유").order_by("-pk")
+    page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
@@ -157,8 +179,8 @@ def index_1(request):
 
 
 def index_2(request):
-    articles = Article.objects.filter(category="질문").order_by('-pk')
-    page = request.GET.get('page', '1') # 페이지
+    articles = Article.objects.filter(category="질문").order_by("-pk")
+    page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
@@ -171,8 +193,8 @@ def index_2(request):
 
 
 def index_3(request):
-    articles = Article.objects.filter(category="취업").order_by('-pk')
-    page = request.GET.get('page', '1') # 페이지
+    articles = Article.objects.filter(category="취업").order_by("-pk")
+    page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
@@ -185,8 +207,8 @@ def index_3(request):
 
 
 def index_4(request):
-    articles = Article.objects.filter(category="잡담").order_by('-pk')
-    page = request.GET.get('page', '1') # 페이지
+    articles = Article.objects.filter(category="잡담").order_by("-pk")
+    page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
@@ -306,8 +328,9 @@ def delete(request, pk):
     articles = get_object_or_404(Article, pk=pk)
     if request.user == articles.user:
         articles.delete()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    else:
+
+        # return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+        # else:
         return redirect("articles:index")
 
 
@@ -370,5 +393,4 @@ def likes(request, article_pk):
         data = {"is_liked": is_liked}
         return JsonResponse(data)
     return redirect("accounts:login")
-
 

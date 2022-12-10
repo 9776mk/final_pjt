@@ -9,7 +9,7 @@
     <h1 class="mx-3 mb-4" style="font-family: 'HBIOS-SYS'">개발자 랜덤 추천 결과입니다!</h1>
 
     <!-- 랜덤 추첨 -->
-    <form action="{% url 'friends:recommend' %}" method="POST">
+    <form action="{% url 'friends:recommend' %}" method="POST" class='mt-5 mb-4'>
       {% csrf_token %}
       <div class='d-flex'>
         <input type="number" class="form-control mx-3" name="num-of-people" min="1" max="10" value="0">
@@ -17,14 +17,13 @@
       </div>
     </form>
 
-
-    <p>{{ warning }}</p>
+    <p class='warning_rec'>{{ warning }}</p>
 
     <!-- 랜덤으로 추천받은 유저들 -->
     <div class="row mx-3" id="recommended-users">
       {% for user in recommended_users %}
-        <a class='col-lg-4' href="{% url 'accounts:profile' user.pk %}">
-          <div class="recommended-users user_box d-flex align-items-center justify-content-around mb-3 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
+        <a class='col-lg-4 col-md-6' href="{% url 'accounts:profile' user.pk %}">
+          <div class="recommended-users user_box_rec d-flex align-items-center justify-content-around mb-3 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
             <!-- 프로필 이미지-->
             <div>
               {% comment %}  {% endcomment %}

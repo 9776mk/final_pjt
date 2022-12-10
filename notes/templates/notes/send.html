@@ -32,30 +32,18 @@
           </tbody>
         </table>
       </div>
-      <div class="col-9">
+      <div class="col-9" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">쪽지 쓰기</h4>
-        <form action="{% url 'notes:send' %}" method="POST">
-          {% csrf_token %}
-          {% bootstrap_form form %}
-          <div class="d-flex justify-content-end">
-            <input type="submit" class="bbtn" value="보내기">
-          </div>
-        </form>
+        <div class="container d-flex flex-column align-content-center pb-5" style="max-width: 500px;">
+          <form action="{% url 'notes:send' %}" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="d-flex justify-content-end">
+              <input type="submit" class="bbtn" value="보내기">
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-
-  {% comment %} <div class="container d-flex justify-content-center p-5">
-    <div class="col-sm-12 col-md-6" style="max-width: 450px;">
-      <h3 class="text-center mb-3" style="font-family: 'HBIOS-SYS';">쪽지 쓰기✉️</h3>
-      <form action="{% url 'notes:send' %}" method="POST">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <div class="d-flex justify-content-center">
-          <input type="submit" class="bbtn" value="보내기">
-        </div>
-      </form>
-    </div>
-  </div> {% endcomment %}
-
 {% endblock %}

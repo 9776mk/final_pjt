@@ -8,18 +8,16 @@
 
 <div class="container my-5">
   <div class="d-flex justify-content-center align-items-center mb-4">
-    <div>
-      {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
-        <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-        <img src="{{ user.profile.image }}" class="profile-img" alt="">
-      {% elif user.profile.image %}
-        <!-- 파일로 추가한 이미지 /media/ -->
-        <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
-      {% else %}
-        <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
-      {% endif %}
-    </div>
-    <div class="ms-5 w-100">
+    {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
+      <!-- 깃허브에서 가져온 이미지: https로 시작 -->
+      <img src="{{ user.profile.image }}" class="profile-img" alt="">
+    {% elif user.profile.image %}
+      <!-- 파일로 추가한 이미지 /media/ -->
+      <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
+    {% else %}
+      <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
+    {% endif %}
+    <div class="ms-4 w-100">
       <div class="d-flex align-items-center mb-2">
         <h1 class="mb-0" style="font-size: 30px;">{{ user.profile.nickname }}님의 프로필</h1>
         <!-- 회원 정보 수정 & 팔로우 버튼 -->
@@ -64,7 +62,7 @@
       {% endif %}
       <p class="mb-1">{{ user.profile.intro }}</p>
       <div class="d-flex justify-content-end">
-        <a href="{% url 'notes:send' %}" class="bbtn me-2 h-100">쪽지 보내기</a>
+        <a href="{% url 'notes:send_to' user.pk %}" class="bbtn me-2 h-100">쪽지 보내기</a>
         <a href="{% url 'accounts:guestbook' user.pk %}" class="bbtn h-100">방명록</a>
       </div>
     </div>
@@ -80,7 +78,7 @@
     {% endif %}
     <div class="mb-2" >
       <a data-bs-toggle="collapse" href="#articlecollapse" 
-      role="button" aria-expanded="false" aria-controls="articlecollapse" style="font-size: 20px;">
+      role="button" aria-expanded="false" aria-controls="articlecollapse" style="font-size: 17px;">
       작성 글  <b>{{ request.user.article_set.all.count }}</b>
       </a>
       <div class="collapse" id="articlecollapse">
@@ -111,7 +109,7 @@
     </div>
     <div class="mb-2">
       <a class="" data-bs-toggle="collapse" href="#commentcollapse" 
-      role="button" aria-expanded="false" aria-controls="commentcollapse" style="font-size: 20px;">
+      role="button" aria-expanded="false" aria-controls="commentcollapse" style="font-size: 17px;">
       작성 댓글  <b>{{ request.user.articlecomment_set.all.count }}</b>
       </a>
       <div class="collapse" id="commentcollapse">
@@ -140,7 +138,7 @@
     </div>
     <div class="mb-2">
       <a data-bs-toggle="collapse" href="#likecollapse" 
-      role="button" aria-expanded="false" aria-controls="likecollapse" style="font-size: 20px;">
+      role="button" aria-expanded="false" aria-controls="likecollapse" style="font-size: 17px;">
       좋아요 누른 글  <b>{{ request.user.article_like.all.count }}</b>
       </a>
       <div class="collapse" id="likecollapse">
@@ -225,7 +223,8 @@
       </div>
     </div>
   </div>
-  
+</div>
+
   <!-- 팔로잉 modal -->
   <div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
     <div class="modal-dialog">

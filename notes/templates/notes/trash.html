@@ -32,7 +32,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-9">
+      <div class="col-9" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">휴지통</h4>
         <table class="table bg-white">
           <thead>
@@ -105,6 +105,48 @@
             {% endfor %}
           </tbody>
         </table>
+        <!--페이지네이션-->
+        <div class="paginator board_page mt-5">
+          <!-- 맨 앞으로 -->
+          <a href="?page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          <!-- 이전 페이지 -->
+          {% if notes.has_previous %}
+            <a class="page-link bt prev" href="?page={{ notes.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% comment %}  {% endcomment %}
+          {% for page_number in notes.paginator.page_range %}
+            {% if page_number >= notes.number|add:-3 and page_number <= notes.number|add:3 %}
+              {% if page_number == notes.number %}
+                <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if notes.has_next %}
+            <a class="page-link bt next" href="?page={{ notes.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
       </div>
     </div>
   </div>

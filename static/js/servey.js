@@ -3,6 +3,13 @@ let dropdown1 = document.querySelector('.dropdown1')
 let option1 = document.querySelector('.option1')
 dropdown1.onclick = function () {
     dropdown1.classList.toggle('active');
+
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q1') {
+            dropdown1.classList.remove('active');
+        }
+    })
 }
 function show1(a) {
     document.querySelector('.text01').value = a;
@@ -16,12 +23,22 @@ option1.addEventListener('click', function () {
     }
 })
 
+
+
+
+
 // 질문 2
 let dropdown2 = document.querySelector('.dropdown2')
 let option2 = document.querySelector('.option2')
 
 dropdown2.onclick = function () {
     dropdown2.classList.toggle('active');
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q2') {
+            dropdown2.classList.remove('active');
+        }
+    })
 }
 function show2(a) {
     document.querySelector('.text02').value = a;
@@ -39,9 +56,17 @@ let option3 = document.querySelector('.option3')
 
 dropdown3.onclick = function () {
     dropdown3.classList.toggle('active');
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q3') {
+            dropdown3.classList.remove('active');
+        }
+    })
 }
 function show3(a) {
     document.querySelector('.text03').value = a;
+
+
 }
 option3.addEventListener('click', function () {
     const text3 = document.querySelector('.text03').value
@@ -56,6 +81,13 @@ let option4 = document.querySelector('.option4')
 
 dropdown4.onclick = function () {
     dropdown4.classList.toggle('active');
+
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q4') {
+            dropdown4.classList.remove('active');
+        }
+    })
 }
 function show4(a) {
     document.querySelector('.text04').value = a;
@@ -73,6 +105,12 @@ let option5 = document.querySelector('.option5')
 
 dropdown5.onclick = function () {
     dropdown5.classList.toggle('active');
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q5') {
+            dropdown5.classList.remove('active');
+        }
+    })
 }
 function show5(a) {
     document.querySelector('.text05').value = a;
@@ -90,9 +128,17 @@ let option6 = document.querySelector('.option6')
 
 dropdown6.onclick = function () {
     dropdown6.classList.toggle('active');
+
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q6') {
+            dropdown6.classList.remove('active');
+        }
+    })
 }
 function show6(a) {
     document.querySelector('.text06').value = a;
+
 }
 option6.addEventListener('click', function () {
     const text6 = document.querySelector('.text06').value
@@ -107,6 +153,13 @@ let option7 = document.querySelector('.option7')
 
 dropdown7.onclick = function () {
     dropdown7.classList.toggle('active');
+
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q7') {
+            dropdown7.classList.remove('active');
+        }
+    })
 }
 function show7(a) {
     document.querySelector('.text07').value = a;
@@ -124,6 +177,12 @@ let option8 = document.querySelector('.option8')
 
 dropdown8.onclick = function () {
     dropdown8.classList.toggle('active');
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q8') {
+            dropdown8.classList.remove('active');
+        }
+    })
 }
 function show8(a) {
     document.querySelector('.text08').value = a;
@@ -141,6 +200,12 @@ let option9 = document.querySelector('.option9')
 
 dropdown9.onclick = function () {
     dropdown9.classList.toggle('active');
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q9') {
+            dropdown9.classList.remove('active');
+        }
+    })
 }
 function show9(a) {
     document.querySelector('.text09').value = a;
@@ -158,6 +223,13 @@ let option10 = document.querySelector('.option10')
 
 dropdown10.onclick = function () {
     dropdown10.classList.toggle('active');
+
+    var Docu = document.documentElement
+    Docu.addEventListener('mouseup', e => {
+        if (e.target.attributes.class.value != 'Q10') {
+            dropdown10.classList.remove('active');
+        }
+    })
 }
 function show10(a) {
     document.querySelector('.text10').value = a;

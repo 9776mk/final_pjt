@@ -1,11 +1,10 @@
 @charset "UTF-8";
 .profile-img {
   border-radius: 70%;
-  max-width: 64px;
+  max-width: 78px;
 }
 
 hr {
-  color: auto;
   background-color: #b7b7b7;
   height: 2px;
 }
@@ -245,14 +244,23 @@ hr {
   background-color: #fff;
   padding: 10px;
   border-radius: 20px;
-  height: auto;
+  height: 110px;
+  margin: 15px 100px;
+}
+
+.user_box_rec {
+  border: 1px solid #a4a4a4;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 20px;
+  height: 110px;
 }
 
 .bbtn_rec {
   display: inline-block;
   padding: 10px;
   border: 1px solid #a4a4a4;
-  border-radius: 2px;
+  border-radius: 10px;
   font-size: 0.9rem;
   background: #fff;
   color: #a4a4a4;
@@ -263,4 +271,30 @@ hr {
 .bbtn_rec:hover {
   background-color: #a4a4a4;
   color: white;
+}
+
+/* 추첨 결과 뜨고 경고 창 생길 때 */
+.speech-bubble {
+  position: relative;
+  color: #ff8800;
+  border-radius: 0.4em;
+}
+.speech-bubble::after {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 32px solid transparent;
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -16px;
+  margin-left: -32px;
+}
+
+.warning_rec {
+  font-family: "HBIOS-SYS";
+  color: #ff8800;
+  margin-left: 37px;
+  margin-bottom: 20px;
 }/*# sourceMappingURL=friends_index.css.map */
