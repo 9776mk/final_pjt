@@ -68,6 +68,7 @@ class User(AbstractUser):
         return study_notice_list
 
 
+
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=16)
