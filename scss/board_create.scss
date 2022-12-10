@@ -17,7 +17,9 @@ a {
   }
   .title, 
   .image,
-  .category {
+  .category,
+  .contact,
+  .limit {
     padding: 15px;
     dt, 
     dd {
@@ -69,7 +71,7 @@ a {
       width: 90%;
     }
   }
-  .cont {
+  .content {
     textarea {
       display: block;
       width: 100%;
@@ -79,5 +81,13 @@ a {
       border: 0;
       resize: vertical;
     }
+  }
+  .contact {
+    border-top: 1px dashed #ddd;
+    font-size: 0;
+  }
+  .limit {
+    border-top: 1px dashed #ddd;
+    font-size: 0;
   }
 }
