@@ -68,44 +68,55 @@
       color: white;
     }
   </style>
+  <link rel="stylesheet" href="{% static 'css/friends_index.css' %}" type="text/css">
 {% endblock link %}
 {% block content %}
+<div class="container py-5">
+  <h1 class="mx-3 mb-4" style="font-family: 'HBIOS-SYS'">연산 방식 문제 검색</h1>
+  <div class='btn-board px-4 pt-4 mb-4'>
+    <form action="{% url 'algorithm:search' %}" method="post" enctype="multipart/form-data">
+      <!-- 카테고리 버튼 -->
+      {% csrf_token %}
+      <div id="category-btns" class="category mb-3">
+        <p class="mb-2"> 난이도 </p>
+        {% for level in category_level %}
+          <input id="{{ level }}" class="" type="checkbox" name="level-btns" value="{{level}}">
+          <label for="{{ level }}">{{ level }}</label>
+          {% comment %} <button id="{{ lang }}" data-category="{{ lang }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ lang }}</button> {% endcomment %}
+        {% endfor %}
+      </div>
+      <div id="mbti-btns" class="category mb-3">
+        <p class="mb-2"> 추천 꼬리표 </p>
+        {% for category in category_ %}
+          <input id="{{ category }}" class="" type="checkbox" name="category-btns" value="{{category}}">
+          <label for="{{ category }}">{{ category }}</label>
+          {% comment %} <button id="{{ mbti }}" data-category="{{ mbti }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ mbti }}</button> {% endcomment %}
+        {% endfor %}
+      </div>
 
-<form action="{% url 'algorithm:search' %}" role='search' class='mb-0 w-100'>
-  <div class="d-flex w-100 justify-content-center gap-4 mt-5" style='position:relative'>
-    <input type="search" id="mySearch" onkeyup="myFunction()" placeholder="검색" title="Type in a category" class='px-3 py-3 rounded-3' style="width: 500px; height:70px" name='search'>
-    <button class="btn btn-link" type="submit" style='position:absolute;top:-7px;right:290px'>
-      <script src="https://cdn.lordicon.com/qjzruarw.js"></script>
-      <lord-icon
-          src="https://cdn.lordicon.com/hgbzryoa.json"
-          trigger="hover"
-          colors="primary:#000000,secondary:#ffffff,tertiary:#000000,quaternary:#242424"
-          style="width:75px;height:75px" >
-      </lord-icon>
-    </button>
+      <div class="category mb-3">
+        <input type="search" id="mySearch" onkeyup="myFunction()" placeholder="검색" title="Type in a category" class='px-3 py-3 rounded-3' style="width: 500px; height:70px" name='search'>
+        <button class="btn btn-primary" type="submit" onclick="javascript:OnCheck();">찾기</button>
+      </div>
+    </form>
   </div>
-</form>
+</div>
 
-<form action="{% url 'algorithm:search' %}" method="post" enctype="multipart/form-data">
-  <!-- 카테고리 버튼 -->
-  {% csrf_token %}
-  <div id="category-btns" class="category mb-3">
-    <p class="mb-2"> 난이도 </p>
-    {% for level in category_level %}
-      <input id="{{ level }}" class="" type="checkbox" name="level-btns" value="{{level}}">
-      <label for="{{ level }}">{{ level }}</label>
-      {% comment %} <button id="{{ lang }}" data-category="{{ lang }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ lang }}</button> {% endcomment %}
-    {% endfor %}
-  </div>
-  <div id="mbti-btns" class="category mb-3">
-    <p class="mb-2"> 문제 종류 </p>
-    {% for category in category_ %}
-      <input id="{{ category }}" class="" type="checkbox" name="category-btns" value="{{category}}">
-      <label for="{{ category }}">{{ category }}</label>
-      {% comment %} <button id="{{ mbti }}" data-category="{{ mbti }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ mbti }}</button> {% endcomment %}
-    {% endfor %}
-  </div>
-  <button class="btn btn-primary" type="submit">제출</button>
-</form>
+
+<script>
+  function OnCheck() {
+    var level_check = document.querySelectorAll('input[name="level-btns"]:checked').length;
+    var category_check = document.querySelectorAll('input[name="category-btns"]:checked').length;
+    var search_ = document.getElementById("mySearch").value;
+
+    alert(search_.length)
+    
+    if(category_check == 0 && level_check == 0 && search_.length ==0) {
+      alert('난이도 / 카테고리 / 검색어 중 하나를 선택/입력해주세요')
+      event.preventDefault();
+    }
+  }
+
+</script>
 
 {% endblock %}
