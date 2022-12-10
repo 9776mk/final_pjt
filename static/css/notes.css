@@ -52,6 +52,9 @@ th {
   min-width: 60px;
 }
 
+
+/* detail */
+
 :root {
   --pink: #ecb2ba;
   --pink-dark: #c6939a;
@@ -275,3 +278,74 @@ th {
   width: 30px;
   height: 30px;
 }
+
+/* 반응형 */
+@media (max-width : 576px) {
+  .board_list .top .writer {
+    display: none;
+  }
+  .board_list .writer {
+    display: none;
+  }
+  .board_list .top .category {
+    width: 35%;
+  }
+  .board_list .category {
+    width: 35%;
+  }
+  .board_list .top .title {
+    width: 65%;
+  }
+  .board_list .title {
+    width: 65%;
+  }
+  .board_list .top .date {
+    display: none;
+  }
+  .board_list .date {
+    display: none;
+  }
+}
+
+@media (max-width : 768px) {
+  .board_list .top .writer {
+    display: none;
+  }
+  .board_list .writer {
+    display: none;
+  }
+  .board_list .top .category {
+    width: 20%;
+  }
+  .board_list .category {
+    width: 20%;
+  }
+  .board_list .top .title {
+    width: 60%;
+  }
+  .board_list .title {
+    width: 60%;
+  }
+  .board_list .top .date {
+    width: 20%;
+  }
+  .board_list .date {
+    width: 20%;
+  }
+}
+
+@media (min-width : 769px) {
+  .board_list .date {
+    width: 18%;
+  }
+  .board_list .writer {
+    width: 30%;
+  }
+  .board_list .title {
+    width: 40%;
+  }
+  .board_list .category {
+    width: 12%;
+  }
+}
+

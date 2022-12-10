@@ -49,7 +49,7 @@ def send(request):
         if temp.to_user.note_notice:
             temp.to_user.notice_note = False
             temp.to_user.save()
-        return redirect("notes:index")
+        return redirect("notes:sent")
     
     context = {
         "form": form,
