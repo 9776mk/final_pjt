@@ -226,7 +226,8 @@
                       </div>
                     </div>
                     <div class="me-3">
-                      {% if request.user == study.host_user %}
+                      {% if request.user == study.host_user and request.user.pk != elem.user.pk %}
+         
                         <form action="{% url 'studies:kick' study.pk elem.user.pk %}" method="POST">
                           {% csrf_token %}
                           <input type="submit" value="추방" class="btn btn-danger">

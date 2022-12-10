@@ -328,8 +328,9 @@ def delete(request, pk):
     articles = get_object_or_404(Article, pk=pk)
     if request.user == articles.user:
         articles.delete()
-        return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
-    else:
+
+        # return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+        # else:
         return redirect("articles:index")
 
 
