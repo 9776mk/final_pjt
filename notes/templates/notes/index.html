@@ -8,7 +8,32 @@
 {% block content%}
   <div class="container mt-5">
     <div id="main_in" class="row">
-      <div class="col-3">
+      <div class="col-3 d-none d-sm-block">
+        <h4 class="text-center mb-4">✉️</h4>
+        <table class="table">
+          <thead>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:sent' %}">보낸 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:important' %}">보관함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:trash' %}">휴지통</a></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Visible only on xs -->
+      <div class="d-block d-sm-none">
         <h4 class="text-center mb-4">✉️</h4>
         <table class="table">
           <thead>
@@ -33,17 +58,122 @@
         </table>
       </div>
       {% if request.resolver_match.url_name == 'index' %}
-      <div class="col-9" style="min-height: 700px;">
+      <div class="col-9 d-none d-sm-block" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">받은 쪽지함</h4>
         <table class="table">
           <thead>
             <tr>
-              <th scope="col-2">보낸 사람</th>
-              <th scope="col-5">제목</th>
-              <th scope="col-2">받은 시간</th>
-              <th scope="col-1" style="min-width: 40px;">읽음</th>
-              <th scope="col-1">보관</th>
-              <th scope="col-1">삭제</th>
+              <th scope="col" class="user">받는 사람</th>
+              <th scope="col" class="title2">제목</th>
+              <th scope="col" class="date d-none d-sm-block">받은 시간</th>
+              <th scope="col" style="min-width: 40px;">읽음</th>
+              <th scope="col">보관</th>
+              <th scope="col">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for note in notes %}
+              <!-- 쪽지 읽음 일때 -->
+              {% if note.read == 1 %}
+              <tr class="text-muted">
+                <td class="user"><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
+                <td class="title title2"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td class="d-none d-sm-none d-md-none d-lg-block date">{{ note.created_at|date:'m.d H:i' }}</td>
+                <td class="d-none d-sm-block d-md-block d-lg-none date">{{ note.created_at|date:'m.d' }}</td>
+                {% if note.read == 1 %}
+                <td class="read">읽음</td>
+                {% else %}
+                <td class="not_read read">안읽음</td>
+                {% endif %}
+                {% if not note.important %}
+                <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
+                {% else %}
+                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
+                {% endif %}
+                <td class="delete">
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
+                </td>
+              </tr>
+              {% else %}
+              <!-- 쪽지 안읽음 일때-->
+              <tr>
+                <td class="user"><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
+                <td class="title title2"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td class="d-none d-sm-none d-md-none d-lg-block date">{{ note.created_at|date:'m.d H:i' }}</td>
+                <td class="d-none d-sm-block d-md-block d-lg-none date">{{ note.created_at|date:'m.d' }}</td>
+                {% if note.read == 1 %}
+                <td class="read">읽음</td>
+                {% else %}
+                <td class="not_read read">안읽음</td>
+                {% endif %}
+                {% if not note.important %}
+                <td scope="row"><a href="{% url 'notes:important_check' note.id %}"><i class="bi bi-star mx-1"></i></a></td>
+                {% else %}
+                <td scope="row"><a href="{% url 'notes:important_return' note.id %}"><i class="bi bi-star-fill mx-1 text-warning"></i></a></td>
+                {% endif %}
+                <td class="delete">
+                  <a href="{% url 'notes:trash_throw_away' note.pk %}"><i class="bi bi-trash-fill"></i></a>
+                </td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+        <!--페이지네이션-->
+        <div class="paginator board_page my-5">
+          <!-- 맨 앞으로 -->
+          <a href="?page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          <!-- 이전 페이지 -->
+          {% if notes.has_previous %}
+            <a class="page-link bt prev" href="?page={{ notes.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% comment %}  {% endcomment %}
+          {% for page_number in notes.paginator.page_range %}
+            {% if page_number >= notes.number|add:-3 and page_number <= notes.number|add:3 %}
+              {% if page_number == notes.number %}
+                <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if notes.has_next %}
+            <a class="page-link bt next" href="?page={{ notes.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Visible only on xs -->
+      <div class="d-block d-sm-none" style="min-height: 700px;">
+        <h4 class="text-center my-4" style="font-family: 'HBIOS-SYS';">받은 쪽지함</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">보낸 사람</th>
+              <th scope="col">제목</th>
+              <th scope="col" style="min-width: 40px;">읽음</th>
+              <th scope="col">보관</th>
+              <th scope="col">삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -53,7 +183,6 @@
               <tr class="text-muted" id="{{note.pk}}">
                 <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
                 <td class="title"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'m.d H:i' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
@@ -73,7 +202,8 @@
               <tr id="{{note.pk}}">
                 <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
                 <td class="title"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'m.d H:i' }}</td>
+                <td class="d-none d-sm-none d-md-none d-lg-block">{{ note.created_at|date:'m.d H:i' }}</td>
+                <td class="d-block d-sm-block d-md-block d-lg-none">{{ note.created_at|date:'m.d' }}</td>
                 {% if note.read == 1 %}
                 <td>읽음</td>
                 {% else %}
@@ -93,7 +223,7 @@
           </tbody>
         </table>
         <!--페이지네이션-->
-        <div class="paginator board_page mt-5">
+        <div class="paginator board_page my-5">
           <!-- 맨 앞으로 -->
           <a href="?page=1" class="page-link bt first">
             <i class="bi bi-chevron-bar-left"></i>
@@ -136,16 +266,16 @@
         </div>
       </div>
       {% elif request.resolver_match.url_name == 'sent' %}
-      <div class="col-9" style="min-height: 700px;">
+      <div class="col-9 d-none d-sm-block" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">보낸 쪽지함</h4>
-        <table class="table bg-white">
+        <table class="table">
           <thead>
             <tr>
-              <th scope="col-2">받는 사람</th>
-              <th scope="col-6">제목</th>
-              <th scope="col-2">받은 시간</th>
-              <th scope="col-1">읽음</th>
-              <th scope="col-1">삭제</th>
+              <th scope="col" class="user">받는 사람</th>
+              <th scope="col" class="title2">제목</th>
+              <th scope="col" class="date">받은 시간</th>
+              <th scope="col" class="read">읽음</th>
+              <th scope="col" class="delete">삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -153,15 +283,16 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted" id="note-{{note.pk}}">
-                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
-                <td class="title"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'m.d H:i' }}</td>
+                <td class="user"><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title title2"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                <td class="d-none d-sm-none d-md-none d-lg-block date">{{ note.created_at|date:'m.d H:i' }}</td>
+                <td class="d-none d-sm-block d-md-block d-lg-none date">{{ note.created_at|date:'m.d' }}</td>
                 {% if note.read == 1 %}
-                <td>읽음</td>
+                <td class="read">읽음</td>
                 {% else %}
-                <td class="not_read">안읽음</td>
+                <td class="not_read read">안읽음</td>
                 {% endif %}
-                <td>
+                <td class="delete">
                   <form data-note-id="{{ note.pk }}" class="note-delete-forms">
                     {% csrf_token %}
                     <button type="submit" class="trash-btn" disabled>
@@ -173,15 +304,16 @@
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr id="note-{{note.pk}}">
-                <td><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
-                <td class="title"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
-                <td>{{ note.created_at|date:'m.d H:i' }}</td>
+                <td class="user"><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title title2"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                <td class="d-none d-sm-none d-md-none d-lg-block date">{{ note.created_at|date:'m.d H:i' }}</td>
+                <td class="d-none d-sm-block d-md-block d-lg-none date">{{ note.created_at|date:'m.d' }}</td>
                 {% if note.read == 1 %}
-                <td>읽음</td>
+                <td class="read">읽음</td>
                 {% else %}
-                <td class="not_read">안읽음</td>
+                <td class="not_read read">안읽음</td>
                 {% endif %}
-                <td>
+                <td class="delete">
                   <form data-note-id="{{ note.pk }}" class="note-delete-forms">
                     {% csrf_token %}
                     <button type="submit" class="trash-btn" onclick="return confirm('삭제하시겠습니까?\n복구 불가능합니다.');">
@@ -196,7 +328,108 @@
         </table>
         <p class="text-end text-muted">상대가 읽기 전에 삭제하면 상대 쪽지함에서도 삭제됩니다.</p>
         <!--페이지네이션-->
-        <div class="paginator board_page mt-5">
+        <div class="paginator board_page my-5">
+          <!-- 맨 앞으로 -->
+          <a href="?page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          <!-- 이전 페이지 -->
+          {% if to_notes.has_previous %}
+            <a class="page-link bt prev" href="?page={{ to_notes.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% comment %}  {% endcomment %}
+          {% for page_number in to_notes.paginator.page_range %}
+            {% if page_number >= to_notes.number|add:-3 and page_number <= to_notes.number|add:3 %}
+              {% if page_number == to_notes.number %}
+                <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if to_notes.has_next %}
+            <a class="page-link bt next" href="?page={{ to_notes.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Visible only on xs -->
+      <div class="d-block d-sm-none" style="min-height: 700px;">
+        <h4 class="text-center my-4" style="font-family: 'HBIOS-SYS';">보낸 쪽지함</h4>
+        <table class="table bg-white">
+          <thead>
+            <tr>
+              <th scope="col" class="user">받는 사람</th>
+              <th scope="col" class="title2">제목</th>
+              <th scope="col" class="read">읽음</th>
+              <th scope="col" class="delete">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for note in to_notes %}
+              <!-- 쪽지 읽음 일때 -->
+              {% if note.read == 1 %}
+              <tr class="text-muted" id="note-{{note.pk}}">
+                <td class="user"<a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title title2"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
+                {% if note.read == 1 %}
+                <td class="read">읽음</td>
+                {% else %}
+                <td class="not_read read">안읽음</td>
+                {% endif %}
+                <td class="delete">
+                  <form data-note-id="{{ note.pk }}" class="note-delete-forms">
+                    {% csrf_token %}
+                    <button type="submit" class="trash-btn" disabled>
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% else %}
+              <!-- 쪽지 안읽음 일때-->
+              <tr id="note-{{note.pk}}">
+                <td class="user"><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.to_user.profile.nickname }}</a></td>
+                <td class="title title2"><a href="{% url 'notes:detail' note.pk %}" class="fw-bold">{{ note.title }}</a></td>
+                {% if note.read == 1 %}
+                <td class="read">읽음</td>
+                {% else %}
+                <td class="not_read read">안읽음</td>
+                {% endif %}
+                <td class="delete">
+                  <form data-note-id="{{ note.pk }}" class="note-delete-forms">
+                    {% csrf_token %}
+                    <button type="submit" class="trash-btn" onclick="return confirm('삭제하시겠습니까?\n복구 불가능합니다.');">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+        <p class="text-end text-muted" style="font-size: 13px;">상대가 읽기 전에 삭제하면 상대 쪽지함에서도 삭제됩니다.</p>
+        <!--페이지네이션-->
+        <div class="paginator board_page my-5">
           <!-- 맨 앞으로 -->
           <a href="?page=1" class="page-link bt first">
             <i class="bi bi-chevron-bar-left"></i>
