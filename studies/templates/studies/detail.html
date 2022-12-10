@@ -24,12 +24,9 @@
       <div class="writer">
         <div class='writer_profile'>
           <a class='d-flex align-items-center' href="{% url 'accounts:profile' study.host_user.pk %}">
-            {% comment %}  {% endcomment %}
             {% if study.host_user.profile.image|slugify|slice:'0:4' == 'http' %}
-              <!-- 깃허브에서 가져온 이미지: https로 시작 -->
               <img class='writer_img' src="{{ study.host_user.profile.image }}">
             {% elif study.host_user.profile.image %}
-              <!-- 파일로 추가한 이미지 /media/ -->
               <img class='writer_img' src="{{ study.host_user.profile.image.url }}">
             {% else %}
               <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
@@ -86,28 +83,30 @@
           </form>
         <!-- 방장 X -->
         {% else %}
-          <!-- 1. 이미 스터디원이면 탈퇴 버튼 -->
-          {% if request.user.pk in accepted_user_list %}
-            <form action="{% url 'studies:withdraw' study.pk %}" method="POST" style="padding: 40px 80px;">
-              {% csrf_token %}
-              <input type="submit" value="스터디 탈퇴" class="btn btn-secondary">
-            </form>
-          {% else %}
-            <form style="padding: 40px 80px;" onsubmit="event.preventDefault(); studyApply(this, '{{ study.pk }}')">
-              {% csrf_token %}
-              <!-- 2. 신청 후 가입 대기중이면 신청 취소 버튼 -->
-              {% if request.user.pk in waiting_user_list %}
-                <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청 취소" class="btn btn-secondary">
-              <!-- 3. 신청을 안 한 상태면 -->
-              {% else %}
-                {% if study.is_closed == False %}
-                  <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청" class="btn btn-success">
+          <div id="user-btns-box">
+            <!-- 1. 이미 스터디원이면 탈퇴 버튼 -->
+            {% if request.user.pk in accepted_user_list %}
+              <form style="padding: 40px 80px;" onsubmit="event.preventDefault(); withdraw(this, '{{ study.pk }}')">
+                {% csrf_token %}
+                <input type="submit" value="스터디 탈퇴" class="btn btn-secondary">
+              </form>
+            {% else %}
+              <form style="padding: 40px 80px;" onsubmit="event.preventDefault(); studyApply(this, '{{ study.pk }}')">
+                {% csrf_token %}
+                <!-- 2. 신청 후 가입 대기중이면 신청 취소 버튼 -->
+                {% if request.user.pk in waiting_user_list %}
+                  <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청 취소" class="btn btn-secondary">
+                <!-- 3. 신청을 안 한 상태면 -->
                 {% else %}
-                  <input type="submit" value="가입불가" class="btn btn-danger disabled" disabled>
+                  {% if study.is_closed == False %}
+                    <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청" class="btn btn-success">
+                  {% else %}
+                    <input type="submit" value="가입불가" class="btn btn-danger disabled" disabled>
+                  {% endif %}
                 {% endif %}
-              {% endif %}
-            </form>
-          {% endif %}
+              </form>
+            {% endif %}
+          </div>
         {% endif %}
       </div>
 
@@ -262,4 +261,5 @@
   <script type="text/javascript" src="{% static 'js/studies_close_async.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/studies_apply_cancel_async.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/studies_accept_deny_kick_async.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/studies_withdraw_async.js' %}"></script>
 {% endblock script %}
