@@ -5,7 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib import messages
+
 # Create your views here.
+
 
 
 @login_required
@@ -18,7 +20,6 @@ def index(request):
         "notes": notes,
     }
     return render(request, "notes/index.html", context)
-
 
 @login_required
 def sent(request):

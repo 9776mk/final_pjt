@@ -46,7 +46,6 @@ class User(AbstractUser):
     notice_note = models.BooleanField(default=True)  # 쪽지
     note_notice = models.BooleanField(default=True)  # 쪽지
     message_number = models.IntegerField(default=0) #쪽지 알람
-    
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
