@@ -163,51 +163,111 @@
       {% block content%}{% endblock content %}
     </div>
     <!-- Footer -->
-    <footer class="text-center">
+    <footer>
       <!-- Grid container -->
-      <div class="container p-4 justify-content-center align-items-center d-flex">
-        <div class="me-3">
-          <img style='width: 7rem;' src="{% static 'images/logo-orange.png' %}" alt="Logo">
+      <div class="container" style="padding: 30px 0px 10px 0px;">
+        <!--Grid row-->
+        <div class="row">
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-3 col-sm-3 mb-4 mb-md-0 d-flex justify-content-center">
+            <a href="#"><img style='max-width: 100px;' src="{% static 'images/logo-orange.png' %}" alt="Logo"></a>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-3 col-sm-3 d-sm-block d-none mb-4 mb-md-0">
+            <p class="text-uppercase mb-2 footer-title">NULLTIKI</p>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#!" class="footer-content">Questions</a>
+              </li>
+              <li>
+                <a href="#!" class="footer-content">Help</a>
+              </li>
+              <li>
+                <a href="#!" class="footer-content">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-3 col-sm-3 d-sm-block d-none mb-4 mb-md-0">
+            <p class="text-uppercase mb-2 footer-title">Services</p>
+            <ul class="list-unstyled mb-2">
+              <li>
+                <a href="#!" class="footer-content">community</a>
+              </li>
+              <li>
+                <a href="#!" class="footer-content">algorithm</a>
+              </li>
+              <li>
+                <a href="#!" class="footer-content">study group</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-3 col-sm-3 d-sm-block d-none mb-4 mb-md-0">
+            <p class="text-uppercase mb-2 footer-title">COMPANY</p>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#!" class="footer-content">About</a>
+              </li>
+              <li>
+                <a href="#!" class="footer-content">Work Here</a>
+              </li>
+              <li>
+                <a href="#!" class="footer-content">Privacy Policy</a>
+              </li>
+              <li>
+                <a href="#!" class="footer-content">Terms of Service</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
         </div>
-        <div class="d-flex mx-5">
-          <div class='d-flex flex-column m-1'>
-            <a href="https://github.com/buzzzlight">
-              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/김수빈.jfif' %}" alt="김수빈">
-            </a>
-          </div>
-          <div class='d-flex flex-column m-1'>
-            <a href="https://github.com/9776mk">
-              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/문경욱.jfif' %}" alt="문경욱">
-            </a>
-          </div>
-          <div class='d-flex flex-column m-1'>
-            <a href="https://github.com/sunbongE">
-              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/박태호.png' %}" alt="박태호">
-            </a>
-          </div>
-          <div class='d-flex flex-column m-1'>
-            <a href="https://github.com/ANDONGWOO">
-              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/안동우.png' %}" alt="안동우">
-            </a>
-          </div>
-          <div class='d-flex flex-column m-1'>
-            <a href="https://github.com/jupiter6676">
-              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/최보영.jfif' %}" alt="최보영">
-            </a>
-          </div>
-          <div class='d-flex flex-column m-1'>
-            <a href="https://github.com/yangu1455">
-              <img style='width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/황지선.jfif' %}" alt="황지선">
-            </a>
-          </div>
-        </div>
+        <!--Grid row-->
       </div>
       <!-- Grid container -->
-
+      <hr style="margin: 0px 100px;">
+      <div class="d-flex justify-content-center align-items-center mt-4">
+        <div class='d-flex flex-column m-1'>
+          <a href="https://github.com/buzzzlight">
+            <img style='max-width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/김수빈.jfif' %}" alt="김수빈">
+          </a>
+        </div>
+        <div class='d-flex flex-column m-1'>
+          <a href="https://github.com/9776mk">
+            <img style='max-width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/문경욱.jfif' %}" alt="문경욱">
+          </a>
+        </div>
+        <div class='d-flex flex-column m-1'>
+          <a href="https://github.com/sunbongE">
+            <img style='max-width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/박태호.png' %}" alt="박태호">
+          </a>
+        </div>
+        <div class='d-flex flex-column m-1'>
+          <a href="https://github.com/ANDONGWOO">
+            <img style='max-width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/안동우.png' %}" alt="안동우">
+          </a>
+        </div>
+        <div class='d-flex flex-column m-1'>
+          <a href="https://github.com/jupiter6676">
+            <img style='max-width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/최보영.jfif' %}" alt="최보영">
+          </a>
+        </div>
+        <div class='d-flex flex-column m-1'>
+          <a href="https://github.com/yangu1455">
+            <img style='max-width: 2.5rem;' class='rounded-circle developer' src="{% static 'images/황지선.jfif' %}" alt="황지선">
+          </a>
+        </div>
+      </div>
       <!-- Copyright -->
-      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2022 Copyright:
-        <a class="text-white" href="https://nullddigi.com/">nullddigi.com</a>
+      <div class="text-center" style="font-size: 14px; padding: 10px 0px 20px 0px;">
+        © 2022.
+        <a class="text-white" href="#">NULLTIKI contributors</a>
       </div>
       <!-- Copyright -->
     </footer>
