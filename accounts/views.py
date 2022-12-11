@@ -136,10 +136,6 @@ def login(request):
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
             response = redirect(request.GET.get("next") or "home")
-            notes_counter = Notes.objects.filter(
-                to_user_id=request.user.id, read=0, garbage=False
-            ).count()
-            request.user.message_number = notes_counter
             request.user.save()
             return response
         else:
