@@ -63,3 +63,24 @@ function checkPass() {
     }
 }
 
+function isValidBjId() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    const userID = document.querySelector('#id_boj_id').value
+    const modalBody = document.querySelector('#bj-modal-body')
+    console.log(modalBody)
+
+    axios({
+        method: 'post',
+        url: '/accounts/is_valid_bj_id/',
+        headers: { 'X-CSRFToken': csrfToken },
+        data: { 'username': userID }
+    }).then(response => {
+        if (response.data.is_valid === false) {
+            modalBody.innerText = "유효하지 않은 아이디입니다."
+        }
+        else {
+            modalBody.innerText = "백준 id 확인"
+        }
+    })
+}
+

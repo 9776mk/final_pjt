@@ -70,6 +70,16 @@
         <div class="mb-3">
           <label class="form-label label-text" for="id_boj_id">백준 아이디</label>
           <input autocomplete="off" type="text" name="boj_id" maxlength="20" class="form-control inputbox" placeholder="백준 아이디" id="id_boj_id">
+          <div class="d-flex justify-content-end">
+            <div class="svg-wrapper">
+              <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+                <rect id="shape" height="40" width="150" />
+                <div id="text">
+                  <button class='check-btn text-white' type="button" data-bs-toggle="modal" data-bs-target="#isBjValidModal" onclick="isValidBjId();"><span class="spot"></span>Check</button>
+                </div>
+              </svg>
+            </div>
+          </div>
         </div>
 
         <div class="text-end">
@@ -102,6 +112,27 @@ style="margin: 0;">
   </div>
 </div>
 </div>
+
+
+<!-- 백준 아이디 확인 모달 -->
+<div class="modal fade" id="isBjValidModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+style="margin: 0;">
+<div class="modal-dialog container" style="width:360px; margin: 200px auto;">
+  <div class="modal-content mx-0" style="width:360px; height:180px;">
+    <div class="modal-body text-center" id="bj-modal-body" style="padding: 40px 30px;font-size: 1rem; font-weight: 500;">
+    </div>
+    <div class="modal-footer d-flex justify-content-center py-2">
+      <button class="btn" type="button" data-bs-dismiss="modal" style="color: #5e0080; border: 0px; font-weight: 500;">확인</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
 {% endblock content %}
 
 {% block script %}  
