@@ -11,11 +11,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as messages_constants
+from dotenv import load_dotenv
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-from dotenv import load_dotenv
-import os
 
 load_dotenv()  # .env 파일에서 환경 변수를 불러옵니다.
 
@@ -28,7 +30,11 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "Ntkbean-env.eba-qinu3xmh.ap-northeast-2.elasticbeanstalk.com",
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
@@ -46,6 +52,7 @@ CUSTOM_APPS = [
     "imagekit",
     "mathfilters",
     "widget_tweaks",
+    "storages",
 ]
 
 DJANGO_APPS = [
@@ -93,12 +100,12 @@ WSGI_APPLICATION = "final_pjt.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 # Password validation
@@ -149,14 +156,47 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
-MEDIA_ROOT = BASE_DIR / "media"
-
-MEDIA_URL = "/media/"
-
 # Message Framework
 # https://docs.djangoproject.com/en/4.1/ref/contrib/messages/
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
-from django.contrib.messages import constants as messages_constants
-
 MESSAGE_LEVEL = messages_constants.DEBUG
+
+
+# AWS
+DEBUG = os.getenv("DEBUG") == "True"
+
+if DEBUG:   # 개발(로컬) 환경 
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "media"
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+else:   # 배포(원격, 클라우드) 환경
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+
+    AWS_REGION = "ap-northeast-2"
+    AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (
+        AWS_STORAGE_BUCKET_NAME,
+        AWS_REGION,
+    )
+
+    DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DATABASE_NAME"),
+        "USER": "postgres",
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": os.getenv("DATABASE_HOST"),
+        "PORT": "5432",
+    }
+}
