@@ -31,13 +31,6 @@ table a {
   display: table;
 }
 
-table tbody tr .title {
-  text-align: left;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 300px;
-}
 
 th {
   white-space: nowrap;
@@ -280,12 +273,43 @@ th {
 }
 
 /* 반응형 */
+@media (max-width: 575px) {
+  .title2 {
+    text-overflow : ellipsis;
+    max-width : 50px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
+    padding: 8px 8px 8px 16px;
+  }
+  .read {
+    width: 10%;
+  }
+  .important {
+    width: 10%;
+  }
+  .restore {
+    width: 10%;
+  }
+  .delete {
+    width: 10%;
+  }
+
+}
+
 @media (min-width: 576px) {
   .user {
-    display: 20%;
+    text-overflow : ellipsis;
+    max-width : 80px;
+    white-space : nowrap;
+    overflow : hidden;
   }
   .title2 {
-    display: 40%;
+    text-overflow : ellipsis;
+    max-width : 150px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
   }
   .date {
     display: 20%;
@@ -304,7 +328,11 @@ th {
     display: 20%;
   }
   .title2 {
-    display: 40%;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 300px;
   }
   .date {
     display: 20%;
@@ -322,7 +350,11 @@ th {
     display: 20%;
   }
   .title2 {
-    display: 40%;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 300px;
   }
   .date {
     display: 20%;
@@ -340,7 +372,11 @@ th {
     display: 20%;
   }
   .title2 {
-    display: 40%;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 300px;
   }
   .date {
     display: 20%;

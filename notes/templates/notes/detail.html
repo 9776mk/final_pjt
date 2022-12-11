@@ -8,7 +8,30 @@
 {% block content%}
   <div class="container mt-5">
     <div class="row">
-      <div class="col-3">
+      <div class="col-3 d-none d-sm-block">
+        <h4 class="text-center mb-4">✉️</h4>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:sent' %}">보낸 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:important' %}">보관함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:trash' %}">휴지통</a></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Visible only on xs -->
+      <div class="d-block d-sm-none">
         <h4 class="text-center mb-4">✉️</h4>
         <table class="table">
           <thead>
@@ -32,18 +55,41 @@
           </tbody>
         </table>
       </div>
-      <div class="col-9" style="min-height: 700px;">
+
+      <div class="col-9 d-none d-sm-block" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">쪽지</h4>
         <div class="note-detail">
-          {% comment %} <div class="paper pink">
-            <div class="tape-section"></div>
-            <p>drink more water</p>
-            <div class="tape-section"></div>
-          </div> {% endcomment %}
           <div class="paper blue">
-            {% comment %} <div class="top-tape"></div> {% endcomment %}
             <div class="tape-section"></div>
             <div class="p-5 w-100">
+              <p class="mb-3 note-font">To. {{ note.to_user.profile.nickname }} ({{ note.to_user.username }})</p>
+              <p class="mb-3 note-font">제목 : {{ note.title }}</p>
+              <p class="mb-3 note-font" style="white-space: pre-line">{{ note.content }}</p>
+              <p class="mb-0 text-end">
+                <a href="{% url 'accounts:profile' note.from_user.pk %}" class="note-font">
+                  From {{ note.from_user.profile.nickname }} ({{ note.from_user.username }})
+                </a>
+                </p>
+              <p class="mb-0 text-end note-font" style="font-size: 15px;">{{ note.created_at|date:'y년 m월 d일 H:m' }}</p>
+            </div>
+            <div class="tape-section"></div>
+          </div>
+        </div>
+        {% if note.from_user != request.user %}
+        <div class="d-flex justify-content-center mt-3">
+          <a href="{% url 'notes:reply' note.pk %}" class="bbtn" style="margin-bottom: 100px;">답장하기</a>
+        </div>
+        {% else %}
+        <div style="margin-bottom: 100px;"></div>
+        {% endif %}
+      </div>
+      <!-- Visible only on xs -->
+      <div class="d-block d-sm-none">
+        <h4 class="text-center my-4" style="font-family: 'HBIOS-SYS';">쪽지</h4>
+        <div class="note-detail" style="padding: 0;">
+          <div class="paper blue" style="margin: 0; width: 90%;">
+            <div class="tape-section"></div>
+            <div class="p-3 w-100">
               <p class="mb-3 note-font">To. {{ note.to_user.profile.nickname }} ({{ note.to_user.username }})</p>
               <p class="mb-3 note-font">제목 : {{ note.title }}</p>
               <p class="mb-3 note-font" style="white-space: pre-line">{{ note.content }}</p>
