@@ -9,6 +9,7 @@ import json
 from django.http import JsonResponse
 from django.contrib import messages
 from django.core.paginator import Paginator
+
 # 깃로그인
 import os
 from dotenv import load_dotenv
@@ -82,6 +83,29 @@ def is_valid_id(request):
     return JsonResponse(data)
 
 
+# 유효한 백준 아이디 검사
+def is_valid_bj_id(request):
+    username = json.loads(request.body).get("username")
+    # print(username)
+    is_valid = False
+
+    # 백준에서 id로 정보 받아오기
+    url = "https://solved.ac/api/v3/user/show"
+    id = username
+    if id:
+        querystring = {"handle": {id}}
+        headers = {"Content-Type": "application/json"}
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        if response.status_code == 200:
+            is_valid = True
+            
+    data = {
+        "is_valid": is_valid,
+    }
+
+    return JsonResponse(data)
+
+
 def login(request):
     status = 1
     # 이미 로그인 → 로그인 X
@@ -94,7 +118,9 @@ def login(request):
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
             response = redirect(request.GET.get("next") or "home")
-            notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
+            notes_counter = Notes.objects.filter(
+                to_user_id=request.user.id, read=0, garbage=False
+            ).count()
             request.user.message_number = notes_counter
             request.user.save()
             return response
@@ -142,7 +168,7 @@ def profile(request, user_pk):
             tier = -1
     else:
         tier = 0
-    
+
     profile_info.boj_tier = tier
     profile_info.save()
 
@@ -324,7 +350,7 @@ def github_login_callback(request):
 
 
 # 유저 팔로우/언팔로우
-def follow(request,user_pk):
+def follow(request, user_pk):
     if not request.user.is_authenticated:
         return redirect("accounts:profile", user.pk)
 
@@ -363,7 +389,6 @@ def follow(request,user_pk):
         "my_image": my_image,
         "my_username": request.user.username,
         "my_nickname": request.user.profile.nickname,
-
         # 나의 페이지에서 다른 유저를 (언)팔로우
         "my_user_pk": request.user.pk,
         "my_followers_count": request.user.followers.count(),
@@ -381,7 +406,7 @@ def guestbook(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
     gb_articles = user.guestbook.guestbookarticle_set.all().order_by("-pk")
     gb_comments = user.guestbook.guestbookcomment_set.all()
-    page = request.GET.get('page', '1') # 페이지
+    page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(gb_articles, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호

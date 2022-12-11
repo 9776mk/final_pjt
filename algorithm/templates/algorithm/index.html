@@ -109,8 +109,6 @@
     var category_check = document.querySelectorAll('input[name="category-btns"]:checked').length;
     var search_ = document.getElementById("mySearch").value;
 
-    alert(search_.length)
-    
     if(category_check == 0 && level_check == 0 && search_.length ==0) {
       alert('난이도 / 카테고리 / 검색어 중 하나를 선택/입력해주세요')
       event.preventDefault();
