@@ -14,9 +14,6 @@ from django.core.paginator import Paginator
 @login_required
 def index(request):
     notes = Notes.objects.filter(to_user_id=request.user.id, garbage=False).order_by("-created_at")
-    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
-    request.user.message_number = notes_counter
-    request.user.save()
     page = request.GET.get('page', '1') # 페이지
     paginator = Paginator(notes, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
@@ -42,7 +39,6 @@ def sent(request):
 @login_required
 def send(request):
     form = NotesForm(request.POST or None)
-    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     if form.is_valid():
         temp = form.save(commit=False)
         temp.from_user = request.user
@@ -97,13 +93,10 @@ def send_to(request, user_pk):
 @login_required
 def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
-    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     print(notes_counter)
     if request.user == note.to_user:
         if not note.read:
             note.read =True
-            request.user.message_number = notes_counter-1
-            request.user.save()
             note.save()
         if not request.user.user_to.filter(read=False).exists():
             request.user.notice_note = True
