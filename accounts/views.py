@@ -83,7 +83,7 @@ def is_valid_id(request):
     return JsonResponse(data)
 
 
-# 유효한 백준 아이디 검사
+# 백준 아이디 유효성 검사
 def is_valid_bj_id(request):
     username = json.loads(request.body).get("username")
     # print(username)
@@ -98,7 +98,25 @@ def is_valid_bj_id(request):
         response = requests.request("GET", url, headers=headers, params=querystring)
         if response.status_code == 200:
             is_valid = True
-            
+
+    data = {
+        "is_valid": is_valid,
+    }
+
+    return JsonResponse(data)
+
+
+# 깃허브 아이디 유효성 검사
+def is_valid_git_id(request):
+    is_valid = False
+    url = "https://github.com/"
+    id = json.loads(request.body).get("username")
+
+    if id:
+        response = requests.get(url + id)
+        if response.status_code == 200:
+            is_valid = True
+
     data = {
         "is_valid": is_valid,
     }
