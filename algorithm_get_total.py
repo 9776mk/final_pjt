@@ -21,7 +21,8 @@ ru = BJData_ru.objects.all()
 total = BJData_total.objects.all()
 
 
-total.union(br)
+total_queryset = total.union(br).union(si).union(go).union(pl).union(di).union(ru)
 
-print(br)
-print(total)
+for q in total_queryset:
+    print(q.number, q.title)
+    BJData_total.objects.create(level=q.level, number=q.number, title=q.title, tags=q.tags)
