@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load widget_tweaks %}
+
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/board_create.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+  <div class='container py-5'>
+    {% if request.resolver_match.url_name == 'create' %}
+      <h1 class='mx-3 mb-4' style="font-family: 'HBIOS-SYS';">스터디 생성하기</h1>
+    {% else %}
+      <h1 class='mx-3 mb-4' style="font-family: 'HBIOS-SYS';">스터디 정보 수정하기</h1>
+    {% endif %}
+
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <!--폼-->
+      <div class="board_write">
+        <div class="title">
+          <dl>
+            <dt>스터디 명</dt>
+            <dd><input type="text" name="title" value="{{ Study.title }}" placeholder="10자 이내의 스터디 명을 입력해주세요"></dd>
+          </dl>
+        </div>
+        <div class="category">
+          <dl class='d-flex align-items-center'>
+            <dt>스터디 분류</dt>
+            <dd>{{ study_form.category|add_class:'form-select' }}</dd>
+          </dl>
+        </div>
+        <div class="contact">
+          <dl>
+            <dt>연락처</dt>
+            <dd><input type="text" name="contact" value="{{ Study.contact }}" placeholder='이메일 주소'></dd>
+          </dl>
+        </div>
+        <div class="limit">
+          <dl>
+            <dt>스터디 인원</dt>
+            <dd>{{ study_form.limit|add_class:'form-control' }}</dd>
+          </dl>
+        </div>
+        <div class="image">
+          <dl class='d-flex align-items-center'>
+            <dt>이미지</dt>
+            <dd>{{ study_form.image|add_class:'form-control' }}</dd>
+          </dl>
+        </div>
+        <div class="content text-break">
+          {{ study_form.content }}
+        </div>
+        <br>
+      </div>
+
+      <!-- 버튼 -->
+      <div class="container text-center bt_wrap">
+        <button type="submit" class="px-4 on">수정</button>
+        <a class='px-4' href="{% url 'studies:detail' study_pk %}">뒤로가기</a>
+      </div>
+
+    </form>
+  </div>
+{% endblock content %}

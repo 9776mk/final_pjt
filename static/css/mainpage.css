@@ -173,6 +173,9 @@ main .algo h1 {
   display: flex;
   justify-content: space-around;
 }
+.algo .algoboxs .algobox-frame {
+  width: 50%;
+}
 .algo .algoboxs .algobox {
   margin-bottom: 10px;
   box-sizing: border-box;

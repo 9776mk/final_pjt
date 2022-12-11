@@ -6,7 +6,9 @@ from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator
+
 # Create your views here.
+
 
 
 @login_required
@@ -23,7 +25,6 @@ def index(request):
         "notes": page_obj,
     }
     return render(request, "notes/index.html", context)
-
 
 @login_required
 def sent(request):

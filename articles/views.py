@@ -393,3 +393,4 @@ def likes(request, article_pk):
         data = {"is_liked": is_liked}
         return JsonResponse(data)
     return redirect("accounts:login")
+

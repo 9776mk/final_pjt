@@ -84,9 +84,10 @@ def update(request, study_pk):
 
     context = {
         'study_form': study_form,
+        'study_pk': study_pk,
     }
 
-    return render(request, 'studies/create.html', context)
+    return render(request, 'studies/update.html', context)
 
 
 @login_required
@@ -136,43 +137,50 @@ def close(request, study_pk):
     return JsonResponse(data)
 
 
-# 스터디 가입 신청 (방장 제외)
+# 스터디 가입 신청 및 취소 (방장 제외)
 @login_required
 def apply(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
+
+    is_closed = False
+    is_applied = False
 
     if request.user != study.host_user and request.method == 'POST':
         if study.is_closed == False:
             user_pks = List.objects.values_list('user', flat=True)
             
-            # 아직 신청하지 않았으면, 유저를 List에 추가
+            # 아직 신청하지 않았으면, 유저를 List에 추가 (가입 신청)
             if not request.user.pk in user_pks:
                 List.objects.create(user=request.user, study=study)
 
                 # 방장에게 알림
                 notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디에 가입을 신청하였습니다.'
                 StudyNotice.objects.create(study_title=study.title, user=study.host_user, content=notice)
+                is_applied = True
+
+            # 이미 신청한 상태면, 유저를 List에서 삭제 (신청 취소)
+            else:
+                list_user = List.objects.get(user=request.user, study=study)
+                list_user.delete()
+
+                # 방장에게 알림
+                notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디에 가입을 취소하였습니다.'
+                StudyNotice.objects.create(study_title=study.title, user=study.host_user, content=notice)
+                is_applied = False
+                
+            is_closed = False
 
         else:
-            messages.warning(request, '이미 모집이 마감된 스터디입니다.')
+            # messages.warning(request, '이미 모집이 마감된 스터디입니다.')
+            is_closed = True
+    
+    data = {
+        'is_closed': is_closed,
+        'is_applied': is_applied,
+    }
 
-    return redirect('studies:detail', study_pk)
-
-
-# 스터디 가입 신청 취소 (방장 제외)
-@login_required
-def apply_cancel(request, study_pk):
-    study = get_object_or_404(Study, pk=study_pk)
-
-    if request.user != study.host_user and request.method == 'POST':
-        list_user = List.objects.get(user=request.user, study=study)
-        list_user.delete()
-
-        # 방장에게 알림
-        notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디에 가입을 취소하였습니다.'
-        StudyNotice.objects.create(study_title=study.title, user=study.host_user, content=notice)
-
-    return redirect('studies:detail', study_pk)
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 스터디 가입 신청 수락 (방장)
@@ -198,7 +206,24 @@ def accept(request, study_pk, user_pk):
             notice = f'\'{study.title}\' 스터디에 가입되었습니다.'
             StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
 
-    return redirect('studies:detail', study_pk)
+    # 수락한 유저의 프로필 이미지
+    if not user.profile.image:
+        user_image = "/static/images/no-avatar.jpg"
+    elif str(user.profile.image)[:4] == "http":
+        user_image = str(user.profile.image)
+    else:
+        user_image = str(user.profile.image.url)
+    
+    data = {
+        'user_image': user_image,
+        'user_nickname': user.profile.nickname,
+        'user_username': user.username,
+        'waiting_cnt': List.objects.filter(study=study, is_accepted=False).count(),
+        'accepted_cnt': List.objects.filter(study=study, is_accepted=True).count(),
+    }
+
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 스터디 가입 신청 거절 (방장)
@@ -215,7 +240,12 @@ def deny(request, study_pk, user_pk):
         notice = f'\'{study.title}\' 스터디 가입이 거절되었습니다.'
         StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
 
-    return redirect('studies:detail', study_pk)
+    data = {
+        'waiting_cnt': List.objects.filter(study=study, is_accepted=False).count()
+    }
+
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 스터디 추방 (방장)
@@ -237,7 +267,12 @@ def kick(request, study_pk, user_pk):
         notice = f'\'{study.title}\' 스터디에서 추방되었습니다.'
         StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
 
-    return redirect('studies:detail', study_pk)
+    data = {
+        'accepted_cnt': List.objects.filter(study=study, is_accepted=True).count(),
+    }
+    
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 스터디 탈퇴 (방장 제외)
@@ -258,7 +293,12 @@ def withdraw(request, study_pk):
         notice = f'\'{request.user.profile.nickname}\'님이 \'{study.title}\' 스터디에서 탈퇴하였습니다.'
         StudyNotice.objects.create(study_title=study.title, user=study.host_user, content=notice)
 
-    return redirect('studies:detail', study_pk)
+    data = {
+        'accepted_cnt': List.objects.filter(study=study, is_accepted=True).count(),
+    }
+    
+    # return redirect('studies:detail', study_pk)
+    return JsonResponse(data)
 
 
 # 알림 삭제
