@@ -1,24 +1,32 @@
 from django import forms
 
-from .models import Article, Image ,ArticleComment
+from .models import Article, Image, ArticleComment
+from django.forms import ModelForm, Textarea
 
 
 class articleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = [
-            'title',
-            'content',
-            'category',
+            "title",
+            "content",
+            "category",
             # 'image',
         ]
+        widgets = {
+            "content": Textarea(
+                attrs={
+                    "style": "width: 100%; resize: none;",
+                }
+            ),
+        }
 
 
 class ArticleCommentForm(forms.ModelForm):
     class Meta:
         model = ArticleComment
-        fields = [  
-            'content',
+        fields = [
+            "content",
         ]
 
 
@@ -26,8 +34,5 @@ class ArticleCommentForm(forms.ModelForm):
 class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ['image']
-        widgets = {
-            'image': forms.ClearableFileInput(attrs={'multiple': True})
-        }
-
+        fields = ["image"]
+        widgets = {"image": forms.ClearableFileInput(attrs={"multiple": True})}
