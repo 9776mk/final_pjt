@@ -53,9 +53,9 @@
     <div id="wrap">
       <!-- navbar -->
       <nav class="navbar navbar-expand-lg bg-white sticky-top">
-        <div class="container-fluid">
+        <div class="container">
           <a class="navbar-brand ms-4" href="{% url "home" %}">
-            <img src="{% static 'images/로고.png' %}" alt="" style='width: 90px'>
+            <img src="{% static 'images/logo-black.png' %}" alt="" style='width: 70px; margin: 5px;'>
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -197,13 +197,13 @@
             <p class="text-uppercase mb-2 footer-title">Services</p>
             <ul class="list-unstyled mb-2">
               <li>
-                <a href="#!" class="footer-content">community</a>
+                <a href="{% url 'articles:index' %}" class="footer-content">Community</a>
               </li>
               <li>
-                <a href="#!" class="footer-content">algorithm</a>
+                <a href="{% url 'algorithm:index' %}" class="footer-content">Algorithm</a>
               </li>
               <li>
-                <a href="#!" class="footer-content">study group</a>
+                <a href="{% url 'studies:index' %}" class="footer-content">Study Group</a>
               </li>
             </ul>
           </div>
