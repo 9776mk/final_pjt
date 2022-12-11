@@ -10,6 +10,7 @@ urlpatterns = [
         "is_valid_id/", views.is_valid_id, name="is_valid_id"
     ),  # 유효한 ID(username)인지 검사
     path("is_valid_bj_id/", views.is_valid_bj_id, name="is_valid_bj_id"),
+    path("is_valid_git_id/", views.is_valid_git_id, name="is_valid_git_id"),
     path("login/", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
     path("<int:user_pk>/", views.profile, name="profile"),

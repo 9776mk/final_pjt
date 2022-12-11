@@ -63,6 +63,7 @@ function checkPass() {
     }
 }
 
+// 백준 아이디 검사
 function isValidBjId() {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
     const userID = document.querySelector('#id_boj_id').value
@@ -84,3 +85,24 @@ function isValidBjId() {
     })
 }
 
+// 깃허브 아이디 검사
+function isValidGitId() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    const userID = document.querySelector('#id_github_id').value
+    const modalBody = document.querySelector('#git-modal-body')
+
+    axios({
+        method: 'post',
+        url: '/accounts/is_valid_git_id/',
+        headers: { 'X-CSRFToken': csrfToken },
+        data: { 'username': userID }
+    }).then(response => {
+        if (response.data.is_valid === false) {
+            modalBody.innerText = "유효하지 않은 아이디입니다."
+        }
+        else {
+            modalBody.innerText = "Git id 확인"
+        }
+    })
+
+}
