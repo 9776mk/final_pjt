@@ -102,7 +102,7 @@ def search(request):
                     else:
                         total += list(go)
                 if l == "pl":
-                    pl = BJData_br.objects.all()
+                    pl = BJData_pl.objects.all()
                     # 카테고리 O
                     if category:
                         for c in category:
