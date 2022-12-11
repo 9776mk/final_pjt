@@ -16,7 +16,7 @@ class articleForm(forms.ModelForm):
         widgets = {
             "content": Textarea(
                 attrs={
-                    "style": "width: 100%; resize: none;",
+                    "style": "width: 100%; resize: none; outline: none; border: none; padding: 22px;",
                 }
             ),
         }
