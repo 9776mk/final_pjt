@@ -215,7 +215,7 @@ GITHUB_CLIENT_SECRET = os.getenv("GIT_CLIENT_SECRET")
 # git 로그인 클릭시 git으로 정보를 보냄
 def github_login(request):
     client_id = GITHUB_CLIENT_ID
-    redirect_uri = "http://127.0.0.1:8000/accounts/login/github/callback/"
+    redirect_uri = "http://ntkbean-env.eba-qinu3xmh.ap-northeast-2.elasticbeanstalk.com/accounts/login/github/callback/"
     scope = "read:user"
     return redirect(
         f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}"
