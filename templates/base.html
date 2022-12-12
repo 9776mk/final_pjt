@@ -125,7 +125,7 @@
 
                 <!-- 프로필 사진 -->
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'accounts:profile' request.user.profile.pk %}">
+                  <a class="nav-link" href="{% url 'accounts:profile' request.user.pk %}">
                     <div class="box">
                       {% comment %}  {% endcomment %}
                       {% if request.user.profile.image|slugify|slice:'0:4' == 'http' %}
