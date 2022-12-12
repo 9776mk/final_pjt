@@ -57,7 +57,7 @@
       <!-- 사진 -->
       <div style='margin: 30px 60px;'>
         {% for image in articles.image_set.all %}
-          <img class="d-block mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}" width="100%">
+          <img class="d-block mx-auto" width='50%' style='max-width: 500px; max-height:580px; border-radius: 8px;'  src="{{ image.image.url }}" alt="{{ image.image }}" width="100%">
         {% endfor %}
       </div>
 

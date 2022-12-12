@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from imagekit.models import ProcessedImageField
+from imagekit.models import ImageSpecField
 from imagekit.processors import Thumbnail
 
 # Create your models here.
@@ -33,8 +33,9 @@ class Study(models.Model):
     contact = models.CharField(max_length=50)
 
     # 8. 이미지
-    image = ProcessedImageField(
-        upload_to = 'study_images/',
+    image = models.ImageField(upload_to = 'study_images/')
+    thumbnail = ImageSpecField(
+        source='image',
         processors=[Thumbnail(300, 300)],
         format='JPEG',
         options={'quality': 60}

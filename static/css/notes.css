@@ -31,13 +31,6 @@ table a {
   display: table;
 }
 
-table tbody tr .title {
-  text-align: left;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 300px;
-}
 
 th {
   white-space: nowrap;
@@ -280,72 +273,118 @@ th {
 }
 
 /* 반응형 */
-@media (max-width : 576px) {
-  .board_list .top .writer {
-    display: none;
+@media (max-width: 575px) {
+  .title2 {
+    text-overflow : ellipsis;
+    max-width : 50px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
+    padding: 8px 8px 8px 16px;
   }
-  .board_list .writer {
-    display: none;
+  .read {
+    width: 10%;
   }
-  .board_list .top .category {
-    width: 35%;
+  .important {
+    width: 10%;
   }
-  .board_list .category {
-    width: 35%;
+  .restore {
+    width: 10%;
   }
-  .board_list .top .title {
-    width: 65%;
+  .delete {
+    width: 10%;
   }
-  .board_list .title {
-    width: 65%;
+
+}
+
+@media (min-width: 576px) {
+  .user {
+    text-overflow : ellipsis;
+    max-width : 80px;
+    white-space : nowrap;
+    overflow : hidden;
   }
-  .board_list .top .date {
-    display: none;
+  .title2 {
+    text-overflow : ellipsis;
+    max-width : 150px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
   }
-  .board_list .date {
-    display: none;
+  .date {
+    display: 20%;
+  }
+  .read {
+    width: 10%;
+  }
+  .delete {
+    width: 10%;
   }
 }
 
-@media (max-width : 768px) {
-  .board_list .top .writer {
-    display: none;
+
+@media (min-width: 768px) {
+  .user {
+    display: 20%;
   }
-  .board_list .writer {
-    display: none;
+  .title2 {
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 300px;
   }
-  .board_list .top .category {
-    width: 20%;
+  .date {
+    display: 20%;
   }
-  .board_list .category {
-    width: 20%;
+  .read {
+    width: 10%;
   }
-  .board_list .top .title {
-    width: 60%;
-  }
-  .board_list .title {
-    width: 60%;
-  }
-  .board_list .top .date {
-    width: 20%;
-  }
-  .board_list .date {
-    width: 20%;
+  .delete {
+    width: 10%;
   }
 }
 
-@media (min-width : 769px) {
-  .board_list .date {
-    width: 18%;
+@media (min-width: 992px) {
+  .user {
+    display: 20%;
   }
-  .board_list .writer {
-    width: 30%;
+  .title2 {
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 300px;
   }
-  .board_list .title {
-    width: 40%;
+  .date {
+    display: 20%;
   }
-  .board_list .category {
-    width: 12%;
+  .read {
+    width: 10%;
+  }
+  .delete {
+    width: 10%;
   }
 }
 
+@media (min-width: 1200px) {
+  .user {
+    display: 20%;
+  }
+  .title2 {
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 300px;
+  }
+  .date {
+    display: 20%;
+  }
+  .read {
+    width: 10%;
+  }
+  .delete {
+    width: 10%;
+  }
+}

@@ -53,9 +53,9 @@
     <div id="wrap">
       <!-- navbar -->
       <nav class="navbar navbar-expand-lg bg-white sticky-top">
-        <div class="container-fluid">
+        <div class="container">
           <a class="navbar-brand ms-4" href="{% url "home" %}">
-            <img src="{% static 'images/로고.png' %}" alt="" style='width: 90px'>
+            <img src="{% static 'images/logo-black.png' %}" alt="" style='width: 70px; margin: 5px;'>
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -97,23 +97,26 @@
               {% if request.user.is_authenticated %}
                 <!-- 알림 창 -->
                 <li class='nav-item'>
-                  <button id='testBtn' type="button" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
-                    <i class="bi bi-bell"></i>
-                    {% if request.user.get_study_notice_cnt != 0 %}
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  <form onsubmit="event.preventDefault(); noticeRead()">
+                    {% csrf_token %}
+                    <button id='testBtn' type="submit" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
+                      <i class="bi bi-bell"></i>
+                      {% if request.user.get_study_notice_cnt != 0 %}
+                      <span id="study-notice-cnt" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         {{ request.user.get_study_notice_cnt }}
                       </span>
-                    {% endif %}
-                  </button>
+                      {% endif %}
+                    </button>
+                  </form>
                 </li>
 
                 <!-- 쪽지 창 -->
                 <li class='nav-item'>
                   <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
                     <i class="bi bi-chat-left-dots"></i>
-                    {% if request.user.message_number != 0 %}
+                    {% if request.user.get_message_notice_cnt != 0 %}
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{ request.user.message_number }}
+                        {{ request.user.get_message_notice_cnt }}
                         <span class="visually-hidden">unread messages</span>
                       </span>
                     {% endif %}
@@ -197,13 +200,13 @@
             <p class="text-uppercase mb-2 footer-title">Services</p>
             <ul class="list-unstyled mb-2">
               <li>
-                <a href="#!" class="footer-content">community</a>
+                <a href="{% url 'articles:index' %}" class="footer-content">Community</a>
               </li>
               <li>
-                <a href="#!" class="footer-content">algorithm</a>
+                <a href="{% url 'algorithm:index' %}" class="footer-content">Algorithm</a>
               </li>
               <li>
-                <a href="#!" class="footer-content">study group</a>
+                <a href="{% url 'studies:index' %}" class="footer-content">Study Group</a>
               </li>
             </ul>
           </div>
@@ -291,7 +294,8 @@
       }
     </script>
     {% block script %}{% endblock script %}
-    <!-- 알림 삭제 비동기 -->
-    <script type="text/javascript" src="{% static 'js/base_notice_delete.js' %}"></script>
+    
+    <!-- 알림 삭제/읽음 비동기 -->
+    <script type="text/javascript" src="{% static 'js/studies_notice.js' %}"></script>
   </body>
 </html>

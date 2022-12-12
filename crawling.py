@@ -64,8 +64,8 @@ page = {
     30: 1,
 }
 
-# for i in range(1, 31):
-for i in range(1, 2):
+for i in range(1, 31, 5):
+    # for i in range(1, 2):
     temp = {}
     result = {}
     level_ = []
@@ -186,6 +186,8 @@ for i in range(1, 2):
         number = json_file["number"][ind]
         title = json_file["title"][ind]
         tags = json_file["tags"][ind]
+
+        BJData_total(level=level, number=number, title=title, tags=tags).save()
 
         if __name__ == "__main__":
             if i <= 5:

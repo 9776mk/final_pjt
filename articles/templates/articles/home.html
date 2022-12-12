@@ -9,11 +9,12 @@
 <main>
     <div class='community'>
         <h1> 개발마당</h1>
-        <img src="https://via.placeholder.com/800x400" width="80%;"  alt="">
+        <img src="{% static 'images/devel.png' %}" width="80%;"  style=' border-radius: 8px;'>
         <div class='com-text'>
-            <div> 개발 마당의 소개글이 아마도 20자 정도 들어갈 것 같다는 지극히 
-                개인적인 생각이고 이거는 몇자일지 궁금해지는 순간이다라고 할 수도 있고 
-                안 할 수도있다.
+            <div> 
+                <p>
+                    개발 공부 중 생기는 질문이나 유용한 정보를 공유하고 취업정보 등 여러 정보를 공유해보세요.
+                </p>
             </div>
             <div class='community-btn-frame'><a class='btnAll' href="{% url 'articles:index' %}">개발마당</a></div>            
         </div>
@@ -111,13 +112,17 @@
     <div class='find'>
         <h1>나와 잘 맞는 개발자를 찾아보세요.</h1>
         <div class='lay'>
-            <div class='p-img'> <h2>사진</h2><img src="https://via.placeholder.com/500x340" alt=""> </div>
-            <div class='p-text'> <h2>소개</h2><p>사용하는 기술스텍과 MBTI가 나와 비슷한 혹은 정반대의 동료와 스터디 혹은 관심 분야에 이야기를 나누어보세요</p> <div class='btn-holder'>
-                <a class='btnAll' href="{% url 'friends:index' %}">찾으러</a>
+            <div class='p-img'><img src="{% static 'images/find.png' %}" style=' border-radius: 8px;' alt=""> </div>
+                <div class='p-text'>
+                    <div class='p-box'>
+                        <p>사용하는 기술스텍과 MBTI가 나와 비슷한 혹은 정반대의 동료와 스터디 혹은 관심 분야에 이야기를 나누어보세요</p> 
+                        <div class='btn-holder'>
+                            <a class='btnAll' href="{% url 'friends:index' %}">찾으러</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-        
     </div>
 </main>
 <div>
