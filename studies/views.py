@@ -14,9 +14,11 @@ def index(request):
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
     page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)
 
     context = {
         "studies": page_obj,
+        "max_index": max_index,
     }
 
     return render(request, "studies/index.html", context)
@@ -29,9 +31,11 @@ def index_al(request):
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
     page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)
 
     context = {
         "studies": page_obj,
+        "max_index": max_index,
     }
 
     return render(request, "studies/index.html", context)
@@ -44,9 +48,11 @@ def index_fe(request):
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
     page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)
 
     context = {
         "studies": page_obj,
+        "max_index": max_index,
     }
 
     return render(request, "studies/index.html", context)
@@ -59,9 +65,11 @@ def index_be(request):
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
     page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)
 
     context = {
         "studies": page_obj,
+        "max_index": max_index,
     }
 
     return render(request, "studies/index.html", context)
@@ -74,9 +82,11 @@ def index_etc(request):
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
     page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)
 
     context = {
         "studies": page_obj,
+        "max_index": max_index,
     }
 
     return render(request, "studies/index.html", context)

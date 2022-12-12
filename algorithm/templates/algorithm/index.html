@@ -9,15 +9,14 @@
 <div class="container py-5">
   <h1 class="mx-3 mb-4" style="font-family: 'HBIOS-SYS'">연산 방식 문제 검색</h1>
   <div class='btn-board px-4 pt-4 mb-4'>
-    <form action="{% url 'algorithm:search' %}" method="post" enctype="multipart/form-data">
-      
+    <form action="{% url 'algorithm:search' %}" enctype="multipart/form-data">
       <div id='thsearch' class="category mb-3">
         <input type="search" id="mySearch" onkeyup="myFunction()" autocomplete='off' placeholder="난이도 혹은 문제유형 입력" title="Type in a category" class=''name='search'>
         <input type="submit" onclick="javascript:OnCheck();" value='검색'>
       </div>
 
       <!-- 카테고리 버튼 -->
-      {% csrf_token %}
+      {% comment %} {% csrf_token %} {% endcomment %}
       <div id="category-btns" class="category mb-3">
         <p class="mb-2"> 난이도 </p>
         {% for level in category_level %}
@@ -33,9 +32,7 @@
           <label for="{{ category }}">{{ category }}</label>
           {% comment %} <button id="{{ mbti }}" data-category="{{ mbti }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ mbti }}</button> {% endcomment %}
         {% endfor %}
-      </div>
-
-      
+      </div>  
     </form>
   </div>
 </div>
@@ -52,7 +49,6 @@
       event.preventDefault();
     }
   }
-
 </script>
 
 {% endblock %}
