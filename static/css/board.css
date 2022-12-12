@@ -260,20 +260,21 @@ thead {
 .article_search input[type="search"] {
   background: #fff;
   width: 290px;
-  height: 50px;
+  height: 38px;
   border: 1px solid;
   outline: none;
   padding: 0 25px;
-  border-radius: 25px 0 0 25px;
+  border-radius: 19px 0 0 19px;
 }
 
 .article_search input[type="submit"] {
   position: relative;
-  left: -5px;
-  border: 1px solid;
-  border-radius: 0 25px 25px 0;
+  left: -1px;
   width: 100px;
-  height: 50px;
+  height: 38px;
+  border: 1px solid;
+  border-radius: 0 19px 19px 0;
+  padding: 0;
   cursor: pointer;
   background: #ff8e00bd;
 }
