@@ -137,7 +137,12 @@
         <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
       </div>
 
+
       <!-- 가입 대기 인원 -->
+      <div class='d-flex justify-content-end mb-3' style="padding: 0 80px">
+        <a href="{% url 'studies:board' study.pk %}" class='bbtn_stu'> 게시판 </a>
+      </div>
+
       <div class="modal fade" id="waiting-list" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">

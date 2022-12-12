@@ -170,7 +170,7 @@ def profile(request, user_pk):
 
     # 백준에서 id로 정보 받아오기
     url = "https://solved.ac/api/v3/user/show"
-    profile_info = Profile.objects.get(pk=user_pk)
+    profile_info = Profile.objects.get(user=user)
     id = profile_info.boj_id
     if id:
         querystring = {"handle": {id}}
