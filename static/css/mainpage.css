@@ -76,6 +76,14 @@ main .algo h1 {
     width: 95% !important;
   }
 }
+@media screen and (max-width: 1050px) {
+  .community,
+.algo,
+.graph,
+.find {
+    width: 90% !important;
+  }
+}
 @media screen and (max-width: 800px) {
   main {
     padding: 0 !important;
