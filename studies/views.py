@@ -9,10 +9,70 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
-    studies = Study.objects.all()
+    studies = Study.objects.all().order_by('-pk')
 
     page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(studies, 15)  # 페이지당 15개씩 보여주기
+    paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+
+    context = {
+        "studies": page_obj,
+    }
+
+    return render(request, "studies/index.html", context)
+
+
+# 알고리즘 스터디
+def index_al(request):
+    studies = Study.objects.filter(category='알고리즘 공부').order_by('-pk')
+
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+
+    context = {
+        "studies": page_obj,
+    }
+
+    return render(request, "studies/index.html", context)
+
+
+# 프론트엔드 스터디
+def index_fe(request):
+    studies = Study.objects.filter(category='프론트엔드 공부').order_by('-pk')
+
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+
+    context = {
+        "studies": page_obj,
+    }
+
+    return render(request, "studies/index.html", context)
+
+
+# 백엔드 스터디
+def index_be(request):
+    studies = Study.objects.filter(category='백엔드 공부').order_by('-pk')
+
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+
+    context = {
+        "studies": page_obj,
+    }
+
+    return render(request, "studies/index.html", context)
+
+
+# 기타 스터디
+def index_etc(request):
+    studies = Study.objects.filter(category='기타').order_by('-pk')
+
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
     page_obj = paginator.get_page(page)
 
     context = {

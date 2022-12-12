@@ -5,6 +5,10 @@ app_name = "studies"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("index_al/", views.index_al, name="index_al"),
+    path("index_fe/", views.index_fe, name="index_fe"),
+    path("index_be/", views.index_be, name="index_be"),
+    path("index_etc/", views.index_etc, name="index_etc"),
     path("create/", views.create, name="create"),
     path("<int:study_pk>/", views.detail, name="detail"),
     path("<int:study_pk>/board/", views.board, name="board"),
