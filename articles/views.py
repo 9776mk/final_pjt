@@ -329,9 +329,6 @@ def delete(request, pk):
     articles = get_object_or_404(Article, pk=pk)
     if request.user == articles.user:
         articles.delete()
-
-        # return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
-        # else:
         return redirect("articles:index")
 
 
@@ -380,6 +377,14 @@ def comments_delete(request, comment_pk, article_pk):
             }
             return JsonResponse(data)
     return redirect("articles:detail", article_pk)
+
+
+@login_required
+def profile_comments_delete(request, comment_pk):
+    comment = get_object_or_404(ArticleComment, pk=comment_pk)
+    if request.user == comment.user:
+        comment.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def likes(request, article_pk):

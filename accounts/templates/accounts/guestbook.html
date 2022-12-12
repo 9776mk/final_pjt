@@ -51,17 +51,17 @@
               {% if not article.user.profile.image %}
                 <div class="d-flex flex-column align-items-center">
                   <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="guestbook-img" alt=""></a>
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0 nickname">{{ article.user.profile.nickname }}</p></a>
                 </div>
               {% elif article.user.profile.image|slugify|slice:'0:4' == 'http' %}
                 <div class="d-flex flex-column align-items-center">
                   <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image }}" class="guestbook-img" alt=""></a>
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0 nickname">{{ article.user.profile.nickname }}</p></a>
                 </div>
               {% else %}
                 <div class="d-flex flex-column align-items-center">
                   <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image.url }}" class="guestbook-img" alt=""></a>
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0">{{ article.user.profile.nickname }}</p></a>
+                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0 nickname">{{ article.user.profile.nickname }}</p></a>
                 </div>
               {% endif %}
 

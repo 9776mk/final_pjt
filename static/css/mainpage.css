@@ -56,12 +56,18 @@ main .algo h1 {
     margin-bottom: 30px;
     flex-direction: column;
   }
+  .lay .p-img {
+    width: 100% !important;
+  }
   .lay .p-text {
     margin-top: 20px;
     width: 100% !important;
   }
+  .lay .p-text .p-box {
+    margin: auto;
+  }
   .lay .p-text p {
-    text-align: center !important;
+    text-align: start !important;
   }
   .lay .p-text .btn-holder {
     margin-right: 20px;

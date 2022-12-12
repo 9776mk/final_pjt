@@ -7,48 +7,55 @@ function accept(form, study_pk, user_pk) {
         url: `/studies/${study_pk}/user/${user_pk}/accept/`,
         headers: {'X-CSRFToken': csrftoken},
     }).then(response => {
-        // 스터디 인원 수 변경
-        const acceptedCnt = document.querySelector('#accepted-cnt')
-        acceptedCnt.innerText = response.data.accepted_cnt
+        const isFull = response.data.is_full
+        console.log(isFull)
 
-        // 대기 목록에서 삭제
-        const waitingUser = document.querySelector(`#waiting-user-${user_pk}`)
-        const waitingCnt = response.data.waiting_cnt
-        const waitingBox = document.querySelector('#waiting-box')
-        
-        waitingUser.remove()
-        if (waitingCnt === 0) {
-            waitingBox.insertAdjacentHTML('beforeend', '<p id="no-waitings" class="py-5 text-center text-muted">아직 신청 인원이 없어요</p>')
+        if (isFull === false) {
+            // 스터디 인원 수 변경
+            const acceptedCnt = document.querySelector('#accepted-cnt')
+            acceptedCnt.innerText = response.data.accepted_cnt
+
+            // 대기 목록에서 삭제
+            const waitingUser = document.querySelector(`#waiting-user-${user_pk}`)
+            const waitingCnt = response.data.waiting_cnt
+            const waitingBox = document.querySelector('#waiting-box')
+            
+            waitingUser.remove()
+            if (waitingCnt === 0) {
+                waitingBox.insertAdjacentHTML('beforeend', '<p id="no-waitings" class="py-5 text-center text-muted">아직 신청 인원이 없어요</p>')
+            }
+
+            // 스터디 인원 목록에 추가
+            const acceptedBox = document.querySelector('#accepted-box')
+            const userImage = response.data.user_image
+            const userNickname = response.data.user_nickname
+            const userUsername = response.data.user_username
+
+            acceptedBox.insertAdjacentHTML('beforeend', `
+                <div class="d-flex justify-content-between align-items-center" id="accepted-user-${user_pk}">
+                  <div class="d-flex align-items-center my-3" >
+                    <div class="mx-3">
+                      <a href="/accounts/${user_pk}/">
+                        <img src="${userImage}" class="modal-profile-img" alt="">
+                      </a>
+                    </div>
+                    <div>
+                      <a href="/accounts/${user_pk}/">
+                        <p class="mb-0"><b>${userNickname}</b></p>
+                        <p class="mb-0" style="font-size: 13px;">${userUsername}</p>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="me-3">
+                    <form onsubmit="event.preventDefault(); kick(this, ${study_pk}, ${user_pk})">
+                      <input type="submit" value="추방" class="btn btn-danger">
+                    </form>            
+                  </div>
+                </div>
+            `)
+        } else {
+            alert('더이상 스터디원을 받을 수 없습니다.')
         }
-
-        // 스터디 인원 목록에 추가
-        const acceptedBox = document.querySelector('#accepted-box')
-        const userImage = response.data.user_image
-        const userNickname = response.data.user_nickname
-        const userUsername = response.data.user_username
-
-        acceptedBox.insertAdjacentHTML('beforeend', `
-            <div class="d-flex justify-content-between align-items-center" id="accepted-user-${user_pk}">
-              <div class="d-flex align-items-center my-3" >
-                <div class="mx-3">
-                  <a href="/accounts/${user_pk}/">
-                    <img src="${userImage}" class="modal-profile-img" alt="">
-                  </a>
-                </div>
-                <div>
-                  <a href="/accounts/${user_pk}/">
-                    <p class="mb-0"><b>${userNickname}</b></p>
-                    <p class="mb-0" style="font-size: 13px;">${userUsername}</p>
-                  </a>
-                </div>
-              </div>
-              <div class="me-3">
-                <form onsubmit="event.preventDefault(); kick(this, ${study_pk}, ${user_pk})">
-                  <input type="submit" value="추방" class="btn btn-danger">
-                </form>            
-              </div>
-            </div>
-        `)
     })
 }
 

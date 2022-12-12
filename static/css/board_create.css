@@ -103,7 +103,13 @@ a {
   border-top: 1px dashed #ddd;
   font-size: 0;
 }
+.board_write .contact dl {
+  margin-bottom: 0;
+}
 .board_write .limit {
   border-top: 1px dashed #ddd;
   font-size: 0;
+}
+.board_write .limit dl {
+  margin-bottom: 0;
 }/*# sourceMappingURL=board_create.css.map */
