@@ -254,14 +254,21 @@ main .algo h1 {
   display: flex;
   justify-content: space-around;
   margin-bottom: 30px;
+  width: 100%;
+}
+.find .lay .p-img {
+  width: 60%;
 }
 .find .lay .p-img img {
-  width: 100%;
+  width: 80%;
 }
 .find .lay .p-text {
   width: 40%;
 }
-.find .lay .p-text p {
+.find .lay .p-text .p-box {
+  width: 80%;
+}
+.find .lay .p-text .p-box p {
   text-align: start;
 }
 .find .lay .p-text .btn-holder {
