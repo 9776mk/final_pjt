@@ -56,7 +56,7 @@
       
       <!-- 사진 -->
       {% for image in articles.image_set.all %}
-        <img class="d-block article_img mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}" width="100%">
+        <img class="d-block article_img mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}">
       {% endfor %}
 
       <!-- 내용 -->
