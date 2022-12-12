@@ -195,26 +195,26 @@ def accept(request, study_pk, user_pk):
     study = get_object_or_404(Study, pk=study_pk)
     user = get_object_or_404(get_user_model(), pk=user_pk)
 
+    is_full = False
+
     if request.user == study.host_user and request.method == "POST":
-        if study.is_closed == False:
+        accepted_list_cnt = List.objects.filter(study=study, is_accepted=True).count()
+        
+        # 정원이 다 차면, 모집 마감
+        if study.limit == accepted_list_cnt:
+            study.is_closed = True
+            study.save()
+            is_full = True
+
+        else:
             # 해당 유저의 가입 승인 여부를 True로
             list_user = List.objects.get(user=user, study=study)
             list_user.is_accepted = True
             list_user.save()
 
-            # 수락 후 정원이 다 차면, 모집 마감
-            accepted_list_cnt = List.objects.filter(
-                study=study, is_accepted=True
-            ).count()
-            if study.limit == accepted_list_cnt:
-                study.is_closed = True
-                study.save()
-
-            # 신청자에게 알림
-            notice = f"'{study.title}' 스터디에 가입되었습니다."
-            StudyNotice.objects.create(
-                study_title=study.title, user=user, content=notice
-            )
+        # 신청자에게 알림
+        notice = f"'{study.title}' 스터디에 가입되었습니다."
+        StudyNotice.objects.create(study_title=study.title, user=user, content=notice)
 
     # 수락한 유저의 프로필 이미지
     if not user.profile.image:
@@ -230,6 +230,7 @@ def accept(request, study_pk, user_pk):
         "user_username": user.username,
         "waiting_cnt": List.objects.filter(study=study, is_accepted=False).count(),
         "accepted_cnt": List.objects.filter(study=study, is_accepted=True).count(),
+        "is_full": is_full,
     }
 
     # return redirect('studies:detail', study_pk)
