@@ -172,10 +172,10 @@ def search(request):
     is_selected_cate = True if category else False
     is_selected_input = True if search else False
 
-    print(is_selected_lev, is_selected_cate, is_selected_input)
-    print(level, category, search)
-    # print(result)
-    print(not level and not category)
+    # print(is_selected_lev, is_selected_cate, is_selected_input)
+    # print(level, category, search)
+    # # print(result)
+    # print(not level and not category)
 
     context = {
         "search": search, 
