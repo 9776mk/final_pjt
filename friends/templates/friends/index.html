@@ -44,44 +44,54 @@
     <div style="min-height: 350px;">
       {% for user in users %}
         <div class="all-users user_box d-none {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
-          <a href="{% url 'accounts:profile' user.pk %}" class='d-flex align-items-center justify-content-around'>
+          <div>
+
+          <div class='d-flex'>
+
+            <a href="{% url 'accounts:profile' user.pk %}" class='d-flex align-items-center' style='width: 23%;'>
             <!-- 프로필 이미지-->
-            <div>
-              {% comment %}  {% endcomment %}
-              {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
+              <div style='width:40%'>
+                {% comment %}  {% endcomment %}
+                {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
                 <img src="{{ user.profile.image }}" class="profile-img" alt="">
-              {% elif user.profile.image %}
+                {% elif user.profile.image %}
                 <img src="{{ user.profile.image.url }}" class="profile-img" alt="">
-              {% else %}
+                {% else %}
                 <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
-              {% endif %}
-            </div>
-            <div>
-              <!-- 닉네임 -->
-              <p class="m-0">{{ user.profile.nickname }}</p>
-              <!-- 주 사용언어 -->
-              {% if user.profile.language == 'Python' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
-              {% elif user.profile.language == 'Java' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
-              {% elif user.profile.language == 'C' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
-              {% elif user.profile.language == 'JavaScript' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
-              {% elif user.profile.language == 'C++' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
-              {% elif user.profile.language == 'PHP' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
-              {% endif %}
-              <div class='d-flex'>
-                <!-- 백준티어 -->
-                <p class='mb-1 me-2'><img style="height:25px;" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
-                <!-- MBTI -->
-                <p class="m-0"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+                {% endif %}
               </div>
+              <div style='width:60%'>
+                <!-- 닉네임 -->
+                <p class="m-0">{{ user.profile.nickname }}</p>
+                <!-- 주 사용언어 -->
+                {% if user.profile.language == 'Python' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
+                {% elif user.profile.language == 'Java' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
+                {% elif user.profile.language == 'C' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
+                {% elif user.profile.language == 'JavaScript' %}
+                  <p class="my-1"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
+                {% elif user.profile.language == 'C++' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
+                {% elif user.profile.language == 'PHP' %}
+                <p class="my-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
+                {% endif %}
+                <div class='d-flex'>
+                  <!-- 백준티어 -->
+                  <p class='mb-1 me-2'><img style="height:25px;" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
+                  <!-- MBTI -->
+                  <p class="m-0"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+                </div>
+              </div>
+            </a>
+            <div>
+              <a href="{% url 'notes:send_to' user.pk %}">쪽지 보내기</a>
             </div>
-          </a>
         </div>
+      </div>
+
+      </div>
       {% endfor %}
     </div>
   </div>

@@ -20,8 +20,8 @@
       <div id="category-btns" class="category mb-3">
         <p class="mb-2"> 난이도 </p>
         {% for level in category_level %}
-          <input id="{{ level }}" class="" type="checkbox" name="level-btns" value="{{level}}">
-          <label for="{{ level }}">{{ level }}</label>
+          <input id="{{ level }}" type="checkbox" name="level-btns" value="{{level}}">
+          <label for="{{ level }}" class="mb-2" >{{ level }}</label>
           {% comment %} <button id="{{ lang }}" data-category="{{ lang }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ lang }}</button> {% endcomment %}
         {% endfor %}
       </div>
@@ -29,7 +29,7 @@
         <p class="mb-2"> 추천 꼬리표 </p>
         {% for category in category_ %}
           <input id="{{ category }}" class="" type="checkbox" name="category-btns" value="{{category}}">
-          <label for="{{ category }}">{{ category }}</label>
+          <label for="{{ category }}" class="mb-2" >{{ category }}</label>
           {% comment %} <button id="{{ mbti }}" data-category="{{ mbti }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ mbti }}</button> {% endcomment %}
         {% endfor %}
       </div>  
