@@ -83,6 +83,7 @@ def update(request, study_pk):
         study_form = StudyForm(instance=study)
 
     context = {
+        "study": study,
         "study_form": study_form,
         "study_pk": study_pk,
     }
