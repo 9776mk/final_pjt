@@ -40,14 +40,13 @@ def sent(request):
 def send(request):
     form = NotesForm(request.POST or None)
     if form.is_valid():
-        temp = form.save(commit=False)
-        temp.from_user = request.user
-        temp.save()
-        if temp.to_user.note_notice:
-            temp.to_user.notice_note = False
-            temp.to_user.save()
+        to_info = get_user_model().objects.filter(username=request.POST["to_id"])
+        for to in to_info:
+            temp = form.save(commit=False)
+            temp.to_user = to
+            temp.from_user = request.user
+            temp.save()
         return redirect("notes:sent")
-    
     context = {
         "form": form,
     }
