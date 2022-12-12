@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock link %}
+
+
 {% block content %}
 
 <div class="p-3 d-flex justify-content-center">
@@ -6,13 +12,28 @@
       <h3 class="m-0">{{ search }} 검색 결과</h3>
   </div>
 </div>
-
+<table class='s-table table table-striped table-hover'>
+  <thead>
+    <tr>
+      <th class='num' >번호</th>
+      <th class='title' >제목</th>
+      <th class='type' >유형</th>
+      <th class='level' >레벨</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for result in category_list %}
+    <tr>
+      <td>{{ result.0 }}</td>
+      <td><a href="https://www.acmicpc.net/problem/{{result.0}}">{{ result.1 }}</a></td>
+      <td><a href="https://www.acmicpc.net/problem/{{result.0}}">#{{ result.2 }}</a></td>
+      <td>{{ result.3}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 <div class="p-3 d-flex justify-content-center">
   <div class="align-items-center">
-    {% for result in category_list %}
-      <span> {{ result.number }} </span> | <a href="https://www.acmicpc.net/problem/{{result.number}}"> {{ result.title }} | {{ result.tags }} | level:{{ result.level}}</a>
-      <br>
-    {% endfor %}
   </div>
 </div>
 
