@@ -93,7 +93,7 @@ def send_to(request, user_pk):
 @login_required
 def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
-    print(notes_counter)
+
     if request.user == note.to_user:
         if not note.read:
             note.read =True
