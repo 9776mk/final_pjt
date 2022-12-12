@@ -23,7 +23,7 @@ thead {
   border-left: 0;
   line-height: 100%;
   color: rgb(178, 178, 178);
-  
+
 }
 
 .board_page a.bt {
@@ -68,24 +68,31 @@ thead {
   .board_list .top .writer {
     display: none;
   }
+
   .board_list .writer {
     display: none;
   }
+
   .board_list .top .category {
     width: 35%;
   }
+
   .board_list .category {
     width: 35%;
   }
+
   .board_list .top .title {
     width: 65%;
   }
+
   .board_list .title {
     width: 65%;
   }
+
   .board_list .top .date {
     display: none;
   }
+
   .board_list .date {
     display: none;
   }
@@ -95,24 +102,31 @@ thead {
   .board_list .top .writer {
     display: none;
   }
+
   .board_list .writer {
     display: none;
   }
+
   .board_list .top .category {
     width: 20%;
   }
+
   .board_list .category {
     width: 20%;
   }
+
   .board_list .top .title {
     width: 60%;
   }
+
   .board_list .title {
     width: 60%;
   }
+
   .board_list .top .date {
     width: 20%;
   }
+
   .board_list .date {
     width: 20%;
   }
@@ -122,12 +136,15 @@ thead {
   .board_list .date {
     width: 18%;
   }
+
   .board_list .writer {
     width: 30%;
   }
+
   .board_list .title {
     width: 40%;
   }
+
   .board_list .category {
     width: 12%;
   }
@@ -148,12 +165,12 @@ thead {
   font-size: 0.9rem;
 }
 
-.board_list > div {
+.board_list>div {
   border-top: 1px solid rgb(182, 182, 182);
   font-size: 0;
 }
 
-.board_list > div.top {
+.board_list>div.top {
   border-top: 0;
   font-weight: bold;
   color: rgb(175, 175, 175);
@@ -161,14 +178,14 @@ thead {
   padding-bottom: 8px;
 }
 
-.board_list > div > div {
+.board_list>div>div {
   display: inline-block;
   padding: 15px 0;
   text-align: center;
   font-size: 0.9rem;
 }
 
-.board_list .category > a {
+.board_list .category>a {
   color: rgb(12, 155, 69);
 }
 
@@ -180,11 +197,11 @@ thead {
   text-align: center;
 }
 
-.board_list .title > a {
+.board_list .title>a {
   color: rgb(0, 0, 0);
 }
 
-.board_list .writer > a {
+.board_list .writer>a {
   color: rgb(0, 0, 0);
 }
 
@@ -198,22 +215,25 @@ thead {
   text-decoration: none;
   padding: 5px 12px;
   color: #96a0ad;
-  line-height: 1.5; 
+  line-height: 1.5;
 }
 
 .first {
   margin-right: 15px;
 }
 
-.last { 
+.last {
   margin-left: 15px;
 }
 
-.first:hover, .last:hover, .left:hover, .right:hover {
+.first:hover,
+.last:hover,
+.left:hover,
+.right:hover {
   color: #2e9cdf;
 }
 
-.pagination a.active { 
+.pagination a.active {
   cursor: default;
   color: #ffffff;
 }
@@ -227,4 +247,38 @@ thead {
   padding: 0;
   width: 30px;
   height: 30px;
+}
+
+.article_search input {
+  position: relative;
+  display: inline-block;
+  font-size: 18px;
+  box-sizing: border-box;
+  transition: .5s;
+}
+
+.article_search input[type="search"] {
+  background: #fff;
+  width: 290px;
+  height: 50px;
+  border: 1px solid;
+  outline: none;
+  padding: 0 25px;
+  border-radius: 25px 0 0 25px;
+}
+
+.article_search input[type="submit"] {
+  position: relative;
+  left: -5px;
+  border: 1px solid;
+  border-radius: 0 25px 25px 0;
+  width: 100px;
+  height: 50px;
+  cursor: pointer;
+  background: #ff8e00bd;
+}
+
+.article_search input[type="submit"]:hover {
+  background: #ef8606;
+
 }
