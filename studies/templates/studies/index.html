@@ -6,72 +6,344 @@
 
 {% block content %}
   <div class='container py-5'>
-    <div class='row row-cols-lg-3 row-cols-md-2'>
-      {% for study in studies %}
-      <div class="col mb-3 d-flex justify-content-center ">
-        <div class="card " style="width: 21rem;">
-          <a href="{% url 'studies:detail' study.pk %}">
-            <img class="card-img-top" src="{{ study.thumbnail.url }}">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title m-0">{{ study.title }}</h5>
-
-                {% if study.is_closed == False %}
-                  <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
-                {% else %}
-                  <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
-                {% endif %}
-              </div>
-              <p class="card-text">{{ study.host_user }}</p>
-            </div>
-          </a>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-
-    <!--페이지네이션-->
-    <div class="paginator board_page">
-      <a href="?page=1" class="page-link bt first">
-        <i class="bi bi-chevron-bar-left"></i>
-      </a>
-      {% if studies.has_previous %}
-        <a class="page-link bt prev" href="?page={{ studies.previous_page_number }}">
-          <i class="bi bi-chevron-left"></i>
-        </a>
-      {% else %}
-        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-          <i class="bi bi-chevron-left"></i>
-        </a>
-      {% endif %}
-      <!-- 페이지 리스트 -->
-      {% for page_number in studies.paginator.page_range %}
-        {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
-          {% if page_number == studies.number %}
-            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
-          {% else %}
-            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-      <!-- 다음 페이지 -->
-      {% if studies.has_next %}
-        <a class="page-link bt next" href="?page={{ studies.next_page_number }}">
-          <i class="bi bi-chevron-right"></i>
-        </a>
-      {% else %}
-        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-          <i class="bi bi-chevron-right"></i>
-        </a>
-      {% endif %}
-      <!-- 맨 뒤로 -->
-      <a href="?page={{ max_index }}" class="page-link bt last">
-        <i class="bi bi-chevron-bar-right"></i>
-      </a>
+    <div class='mx-3'>
+      <h1 style="font-family: 'HBIOS-SYS';">공부방</h1>
+      <p>함께 성장하는 개발자들의 모임입니다.</p>
     </div>
     
+    <!--탭-->
+    <div class="d-flex justify-content-end mb-3 me-1">
+      <a class='me-3' href="{% url 'studies:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
+      <a class='me-3' href="{% url 'studies:index_al' %}" style="font-family: 'HBIOS-SYS';">알고리즘</a>
+      <a class='me-3' href="{% url 'studies:index_fe' %}" style="font-family: 'HBIOS-SYS';">프론트엔드</a>
+      <a class='me-3' href="{% url 'studies:index_be' %}" style="font-family: 'HBIOS-SYS';">백엔드</a>
+      <a class='me-3' href="{% url 'studies:index_etc' %}" style="font-family: 'HBIOS-SYS';">기타</a>
+    </div>
+      
+    {% if request.resolver_match.url_name == 'index' %}
+      <div class='row row-cols-lg-3 row-cols-md-2'>
+        {% for study in studies %}
+        <div class="col mb-3 d-flex justify-content-center ">
+          <div class="card " style="width: 21rem;">
+            <a href="{% url 'studies:detail' study.pk %}">
+              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="card-title m-0">{{ study.title }}</h5>
+
+                  {% if study.is_closed == False %}
+                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                  {% else %}
+                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                  {% endif %}
+                </div>
+                <p class="card-text">{{ study.host_user }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!--페이지네이션-->
+      <div class="paginator board_page">
+        <a href="?page=1" class="page-link bt first">
+          <i class="bi bi-chevron-bar-left"></i>
+        </a>
+        {% if studies.has_previous %}
+          <a class="page-link bt prev" href="?page={{ studies.previous_page_number }}">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% endif %}
+        <!-- 페이지 리스트 -->
+        {% for page_number in studies.paginator.page_range %}
+          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+            {% if page_number == studies.number %}
+              <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% else %}
+              <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        <!-- 다음 페이지 -->
+        {% if studies.has_next %}
+          <a class="page-link bt next" href="?page={{ studies.next_page_number }}">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% endif %}
+        <!-- 맨 뒤로 -->
+        <a href="?page={{ max_index }}" class="page-link bt last">
+          <i class="bi bi-chevron-bar-right"></i>
+        </a>
+      </div>
+    {% elif request.resolver_match.url_name == 'index_al' %}
+      <div class='row row-cols-lg-3 row-cols-md-2'>
+        {% for study in studies %}
+        <div class="col mb-3 d-flex justify-content-center ">
+          <div class="card " style="width: 21rem;">
+            <a href="{% url 'studies:detail' study.pk %}">
+              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="card-title m-0">{{ study.title }}</h5>
+
+                  {% if study.is_closed == False %}
+                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                  {% else %}
+                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                  {% endif %}
+                </div>
+                <p class="card-text">{{ study.host_user }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!--페이지네이션-->
+      <div class="paginator board_page">
+        <a href="?page=1" class="page-link bt first">
+          <i class="bi bi-chevron-bar-left"></i>
+        </a>
+        {% if studies.has_previous %}
+          <a class="page-link bt prev" href="?page={{ studies.previous_page_number }}">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% endif %}
+        <!-- 페이지 리스트 -->
+        {% for page_number in studies.paginator.page_range %}
+          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+            {% if page_number == studies.number %}
+              <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% else %}
+              <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        <!-- 다음 페이지 -->
+        {% if studies.has_next %}
+          <a class="page-link bt next" href="?page={{ studies.next_page_number }}">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% endif %}
+        <!-- 맨 뒤로 -->
+        <a href="?page={{ max_index }}" class="page-link bt last">
+          <i class="bi bi-chevron-bar-right"></i>
+        </a>
+      </div>
+    {% elif request.resolver_match.url_name == 'index_fe' %}
+      <div class='row row-cols-lg-3 row-cols-md-2'>
+        {% for study in studies %}
+        <div class="col mb-3 d-flex justify-content-center ">
+          <div class="card " style="width: 21rem;">
+            <a href="{% url 'studies:detail' study.pk %}">
+              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="card-title m-0">{{ study.title }}</h5>
+
+                  {% if study.is_closed == False %}
+                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                  {% else %}
+                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                  {% endif %}
+                </div>
+                <p class="card-text">{{ study.host_user }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!--페이지네이션-->
+      <div class="paginator board_page">
+        <a href="?page=1" class="page-link bt first">
+          <i class="bi bi-chevron-bar-left"></i>
+        </a>
+        {% if studies.has_previous %}
+          <a class="page-link bt prev" href="?page={{ studies.previous_page_number }}">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% endif %}
+        <!-- 페이지 리스트 -->
+        {% for page_number in studies.paginator.page_range %}
+          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+            {% if page_number == studies.number %}
+              <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% else %}
+              <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        <!-- 다음 페이지 -->
+        {% if studies.has_next %}
+          <a class="page-link bt next" href="?page={{ studies.next_page_number }}">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% endif %}
+        <!-- 맨 뒤로 -->
+        <a href="?page={{ max_index }}" class="page-link bt last">
+          <i class="bi bi-chevron-bar-right"></i>
+        </a>
+      </div>
+    {% elif request.resolver_match.url_name == 'index_be' %}
+      <div class='row row-cols-lg-3 row-cols-md-2'>
+        {% for study in studies %}
+        <div class="col mb-3 d-flex justify-content-center ">
+          <div class="card " style="width: 21rem;">
+            <a href="{% url 'studies:detail' study.pk %}">
+              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="card-title m-0">{{ study.title }}</h5>
+
+                  {% if study.is_closed == False %}
+                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                  {% else %}
+                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                  {% endif %}
+                </div>
+                <p class="card-text">{{ study.host_user }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!--페이지네이션-->
+      <div class="paginator board_page">
+        <a href="?page=1" class="page-link bt first">
+          <i class="bi bi-chevron-bar-left"></i>
+        </a>
+        {% if studies.has_previous %}
+          <a class="page-link bt prev" href="?page={{ studies.previous_page_number }}">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% endif %}
+        <!-- 페이지 리스트 -->
+        {% for page_number in studies.paginator.page_range %}
+          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+            {% if page_number == studies.number %}
+              <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% else %}
+              <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        <!-- 다음 페이지 -->
+        {% if studies.has_next %}
+          <a class="page-link bt next" href="?page={{ studies.next_page_number }}">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% endif %}
+        <!-- 맨 뒤로 -->
+        <a href="?page={{ max_index }}" class="page-link bt last">
+          <i class="bi bi-chevron-bar-right"></i>
+        </a>
+      </div>
+    {% elif request.resolver_match.url_name == 'index_etc' %}
+      <div class='row row-cols-lg-3 row-cols-md-2'>
+        {% for study in studies %}
+        <div class="col mb-3 d-flex justify-content-center ">
+          <div class="card " style="width: 21rem;">
+            <a href="{% url 'studies:detail' study.pk %}">
+              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="card-title m-0">{{ study.title }}</h5>
+
+                  {% if study.is_closed == False %}
+                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                  {% else %}
+                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                  {% endif %}
+                </div>
+                <p class="card-text">{{ study.host_user }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!--페이지네이션-->
+      <div class="paginator board_page">
+        <a href="?page=1" class="page-link bt first">
+          <i class="bi bi-chevron-bar-left"></i>
+        </a>
+        {% if studies.has_previous %}
+          <a class="page-link bt prev" href="?page={{ studies.previous_page_number }}">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        {% endif %}
+        <!-- 페이지 리스트 -->
+        {% for page_number in studies.paginator.page_range %}
+          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+            {% if page_number == studies.number %}
+              <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% else %}
+              <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        <!-- 다음 페이지 -->
+        {% if studies.has_next %}
+          <a class="page-link bt next" href="?page={{ studies.next_page_number }}">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% else %}
+          <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        {% endif %}
+        <!-- 맨 뒤로 -->
+        <a href="?page={{ max_index }}" class="page-link bt last">
+          <i class="bi bi-chevron-bar-right"></i>
+        </a>
+      </div>
+    {% endif %}
+    
     <div class='bt_wrap'>
-      <a class="" href="{% url 'studies:create' %}" style=''>스터디 생성하기 📚</a>
+      <a class="" href="{% url 'studies:create' %}" style=''>공부방 생성하기 📚</a>
     </div>
   </div>
 {% endblock content %}
