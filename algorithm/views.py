@@ -85,7 +85,7 @@ def search(request):
                     if category:
                         for c in category:
                             # 검색어 O
-                            filter_ = br.filter(Q(tags__icontains=c))
+                            filter_ = si.filter(Q(tags__icontains=c))
                             total += list(filter_)
                     # 카테고리 X
                     else:
@@ -147,7 +147,19 @@ def search(request):
 
     # 중복된 태그가 있는 문제 제거
     total = set(total)
+    # print(total)
+    result = []
+    for t in total:
+        num = t.number
+        title = t.title
+        lev = t.level
+        t = t.tags
+        ts = t.replace("[", "")
+        ts = ts.replace("]", "")
+        ts = ts.replace("'", "")
+        ts = ts.replace(", ", " #")
+        result.append((num, title, ts, lev))
 
-    context = {"search": search, "category_list": total}
+    context = {"search": search, "category_list": result}
 
     return render(request, "algorithm/search.html", context)

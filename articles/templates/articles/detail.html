@@ -51,14 +51,13 @@
         <div class='title'>{{ articles.title }}</div>
         <p>{{ articles.create_at|date:'Y-m-d H:i' }}</p>
         <p>조회수 : {{ articles.hits }}</p>
+        <p><span class="button gray medium"><a href="#" onclick="clip(); return false;">URL주소복사</a></span></p>
       </div>
       
       <!-- 사진 -->
-      <div style='margin: 30px 60px;'>
-        {% for image in articles.image_set.all %}
-          <img class="d-block mx-auto" width='50%' style='max-width: 500px; max-height:580px; border-radius: 8px;'  src="{{ image.image.url }}" alt="{{ image.image }}" width="100%">
-        {% endfor %}
-      </div>
+      {% for image in articles.image_set.all %}
+        <img class="d-block article_img mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}">
+      {% endfor %}
 
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
@@ -257,8 +256,18 @@
             console.log(error.response)
           })
         })
+        //url 링크 복사
+        function clip(){
 
-
-
+          var url = '';
+          var textarea = document.createElement("textarea");
+          document.body.appendChild(textarea);
+          url = window.document.location.href;
+          textarea.value = url;
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+          alert("URL이 복사되었습니다.")
+        }
   </script>
 {% endblock script %}

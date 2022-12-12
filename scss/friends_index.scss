@@ -247,7 +247,6 @@ hr {
     padding: 10px;
     border-radius: 20px;
     height: 110px;
-    margin: 15px 100px;
 }
 
 // 랜덤 조 추첨 결과 페이지에서 쓰는
@@ -304,4 +303,23 @@ hr {
     color: #ff8800; 
     margin-left: 37px; 
     margin-bottom: 20px;
+}
+
+// 반응형
+@media (max-width : 768px) {
+    .user_box {
+        margin: 15px 50px;
+    }
+}
+
+@media (min-width : 768px) {
+    .user_box {
+        margin: 15px 150px;
+    }
+}
+
+@media (max-width : 450px) {
+    .user_box {
+        margin: 15px 20px;
+    }
 }

@@ -71,7 +71,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'algorithm:index' %}">
-                  알고리즘
+                  문제집
                 </a>
               </li>
               <li class="nav-item">
@@ -81,7 +81,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'studies:index' %}">
-                  스터디
+                  공부방
                 </a>
               </li>
               <li class="nav-item">
@@ -97,14 +97,17 @@
               {% if request.user.is_authenticated %}
                 <!-- 알림 창 -->
                 <li class='nav-item'>
-                  <button id='testBtn' type="button" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
-                    <i class="bi bi-bell"></i>
-                    {% if request.user.get_study_notice_cnt != 0 %}
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  <form onsubmit="event.preventDefault(); noticeRead()">
+                    {% csrf_token %}
+                    <button id='testBtn' type="submit" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
+                      <i class="bi bi-bell"></i>
+                      {% if request.user.get_study_notice_cnt != 0 %}
+                      <span id="study-notice-cnt" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         {{ request.user.get_study_notice_cnt }}
                       </span>
-                    {% endif %}
-                  </button>
+                      {% endif %}
+                    </button>
+                  </form>
                 </li>
 
                 <!-- 쪽지 창 -->
@@ -291,7 +294,8 @@
       }
     </script>
     {% block script %}{% endblock script %}
-    <!-- 알림 삭제 비동기 -->
-    <script type="text/javascript" src="{% static 'js/base_notice_delete.js' %}"></script>
+    
+    <!-- 알림 삭제/읽음 비동기 -->
+    <script type="text/javascript" src="{% static 'js/studies_notice.js' %}"></script>
   </body>
 </html>
