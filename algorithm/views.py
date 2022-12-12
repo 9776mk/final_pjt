@@ -85,7 +85,7 @@ def search(request):
                     if category:
                         for c in category:
                             # 검색어 O
-                            filter_ = br.filter(Q(tags__icontains=c))
+                            filter_ = si.filter(Q(tags__icontains=c))
                             total += list(filter_)
                     # 카테고리 X
                     else:
