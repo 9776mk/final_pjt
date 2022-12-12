@@ -102,7 +102,7 @@
                     <button id='testBtn' type="submit" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
                       <i class="bi bi-bell"></i>
                       {% if request.user.get_study_notice_cnt != 0 %}
-                      <span id="study-notice-cnt" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      <span id="study-notice-cnt" class="nav-counter">
                         {{ request.user.get_study_notice_cnt }}
                       </span>
                       {% endif %}
@@ -113,9 +113,9 @@
                 <!-- 쪽지 창 -->
                 <li class='nav-item'>
                   <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
-                    <i class="bi bi-chat-left-dots"></i>
+                    <img style='width: 20px;' src="{% static 'images/note.png' %}" alt="쪽지">
                     {% if request.user.get_message_notice_cnt != 0 %}
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      <span class="nav-counter">
                         {{ request.user.get_message_notice_cnt }}
                         <span class="visually-hidden">unread messages</span>
                       </span>
