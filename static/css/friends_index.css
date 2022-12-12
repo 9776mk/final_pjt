@@ -245,7 +245,6 @@ hr {
   padding: 10px;
   border-radius: 20px;
   height: 110px;
-  margin: 15px 100px;
 }
 
 .user_box_rec {
@@ -297,4 +296,20 @@ hr {
   color: #ff8800;
   margin-left: 37px;
   margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .user_box {
+    margin: 15px 50px;
+  }
+}
+@media (min-width: 768px) {
+  .user_box {
+    margin: 15px 150px;
+  }
+}
+@media (max-width: 450px) {
+  .user_box {
+    margin: 15px 20px;
+  }
 }/*# sourceMappingURL=friends_index.css.map */
