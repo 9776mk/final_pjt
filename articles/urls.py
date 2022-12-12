@@ -25,4 +25,9 @@ urlpatterns = [
         name="comments_delete",
     ),
     path("<int:article_pk>/likes/", views.likes, name="likes"),
+    path(
+        "<int:comment_pk>/profile_comments_delete/",
+        views.profile_comments_delete,
+        name="profile_comments_delete",
+    ),
 ]

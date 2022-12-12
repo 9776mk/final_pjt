@@ -19,7 +19,7 @@
     {% endif %}
     <div class="ms-4 w-100">
       <div class="d-flex align-items-center mb-2">
-        <h1 class="mb-0" style="font-size: 30px;">{{ user.profile.nickname }}님의 프로필</h1>
+        <h1 class="mb-0" style="font-size: calc(15px + 1.2vw);">{{ user.profile.nickname }}님의 프로필</h1>
         <!-- 회원 정보 수정 & 팔로우 버튼 -->
         {% if user == request.user %}
         <a href="{% url 'accounts:profile_update' user.pk %}">
@@ -36,39 +36,60 @@
           </form>
         {% endif %}
       </div>
-
-      <p class="mb-1">
-        <a type="button" data-bs-toggle="modal" data-bs-target="#followerModal">팔로워 <span id="followers-count-{{ user.pk }}">{{ user.followers.count }}</span></a>
-        <a type="button" data-bs-toggle="modal" data-bs-target="#followingModal">팔로잉 <span id="followings-count-{{ user.pk }}">{{ user.followings.count }}</span></a>
+      <!-- 뱃지 -->
+      <div class="d-flex align-items-center">
+        {% if user.profile.language == 'Python' %}
+        <p class="mb-1 me-2"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
+        {% elif user.profile.language == 'Java' %}
+        <p class="mb-1 me-2"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
+        {% elif user.profile.language == 'C' %}
+        <p class="mb-1 me-2"><img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
+        {% elif user.profile.language == 'JavaScript' %}
+        <p class="mb-1 me-2"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
+        {% elif user.profile.language == 'C++' %}
+        <p class="mb-1 me-2"><img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
+        {% elif user.profile.language == 'PHP' %}
+        <p class="mb-1 me-2"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
+        {% endif %}
+        <p class="mt-1 mb-1 me-2"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+        {% if tier %}
+        <p class="mt-1 mb-1"><img style="height: 25px" src="https://static.solved.ac/tier_small/{{ tier }}.svg"> </p>
+        {% else %}
+        <p class="text-muted mt-1 mb-1"> 백준 아이디를 등록해주세요 </p>
+        {% endif %}
+      </div>
+      <!-- 팔로워 팔로잉 -->
+      <p class="mt-1 mb-2">
+        <a type="button" data-bs-toggle="modal" data-bs-target="#followerModal">
+          팔로워 <span id="followers-count-{{ user.pk }}">{{ user.followers.count }}</span>
+        </a>
+        <a type="button" data-bs-toggle="modal" data-bs-target="#followingModal" class="ms-1">
+          팔로잉 <span id="followings-count-{{ user.pk }}">{{ user.followings.count }}</span>
+        </a>
       </p>
-      {% if user.profile.language == 'Python' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
-      {% elif user.profile.language == 'Java' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
-      {% elif user.profile.language == 'C' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
-      {% elif user.profile.language == 'JavaScript' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
-      {% elif user.profile.language == 'C++' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
-      {% elif user.profile.language == 'PHP' %}
-      <p class="mb-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
-      {% endif %}
-      <p class="mt-1 mb-1"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
-      {% if tier %}
-      <p class="mt-1 mb-1"><img style="height:25px" src="https://static.solved.ac/tier_small/{{ tier }}.svg"> </p>
-      {% else %}
-      <p class="text-muted mt-1 mb-1"> 백준 아이디를 등록해주세요 </p>
-      {% endif %}
-      <p class="mb-1">{{ user.profile.intro }}</p>
-      <div class="d-flex justify-content-end">
-        <a href="{% url 'notes:send_to' user.pk %}" class="bbtn me-2 h-100">쪽지 보내기</a>
-        <a href="{% url 'accounts:guestbook' user.pk %}" class="bbtn h-100">방명록</a>
+      <!-- 쪽지, 방명록 -->
+      <div class="d-none d-sm-block">
+        <div class="d-flex justify-content-between">
+          <p class="mb-1" style="min-width: 250px;">{{ user.profile.intro }}</p>
+          <div class="d-flex justify-content-end align-items-end w-100" style="min-width: 165px;">
+            <a href="{% url 'notes:send_to' user.pk %}" class="bbtn me-2">쪽지 보내기</a>
+            <a href="{% url 'accounts:guestbook' user.pk %}" class="bbtn">방명록</a>
+          </div>
+        </div>
+      </div>
+      <div class="d-block d-sm-none">
+        <p class="mb-1">{{ user.profile.intro }}</p>
+        <div class="d-flex justify-content-end w-100" style="min-width: 165px;">
+          <a href="{% url 'notes:send_to' user.pk %}" class="bbtn me-2">쪽지 보내기</a>
+          <a href="{% url 'accounts:guestbook' user.pk %}" class="bbtn">방명록</a>
+        </div>
       </div>
     </div>
   </div>
   <hr>
+
   <div class="d-flex flex-wrap justify-content-center flex-column">
+    <!-- github 잔디 -->
     <!-- username: jupiter6676 -->
     <!-- 16진수 색상표 https://jasmintime.com/244 -->
     <!-- <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100"> -->
@@ -76,31 +97,35 @@
     <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3" 
     onclick="window.open('https://github.com/{{ user.profile.github_id }}')" style="cursor: pointer;" target="_blank" >
     {% endif %}
-    <div class="mb-2" >
+    <!-- 작성 글-->
+    <div class="mb-2">
       <a data-bs-toggle="collapse" href="#articlecollapse" 
       role="button" aria-expanded="false" aria-controls="articlecollapse" style="font-size: 17px;">
-      작성 글  <b>{{ request.user.article_set.all.count }}</b>
+      작성 글  <b>{{ user.article_set.all.count }}</b>
       </a>
-      <div class="collapse" id="articlecollapse">
+      <div class="collapse" id="articlecollapse" style="height: 100%;">
         <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
           <thead>
             <tr>
-              <th scope="col" class="col-1"></th>
-              <th scope="col" class="col-7">제목</th>
-              <th scope="col" class="col-2">작성일</th>
-              <th scope="col" class="col-1">조회</th>
-              <th scope="col" class="col-1">삭제</th>
+              <th scope="col">제목</th>
+              <th scope="col">작성일</th>
+              <th scope="col" style="min-width: 45px;">조회</th>
+              {% if request.user == user %}
+              <th scope="col" style="min-width: 45px;">삭제</th>
+              {% endif %}
             </tr>
           </thead>
           <tbody>
-            {% for article in request.user.article_set.all %}
+            {% for article in user.article_set.all %}
             <tr>
-              {% comment %} {{ forloop.revcounter }} {% endcomment %}
-              <th scope="row">{{ article.pk }}</th>
-              <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></td>
-              <td>{{ article.create_at|date:'Y-m-d' }}</td>
-              <td>{{ article.hits }}</td>
-              <td><a href="{% url 'articles:delete' article.pk %}"><i class="bi bi-trash-fill"></i></a></td>
+              <td class="title" style="padding: 8px 8px 8px 16px;">
+                <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+              </td>
+              <td class="date">{{ article.create_at|date:'Y-m-d' }}</td>
+              <td class="views">{{ article.hits }}</td>
+              {% if request.user == user %}
+              <td class="delete"><a href="{% url 'articles:delete' article.pk %}"><i class="bi bi-trash-fill"></i></a></td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>
@@ -108,28 +133,31 @@
       </div>
     </div>
     <div class="mb-2">
-      <a class="" data-bs-toggle="collapse" href="#commentcollapse" 
+      <a data-bs-toggle="collapse" href="#commentcollapse" 
       role="button" aria-expanded="false" aria-controls="commentcollapse" style="font-size: 17px;">
-      작성 댓글  <b>{{ request.user.articlecomment_set.all.count }}</b>
+      작성 댓글  <b>{{ user.articlecomment_set.all.count }}</b>
       </a>
       <div class="collapse" id="commentcollapse">
         <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
           <thead>
             <tr>
-              <th scope="col" class="col-1"></th>
-              <th scope="col" class="col-7">내용</th>
-              <th scope="col" class="col-2">작성일</th>
-              <th scope="col" class="col-1">삭제</th>
+              <th scope="col">내용</th>
+              <th scope="col">작성일</th>
+              {% if request.user == user %}
+              <th scope="col" style="min-width: 45px;">삭제</th>
+              {% endif %}
             </tr>
           </thead>
           <tbody>
-            {% for comment in request.user.articlecomment_set.all %}
+            {% for comment in user.articlecomment_set.all %}
             <tr>
-              {% comment %} {{ forloop.revcounter }} {% endcomment %}
-              <th scope="row">{{ comment.pk }}</th>
-              <td><a href="{% url 'articles:detail' comment.article.pk %}">{{ comment.content }}</a></td>
-              <td>{{ comment.create_at|date:'Y-m-d' }}</td>
-              <td><a href=""><i class="bi bi-trash-fill"></i></a></td>
+              <td class="title" style="padding: 8px 8px 8px 16px;">
+                <a href="{% url 'articles:detail' comment.article.pk %}">{{ comment.content }}</a>
+              </td>
+              <td class="date">{{ comment.create_at|date:'Y-m-d' }}</td>
+              {% if request.user == user %}
+              <td class="delete"><a href="{% url 'articles:profile_comments_delete' comment.pk %}"><i class="bi bi-trash-fill"></i></a></td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>
@@ -139,26 +167,25 @@
     <div class="mb-2">
       <a data-bs-toggle="collapse" href="#likecollapse" 
       role="button" aria-expanded="false" aria-controls="likecollapse" style="font-size: 17px;">
-      좋아요 누른 글  <b>{{ request.user.article_like.all.count }}</b>
+      좋아요 누른 글  <b>{{ user.article_like.all.count }}</b>
       </a>
       <div class="collapse" id="likecollapse">
         <table class="table" style="box-shadow: 0 0px 0px rgb(0 0 0 / 25%);">
           <thead>
             <tr>
-              <th scope="col" class="col-1"></th>
-              <th scope="col" class="col-7">제목</th>
-              <th scope="col" class="col-2">작성일</th>
-              <th scope="col" class="col-1">조회</th>
+              <th scope="col">제목</th>
+              <th scope="col">작성일</th>
+              <th scope="col" style="min-width: 45px;">조회</th>
             </tr>
           </thead>
           <tbody>
-            {% for article in request.user.article_like.all %}
+            {% for article in user.article_like.all %}
             <tr>
-              {% comment %} {{ forloop.revcounter }} {% endcomment %}
-              <th scope="row">{{ article.pk }}</th>
-              <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></td>
-              <td>{{ article.create_at|date:'Y-m-d' }}</td>
-              <td>{{ article.hits }}</td>
+              <td class="title" style="padding: 8px 8px 8px 16px;">
+                <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+              </td>
+              <td class="date">{{ article.create_at|date:'Y-m-d' }}</td>
+              <td class="views">{{ article.hits }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -285,4 +312,22 @@
 
 {% block script %}
   <script type="text/javascript" src="{% static 'js/accounts_follow_async.js' %}"></script>
+  <script>
+    //댓글 비동기 삭제
+    function delete_comment(form, article_pk, comment_pk) {
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        axios({
+          method: 'post',
+          url: `/articles/${article_pk}/comments_create/${comment_pk}/delete/`,
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        })
+        .then(response => {
+          const comment = document.querySelector(`#article-${comment_pk}`)
+          console.log(response.data.is_deleted)
+          comment.remove()
+        })
+    }
+  </script>
 {% endblock script %}

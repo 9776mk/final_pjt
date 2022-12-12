@@ -93,7 +93,6 @@ def send_to(request, user_pk):
 @login_required
 def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
-
     if request.user == note.to_user:
         if not note.read:
             note.read =True
@@ -131,16 +130,18 @@ def delete(request, pk):
 @login_required
 def trash_throw_away(request, pk):
     note = Notes.objects.get(pk=pk)
-    note.garbage = True
-    note.save()
+    if request.user == note.to_user:
+        note.garbage = True
+        note.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
 def trash_return(request, pk):
     note = Notes.objects.get(pk=pk)
-    note.garbage = False
-    note.save()
+    if request.user == note.to_user:
+        note.garbage = False
+        note.save()
     return redirect("notes:trash")
 
 
@@ -160,16 +161,18 @@ def trash(request):
 @login_required
 def important_check(request, pk):
     note = Notes.objects.get(pk=pk)
-    note.important = True
-    note.save()
+    if request.user == note.to_user:
+        note.important = True
+        note.save()
     return redirect("notes:index")
 
 
 @login_required
 def important_return(request, pk):
     note = Notes.objects.get(pk=pk)
-    note.important = False
-    note.save()
+    if request.user == note.to_user:
+        note.important = False
+        note.save()
     return redirect("notes:index")
 
 
