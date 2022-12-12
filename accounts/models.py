@@ -77,7 +77,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=16)
-    intro = models.TextField(blank=True)
+    intro = models.TextField(blank=True, max_length=100)
     image = ProcessedImageField(
         upload_to="images/",
         blank=True,

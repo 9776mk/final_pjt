@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator
 
@@ -194,6 +194,7 @@ def profile(request, user_pk):
     }
 
     return render(request, "accounts/profile.html", context)
+
 
 
 # 회원 정보 수정

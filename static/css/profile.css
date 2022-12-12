@@ -1,13 +1,123 @@
 .profile-img {
-    border-radius: 70%; 
-    max-width: 15%;
+  border-radius: 70%;
+  max-width: 200px;
+  min-width: 80px;
+  width: 20%;
 }
 
 .modal-profile-img {
-    border-radius: 70%; 
-    max-width: 50px;
+  border-radius: 70%; 
+  max-width: 50px;
 }
 
+table {
+  background-color: #fbfbfb;
+  border-radius: 15px;
+  margin: 10px 0px;
+  font-size: 14px;
+}
+
+/* 반응형 */
+@media (max-width: 575px) {
+  .title {
+    text-overflow : ellipsis;
+    max-width : 50px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
+    padding: 8px 8px 8px 16px;
+  }
+  .date {
+      width: 30%;
+  }
+  .views {
+      width: 10%;
+  }
+  .delete {
+      width: 10%;
+  }
+}
+
+@media (min-width: 576px) {
+  .title {
+    text-overflow : ellipsis;
+    max-width : 50px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
+    padding: 8px 8px 8px 16px;
+  }
+  .date {
+      width: 30%;
+  }
+  .views {
+      width: 10%;
+  }
+  .delete {
+      width: 10%;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .title {
+    text-overflow : ellipsis;
+    max-width : 50px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
+    padding: 8px 8px 8px 16px;
+  }
+  .date {
+      width: 30%;
+  }
+  .views {
+      width: 10%;
+  }
+  .delete {
+      width: 10%;
+  }
+}
+
+@media (min-width: 992px) {
+  .title {
+    text-overflow : ellipsis;
+    max-width : 50px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
+    padding: 8px 8px 8px 16px;
+  }
+  .date {
+      width: 30%;
+  }
+  .views {
+      width: 10%;
+  }
+  .delete {
+      width: 10%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .title {
+    text-overflow : ellipsis;
+    max-width : 50px;
+    white-space : nowrap;
+    overflow : hidden;
+    text-align: left;
+    padding: 8px 8px 8px 16px;
+  }
+  .date {
+      width: 30%;
+  }
+  .views {
+      width: 10%;
+  }
+  .delete {
+      width: 10%;
+  }
+}
 
 
 /* MBTI badge */
