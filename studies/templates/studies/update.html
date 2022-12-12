@@ -17,12 +17,13 @@
 
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
+
       <!--폼-->
       <div class="board_write">
         <div class="title">
           <dl>
             <dt>스터디 명</dt>
-            <dd><input type="text" name="title" value="{{ Study.title }}" placeholder="10자 이내의 스터디 명을 입력해주세요"></dd>
+            <dd>{{ study_form.title|attr:'placeholder:10자 이내의 스터디 명을 입력해주세요' }}</dd>
           </dl>
         </div>
         <div class="category">
@@ -34,7 +35,7 @@
         <div class="contact">
           <dl>
             <dt>연락처</dt>
-            <dd><input type="text" name="contact" value="{{ Study.contact }}" placeholder='이메일 주소'></dd>
+            <dd>{{ study_form.contact|attr:'placeholder:이메일 주소를 입력해주세요' }}</dd>
           </dl>
         </div>
         <div class="limit">
