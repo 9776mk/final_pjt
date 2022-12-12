@@ -33,7 +33,7 @@
             {% if request.user.get_study_notice %}
               {% for notice in request.user.get_study_notice %}
                 <div id="notice-{{ notice.pk }}" class="d-flex justify-content-between align-items-center my-3">
-                  <p class="m-0">{{ notice.content }}</p>
+                  <p class="m-0" style="{% if notice.read %}color: #b7b7b7{% endif %}">{{ notice.content }}</p>
 
                   <!-- 알림 삭제 버튼 -->
                   <form id="notice-delete-form" onsubmit="event.preventDefault(); noticeDelete(this, '{{ notice.pk }}')">
