@@ -65,12 +65,20 @@ main {
         margin-bottom: 30px;
         flex-direction: column;
 
+        .p-img {
+            width: 100% !important;
+        }
+
         .p-text {
             margin-top: 20px;
             width: 100% !important;
 
+            .p-box {
+                margin: auto;
+            }
+
             p {
-                text-align: center !important;
+                text-align: start !important;
             }
 
             .btn-holder {

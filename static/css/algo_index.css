@@ -87,10 +87,10 @@
 
  #thsearch input[type="submit"] {
      position: relative;
-     left: -7px;
+     left: -5px;
      border: 1px solid;
      border-radius: 0 25px 25px 0;
-     width: 110px;
+     width: 100px;
      height: 50px;
      cursor: pointer;
      background: #ff8e00bd;
