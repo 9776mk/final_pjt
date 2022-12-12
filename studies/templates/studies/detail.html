@@ -16,15 +16,15 @@
     <div class="board_view ">
       <!-- 방장: 모집 시작/마감 -->
       {% if request.user == study.host_user %}
-      <form class='position-relative' style="padding: 40px 80px; margin-rignt: 30px;" onsubmit="event.preventDefault(); studyClose(this, '{{ study.pk }}')">
+      <form class='position-relative' style="padding: 40px 80px; margin-right: 60px;" onsubmit="event.preventDefault(); studyClose(this, '{{ study.pk }}')">
         {% csrf_token %}
         {% if study.is_closed == False %}
-          <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집마감" class="btn btn-danger host_btn position-absolute end-0">
+          <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집마감" class="btn btn-danger  position-absolute end-0">
         {% else %}
           {% if study.limit == accepted_list.count %}
-            <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집완료" class="btn btn-success host_btn position-absolute end-0" disabled="disabled">
+            <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집완료" class="btn btn-success position-absolute end-0" disabled="disabled">
           {% else %}
-            <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집시작" class="btn btn-success host_btn position-absolute end-0">
+            <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집시작" class="btn btn-success position-absolute end-0">
           {% endif %}
         {% endif %}
       </form>
@@ -33,22 +33,22 @@
       <div id="user-btns-box">
         <!-- 1. 이미 스터디원이면 탈퇴 버튼 -->
         {% if request.user.pk in accepted_user_list %}
-          <form style="padding: 40px 80px;" onsubmit="event.preventDefault(); withdraw(this, '{{ study.pk }}')">
+          <form class='position-relative' style="padding: 40px 80px; margin-right: 60px;" onsubmit="event.preventDefault(); withdraw(this, '{{ study.pk }}')">
             {% csrf_token %}
-            <input type="submit" value="스터디 탈퇴" class="btn btn-secondary">
+            <input type="submit" value="스터디 탈퇴" class="btn btn-secondary position-absolute end-0">
           </form>
         {% else %}
-        <form style="padding: 40px 80px;" onsubmit="event.preventDefault(); studyApply(this, '{{ study.pk }}')">
+        <form class='position-relative' style="padding: 40px 80px; margin-right: 60px;" onsubmit="event.preventDefault(); studyApply(this, '{{ study.pk }}')">
           {% csrf_token %}
           <!-- 2. 신청 후 가입 대기중이면 신청 취소 버튼 -->
           {% if request.user.pk in waiting_user_list %}
-            <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청 취소" class="btn btn-secondary">
+            <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청 취소" class="btn btn-secondary position-absolute end-0">
             <!-- 3. 신청을 안 한 상태면 -->
           {% else %}
             {% if study.is_closed == False %}
-              <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청" class="btn btn-success">
+              <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청" class="btn btn-success position-absolute end-0">
             {% else %}
-              <input type="submit" value="가입불가" class="btn btn-danger disabled" disabled="disabled">
+              <input type="submit" value="가입불가" class="btn btn-danger disabled position-absolute end-0" disabled="disabled">
             {% endif %}
           {% endif %}
         </form>
@@ -58,7 +58,7 @@
 
       <!-- 사진 -->
       <img class="d-block study_mainimg mx-auto" src="{{ study.image.url }}" alt="{{ study.image }}">
-
+      
       <!-- 공부방장 -->
       <div class="writer">
         <div class='writer_profile'>
@@ -119,13 +119,13 @@
             {% if study.is_closed == False %}
               <span class="status-badges badge rounded-pill text-bg-success ms-2" style="font-size: 15px">모집중</span>
             {% else %}
-              <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+              <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 15px">모집 종료</span>
             {% endif %}
           </div>
-          <p class="m-0">인원:
+          <span class="m-0" style="font-size: 15px">인원:
             <span id="accepted-cnt">{{ accepted_list.count }}</span>
             /
-            {{ study.limit }}</p>
+            {{ study.limit }}</span>
           <p class="m-0 text-break" style="white-space: pre-line;">{{ study.content }}</p>
         </div>
       </div>
