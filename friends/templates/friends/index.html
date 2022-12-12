@@ -44,13 +44,12 @@
     <div style="min-height: 350px;">
       {% for user in users %}
         <div class="all-users user_box d-none {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
-          <div>
+          <div style='display: flex; justify-content: center;'>
 
-          <div class='d-flex'>
-
-            <a href="{% url 'accounts:profile' user.pk %}" class='d-flex align-items-center' style='width: 23%;'>
             <!-- 프로필 이미지-->
-              <div style='width:40%'>
+            
+              <div>
+                <a href="{% url 'accounts:profile' user.pk %}">
                 {% comment %}  {% endcomment %}
                 {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
                 <img src="{{ user.profile.image }}" class="profile-img" alt="">
@@ -59,10 +58,14 @@
                 {% else %}
                 <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
                 {% endif %}
+              </a>
               </div>
-              <div style='width:60%'>
+              <div style=' margin: 0 10px 0 10px;'>
                 <!-- 닉네임 -->
-                <p class="m-0">{{ user.profile.nickname }}</p>
+                <a href="{% url 'accounts:profile' user.pk %}">
+                  <p class="m-0">{{ user.profile.nickname }}</p>
+                </a>
+
                 <!-- 주 사용언어 -->
                 {% if user.profile.language == 'Python' %}
                 <p class="my-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
@@ -84,11 +87,9 @@
                   <p class="m-0"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
                 </div>
               </div>
-            </a>
             <div>
-              <a href="{% url 'notes:send_to' user.pk %}">쪽지 보내기</a>
+              <a class='bbtn me-2' href="{% url 'notes:send_to' user.pk %}">쪽지 보내기</a>
             </div>
-        </div>
       </div>
 
       </div>
