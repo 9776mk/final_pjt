@@ -5,13 +5,18 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
     studies = Study.objects.all()
 
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(studies, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+
     context = {
-        "studies": studies,
+        "studies": page_obj,
     }
 
     return render(request, "studies/index.html", context)
