@@ -15,6 +15,7 @@ from algorithm.models import (
 )
 from datetime import date, datetime, timedelta
 import random
+from django.db.models import Q
 
 # Create your views here.
 
@@ -393,4 +394,20 @@ def likes(request, article_pk):
         data = {"is_liked": is_liked}
         return JsonResponse(data)
     return redirect("accounts:login")
+
+def search(request):#검색 
+    search= Article.objects.order_by('-pk')
+    q = request.GET.get('q')
+    search = search.filter(Q(title__icontains=q)|Q(content__icontains=q))
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 15)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'articles/search.html',context)
 

@@ -25,4 +25,5 @@ urlpatterns = [
         name="comments_delete",
     ),
     path("<int:article_pk>/likes/", views.likes, name="likes"),
+    path('search/',views.search, name='search' ),#검색
 ]

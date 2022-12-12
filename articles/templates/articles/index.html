@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
@@ -7,9 +8,20 @@
   <!-- 전체, 기본 -->
   {% if request.resolver_match.url_name == 'index' %}
     <div class='container py-5'>
-      <div class='mx-3'>
-        <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
-        <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+      <div class='mx-3 d-flex justify-content-between'>
+        <div class="">
+          <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
+          <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+        </div>
+        <nav class="navbar">
+          <div class="container-fluid">
+            <form class="d-flex justify-content-end" role="search" action="{% url 'articles:search' %}" method="GET">
+  
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </nav>
       </div>
         <!--탭-->
         <div class="d-flex justify-content-end mb-2 me-1">
