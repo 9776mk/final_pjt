@@ -54,11 +54,9 @@
       </div>
       
       <!-- 사진 -->
-      <div style='margin: 30px 60px;'>
-        {% for image in articles.image_set.all %}
-          <img class="d-block mx-auto" width='50%' style='max-width: 500px; max-height:580px; border-radius: 8px;'  src="{{ image.image.url }}" alt="{{ image.image }}" width="100%">
-        {% endfor %}
-      </div>
+      {% for image in articles.image_set.all %}
+        <img class="d-block article_img mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}" width="100%">
+      {% endfor %}
 
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
