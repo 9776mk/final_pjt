@@ -63,10 +63,10 @@ imgs.forEach(img => { // 이미지 마다 설정하기
                         top: ${evt.target.style.top};
                         left: ${evt.target.style.left};
                     `;
-                    if (zoomLayer == 150) {
+                    if (zoomLayer == 125) {
                         copy.classList.replace("zoomIn", "zoomOut");
                     }
-                    if (zoomLayer > 150) {
+                    if (zoomLayer > 125) {
                         zoomLayer = 100;
                         zoomIn.style.cssText = `
                             width: ${zoomLayer}%;
