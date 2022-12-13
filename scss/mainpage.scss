@@ -106,13 +106,14 @@ main {
 @media screen and (max-width:800px) {
     main {
         padding: 0 !important;
+        padding-top: 10px !important;
     }
 
     .community,
     .algo,
     .graph,
     .find {
-        width: 100% !important;
+        width: 95% !important;
     }
 
     .graph .servey {
@@ -150,12 +151,39 @@ main {
     }
 }
 
-@media screen and (max-width:480px) {
+
+
+
+
+
+@media screen and (max-width:600px) {
+
+    .community,
+    .algo,
+    .graph,
+    .find {
+        width: 95% !important;
+    }
 
     #thbox {
         display: contents !important;
     }
+
+    .algo {
+        .algoboxs {
+
+            .algobox-frame {
+
+                width: none !important;
+            }
+        }
+    }
 }
+
+
+
+
+
 
 .community {
 
@@ -213,7 +241,7 @@ main {
                         top: -86%;
                         right: -12px;
                         transform: rotate(15deg);
-                        z-index: 1030;
+                        z-index: 10;
                         width: 47px;
                         height: 40px;
                     }
@@ -266,6 +294,14 @@ main {
 
         .algobox-frame {
             width: 50%;
+        }
+
+        .algobox-frame:nth-child(2) {
+            .algobox {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
 

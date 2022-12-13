@@ -1,3 +1,15 @@
+@media screen and (max-width:900px) {
+    .signup_box {
+        width: 90% !important;
+    }
+}
+
+@media screen and (max-width:500px) {
+    .signup_box {
+        width: 100% !important;
+    }
+}
+
 .signup-main {
     min-height: 100vh;
     height: 100%;
@@ -31,7 +43,7 @@
     padding: 24px;
     background-color: #0c162d;
     border: 1px solid #202637;
-    width: 900px;
+    width: 70%;
     z-index: 10;
 }
 
