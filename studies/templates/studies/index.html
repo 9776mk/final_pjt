@@ -2,6 +2,15 @@
 {% load static %}
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
+  <style>
+    .card-title-text, .card-user-nickname {
+      width: 100%;
+      min-height: 24px;
+      text-overflow: ellipsis;
+      white-space: nowrap;  
+      overflow: hidden;
+    }
+  </style>
 {% endblock link %}
 
 {% block content %}
@@ -34,7 +43,7 @@
               
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+                  <h5 class="card-title card-title-text m-0">{{ study.title }}</h5>
 
                   {% if study.is_closed == False %}
                     <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
@@ -42,7 +51,7 @@
                     <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
                   {% endif %}
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
+                <p class="card-text card-user-nickname">{{ study.host_user.profile.nickname }}</p>
               </div>
             </a>
           </div>
@@ -95,7 +104,12 @@
         <div class="col mb-3 d-flex justify-content-center ">
           <div class="card " style="width: 21rem;">
             <a href="{% url 'studies:detail' study.pk %}">
-              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              {% if study.thumbnail %}
+                <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              {% else %}
+                <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+              {% endif %}
+
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <h5 class="card-title m-0">{{ study.title }}</h5>
@@ -106,7 +120,7 @@
                     <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
                   {% endif %}
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
+                <p class="card-text card-user-nickname">{{ study.host_user.profile.nickname }}</p>
               </div>
             </a>
           </div>
@@ -159,10 +173,15 @@
         <div class="col mb-3 d-flex justify-content-center ">
           <div class="card " style="width: 21rem;">
             <a href="{% url 'studies:detail' study.pk %}">
-              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              {% if study.thumbnail %}
+                <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              {% else %}
+                <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+              {% endif %}
+
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+                  <h5 class="card-title card-title-text m-0">{{ study.title }}</h5>
 
                   {% if study.is_closed == False %}
                     <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
@@ -170,7 +189,7 @@
                     <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
                   {% endif %}
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
+                <p class="card-text card-user-nickname">{{ study.host_user.profile.nickname }}</p>
               </div>
             </a>
           </div>
@@ -223,10 +242,15 @@
         <div class="col mb-3 d-flex justify-content-center ">
           <div class="card " style="width: 21rem;">
             <a href="{% url 'studies:detail' study.pk %}">
-              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              {% if study.thumbnail %}
+                <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              {% else %}
+                <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+              {% endif %}
+
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+                  <h5 class="card-title card-title-text m-0">{{ study.title }}</h5>
 
                   {% if study.is_closed == False %}
                     <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
@@ -234,7 +258,7 @@
                     <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
                   {% endif %}
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
+                <p class="card-text card-user-nickname">{{ study.host_user.profile.nickname }}</p>
               </div>
             </a>
           </div>
@@ -287,10 +311,15 @@
         <div class="col mb-3 d-flex justify-content-center ">
           <div class="card " style="width: 21rem;">
             <a href="{% url 'studies:detail' study.pk %}">
-              <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              {% if study.thumbnail %}
+                <img class="card-img-top" src="{{ study.thumbnail.url }}">
+              {% else %}
+                <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+              {% endif %}
+
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+                  <h5 class="card-title card-title-text m-0">{{ study.title }}</h5>
 
                   {% if study.is_closed == False %}
                     <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
@@ -298,7 +327,7 @@
                     <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
                   {% endif %}
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
+                <p class="card-text card-user-nickname">{{ study.host_user.profile.nickname }}</p>
               </div>
             </a>
           </div>
