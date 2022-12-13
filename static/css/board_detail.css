@@ -167,17 +167,21 @@ body.noScroll {
   width: 100%;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
 }
-.thwrap img {
-  border-radius: 10px;
+.thwrap .img_frame {
   width: 50%;
-  margin: auto;
   cursor: pointer;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.thwrap .img_frame img {
+  width: 100%;
 }
 
 img {
   /* 이미지 배율 증가 시 부드럽게 */
-  border-radius: 10px;
   -o-object-position: center;
      object-position: center;
   -o-object-fit: contain;
