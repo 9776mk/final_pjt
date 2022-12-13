@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load mathfilters %}
+{% load filter %} <!-- 마크다운 -->
+{% load static %}
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %} 
+<h1> 스터디 게시판 디테일 페이지 </h1>
+{% for article in boards %}
+<h1> {{ article.title }} </h1>
+
+{% endfor %}
+
+{% endblock content %}
+

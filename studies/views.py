@@ -5,6 +5,8 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+import json
+import requests
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -426,6 +428,76 @@ def notice_delete_all(request):
     return JsonResponse(data)
 
 
+# 스터디 게시판 인덱스
+def board(request, study_pk):
+    study = get_object_or_404(Study, pk=study_pk)
+    boards = Board.objects.all()
+
+    context = {
+        "study": study,
+        "boards": boards,
+    }
+    return render(request, "studies/board.html", context)
+
+
+# 스터디 게시판 게시물 생성
+@login_required
+def board_create(request, study_pk):
+    if request.method == "POST":
+        study = Study.objects.get(pk=study_pk)
+        Board_Form = BoardForm(request.POST)
+        # print(Board_Form.is_valid())
+
+        if Board_Form.is_valid():
+            board = Board_Form.save(commit=False)
+            board.study = study
+            board.user = request.user
+            board.save()
+
+            return redirect("studies:board", study_pk)
+
+    else:
+        Board_Form = BoardForm()
+
+    context = {
+        "study_pk": study_pk,
+        "Board_Form": Board_Form,
+    }
+    return render(request, "studies/board_create.html", context)
+
+
+# 스터디 게시판 상세보기
+def board_detail(request, study_pk, article_pk):
+    # comment = Comment.objects.get(pk=comment_pk)
+    # comment_form = CommentForm()
+
+    boards = Board.objects.get(pk=study_pk)
+
+    context = {
+        # "comment": comment,
+        # "comment_form": comment_form,
+        "boards": boards
+    }
+    return render(request, "studies/board_detail.html", context)
+
+
+def problem_check(request):
+    is_valid = False
+    url = "https://www.acmicpc.net/problem/"
+    id = json.loads(request.body).get("problem_num")
+    print(id)
+
+    if id:
+        response = requests.get(url + id)
+        if response.status_code == 200:
+            is_valid = True
+
+    data = {
+        "is_valid": is_valid,
+    }
+
+    return JsonResponse(data)
+
 # 알림 읽음
 @login_required
 def notice_read(request):
@@ -445,7 +517,3 @@ def notice_read(request):
 
     # return redirect('home')
     return JsonResponse(data)
-
-
-def board(request, pk):
-    return render(request, "studies/board.html")

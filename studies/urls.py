@@ -5,6 +5,9 @@ app_name = "studies"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("<int:study_pk>/board/create/", views.board_create, name="board_create"),  # 스터디 게시판 글 작성
+    path("<int:study_pk>/board/<int:article_pk>/", views.board_detail, name="board_detail"),  # 스터디 게시판 글 보기
+    path("problem_check/", views.problem_check, name="problem_check"),  # 백준 문제 확인
     path("index_al/", views.index_al, name="index_al"),
     path("index_fe/", views.index_fe, name="index_fe"),
     path("index_be/", views.index_be, name="index_be"),
