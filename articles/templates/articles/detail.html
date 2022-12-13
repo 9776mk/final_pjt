@@ -65,7 +65,7 @@
       </div>
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
-        {{ articles.content|mark  }}
+        {{ articles.content|mark }}
       </div>
 
       <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
@@ -74,6 +74,11 @@
         <form action="" method="POST">
           {% csrf_token %}
           <div class="bt_wrap pb-5">
+            <button disabled>
+              <i class="bi bi-heart-fill my-2" style="font-style: normal; height: 45px; color: #ff0000;">
+                <span class="ms-1">{{ articles.like.count }}</span>
+              </i>
+            </button>
             <a href="{% url 'articles:delete' articles.pk %}" class="on">삭제</a>
             <a href="{% url 'articles:update' articles.pk %}" class="on">수정</a>
             <a href="{% url 'articles:index' %}" class="on">뒤로</a>
@@ -83,12 +88,21 @@
       {% else %}
         <!-- 좋아요 버튼 -->
         <div class='bt_wrap d-flex justify-content-center pb-5'>
-          <form class="like-froms" data-article-id="{{ articles.pk }}" method="POST">
+          <form class="like-forms" data-article-id="{{ articles.pk }}" method="POST">
             {% csrf_token %}
             {% if request.user in articles.like.all %}
-              <input type="submit" value="좋아요취소❌" id="like-{{ articles.pk }}">
+              {% comment %} <input type="submit" value="좋아요취소❌" id="like-{{ articles.pk }}"> {% endcomment %}
+              <button type="submit" id="like-{{ articles.pk }}">
+                <i id="heart-{{ articles.pk }}" class="bi bi-heart-fill my-2" style="font-style: normal; height: 45px; color: #ff0000;"></i>
+                <span class="ms-1" id="like-count-{{ articles.pk }}">{{ articles.like.count }}</span>
+              </button>
             {% else %}
-              <input type="submit" value="좋아요🧡" id="like-{{ articles.pk }}">
+              {% comment %} <input type="submit" value="좋아요🧡" id="like-{{ articles.pk }}"> {% endcomment %}
+              <button type="submit" id="like-{{ articles.pk }}">
+                <i id="heart-{{ articles.pk }}" class="bi bi-heart my-2" style="font-style: normal; height: 45px; color: #ff0000;">
+                  <span class="ms-1" id="like-count-{{ articles.pk }}">{{ articles.like.count }}</span>
+                </i>
+              </button>
             {% endif %}
           </form>
           <a href="{% url 'articles:index' %}" class="on">뒤로가기</a>
@@ -227,39 +241,42 @@
         })
     }
 
-    const form = document.querySelector('.like-froms')
-    const csrftoken = document
-      .querySelector('[name=csrfmiddlewaretoken]')
-      .value
-      form
-      .addEventListener('submit', function (event) {
+    // 좋아요
+    const form = document.querySelector('.like-forms')
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    
+      form.addEventListener('submit', function (event) {
         event.preventDefault()
-        const articleId = event
-          .target
-          .dataset
-          .articleId
-          console
-          .log(form)
+        const articleId = event.target.dataset.articleId
+          console.log(form)
         axios({
           method: 'post',
           url: `/articles/${articleId}/likes/`,
-          headers: {
-            'X-CSRFToken': csrftoken
-          }
+          headers: {'X-CSRFToken': csrftoken },
         })
           .then((response) => {
             const isLiked = response.data.is_liked
             const likeBtn = document.querySelector(`#like-${articleId}`)
+            const likeCount = document.querySelector(`#like-count-${articleId}`)
+            const heart = document.querySelector(`#heart-${articleId}`)
+
             if (isLiked === true) {
-              likeBtn.value = "좋아요취소❌"
+              // likeBtn.value = "좋아요취소❌"
+              heart.classList.add('bi-heart-fill')
+              heart.classList.remove('bi-heart')
+              likeCount.innerText = response.data.likeCount
             } else {
-              likeBtn.value = "좋아요🧡"
+              // likeBtn.value = "좋아요🧡"
+              heart.classList.add('bi-heart')
+              heart.classList.remove('bi-heart-fill')
+              likeCount.innerText = response.data.likeCount
             }
           })
           .catch((error) => {
             console.log(error.response)
           })
         })
+
         //url 링크 복사
         function clip(){
 

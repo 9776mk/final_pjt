@@ -75,13 +75,19 @@
             <div class="tape-section"></div>
           </div>
         </div>
-        {% if note.from_user != request.user %}
-        <div class="d-flex justify-content-center mt-3">
-          <a href="{% url 'notes:reply' note.pk %}" class="bbtn" style="margin-bottom: 100px;">답장하기</a>
+        {% comment %} {% if note.from_user != request.user %} {% endcomment %}
+        <div class="d-flex justify-content-center mt-3" style="margin-bottom: 100px;">
+          <a href="{% url 'notes:reply' note.pk %}" class="bbtn me-3">답장</a>
+          {% if not note.important %}
+          <a href="{% url 'notes:important_check' note.pk %}" class="bbtn me-3">보관</a>
+          {% else %}
+          <a href="{% url 'notes:important_return' note.pk %}" class="bbtn me-3">보관 취소</a>
+          {% endif %}
+          <a href="{% url 'notes:reply' note.pk %}" class="bbtn">삭제</a>
         </div>
-        {% else %}
+        {% comment %} {% else %}
         <div style="margin-bottom: 100px;"></div>
-        {% endif %}
+        {% endif %} {% endcomment %}
       </div>
       <!-- Visible only on xs -->
       <div class="d-block d-sm-none">
@@ -103,13 +109,15 @@
             <div class="tape-section"></div>
           </div>
         </div>
-        {% if note.from_user != request.user %}
-        <div class="d-flex justify-content-center mt-3">
-          <a href="{% url 'notes:reply' note.pk %}" class="bbtn" style="margin-bottom: 100px;">답장하기</a>
+        <div class="d-flex justify-content-center mt-4" style="margin-bottom: 100px;">
+          <a href="{% url 'notes:reply' note.pk %}" class="bbtn me-3">답장</a>
+          {% if not note.important %}
+          <a href="{% url 'notes:important_check' note.pk %}" class="bbtn me-3">보관</a>
+          {% else %}
+          <a href="{% url 'notes:important_return' note.pk %}" class="bbtn me-3">보관 취소</a>
+          {% endif %}
+          <a href="{% url 'notes:reply' note.pk %}" class="bbtn">삭제</a>
         </div>
-        {% else %}
-        <div style="margin-bottom: 100px;"></div>
-        {% endif %}
       </div>
     </div>
   </div>

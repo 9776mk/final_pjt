@@ -16,7 +16,7 @@ urlpatterns = [
     path("<int:user_pk>/", views.profile, name="profile"),
     path("<int:user_pk>/update/", views.profile_update, name="profile_update"),
     path("password/", views.password, name="password"),  # 비밀번호 변경
-    path("<int:pk>/delete/", views.delete, name="delete"),  # 회원탈퇴
+    path("delete/", views.delete, name="delete"),  # 회원탈퇴
     path("<int:user_pk>/follow/", views.follow, name="follow"),
     path("<int:user_pk>/guestbook/", views.guestbook, name="guestbook"),  # 방명록
     path(

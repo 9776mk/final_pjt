@@ -10,7 +10,7 @@
       <h1 style="font-family: 'HBIOS-SYS';">공부방</h1>
       <p>함께 성장하는 개발자들의 모임입니다.</p>
     </div>
-    
+
     <!--탭-->
     <div class="d-flex justify-content-end mb-3 me-1">
       <a class='me-3' href="{% url 'studies:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
@@ -19,34 +19,34 @@
       <a class='me-3' href="{% url 'studies:index_be' %}" style="font-family: 'HBIOS-SYS';">백엔드</a>
       <a class='me-3' href="{% url 'studies:index_etc' %}" style="font-family: 'HBIOS-SYS';">기타</a>
     </div>
-      
+
     {% if request.resolver_match.url_name == 'index' %}
       <div class='row row-cols-lg-3 row-cols-md-2'>
         {% for study in studies %}
-        <div class="col mb-3 d-flex justify-content-center ">
-          <div class="card " style="width: 21rem;">
-            <a href="{% url 'studies:detail' study.pk %}">
-              {% if study.thumbnail %}
-                <img class="card-img-top" src="{{ study.thumbnail.url }}">
-              {% else %}
-                <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
-              {% endif %}
-              
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+          <div class="col mb-3 d-flex justify-content-center ">
+            <div class="card " style="width: 21rem;">
+              <a href="{% url 'studies:detail' study.pk %}">
+                {% if study.thumbnail %}
+                  <img class="card-img-top" src="{{ study.thumbnail.url }}">
+                {% else %}
+                  <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+                {% endif %}
 
-                  {% if study.is_closed == False %}
-                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
-                  {% else %}
-                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
-                  {% endif %}
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title m-0">{{ study.title }}</h5>
+
+                    {% if study.is_closed == False %}
+                      <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                    {% else %}
+                      <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                    {% endif %}
+                  </div>
+                  <p class="card-text">{{ study.host_user }}</p>
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
-              </div>
-            </a>
+              </a>
+            </div>
           </div>
-        </div>
         {% endfor %}
       </div>
 
@@ -66,7 +66,8 @@
         {% endif %}
         <!-- 페이지 리스트 -->
         {% for page_number in studies.paginator.page_range %}
-          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+        {% comment %}  {% endcomment %}
+          {% if page_number >= studies.number|add:-3 and page_number <= dstudies.number|add:3 %}
             {% if page_number == studies.number %}
               <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
             {% else %}
@@ -92,25 +93,29 @@
     {% elif request.resolver_match.url_name == 'index_al' %}
       <div class='row row-cols-lg-3 row-cols-md-2'>
         {% for study in studies %}
-        <div class="col mb-3 d-flex justify-content-center ">
-          <div class="card " style="width: 21rem;">
-            <a href="{% url 'studies:detail' study.pk %}">
-              <img class="card-img-top" src="{{ study.thumbnail.url }}">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+          <div class="col mb-3 d-flex justify-content-center ">
+            <div class="card " style="width: 21rem;">
+              <a href="{% url 'studies:detail' study.pk %}">
+                {% if study.thumbnail %}
+                  <img class="card-img-top" src="{{ study.thumbnail.url }}">
+                {% else %}
+                  <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+                {% endif %}
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title m-0">{{ study.title }}</h5>
 
-                  {% if study.is_closed == False %}
-                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
-                  {% else %}
-                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
-                  {% endif %}
+                    {% if study.is_closed == False %}
+                      <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                    {% else %}
+                      <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                    {% endif %}
+                  </div>
+                  <p class="card-text">{{ study.host_user }}</p>
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
-              </div>
-            </a>
+              </a>
+            </div>
           </div>
-        </div>
         {% endfor %}
       </div>
 
@@ -130,7 +135,8 @@
         {% endif %}
         <!-- 페이지 리스트 -->
         {% for page_number in studies.paginator.page_range %}
-          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+          {% comment %}  {% endcomment %}
+          {% if page_number >= studies.number|add:-3 and page_number <= dstudies.number|add:3 %}
             {% if page_number == studies.number %}
               <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
             {% else %}
@@ -156,25 +162,29 @@
     {% elif request.resolver_match.url_name == 'index_fe' %}
       <div class='row row-cols-lg-3 row-cols-md-2'>
         {% for study in studies %}
-        <div class="col mb-3 d-flex justify-content-center ">
-          <div class="card " style="width: 21rem;">
-            <a href="{% url 'studies:detail' study.pk %}">
-              <img class="card-img-top" src="{{ study.thumbnail.url }}">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+          <div class="col mb-3 d-flex justify-content-center ">
+            <div class="card " style="width: 21rem;">
+              <a href="{% url 'studies:detail' study.pk %}">
+                {% if study.thumbnail %}
+                  <img class="card-img-top" src="{{ study.thumbnail.url }}">
+                {% else %}
+                  <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+                {% endif %}
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title m-0">{{ study.title }}</h5>
 
-                  {% if study.is_closed == False %}
-                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
-                  {% else %}
-                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
-                  {% endif %}
+                    {% if study.is_closed == False %}
+                      <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                    {% else %}
+                      <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                    {% endif %}
+                  </div>
+                  <p class="card-text">{{ study.host_user }}</p>
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
-              </div>
-            </a>
+              </a>
+            </div>
           </div>
-        </div>
         {% endfor %}
       </div>
 
@@ -194,7 +204,8 @@
         {% endif %}
         <!-- 페이지 리스트 -->
         {% for page_number in studies.paginator.page_range %}
-          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+          {% comment %}  {% endcomment %}
+          {% if page_number >= studies.number|add:-3 and page_number <= dstudies.number|add:3 %}
             {% if page_number == studies.number %}
               <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
             {% else %}
@@ -220,25 +231,29 @@
     {% elif request.resolver_match.url_name == 'index_be' %}
       <div class='row row-cols-lg-3 row-cols-md-2'>
         {% for study in studies %}
-        <div class="col mb-3 d-flex justify-content-center ">
-          <div class="card " style="width: 21rem;">
-            <a href="{% url 'studies:detail' study.pk %}">
-              <img class="card-img-top" src="{{ study.thumbnail.url }}">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+          <div class="col mb-3 d-flex justify-content-center ">
+            <div class="card " style="width: 21rem;">
+              <a href="{% url 'studies:detail' study.pk %}">
+                {% if study.thumbnail %}
+                  <img class="card-img-top" src="{{ study.thumbnail.url }}">
+                {% else %}
+                  <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+                {% endif %}
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title m-0">{{ study.title }}</h5>
 
-                  {% if study.is_closed == False %}
-                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
-                  {% else %}
-                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
-                  {% endif %}
+                    {% if study.is_closed == False %}
+                      <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                    {% else %}
+                      <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                    {% endif %}
+                  </div>
+                  <p class="card-text">{{ study.host_user }}</p>
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
-              </div>
-            </a>
+              </a>
+            </div>
           </div>
-        </div>
         {% endfor %}
       </div>
 
@@ -258,7 +273,8 @@
         {% endif %}
         <!-- 페이지 리스트 -->
         {% for page_number in studies.paginator.page_range %}
-          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+          {% comment %}  {% endcomment %}
+          {% if page_number >= studies.number|add:-3 and page_number <= dstudies.number|add:3 %}
             {% if page_number == studies.number %}
               <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
             {% else %}
@@ -284,25 +300,29 @@
     {% elif request.resolver_match.url_name == 'index_etc' %}
       <div class='row row-cols-lg-3 row-cols-md-2'>
         {% for study in studies %}
-        <div class="col mb-3 d-flex justify-content-center ">
-          <div class="card " style="width: 21rem;">
-            <a href="{% url 'studies:detail' study.pk %}">
-              <img class="card-img-top" src="{{ study.thumbnail.url }}">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="card-title m-0">{{ study.title }}</h5>
+          <div class="col mb-3 d-flex justify-content-center ">
+            <div class="card " style="width: 21rem;">
+              <a href="{% url 'studies:detail' study.pk %}">
+                {% if study.thumbnail %}
+                  <img class="card-img-top" src="{{ study.thumbnail.url }}">
+                {% else %}
+                  <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+                {% endif %}
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title m-0">{{ study.title }}</h5>
 
-                  {% if study.is_closed == False %}
-                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
-                  {% else %}
-                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
-                  {% endif %}
+                    {% if study.is_closed == False %}
+                      <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                    {% else %}
+                      <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                    {% endif %}
+                  </div>
+                  <p class="card-text">{{ study.host_user }}</p>
                 </div>
-                <p class="card-text">{{ study.host_user }}</p>
-              </div>
-            </a>
+              </a>
+            </div>
           </div>
-        </div>
         {% endfor %}
       </div>
 
@@ -322,7 +342,8 @@
         {% endif %}
         <!-- 페이지 리스트 -->
         {% for page_number in studies.paginator.page_range %}
-          {% if page_number >= studies.number|add:-3 and page_number <= studies.number|add:3 %}
+          {% comment %}  {% endcomment %}
+          {% if page_number >= studies.number|add:-3 and page_number <= dstudies.number|add:3 %}
             {% if page_number == studies.number %}
               <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
             {% else %}
@@ -346,7 +367,7 @@
         </a>
       </div>
     {% endif %}
-    
+
     <div class='bt_wrap'>
       <a class="" href="{% url 'studies:create' %}" style=''>공부방 생성하기 📚</a>
     </div>

@@ -8,7 +8,7 @@
 
 {% block content %}
   <div class="container my-5 pb-5 d-flex justify-content-center">
-    <div class="col-sm-12 col-lg-6 col-md-8 mx-3">
+    <div class="col-lg-6 mx-3">
       <h3 class="text-center mb-5" style="font-family: 'HBIOS-SYS';">{{ user.profile.nickname }}님의 방명록 📜</h3>
       <!-- 방명록 글 작성 Form -->
       <form id="gb-article-create-form" onsubmit="event.preventDefault(); create_gb_article(this, '{{ user.pk }}')">
@@ -48,22 +48,16 @@
           <div id="article-{{ article.pk }}" class="mb-3" data-is-secret="{{ article.is_secret }}">
             <div class="d-flex justify-content-between align-items-center">
               <!-- 프로필 사진 2 -->
-              {% if not article.user.profile.image %}
-                <div class="d-flex flex-column align-items-center">
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="guestbook-img" alt=""></a>
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0 nickname">{{ article.user.profile.nickname }}</p></a>
-                </div>
-              {% elif article.user.profile.image|slugify|slice:'0:4' == 'http' %}
-                <div class="d-flex flex-column align-items-center">
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image }}" class="guestbook-img" alt=""></a>
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0 nickname">{{ article.user.profile.nickname }}</p></a>
-                </div>
-              {% else %}
-                <div class="d-flex flex-column align-items-center">
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image.url }}" class="guestbook-img" alt=""></a>
-                  <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0 nickname">{{ article.user.profile.nickname }}</p></a>
-                </div>
-              {% endif %}
+              <div class="d-flex flex-column align-items-center me-2">
+                {% if not article.user.profile.image %}
+                <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{% static 'images/no-avatar.jpg' %}" class="guestbook-img" alt=""></a>
+                {% elif article.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image }}" class="guestbook-img" alt=""></a>
+                {% else %}
+                <a href="{% url 'accounts:profile' article.user.pk %}"><img src="{{ article.user.profile.image.url }}" class="guestbook-img" alt=""></a>
+                {% endif %}
+                <a href="{% url 'accounts:profile' article.user.pk %}"><p class="mt-2 mb-0 nickname">{{ article.user.profile.nickname }}</p></a>
+              </div>
 
               <!-- 방명록 말풍선 -->
               <div class="{% if article.is_secret %}speech-bubble-secret{% else %}speech-bubble{% endif %} w-100 ms-3">

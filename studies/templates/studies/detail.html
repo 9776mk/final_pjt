@@ -123,24 +123,27 @@
             {% endif %}
           </div>
           <span class="m-0" style="font-size: 20px">인원:</span>
-            <span id="accepted-cnt" style="font-size: 20px">{{ accepted_list.count }} /</span>
-            <span style="font-size: 20px">{{ study.limit }}</span>
+            <span id="accepted-cnt" style="font-size: 20px">{{ accepted_list.count }}</span>
+            <span style="font-size: 20px"> / {{ study.limit }}</span>
           <p class="mt-5 mb-0 text-break" style="white-space: pre-line;">{{ study.content }}</p>
         </div>
       </div>
 
       <!-- 신청 인원, 스터디원, 뒤로가기, 스터디 게시판 버튼 모음-->
-      <div class='d-flex justify-content-between mb-4'>
-        <div class='d-flex justify-content-center mb-3 btns_1' style="padding: 0 0 0 80px">
-          {% if request.user == study.host_user %}
+      <div class='d-flex justify-content-between mb-5'>
+        {% if request.user == study.host_user %}
+          <div class='d-flex justify-content-center' style="padding: 0 0 0 80px">
             <button class="bbtn_stu me-2" data-bs-toggle="modal" data-bs-target="#waiting-list">신청 인원</button>
             <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
-          {% else %}
-            <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
-            <a href="{% url 'studies:index' %}" class="bbtn_stu ms-2">뒤로가기</a>
-          {% endif %}
+          </div>
+        {% else %}
+        <div style="padding: 0 0 0 80px">
+          <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
         </div>
-        <div class='mb-3 btns_1' style="padding: 0 80px 0 0">
+          <a href="{% url 'studies:index' %}" class="bbtn_back">뒤로</a>
+        {% endif %}
+        
+        <div class='' style="padding: 0 80px 0 0">
           <a href="{% url 'studies:board' study.pk %}" class='bbtn_stu'> 게시판 </a>
         </div>
       </div>

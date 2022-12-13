@@ -126,6 +126,12 @@ def delete(request, pk):
         return redirect("notes:index")
 
 
+@login_required        
+def all_delete(request):# 휴지통 전체삭제
+    note = Notes.objects.filter(to_user_id=request.user.id, garbage=True)
+    note.delete()
+    return redirect("notes:trash")
+
 @login_required
 def trash_throw_away(request, pk):
     note = Notes.objects.get(pk=pk)
@@ -163,7 +169,7 @@ def important_check(request, pk):
     if request.user == note.to_user:
         note.important = True
         note.save()
-    return redirect("notes:index")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
@@ -172,7 +178,7 @@ def important_return(request, pk):
     if request.user == note.to_user:
         note.important = False
         note.save()
-    return redirect("notes:index")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
