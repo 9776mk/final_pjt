@@ -9,13 +9,13 @@
   {% if request.resolver_match.url_name == 'index' %}
   <div class='container py-5'>
       <div>
-      <div class='mx-3 d-flex justify-content-between flex-wrap'>
+      <div class='d-flex justify-content-between flex-wrap'style='margin-left:16px;'>
         <div>
           <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
           <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
         </div>
 
-          <div class="">
+          <div class="" style="display: flex;align-items: center;">
             <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
               <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
               <input class="" type="submit" value='Search'></input>

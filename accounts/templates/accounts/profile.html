@@ -52,8 +52,10 @@
         <p class="mb-1 me-2"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
         {% endif %}
         <p class="mt-1 mb-1 me-2"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
-        {% if tier %}
+        {% if tier > 0 %}
         <p class="mt-1 mb-1"><img style="height: 25px" src="https://static.solved.ac/tier_small/{{ tier }}.svg"> </p>
+        {% elif tier < 0 %}
+        <p class="text-muted mt-1 mb-1"> 유효하지 않는 아이디입니다. <br> 다시 등록해주세요. </p>
         {% else %}
         <p class="text-muted mt-1 mb-1"> 백준 아이디를 등록해주세요 </p>
         {% endif %}
