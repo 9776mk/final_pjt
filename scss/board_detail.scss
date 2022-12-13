@@ -181,9 +181,9 @@ body.noScroll {
 
 .thwrap {
   img {
+    border-radius: 10px;
     width: 50%;
     margin: auto;
-    max-height: 350px;
     cursor: pointer;
 
   }
@@ -197,6 +197,7 @@ body.noScroll {
 
 img {
   /* 이미지 배율 증가 시 부드럽게 */
+  border-radius: 10px;
   object-position: center;
   object-fit: contain;
   transition: .3s;
