@@ -185,10 +185,12 @@ details {
   transition: all 0.4s;
   border-radius: 10px;
   text-align: center;
+
   &:hover {
     background-color: #ffb0b0;
     color: white;
   }
+}
 
 // 이미지 팝업
 
@@ -262,4 +264,13 @@ img {
   /* 팝업 보이기 */
   opacity: 1;
   pointer-events: unset;
+}
+
+.board_view {
+  overflow: hidden;
+
+  img {
+    margin-top: 0 !important;
+    border-radius: 0 !important;
+  }
 }

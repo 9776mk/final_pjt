@@ -138,7 +138,6 @@ details {
     width: 500px;
   }
 }
-
 .bbtn_bang {
   width: 53px;
   display: inline-block;
@@ -155,6 +154,7 @@ details {
 .bbtn_bang:hover {
   background-color: #ffb0b0;
   color: white;
+}
 
 body.noScroll {
   /* 이미지 팝업 시 이중 스크롤 방지 */
@@ -226,4 +226,12 @@ img {
   /* 팝업 보이기 */
   opacity: 1;
   pointer-events: unset;
+}
+
+.board_view {
+  overflow: hidden;
+}
+.board_view img {
+  margin-top: 0 !important;
+  border-radius: 0 !important;
 }/*# sourceMappingURL=board_detail.css.map */
