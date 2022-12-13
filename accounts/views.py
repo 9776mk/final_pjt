@@ -243,10 +243,9 @@ def password(request):
 
 # 회원 탈퇴
 @login_required
-def delete(request, pk):
-    user = get_user_model().objects.get(pk=pk)
-    if request.user == user:
-        user.delete()
+def delete(request):
+    if request.method == "POST":
+        request.user.delete()
         auth_logout(request)
     return redirect("home")
 
