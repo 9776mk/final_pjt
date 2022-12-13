@@ -56,18 +56,32 @@ main .algo h1 {
     margin-bottom: 30px;
     flex-direction: column;
   }
+  .lay .p-img {
+    width: 100% !important;
+  }
   .lay .p-text {
     margin-top: 20px;
     width: 100% !important;
   }
+  .lay .p-text .p-box {
+    margin: auto;
+  }
   .lay .p-text p {
-    text-align: center !important;
+    text-align: start !important;
   }
   .lay .p-text .btn-holder {
     margin-right: 20px;
   }
   .servey {
     width: 95% !important;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .community,
+.algo,
+.graph,
+.find {
+    width: 90% !important;
   }
 }
 @media screen and (max-width: 800px) {
@@ -254,14 +268,21 @@ main .algo h1 {
   display: flex;
   justify-content: space-around;
   margin-bottom: 30px;
+  width: 100%;
+}
+.find .lay .p-img {
+  width: 60%;
 }
 .find .lay .p-img img {
-  width: 100%;
+  width: 80%;
 }
 .find .lay .p-text {
   width: 40%;
 }
-.find .lay .p-text p {
+.find .lay .p-text .p-box {
+  width: 80%;
+}
+.find .lay .p-text .p-box p {
   text-align: start;
 }
 .find .lay .p-text .btn-holder {

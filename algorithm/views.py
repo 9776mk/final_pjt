@@ -3,6 +3,7 @@ from .models import *
 from .forms import *
 from django.db.models import Q
 from itertools import chain
+from django.core.paginator import Paginator
 
 # 체크박스
 from django.views import generic
@@ -40,7 +41,7 @@ def index(request):
 
 def search(request):
     # 선택된 레벨
-    level = request.POST.getlist("level-btns")
+    level = request.GET.getlist("level-btns")
     # # 레벨을 db 이름 리스트로 변환
     level_ = []
     for i in level:
@@ -48,9 +49,9 @@ def search(request):
     # print(level_)
 
     # 선택된 카테고리
-    category = request.POST.getlist("category-btns")
+    category = request.GET.getlist("category-btns")
     # 검색어
-    search = request.POST.get("search", "")
+    search = request.GET.get("search", "")
     total = []
 
     # 검색어가 있는 경우
@@ -85,7 +86,7 @@ def search(request):
                     if category:
                         for c in category:
                             # 검색어 O
-                            filter_ = br.filter(Q(tags__icontains=c))
+                            filter_ = si.filter(Q(tags__icontains=c))
                             total += list(filter_)
                     # 카테고리 X
                     else:
@@ -147,7 +148,45 @@ def search(request):
 
     # 중복된 태그가 있는 문제 제거
     total = set(total)
+    # print(total)
+    result = []
+    for t in total:
+        num = t.number
+        title = t.title
+        lev = t.level
+        t = t.tags
+        ts = t.replace("[", "")
+        ts = ts.replace("]", "")
+        ts = ts.replace("'", "")
+        ts = ts.replace(", ", " #")
+        result.append((num, title, ts, lev))
 
-    context = {"search": search, "category_list": total}
+    # 페이지네이션
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(result, 15)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)
+
+    # 선택된 카테고리
+    is_selected_lev = True if level else False
+    is_selected_cate = True if category else False
+    is_selected_input = True if search else False
+
+    # print(is_selected_lev, is_selected_cate, is_selected_input)
+    # print(level, category, search)
+    # # print(result)
+    # print(not level and not category)
+
+    context = {
+        "search": search, 
+        "results": page_obj,
+        "max_index": max_index,
+        "level": level,
+        "category": category,
+        "search": search,
+        "is_selected_lev": is_selected_lev,
+        "is_selected_cate": is_selected_cate,
+        "is_selected_input": is_selected_input,
+    }
 
     return render(request, "algorithm/search.html", context)

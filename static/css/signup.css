@@ -1,6 +1,8 @@
 .signup-main {
-    height: 100vh;
-    background-image: url(./sp.png);
+    min-height: 100vh;
+    height: 100%;
+    background: #061221;
+    /* background-image: url(./sp.png); */
     background-position: center;
     background-repeat: repeat;
     background-size: cover;
@@ -24,11 +26,13 @@
 }
 
 .signup_box {
+    margin: 10px;
     display: inline-block;
     padding: 24px;
     background-color: #0c162d;
     border: 1px solid #202637;
     width: 900px;
+    z-index: 10;
 }
 
 .label-text {
@@ -165,4 +169,33 @@
     stroke-width: 3px;
     stroke-dashoffset: 0;
     stroke: #06D6A0;
+}
+
+.signup-main i {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px #fff,
+        0 0 80px #fff;
+    animation: animate linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }

@@ -47,7 +47,12 @@ class User(AbstractUser):
     token = models.CharField(max_length=150, null=True, blank=True)
     notice_note = models.BooleanField(default=True)  # 쪽지
     note_notice = models.BooleanField(default=True)  # 쪽지
-    message_number = models.IntegerField(default=0)  # 쪽지 알람
+
+    # 쪽지 알림 개수
+    @property
+    def get_message_notice_cnt(self):
+        message_notice_cnt = Notes.objects.filter(to_user=self, read=0, garbage=False).count()
+        return message_notice_cnt
 
     # 스터디 알림 개수
     @property
@@ -72,7 +77,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=16)
-    intro = models.TextField(blank=True)
+    intro = models.TextField(blank=True, max_length=100)
     image = ProcessedImageField(
         upload_to="images/",
         blank=True,

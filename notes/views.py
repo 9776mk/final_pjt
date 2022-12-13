@@ -14,9 +14,6 @@ from django.core.paginator import Paginator
 @login_required
 def index(request):
     notes = Notes.objects.filter(to_user_id=request.user.id, garbage=False).order_by("-created_at")
-    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
-    request.user.message_number = notes_counter
-    request.user.save()
     page = request.GET.get('page', '1') # 페이지
     paginator = Paginator(notes, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
@@ -42,16 +39,14 @@ def sent(request):
 @login_required
 def send(request):
     form = NotesForm(request.POST or None)
-    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
     if form.is_valid():
-        temp = form.save(commit=False)
-        temp.from_user = request.user
-        temp.save()
-        if temp.to_user.note_notice:
-            temp.to_user.notice_note = False
-            temp.to_user.save()
+        to_info = get_user_model().objects.filter(username=request.POST["to_id"])
+        for to in to_info:
+            temp = form.save(commit=False)
+            temp.to_user = to
+            temp.from_user = request.user
+            temp.save()
         return redirect("notes:sent")
-    
     context = {
         "form": form,
     }
@@ -97,13 +92,9 @@ def send_to(request, user_pk):
 @login_required
 def detail(request, pk):
     note = get_object_or_404(Notes,pk=pk)
-    notes_counter = Notes.objects.filter(to_user_id=request.user.id, read=0, garbage=False).count()
-    print(notes_counter)
     if request.user == note.to_user:
         if not note.read:
             note.read =True
-            request.user.message_number = notes_counter-1
-            request.user.save()
             note.save()
         if not request.user.user_to.filter(read=False).exists():
             request.user.notice_note = True
@@ -135,19 +126,28 @@ def delete(request, pk):
         return redirect("notes:index")
 
 
+@login_required        
+def all_delete(request):# 휴지통 전체삭제
+    note = Notes.objects.filter(to_user_id=request.user.id, garbage=True)
+    if request.user:
+        note.delete()
+    return redirect("notes:trash")
+
 @login_required
 def trash_throw_away(request, pk):
     note = Notes.objects.get(pk=pk)
-    note.garbage = True
-    note.save()
+    if request.user == note.to_user:
+        note.garbage = True
+        note.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
 def trash_return(request, pk):
     note = Notes.objects.get(pk=pk)
-    note.garbage = False
-    note.save()
+    if request.user == note.to_user:
+        note.garbage = False
+        note.save()
     return redirect("notes:trash")
 
 
@@ -167,17 +167,19 @@ def trash(request):
 @login_required
 def important_check(request, pk):
     note = Notes.objects.get(pk=pk)
-    note.important = True
-    note.save()
-    return redirect("notes:index")
+    if request.user == note.to_user:
+        note.important = True
+        note.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
 def important_return(request, pk):
     note = Notes.objects.get(pk=pk)
-    note.important = False
-    note.save()
-    return redirect("notes:index")
+    if request.user == note.to_user:
+        note.important = False
+        note.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required

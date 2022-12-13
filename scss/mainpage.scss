@@ -65,12 +65,20 @@ main {
         margin-bottom: 30px;
         flex-direction: column;
 
+        .p-img {
+            width: 100% !important;
+        }
+
         .p-text {
             margin-top: 20px;
             width: 100% !important;
 
+            .p-box {
+                margin: auto;
+            }
+
             p {
-                text-align: center !important;
+                text-align: start !important;
             }
 
             .btn-holder {
@@ -82,6 +90,16 @@ main {
     .servey {
         width: 95% !important;
 
+    }
+}
+
+@media screen and (max-width:1050px) {
+
+    .community,
+    .algo,
+    .graph,
+    .find {
+        width: 90% !important;
     }
 }
 
@@ -356,20 +374,27 @@ main {
         display: flex;
         justify-content: space-around;
         margin-bottom: 30px;
+        width: 100%;
 
         .p-img {
+            width: 60%;
+
             img {
 
-                width: 100%;
+                width: 80%;
             }
         }
 
         .p-text {
             width: 40%;
 
-            p {
+            .p-box {
+                width: 80%;
 
-                text-align: start;
+                p {
+
+                    text-align: start;
+                }
             }
 
             .btn-holder {

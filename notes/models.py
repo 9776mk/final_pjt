@@ -11,6 +11,7 @@ class Notes(models.Model):
     to_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_to"
     )
+    to_id = models.CharField(max_length=16)
     title = models.CharField(max_length=30)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

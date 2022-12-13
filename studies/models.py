@@ -30,10 +30,10 @@ class Study(models.Model):
     is_closed = models.BooleanField(default=False)
 
     # 7. 연락처
-    contact = models.CharField(max_length=50)
+    contact = models.EmailField(max_length=50)
 
     # 8. 이미지
-    image = models.ImageField(upload_to="study_images/")
+    image = models.ImageField(blank=True, upload_to='study_images/')
     thumbnail = ImageSpecField(
         source="image",
         processors=[Thumbnail(300, 300)],

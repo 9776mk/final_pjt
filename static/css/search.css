@@ -1,0 +1,24 @@
+.s-table {
+    width: 70% !important;
+    margin: auto;
+}
+
+.s-table .num {
+    width: 10%;
+}
+
+.s-table .title {
+    width: 20%;
+}
+
+.s-table .level {
+    width: 10%;
+}
+
+.s-table .type {
+    width: 60%;
+}
+
+tr {
+    margin-bottom: 8px;
+}

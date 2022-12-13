@@ -16,6 +16,13 @@ textarea::placeholder {
   margin-top: 10px;
 }
 
+.nickname {
+  text-overflow : ellipsis;
+  max-width : 60px;
+  white-space : nowrap;
+  overflow : hidden;
+}
+
 /* 말풍선 */
 .speech-bubble {
   position: relative;
@@ -65,12 +72,12 @@ textarea::placeholder {
 
 .guestbook-img {
     border-radius: 70%;
-    width: 50px;
+    max-width: 50px;
 }
 
 .comment-img {
     border-radius: 70%; 
-    width: 25px;
+    max-width: 25px;
 }
 
 .lock-btn {

@@ -1,21 +1,327 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/search.css' %}">
+  <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
+{% endblock link %}
+
+
 {% block content %}
+  <div class='container py-5'>
+    <div class="p-3 d-flex justify-content-center">
+      <div class="d-flex align-items-center">
+        <h1 class="mb-5" style="font-family: 'HBIOS-SYS';">{{ search }} 검색 결과</h1>
+      </div>
+    </div>
 
-<div class="p-3 d-flex justify-content-center">
-  <div class="d-flex align-items-center">
-      <h3 class="m-0">{{ search }} 검색 결과</h3>
+    <table class='s-table table table-striped table-hover'>
+      <thead>
+        <tr>
+          <th class='num' >번호</th>
+          <th class='title' >제목</th>
+          <th class='type' >유형</th>
+          <th class='level' >레벨</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for result in results %}
+        <tr>
+          <td>{{ result.0 }}</td>
+          <td><a href="https://www.acmicpc.net/problem/{{result.0}}">{{ result.1 }}</a></td>
+          <td><a href="https://www.acmicpc.net/problem/{{result.0}}">#{{ result.2 }}</a></td>
+          <td><img style="height: 24px" src="https://static.solved.ac/tier_small/{{ result.3 }}.svg"></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- 1. 페이지네이션 (검색어 O) -->
+    {% if is_selected_input %}
+      <!-- (1) 페이지네이션 (난이도, 꼬리표가 모두 선택됨) -->
+      {% if is_selected_lev and is_selected_cate %}
+        <div class="paginator board_page">
+          <a href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          {% if results.has_previous %}
+            <a class="page-link bt prev" href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ results.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% for page_number in results.paginator.page_range %}
+            {% if page_number >= results.number|add:-3 and page_number <= results.number|add:3 %}
+              {% if page_number == results.number %}
+                <a class='page-link num on' href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if results.has_next %}
+            <a class="page-link bt next" href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ results.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      <!-- (2) 페이지네이션 (난이도만 선택됨) -->
+      {% elif is_selected_lev and not is_selected_cate %}
+        <div class="paginator board_page">
+          <a href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}&page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          {% if results.has_previous %}
+            <a class="page-link bt prev" href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ results.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% for page_number in results.paginator.page_range %}
+            {% if page_number >= results.number|add:-3 and page_number <= results.number|add:3 %}
+              {% if page_number == results.number %}
+                <a class='page-link num on' href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if results.has_next %}
+            <a class="page-link bt next" href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ results.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?search={{ search }}{% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      <!-- (3) 페이지네이션 (카테고리만 선택됨) -->
+      {% elif not is_selected_lev and is_selected_cate %}
+        <div class="paginator board_page">
+          <a href="?search={{ search }}{% for c in category %}&category-btns={{ c }}{% endfor %}&page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          {% if results.has_previous %}
+            <a class="page-link bt prev" href="?search={{ search }}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ results.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% for page_number in results.paginator.page_range %}
+            {% if page_number >= results.number|add:-3 and page_number <= results.number|add:3 %}
+              {% if page_number == results.number %}
+                <a class='page-link num on' href="?search={{ search }}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?search={{ search }}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if results.has_next %}
+            <a class="page-link bt next" href="?search={{ search }}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ results.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?search={{ search }}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      <!-- (4) 페이지네이션 (난이도, 카테고리 모두 선택되지 X) -->
+      {% else %}
+        <div class="paginator board_page">
+          <a href="?search={{ search }}&page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          {% if results.has_previous %}
+            <a class="page-link bt prev" href="?search={{ search }}&page={{ results.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% for page_number in results.paginator.page_range %}
+            {% if page_number >= results.number|add:-3 and page_number <= results.number|add:3 %}
+              {% if page_number == results.number %}
+                <a class='page-link num on' href="?search={{ search }}&page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?search={{ search }}&page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if results.has_next %}
+            <a class="page-link bt next" href="?search={{ search }}&page={{ results.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?search={{ search }}&page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      {% endif %}
+
+    <!-- 1. 페이지네이션 (검색어 X) -->
+    {% else %}
+      <!-- (1) 페이지네이션 (난이도, 꼬리표가 모두 선택됨) -->
+      {% if is_selected_lev and is_selected_cate %}
+        <div class="paginator board_page">
+          <a href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          {% if results.has_previous %}
+            <a class="page-link bt prev" href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ results.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% for page_number in results.paginator.page_range %}
+            {% if page_number >= results.number|add:-3 and page_number <= results.number|add:3 %}
+              {% if page_number == results.number %}
+                <a class='page-link num on' href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if results.has_next %}
+            <a class="page-link bt next" href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ results.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}{% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      <!-- (2) 페이지네이션 (난이도만 선택됨) -->
+      {% elif is_selected_lev and not is_selected_cate %}
+        <div class="paginator board_page">
+          <a href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}&page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          {% if results.has_previous %}
+            <a class="page-link bt prev" href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ results.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% for page_number in results.paginator.page_range %}
+            {% if page_number >= results.number|add:-3 and page_number <= results.number|add:3 %}
+              {% if page_number == results.number %}
+                <a class='page-link num on' href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if results.has_next %}
+            <a class="page-link bt next" href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ results.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?search={% for l in level %}&level-btns={{ l }}{% endfor %}&page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      <!-- (3) 페이지네이션 (카테고리만 선택됨) -->
+      {% elif not is_selected_lev and is_selected_cate %}
+        <div class="paginator board_page">
+          <a href="?search={% for c in category %}&category-btns={{ c }}{% endfor %}&page=1" class="page-link bt first">
+            <i class="bi bi-chevron-bar-left"></i>
+          </a>
+          {% if results.has_previous %}
+            <a class="page-link bt prev" href="?search={% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ results.previous_page_number }}">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          {% endif %}
+          <!-- 페이지 리스트 -->
+          {% for page_number in results.paginator.page_range %}
+            {% if page_number >= results.number|add:-3 and page_number <= results.number|add:3 %}
+              {% if page_number == results.number %}
+                <a class='page-link num on' href="?search={% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% else %}
+                <a class='page-link num' href="?search={% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ page_number }}">{{ page_number }}</a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- 다음 페이지 -->
+          {% if results.has_next %}
+            <a class="page-link bt next" href="?search={% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ results.next_page_number }}">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% else %}
+            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          {% endif %}
+          <!-- 맨 뒤로 -->
+          <a href="?search={% for c in category %}&category-btns={{ c }}{% endfor %}&page={{ max_index }}" class="page-link bt last">
+            <i class="bi bi-chevron-bar-right"></i>
+          </a>
+        </div>
+      {% endif %}
+    {% endif %}
   </div>
-</div>
-
-<div class="p-3 d-flex justify-content-center">
-  <div class="align-items-center">
-    {% for result in category_list %}
-      <span> {{ result.number }} </span> | <a href="https://www.acmicpc.net/problem/{{result.number}}"> {{ result.title }} | {{ result.tags }} | level:{{ result.level}}</a>
-      <br>
-    {% endfor %}
-  </div>
-</div>
-
-
-
 {% endblock %}

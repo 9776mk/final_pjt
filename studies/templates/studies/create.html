@@ -5,6 +5,12 @@
 
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board_create.css' %}" type="text/css">
+  <style>
+    .board_write .contact input[type=email] {
+      padding: 10px;
+      box-sizing: border-box;
+    }
+  </style>
 {% endblock link %}
 
 {% block content %}
@@ -22,7 +28,7 @@
         <div class="title">
           <dl>
             <dt>스터디 명</dt>
-            <dd><input type="text" name="title" value="{{ Study.title }}" placeholder="10자 이내의 스터디 명을 입력해주세요"></dd>
+            <dd>{{ study_form.title|attr:"placeholder: 스터디 명을 입력해주세요"}}</dd>
           </dl>
         </div>
         <div class="category">
@@ -32,13 +38,13 @@
           </dl>
         </div>
         <div class="contact">
-          <dl>
+          <dl class="mb-0">
             <dt>연락처</dt>
-            <dd><input type="text" name="contact" value="{{ Study.contact }}" placeholder='이메일 주소'></dd>
+            <dd><input type="email" name="contact" placeholder='이메일 주소를 입력해주세요' size="30"></dd>
           </dl>
         </div>
         <div class="limit">
-          <dl>
+          <dl class="mb-0">
             <dt>스터디 인원</dt>
             <dd>{{ study_form.limit|add_class:'form-control' }}</dd>
           </dl>
@@ -50,7 +56,7 @@
           </dl>
         </div>
         <div class="content text-break">
-          {{ study_form.content }}
+          {{ study_form.content|attr:"placeholder: 소개글을 작성해주세요" }}
         </div>
         <br>
       </div>
@@ -63,3 +69,10 @@
     </form>
   </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+  const imageField = document.querySelector('#id_image')
+  imageField.removeAttribute('required')
+</script>
+{% endblock script %}

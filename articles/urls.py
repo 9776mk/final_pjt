@@ -25,4 +25,14 @@ urlpatterns = [
         name="comments_delete",
     ),
     path("<int:article_pk>/likes/", views.likes, name="likes"),
+    path('search/',views.search, name='search' ),#검색
+    path('search/1/', views.search_1, name='search_1'),
+    path('search/2/', views.search_2, name='search_2'),
+    path('search/3/', views.search_3, name='search_3'),
+    path('search/4/', views.search_4, name='search_4'),
+    path(
+        "<int:comment_pk>/profile_comments_delete/",
+        views.profile_comments_delete,
+        name="profile_comments_delete",
+    ),
 ]

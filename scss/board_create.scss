@@ -85,9 +85,15 @@ a {
   .contact {
     border-top: 1px dashed #ddd;
     font-size: 0;
+    dl {
+      margin-bottom: 0;
+    }
   }
   .limit {
     border-top: 1px dashed #ddd;
     font-size: 0;
+    dl {
+      margin-bottom: 0;
+    }
   }
 }

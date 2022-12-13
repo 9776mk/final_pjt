@@ -6,12 +6,11 @@
 {% endblock link %}
 {% block content %}
 <main>
-  <h1 style='margin-bottom:30px'>설문조사 통계자료분석</h1>
-
+  <h1 class="text-center" style="font-family: 'HBIOS-SYS'; margin-top: 20px; margin-bottom: 50px;">2022 설문조사 결과</h1>
 
   <div class='Data'>
     <div class="sData">
-      <h1>처음 코딩을 시작한 나이</h1>  
+      <h2>처음 코딩 시작한 나이</h2>  
       <div class='servey'>
           {% for val in sorted_ages %}
           <div class="sStatus" data-num="{{val.1}}"> 
@@ -29,7 +28,7 @@
 
     {% comment %}  {% endcomment %}
     <div class="sData">
-      <h1>MBTI</h1>  
+      <h2>MBTI</h2>  
       <div class='servey'>
           {% for val in sorted_mbtis %}
           <div class="sStatus" data-num="{{val.1}}"> 
@@ -48,7 +47,7 @@
 
     {% comment %}  {% endcomment %}
     <div class="dData">
-      <h1>개발 경력</h1>  
+      <h2>개발 경력</h2>  
       <div class='servey'>
           {% for val in sorted_careers %}
           <div class="dStatus" data-num="{{val.1}}"> 
@@ -65,7 +64,7 @@
     </div>
 {% comment %}  {% endcomment %}
     <div class="dData">
-      <h1>개발 분야</h1>  
+      <h2>개발 분야</h2>  
       <div class='servey'>
           {% for val in sorted_developers %}
           <div class="dStatus" data-num="{{val.1}}"> 
@@ -83,7 +82,7 @@
 
     {% comment %}    {% endcomment %}
     <div class="dData">
-      <h1>배우고 싶은 언어</h1>  
+      <h2>배우고 싶은 언어</h2>  
       <div class='servey'>
           {% for val in sorted_d_langs %}
           <div class="dStatus" data-num="{{val.1}}"> 
@@ -99,95 +98,95 @@
       </div>
     </div>
       {% comment %}  {% endcomment %}
-      <div class="dData">
-        <h1>많이 사용되는 언어</h1>  
-        <div class='servey'>
-            {% for val in sorted_u_langs %}
-            <div class="dStatus" data-num="{{val.1}}"> 
-                <font>{{val.0}}</font>
-                <div class='limitbox' >
-                    <div class="bar_frame">
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <span class='mx-3' style="width:5%;">0%</span>
-            </div>
-            {% endfor %}
-        </div>
-      </div>
-      {% comment %}  {% endcomment %}
-      <div class="dData">
-        <h1>코딩을 배운 방법</h1>  
-        <div class='servey'>
-            {% for val in sorted_methods %}
-            <div class="dStatus" data-num="{{val.1}}"> 
-                <font>{{val.0}}</font>
-                <div class='limitbox' >
-                    <div class="bar_frame">
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <span class='mx-3' style="width:5%;">0%</span>
-            </div>
-            {% endfor %}
-        </div>
-      </div>
-      {% comment %}  {% endcomment %}
-      <div class="dData">
-        <h1>하루 평균 코딩시간</h1>  
-        <div class='servey'>
-            {% for val in sorted_hours %}
-            <div class="dStatus" data-num="{{val.1}}"> 
-                <font>{{val.0}}</font>
-                <div class='limitbox' >
-                    <div class="bar_frame">
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <span class='mx-3' style="width:5%;">0%</span>
-            </div>
-            {% endfor %}
-        </div>
-      </div>
-      {% comment %}  {% endcomment %}
-      <div class="dData">
-        <h1>최종학력</h1>  
-        <div class='servey'>
-            {% for val in sorted_degrees %}
-            <div class="dStatus" data-num="{{val.1}}"> 
-                <font>{{val.0}}</font>
-                <div class='limitbox' >
-                    <div class="bar_frame">
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <span class='mx-3' style="width:5%;">0%</span>
-            </div>
-            {% endfor %}
-        </div>
-      </div>
-
-      {% comment %}  {% endcomment %}
-      <div class="eData">
-        <h1>성별</h1>  
-        <div class='servey'>
-            {% for val in sorted_genders %}
-            <div class="eStatus" data-num="{{val.1}}"> 
-                <font>{{val.0}}</font>
-                <div class='limitbox' >
-                    <div class="bar_frame">
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <span class='mx-3' style="width:5%;">0%</span>
-            </div>
-            {% endfor %}
-        </div>
-      </div>
-      <div style="text-align:center;" width: '100%;'>
-        <a id='svbtn' href="{% url 'surveys:create' %}" >설문 작성</a>
+    <div class="dData">
+      <h2>많이 사용되는 언어</h2>  
+      <div class='servey'>
+          {% for val in sorted_u_langs %}
+          <div class="dStatus" data-num="{{val.1}}"> 
+              <font>{{val.0}}</font>
+              <div class='limitbox' >
+                  <div class="bar_frame">
+                      <div class="bar"></div>
+                  </div>
+              </div>
+              <span class='mx-3' style="width:5%;">0%</span>
+          </div>
+          {% endfor %}
       </div>
     </div>
+      {% comment %}  {% endcomment %}
+    <div class="dData">
+      <h2>코딩을 배운 방법</h2>  
+      <div class='servey'>
+          {% for val in sorted_methods %}
+          <div class="dStatus" data-num="{{val.1}}"> 
+              <font>{{val.0}}</font>
+              <div class='limitbox' >
+                  <div class="bar_frame">
+                      <div class="bar"></div>
+                  </div>
+              </div>
+              <span class='mx-3' style="width:5%;">0%</span>
+          </div>
+          {% endfor %}
+      </div>
+    </div>
+      {% comment %}  {% endcomment %}
+    <div class="dData">
+      <h2>하루 평균 코딩시간</h2>  
+      <div class='servey'>
+          {% for val in sorted_hours %}
+          <div class="dStatus" data-num="{{val.1}}"> 
+              <font>{{val.0}}</font>
+              <div class='limitbox' >
+                  <div class="bar_frame">
+                      <div class="bar"></div>
+                  </div>
+              </div>
+              <span class='mx-3' style="width:5%;">0%</span>
+          </div>
+          {% endfor %}
+      </div>
+    </div>
+      {% comment %}  {% endcomment %}
+    <div class="dData">
+      <h2>최종학력</h2>  
+      <div class='servey'>
+          {% for val in sorted_degrees %}
+          <div class="dStatus" data-num="{{val.1}}"> 
+              <font>{{val.0}}</font>
+              <div class='limitbox' >
+                  <div class="bar_frame">
+                      <div class="bar"></div>
+                  </div>
+              </div>
+              <span class='mx-3' style="width:5%;">0%</span>
+          </div>
+          {% endfor %}
+      </div>
+    </div>
+
+    {% comment %}  {% endcomment %}
+    <div class="eData">
+      <h2>성별</h2>  
+      <div class='servey'>
+          {% for val in sorted_genders %}
+          <div class="eStatus" data-num="{{val.1}}"> 
+              <font>{{val.0}}</font>
+              <div class='limitbox' >
+                  <div class="bar_frame">
+                      <div class="bar"></div>
+                  </div>
+              </div>
+              <span class='mx-3' style="width:5%;">0%</span>
+          </div>
+          {% endfor %}
+      </div>
+    </div>
+    <div style="text-align: center; margin-bottom: 20px;" width: '100%;'>
+      <a id='svbtn' href="{% url 'surveys:create' %}" >설문 작성</a>
+    </div>
+  </div>
 </main>
 <div>
     <a id="back-to-top" href="#">Top</a>

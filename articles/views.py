@@ -15,6 +15,7 @@ from algorithm.models import (
 )
 from datetime import date, datetime, timedelta
 import random
+from django.db.models import Q
 
 # Create your views here.
 
@@ -152,7 +153,7 @@ def index(request):
     # 디폴트로 1이라는 값을 설정한다.
     page = request.GET.get("page", "1")  # 페이지
     articles = Article.objects.order_by("-pk")
-    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
+    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -167,7 +168,7 @@ def index(request):
 def index_1(request):
     articles = Article.objects.filter(category="자료공유").order_by("-pk")
     page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
+    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -181,7 +182,7 @@ def index_1(request):
 def index_2(request):
     articles = Article.objects.filter(category="질문").order_by("-pk")
     page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
+    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -195,7 +196,7 @@ def index_2(request):
 def index_3(request):
     articles = Article.objects.filter(category="취업").order_by("-pk")
     page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
+    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -209,7 +210,7 @@ def index_3(request):
 def index_4(request):
     articles = Article.objects.filter(category="잡담").order_by("-pk")
     page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 15)  # 페이지당 10개씩 보여주기
+    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
@@ -328,9 +329,6 @@ def delete(request, pk):
     articles = get_object_or_404(Article, pk=pk)
     if request.user == articles.user:
         articles.delete()
-
-        # return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
-        # else:
         return redirect("articles:index")
 
 
@@ -381,6 +379,14 @@ def comments_delete(request, comment_pk, article_pk):
     return redirect("articles:detail", article_pk)
 
 
+@login_required
+def profile_comments_delete(request, comment_pk):
+    comment = get_object_or_404(ArticleComment, pk=comment_pk)
+    if request.user == comment.user:
+        comment.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 def likes(request, article_pk):
     if request.user.is_authenticated:
         article = Article.objects.get(pk=article_pk)
@@ -390,7 +396,104 @@ def likes(request, article_pk):
         else:
             article.like.add(request.user)
             is_liked = True
-        data = {"is_liked": is_liked}
+        like_count = article.like.count()
+        data = {
+            "is_liked": is_liked,
+            'likeCount': like_count,
+            }
         return JsonResponse(data)
     return redirect("accounts:login")
 
+
+def search(request):#검색 
+    search= Article.objects.order_by('-pk')
+    q = request.GET.get('q')
+    search = search.filter(Q(title__icontains=q)|Q(content__icontains=q))
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'articles/search.html',context)
+
+# 검색에 카테고리 별
+def search_1(request):
+    search= Article.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="자료공유"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'articles/search.html',context)
+
+def search_2(request):
+    search= Article.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="질문"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'articles/search.html',context)
+
+def search_3(request):
+    search= Article.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="취업"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'articles/search.html',context)
+
+def search_4(request):
+    search= Article.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="잡담"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'articles/search.html',context)

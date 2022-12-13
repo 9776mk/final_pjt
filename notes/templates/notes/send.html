@@ -8,7 +8,30 @@
 {% block content%}
   <div class="container mt-5">
     <div class="row">
-      <div class="col-3">
+      <div class="col-3 d-none d-sm-block">
+        <h4 class="text-center mb-4">✉️</h4>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="col"><a href="{% url 'notes:send' %}">쪽지 쓰기</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:index' %}">받은 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:sent' %}">보낸 쪽지함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:important' %}">보관함</a></th>
+            </tr>
+            <tr>
+              <th scope="row"><a href="{% url 'notes:trash' %}">휴지통</a></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Visible only on xs -->
+      <div class="d-block d-sm-none">
         <h4 class="text-center mb-4">✉️</h4>
         <table class="table">
           <thead>
@@ -32,13 +55,27 @@
           </tbody>
         </table>
       </div>
-      <div class="col-9" style="min-height: 700px;">
+
+      <div class="col-9 d-none d-sm-block" style="min-height: 700px;">
         <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">쪽지 쓰기</h4>
         <div class="container d-flex flex-column align-content-center pb-5" style="max-width: 500px;">
           <form action="{% url 'notes:send' %}" method="POST">
             {% csrf_token %}
             {% bootstrap_form form %}
             <div class="d-flex justify-content-end">
+              <input type="submit" class="bbtn" value="보내기">
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Visible only on xs -->
+      <div class="d-block d-sm-none">
+        <h4 class="text-center my-4" style="font-family: 'HBIOS-SYS';">쪽지 쓰기</h4>
+        <div class="container d-flex flex-column align-content-center pb-5" style="max-width: 500px;">
+          <form action="{% url 'notes:send' %}" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="d-flex justify-content-center">
               <input type="submit" class="bbtn" value="보내기">
             </div>
           </form>

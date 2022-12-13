@@ -41,9 +41,9 @@ function create_gb_article(form, user_pk) {
               <div id="article-${articlePk}" class="mb-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <!-- 프로필 사진 2 -->
-                  <div class="d-flex flex-column align-items-center">
+                  <div class="d-flex flex-column align-items-center me-2">
                     <a href="/accounts/${user_pk}/"><img src="${articleUserImage}" class="guestbook-img" alt=""></a>
-                    <a href="/accounts/${user_pk}/"><p class="mt-2 mb-0">${articleUser}</p></a>
+                    <a href="/accounts/${user_pk}/"><p class="mt-2 mb-0 nickname">${articleUser}</p></a>
                   </div>
     
                   <!-- 방명록 말풍선 -->
@@ -97,7 +97,7 @@ function create_gb_article(form, user_pk) {
                   <!-- 프로필 사진 2 -->
                   <div class="d-flex flex-column align-items-center">
                     <a href="/accounts/${user_pk}/"><img src="${articleUserImage}" class="guestbook-img" alt=""></a>
-                    <a href="/accounts/${user_pk}/"><p class="mt-2 mb-0">${articleUser}</p></a>
+                    <a href="/accounts/${user_pk}/"><p class="mt-2 mb-0 nickname">${articleUser}</p></a>
                   </div>
 
                   <!-- 방명록 말풍선 -->

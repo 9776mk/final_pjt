@@ -2,86 +2,26 @@
 {% load static %}
 
 {% block link %}
-  {% comment %} <link rel="stylesheet" href="{% static 'css/friend.css' %}"> {% endcomment %}
-  {% comment %} <script defer src="{% static 'js/friend.js' %}"></script> {% endcomment %}
-  <style>
-    /* 카테고리 버튼 기본 색상 */
-    .category-btn {
-      background-color: #d1e4ff;
-      color: rgb(61, 61, 61);
-      padding: 10px 20px;
-      border-radius: 22px;
-      height: 40px;
-      border: none;
-    }
-
-    /* 카테고리 버튼 선택 시 색상 */
-    .active {
-      background-color: #7ab1ff;
-      color: white;
-    }
-
-    .profile-img {
-      border-radius: 70%; 
-      max-width: 64px;
-    }
-
-    /* 카테고리 버튼 기본 색상 */
-    .category input[name=level-btns] {
-      display: none;
-    }
-
-    .category input[name=level-btns]+label {
-      display: inline-block;
-      cursor: pointer;
-      background-color: #d1e4ff;
-      color: rgb(61, 61, 61);
-      padding: 10px 20px;
-      border-radius: 22px;
-      height: 40px;
-      border: none;
-    }
-
-    .category input[name=level-btns]:checked+label {
-      background-color: #7ab1ff;
-      color: white;
-    }
-
-    /* 카테고리 버튼 기본 색상 */
-    .category input[name=category-btns] {
-      display: none;
-    }
-
-    .category input[name=category-btns]+label {
-      display: inline-block;
-      cursor: pointer;
-      background-color: #f3d9d9;
-      color: rgb(61, 61, 61);
-      padding: 10px 20px;
-      border-radius: 22px;
-      height: 40px;
-      border: none;
-    }
-
-    .category input[name=category-btns]:checked+label {
-      background-color: #ff9c9c;
-      color: white;
-    }
-  </style>
   <link rel="stylesheet" href="{% static 'css/friends_index.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/algo_index.css' %}" type="text/css">
 {% endblock link %}
 {% block content %}
 <div class="container py-5">
   <h1 class="mx-3 mb-4" style="font-family: 'HBIOS-SYS'">연산 방식 문제 검색</h1>
   <div class='btn-board px-4 pt-4 mb-4'>
-    <form action="{% url 'algorithm:search' %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'algorithm:search' %}" enctype="multipart/form-data">
+      <div id='thsearch' class="category mb-3">
+        <input type="search" id="mySearch" onkeyup="myFunction()" autocomplete='off' placeholder="난이도 혹은 문제유형 입력" title="Type in a category" class=''name='search'>
+        <input type="submit" onclick="javascript:OnCheck();" value='검색'>
+      </div>
+
       <!-- 카테고리 버튼 -->
-      {% csrf_token %}
+      {% comment %} {% csrf_token %} {% endcomment %}
       <div id="category-btns" class="category mb-3">
         <p class="mb-2"> 난이도 </p>
         {% for level in category_level %}
-          <input id="{{ level }}" class="" type="checkbox" name="level-btns" value="{{level}}">
-          <label for="{{ level }}">{{ level }}</label>
+          <input id="{{ level }}" type="checkbox" name="level-btns" value="{{level}}">
+          <label for="{{ level }}" class="mb-2" >{{ level }}</label>
           {% comment %} <button id="{{ lang }}" data-category="{{ lang }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ lang }}</button> {% endcomment %}
         {% endfor %}
       </div>
@@ -89,15 +29,10 @@
         <p class="mb-2"> 추천 꼬리표 </p>
         {% for category in category_ %}
           <input id="{{ category }}" class="" type="checkbox" name="category-btns" value="{{category}}">
-          <label for="{{ category }}">{{ category }}</label>
+          <label for="{{ category }}" class="mb-2" >{{ category }}</label>
           {% comment %} <button id="{{ mbti }}" data-category="{{ mbti }}" type="button" class="category-btn" data-bs-toggle="button" autocomplete="off">{{ mbti }}</button> {% endcomment %}
         {% endfor %}
-      </div>
-
-      <div class="category mb-3">
-        <input type="search" id="mySearch" onkeyup="myFunction()" placeholder="검색" title="Type in a category" class='px-3 py-3 rounded-3' style="width: 500px; height:70px" name='search'>
-        <button class="btn btn-primary" type="submit" onclick="javascript:OnCheck();">찾기</button>
-      </div>
+      </div>  
     </form>
   </div>
 </div>
@@ -114,7 +49,6 @@
       event.preventDefault();
     }
   }
-
 </script>
 
 {% endblock %}

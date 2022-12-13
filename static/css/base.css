@@ -185,6 +185,25 @@ a:hover {
     box-shadow: 0 2px 5px 0 rgba(229, 66, 10, 0.75);
 }
 
+/* 알림 뱃지 */
+.nav-counter {
+    position:absolute;
+    top: 5px;
+    right: -2px;
+    min-width: 8px;
+    height: 20px;
+    line-height: 20px;
+    margin-top: -11px;
+    padding: 0 6px;
+    font-weight: normal;
+    font-size: small;
+    color: white;
+    text-align: center;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+    background: #FF8E00;
+    border-radius: 70px;
+}
+
 
 /* footer */
 

@@ -1,18 +1,50 @@
 // 댓글에서 쓰던 버튼 가지고 온것!
 // detail 신청인원 스터디 인원
 .bbtn_stu {
+  width: 76px;
   display: inline-block;
   padding: 10px;
   border: 1px solid #a4a4a4;
   border-radius: 10px;
   font-size: 0.9rem;
-  background: #fff;
-  color: #a4a4a4;
+  background: #a4a4a4;
+  color: #fff; 
   transition: all 0.4s;
   border-radius: 10px;
+  text-align: center;
   &:hover {
-    background-color: #a4a4a4;
-    color: white;
+    background-color: white;
+    color: #a4a4a4;
   }
 }
 
+.modal-profile-img {
+  border-radius: 70%; 
+  max-width: 50px;
+}
+
+.study_mainimg {
+  margin-top: 20px;
+  margin-bottom: 20px; 
+  max-width: 1300px; 
+  max-height: 10000px;
+  width: 100%;
+}
+
+.bbtn_back {
+  width: 53px;
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #ffb0b0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #ffb0b0;
+  transition: all 0.4s;
+  border-radius: 10px;
+  text-align: center;
+  &:hover {
+    background-color: #ffb0b0;
+    color: white;
+  }
+}

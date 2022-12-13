@@ -6,9 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator
+from studies.models import List
 
 # 깃로그인
 import os
@@ -136,10 +137,6 @@ def login(request):
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
             response = redirect(request.GET.get("next") or "home")
-            notes_counter = Notes.objects.filter(
-                to_user_id=request.user.id, read=0, garbage=False
-            ).count()
-            request.user.message_number = notes_counter
             request.user.save()
             return response
         else:
@@ -169,12 +166,13 @@ def logout(request):
 
 def profile(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
+    joined_studies = List.objects.filter(user=user, is_accepted=True)
     followers = user.followers.all()
     followings = user.followings.all()
 
     # 백준에서 id로 정보 받아오기
     url = "https://solved.ac/api/v3/user/show"
-    profile_info = Profile.objects.get(pk=user_pk)
+    profile_info = Profile.objects.get(user=user)
     id = profile_info.boj_id
     if id:
         querystring = {"handle": {id}}
@@ -195,9 +193,11 @@ def profile(request, user_pk):
         "followers": followers,
         "followings": followings,
         "tier": tier,
+        "joined_studies": joined_studies,
     }
 
     return render(request, "accounts/profile.html", context)
+
 
 
 # 회원 정보 수정
