@@ -17,5 +17,5 @@ urlpatterns = [
     path("important/", views.important, name="important"),
     path("<int:pk>/important_check/", views.important_check, name="important_check"),
     path("<int:pk>/important_return/", views.important_return, name="important_return"),
-    path("trash/all_delete/", views.all_delete, name="all_delete"),
+    path("trash/all_delete/", views.all_delete, name="all_delete"),# 휴지통 전체삭제
 ]

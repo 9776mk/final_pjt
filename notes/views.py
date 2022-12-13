@@ -129,8 +129,7 @@ def delete(request, pk):
 @login_required        
 def all_delete(request):# 휴지통 전체삭제
     note = Notes.objects.filter(to_user_id=request.user.id, garbage=True)
-    if request.user:
-        note.delete()
+    note.delete()
     return redirect("notes:trash")
 
 @login_required

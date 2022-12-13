@@ -10,17 +10,19 @@
         {% bootstrap_form profile_form %}
         <div class="mt-1 d-flex justify-content-between">
           <div class="d-flex">
-            <a href="{% url 'accounts:delete' user.pk %}" class="bbtn-gray me-2" onclick="return confirm('정말 탈퇴하시겠습니까?');">회원 탈퇴</a>
+            {% comment %} <a href="{% url 'accounts:delete' user.pk %}" class="bbtn-gray me-2" onclick="return confirm('정말 탈퇴하시겠습니까?');">회원 탈퇴</a> {% endcomment %}
             <a href="{% url 'accounts:password' %}" class="bbtn-gray">비밀번호 변경</a>
           </div>
           <input type="submit" value="완료" class="bbtn">
         </div>
       </form>
+      <form action="{% url 'accounts:delete' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" class="bbtn-gray me-2" onclick="return conform('정말 탈퇴하시겠습니까?')">
+      </form>
     </div>
   </div>
-  {{ profile_form.language|add_class:"form-select" }}
 
 {% endblock content %}
 
-{% block script %}
-{% endblock script %}
+{% block script %}{% endblock script %}
