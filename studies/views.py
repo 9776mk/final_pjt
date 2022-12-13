@@ -406,6 +406,26 @@ def notice_delete(request, notice_pk):
     return JsonResponse(data)
 
 
+# 알림 전체 삭제
+@login_required
+def notice_delete_all(request):
+    is_deleted = False
+
+    if request.user.is_authenticated and request.method == "POST":
+        notices = StudyNotice.objects.filter(user=request.user)
+        for notice in notices:
+            notice.delete()
+            
+        is_deleted = True
+
+    data = {
+        "is_deleted": is_deleted,
+    }
+
+    # return redirect('home')
+    return JsonResponse(data)
+
+
 # 알림 읽음
 @login_required
 def notice_read(request):
