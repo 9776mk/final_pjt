@@ -16,8 +16,8 @@
 
       <div class="" style="display: flex;align-items: center;">
         <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
-          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
-          <input class="" type="submit" value='Search'></input>
+          <input type="search" autocomplete='off' placeholder="검색어를 입력해주세요" aria-label="Search" name="q" value="{{ q }}">
+          <input type="submit" value='검색'></input>
         </form>
       </div>
     </div>
@@ -38,6 +38,7 @@
         <div class="title">제목</div>
         <div class="writer">작성자</div>
         <div class="date">작성일</div>
+        <div class="hits">조회수</div>
       </div>
       {% for article in articles %}
         <div class='d-flex align-items-center'>
@@ -52,15 +53,16 @@
               <a href="" style='color: #000'>{{ article.category }}</a>
             {% endif %}
           </div>
-          <div class="title">
+          <div class="title text_elli">
             <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
               <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
           </div>
           <!-- 바깥작성자는 popover로 띄울까 고민중-->
-          <div class="writer">
+          <div class="writer text_elli">
             <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
           </div>
           <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+          <div class='hits'>{{ article.hits }}</div>
         </div>
       {% endfor %}
     </div>
@@ -125,8 +127,8 @@
 
       <div class="" style="display: flex;align-items: center;">
         <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
-          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
-          <input class="" type="submit" value='Search'></input>
+          <input type="search" autocomplete='off' placeholder="검색어를 입력해주세요" aria-label="Search" name="q" value="{{ q }}">
+          <input type="submit" value='검색'></input>
         </form>
       </div>
     </div>
@@ -147,9 +149,10 @@
         <div class="title">제목</div>
         <div class="writer">작성자</div>
         <div class="date">작성일</div>
+        <div class="hits">조회수</div>
       </div>
       {% for article in articles %}
-        <div>
+        <div class='d-flex align-items-center'>
           <div class="category">
             {% if article.category == '자료공유'%}
               <a href="" style='color: #1346ff'>{{ article.category }}</a>
@@ -161,15 +164,15 @@
               <a href="" style='color: #000'>{{ article.category }}</a>
             {% endif %}
           </div>
-          <div class="title">
+          <div class="title text_elli">
             <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
               <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
           </div>
-          <!-- 바깥작성자는 popover로 띄울까 고민중-->
-          <div class="writer">
+          <div class="writer text_elli">
             <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
           </div>
           <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+          <div class='hits'>{{ article.hits }}</div>
         </div>
       {% endfor %}
     </div>
@@ -234,8 +237,8 @@
 
       <div class="" style="display: flex;align-items: center;">
         <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
-          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
-          <input class="" type="submit" value='Search'></input>
+          <input type="search" autocomplete='off' placeholder="검색어를 입력해주세요" aria-label="Search" name="q" value="{{ q }}">
+          <input type="submit" value='검색'></input>
         </form>
       </div>
     </div>
@@ -256,9 +259,10 @@
           <div class="title">제목</div>
           <div class="writer">작성자</div>
           <div class="date">작성일</div>
+          <div class="hits">조회수</div>
         </div>
         {% for article in articles %}
-          <div>
+          <div class='d-flex align-items-center'>
             <div class="category">
               {% if article.category == '자료공유'%}
                 <a href="" style='color: #1346ff'>{{ article.category }}</a>
@@ -270,15 +274,16 @@
                 <a href="" style='color: #000'>{{ article.category }}</a>
               {% endif %}
             </div>
-            <div class="title">
+            <div class="title text_elli">
               <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
                 <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
-            <div class="writer">
+            <div class="writer text_elli">
               <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
             </div>
             <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+            <div class='hits'>{{ article.hits }}</div>
           </div>
         {% endfor %}
       </div>
@@ -344,8 +349,8 @@
 
       <div class="" style="display: flex;align-items: center;">
         <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
-          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
-          <input class="" type="submit" value='Search'></input>
+          <input type="search" autocomplete='off' placeholder="검색어를 입력해주세요" aria-label="Search" name="q" value="{{ q }}">
+          <input type="submit" value='검색'></input>
         </form>
       </div>
     </div>
@@ -366,9 +371,10 @@
         <div class="title">제목</div>
         <div class="writer">작성자</div>
         <div class="date">작성일</div>
+        <div class="hits">조회수</div>
       </div>
       {% for article in articles %}
-        <div>
+        <div class='d-flex align-items-center'>
           <div class="category">
             {% if article.category == '자료공유'%}
               <a href="" style='color: #1346ff'>{{ article.category }}</a>
@@ -380,15 +386,16 @@
               <a href="" style='color: #000'>{{ article.category }}</a>
             {% endif %}
           </div>
-          <div class="title">
+          <div class="title text_elli">
             <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
               <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
           </div>
           <!-- 바깥작성자는 popover로 띄울까 고민중-->
-          <div class="writer">
+          <div class="writer text_elli">
             <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
           </div>
           <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+          <div class='hits'>{{ article.hits }}</div>
         </div>
       {% endfor %}
     </div>
@@ -453,14 +460,14 @@
 
       <div class="" style="display: flex;align-items: center;">
         <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
-          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
-          <input class="" type="submit" value='Search'></input>
+          <input type="search" autocomplete='off' placeholder="검색어를 입력해주세요" aria-label="Search" name="q" value="{{ q }}">
+          <input type="submit" value='검색'></input>
         </form>
       </div>
     </div>
 
     <!--탭-->
-    <div class="d-flex justify-content-end mb-2 me-1">
+    <div class="d-flex justify-content-end mb-2 me-1 mt-2">
       <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
       <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
       <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
@@ -475,9 +482,10 @@
         <div class="title">제목</div>
         <div class="writer">작성자</div>
         <div class="date">작성일</div>
+        <div class="hits">조회수</div>
       </div>
       {% for article in articles %}
-        <div>
+        <div class='d-flex align-items-center'>
           <div class="category">
             {% if article.category == '자료공유'%}
               <a href="" style='color: #1346ff'>{{ article.category }}</a>
@@ -489,15 +497,15 @@
               <a href="" style='color: #000'>{{ article.category }}</a>
             {% endif %}
           </div>
-          <div class="title">
+          <div class="title text_elli">
             <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
               <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
           </div>
-          <!-- 바깥작성자는 popover로 띄울까 고민중-->
-          <div class="writer">
+          <div class="writer text_elli">
             <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
           </div>
           <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+          <div class='hits'>{{ article.hits }}</div>
         </div>
       {% endfor %}
     </div>
