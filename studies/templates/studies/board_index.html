@@ -6,9 +6,20 @@
 {% block content %}
 <div class='container py-5'>
   <div class='mx-3'>
-    <h1 style="font-family: 'HBIOS-SYS';"> 스터디의 게시판</h1>
+    <h1 style="font-family: 'HBIOS-SYS';"> {{ study.title }} 게시판</h1>
     <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
   </div>
+
+  <!-- 탭 -->
+  <div class="d-flex justify-content-end my-2 me-1">
+    <a class='me-3' href="{% url 'studies:board_index' study.pk %}" style="font-family: 'HBIOS-SYS';">전체</a>
+    <a class='me-3' href="{% url 'studies:board_index_1' %}" style="font-family: 'HBIOS-SYS';">문제</a>
+    <a class='me-3' href="{% url 'studies:board_index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
+    <a class='me-3' href="{% url 'studies:board_index_3' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
+  </div>
+
+
+
     <!--게시판-->
     <div class="board_list">
       <div class="top">

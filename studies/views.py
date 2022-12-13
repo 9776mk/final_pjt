@@ -431,15 +431,64 @@ def notice_delete_all(request):
 
 
 # 스터디 게시판 인덱스
-def board(request, study_pk):
+def board_index(request, study_pk):
+    page = request.GET.get("page", "1")  # 페이지
     study = get_object_or_404(Study, pk=study_pk)
-    boards = Board.objects.all()
+    boards = Board.objects.filter(study_id=study_pk).order_by("-pk")
+    paginator = Paginator(boards, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    # print(boards)
 
     context = {
         "study": study,
         "boards": boards,
+        "articles": page_obj,
+        "max_index": max_index,
     }
-    return render(request, "studies/board.html", context)
+    return render(request, "studies/board_index.html", context)
+
+
+def board_index_1(request, study_pk):
+    articles = Board.objects.filter(category="문제").order_by("-pk")
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+
+    context = {
+        "articles": page_obj,
+        "max_index": max_index,
+    }
+    return render(request, "articles/index.html", context)
+
+
+def board_index_2(request):
+    articles = Board.objects.filter(category="질문").order_by("-pk")
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+
+    context = {
+        "articles": page_obj,
+        "max_index": max_index,
+    }
+    return render(request, "articles/index.html", context)
+
+
+def board_index_3(request):
+    articles = Board.objects.filter(category="잡담").order_by("-pk")
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+
+    context = {
+        "articles": page_obj,
+        "max_index": max_index,
+    }
+    return render(request, "articles/index.html", context)
 
 
 # 스터디 게시판 게시물 생성
@@ -456,7 +505,7 @@ def board_create(request, study_pk):
             board.user = request.user
             board.save()
 
-            return redirect("studies:board", study_pk)
+            return redirect("studies:board_index", study_pk)
 
     else:
         Board_Form = BoardForm()
@@ -474,13 +523,57 @@ def board_detail(request, study_pk, article_pk):
     # comment_form = CommentForm()
     study = get_object_or_404(Study, pk=study_pk)
     accepted_list = List.objects.filter(study=study, is_accepted=True)
-    boards = Board.objects.get(pk=study_pk)
+    boards = Board.objects.get(pk=article_pk)
+
+    # 백준 아이디 저장할 리스트
+    boj_id = []
+    # 스터디에 가입된 사람들 중
+    for i in accepted_list:
+        # 백준 아이디가 있다면
+        if i.user.profile.boj_id:
+            id = i.user.profile.boj_id
+            # 백준 아이디가 푼 문제들을 solved_problems에 저장
+            solved_problems = []
+            page_num = 1
+            while True:
+                url = f"https://solved.ac/api/v3/search/problem?query=solved_by%3A{id}&page={page_num}"
+                r_solved = requests.get(url)
+                ################ 백준 api 사용 제한이 있어서 많이 사용하는 경우 아래 코드를 못 받아옴 ################
+                ###### try를 사용해야 할 듯 ###########
+                solved = json.loads(r_solved.content.decode("utf-8"))
+
+                items = solved.get("items")
+
+                if items:
+                    for item in items:
+                        solved_problems.append(item.get("problemId"))
+                    page_num += 1
+                else:
+                    break
+            # print(solved_problems)
+            # print(boards.problem_number)
+            # print(boards.problem_number in solved_problems)
+
+            ###### 백준 api 때문에 막혀서 잠시 주석 처리
+            if boards.problem_number in solved_problems:
+                boj_id.append({i.user.profile.boj_id: True})
+            else:
+                boj_id.append({i.user.profile.boj_id: False})
+
+    print(boj_id)
+    print(type(boj_id))  # 리스트
+    print(type(boj_id[0]))  # 딕셔너리
+
+    for i in boj_id:
+        print(i.keys())  # dict_keys(['9776mk'])
+        print(i.values())  # dict_values([False])
 
     context = {
         # "comment": comment,
         # "comment_form": comment_form,
         "boards": boards,
         "accepted_list": accepted_list,
+        "problem_check": boj_id,
     }
     return render(request, "studies/board_detail.html", context)
 
