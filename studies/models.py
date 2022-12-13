@@ -10,7 +10,7 @@ class Study(models.Model):
 
     # 2. 스터디 종류
     CATEGORY = (
-        ('알고리즘 공부', '알고리즘 공부'),
+        ("알고리즘 공부", "알고리즘 공부"),
         ("프론트엔드 공부", "프론트엔드 공부"),
         ("백엔드 공부", "백엔드 공부"),
         ("기타", "기타"),
@@ -35,17 +35,17 @@ class Study(models.Model):
     # 8. 이미지
     image = models.ImageField(blank=True, upload_to='study_images/')
     thumbnail = ImageSpecField(
-        source='image',
+        source="image",
         processors=[Thumbnail(300, 300)],
-        format='JPEG',
-        options={'quality': 60}
+        format="JPEG",
+        options={"quality": 60},
     )
 
 
 class List(models.Model):
     study = models.ForeignKey(Study, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    is_accepted = models.BooleanField(default=False)    # False: 가입 대기, True: 가입 승인
+    is_accepted = models.BooleanField(default=False)  # False: 가입 대기, True: 가입 승인
 
 
 class StudyNotice(models.Model):
@@ -54,3 +54,33 @@ class StudyNotice(models.Model):
     content = models.CharField(max_length=50)
     noticed_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
+
+
+class Board(models.Model):
+    study = models.ForeignKey(Study, on_delete=models.CASCADE)
+    title = models.CharField(max_length=30)
+    content = models.TextField()
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="board_user"
+    )
+    # image = ProcessedImageField()
+    problem_number = models.IntegerField()
+    create_at = models.DateTimeField(auto_now_add=True)
+    hits = models.PositiveIntegerField(default=0, verbose_name="조회수")
+    CATEGORY = (
+        ("문제", "문제"),
+        ("질문", "질문"),
+        ("자유 게시판", "자유 게시판"),
+    )
+    category = models.CharField(max_length=10, choices=CATEGORY)
+
+
+class BoardComment(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="board_comment_user",
+    )
+    article = models.ForeignKey(Board, on_delete=models.CASCADE)
+    content = models.TextField()
+    create_at = models.DateTimeField(auto_now_add=True)

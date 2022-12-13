@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load mathfilters %}
+{% load filter %} <!-- 마크다운 -->
+{% load static %}
+{% block link %}
+  <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %} 
+<h1> 스터디(이름 추가) 게시판 디테일 페이지 </h1>
+<hr>
+<h1> 게시글 : {{ boards.title}} </h1>
+<h1> 문제 번호 : {{ boards.problem_number}} </h1>
+
+<h1> 스터디 : {{ accepted_list }} </h1>
+{% for elem in accepted_list%}
+<h1> {{ elem.user.profile.nickname }} | {{ elem.user.profile.boj_id }} </h1>
+
+{% endfor %}
+
+
+
+{% endblock content %}
+
