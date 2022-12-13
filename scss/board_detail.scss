@@ -200,24 +200,32 @@ body.noScroll {
 }
 
 .thwrap {
-  img {
-    border-radius: 10px;
-    width: 50%;
-    margin: auto;
-    cursor: pointer;
-
-  }
-
   /* 이미지 사이즈 */
   overflow: hidden;
   width: 100%;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+
+
+  .img_frame {
+    width: 50%;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 10px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+
 }
+
 
 img {
   /* 이미지 배율 증가 시 부드럽게 */
-  border-radius: 10px;
   object-position: center;
   object-fit: contain;
   transition: .3s;

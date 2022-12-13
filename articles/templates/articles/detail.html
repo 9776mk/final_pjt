@@ -59,7 +59,9 @@
       <div>
       {% for image in articles.image_set.all %}
       <div class="thwrap">
-        <img  src="{{ image.image.url }}" alt="{{ image.image }}">
+        <div class='img_frame'>
+          <img src="{{ image.image.url }}" alt="{{ image.image }}">
+        </div>
       </div>
       {% endfor %}
       </div>
