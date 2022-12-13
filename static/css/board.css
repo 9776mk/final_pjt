@@ -142,7 +142,7 @@ thead {
   .board_list .top .hits {
     display: none;
   }
-  
+
   .board_list .hits {
     display: none;
   }
@@ -233,9 +233,9 @@ thead {
 
 /* 말줄임 표 */
 .text_elli {
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
@@ -316,4 +316,20 @@ thead {
 .article_search input[type="submit"]:hover {
   background: #ef8606;
 
+}
+
+/* 호버 */
+.card a div {
+  overflow: hidden;
+
+}
+
+.card a img {
+  overflow: hidden;
+
+  transition: all 0.2s linear;
+}
+
+.card a:hover img {
+  transform: scale(1.2);
 }
