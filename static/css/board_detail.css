@@ -137,4 +137,74 @@ details {
   .input_com {
     width: 500px;
   }
+}
+body.noScroll {
+  /* 이미지 팝업 시 이중 스크롤 방지 */
+  overflow: hidden;
+}
+
+.thwrap {
+  /* 이미지 사이즈 */
+  overflow: hidden;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+}
+.thwrap img {
+  width: 50%;
+  margin: auto;
+  max-height: 350px;
+  cursor: pointer;
+}
+
+img {
+  /* 이미지 배율 증가 시 부드럽게 */
+  -o-object-position: center;
+     object-position: center;
+  -o-object-fit: contain;
+     object-fit: contain;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+}
+
+.zoomIn {
+  /* 줌인 커서 모양 */
+  cursor: zoom-in;
+}
+
+.zoomOut {
+  /* 중아웃 커서 모양 */
+  cursor: zoom-out;
+}
+
+.popup {
+  /* 팝업 배경 */
+  background-color: rgba(0, 0, 0, 0.877);
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5rem 0 2rem 0;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.popup.show {
+  /* 팝업 보이기 */
+  opacity: 1;
+  pointer-events: unset;
 }/*# sourceMappingURL=board_detail.css.map */
