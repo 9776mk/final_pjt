@@ -115,6 +115,11 @@ main .algo h1 {
     width: 60% !important;
   }
 }
+@media screen and (max-width: 480px) {
+  #thbox {
+    display: contents !important;
+  }
+}
 .community .com-text {
   margin: 15px 150px;
   text-align: start;

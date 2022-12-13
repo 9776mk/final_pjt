@@ -3,30 +3,37 @@
   border: 1px solid #b7b7b7;
   background-color: white;
   border-radius: 20px;
+
   .writer {
     // 위부터 시계방향
     padding: 50px 60px 0px;
+
     a {
       width: 305px;
     }
+
     .writer_img {
       width: 18%;
       border-radius: 70%;
       margin-right: 20px;
     }
+
     .writer_profile {
       width: auto;
     }
   }
+
   .info {
     padding: 40px 80px;
     margin: 0;
     margin-bottom: 0;
+
     .title {
       font-size: 1.5rem;
       font-weight: bold;
       margin-bottom: 10px;
     }
+
     p {
       padding-right: 5px;
       color: rgb(195, 195, 195);
@@ -36,14 +43,16 @@
       margin-bottom: 3px;
     }
   }
+
   .cont {
     padding: 20px 80px 60px;
     line-height: 160%;
     font-size: 1.0rem;
   }
+
   .article_img {
-    max-width: 500px; 
-    max-height:580px; 
+    max-width: 500px;
+    max-height: 580px;
     border-radius: 8px;
     width: 50%;
     margin: 30px 0;
@@ -54,19 +63,22 @@
 // https://projects.verou.me/bubbly/
 /* 로그인 안했을때 댓글창 가면 있는 로그인이 필요합니다.. */
 .speech-bubble {
-	position: relative;
-	color: #ff8800;
+  position: relative;
+  color: #ff8800;
   background-color: #fff;
-	border-radius: .4em;
+  border-radius: .4em;
   padding: 20px;
+
   &:hover {
     color: #fff;
     background-color: #04188a;
     border: 0;
+
     &::after {
       border-right-color: #04188a;
     }
   }
+
   &::after {
     content: '';
     position: absolute;
@@ -95,8 +107,10 @@ details {
   background-color: #fff;
   padding: 10px;
   border-radius: 20px;
+
   .comment_writer {
     padding: 10px;
+
     a {
       .writer_img {
         width: 40px;
@@ -109,8 +123,8 @@ details {
 
 
 // 댓글 생성 폼
-.input_com { 
-  border-radius: 8px; 
+.input_com {
+  border-radius: 8px;
   border: 1px solid #b7b7b7;
 }
 
@@ -128,9 +142,10 @@ details {
   transition: all 0.4s;
   border-radius: 10px;
   width: 76px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   &:hover {
     background-color: #a4a4a4;
     color: white;
@@ -145,13 +160,87 @@ details {
       display: none;
     }
   }
-  .input_com { 
-    width: 370px; 
+
+  .input_com {
+    width: 370px;
   }
 }
 
 @media (min-width : 768px) {
-  .input_com { 
-    width: 500px; 
+  .input_com {
+    width: 500px;
   }
+}
+
+// 이미지 팝업
+
+body.noScroll {
+  /* 이미지 팝업 시 이중 스크롤 방지 */
+  overflow: hidden;
+}
+
+.thwrap {
+  img {
+    width: 50%;
+    margin: auto;
+    max-height: 350px;
+    cursor: pointer;
+
+  }
+
+  /* 이미지 사이즈 */
+  overflow: hidden;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+}
+
+img {
+  /* 이미지 배율 증가 시 부드럽게 */
+  object-position: center;
+  object-fit: contain;
+  transition: .3s;
+  -webkit-transition: .3s;
+  -moz-transition: .3s;
+  -ms-transition: .3s;
+  -o-transition: .3s;
+}
+
+.zoomIn {
+  /* 줌인 커서 모양 */
+  cursor: zoom-in;
+}
+
+.zoomOut {
+  /* 중아웃 커서 모양 */
+  cursor: zoom-out;
+}
+
+.popup {
+  /* 팝업 배경 */
+  background-color: rgba(0, 0, 0, 0.877);
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5rem 0 2rem 0;
+  transition: .3s;
+  -webkit-transition: .3s;
+  -moz-transition: .3s;
+  -ms-transition: .3s;
+  -o-transition: .3s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.popup.show {
+  /* 팝업 보이기 */
+  opacity: 1;
+  pointer-events: unset;
 }

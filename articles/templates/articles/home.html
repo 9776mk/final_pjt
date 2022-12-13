@@ -8,7 +8,7 @@
 {% block content %}
 <main>
     <div class='community'>
-        <h1> 개발마당</h1>
+        <h1 style="font-family: 'HBIOS-SYS';"> 개발마당</h1>
         <img src="{% static 'images/devel.png' %}" width="80%;"  style=' border-radius: 8px;'>
         <div class='com-text'>
             <div> 
@@ -20,11 +20,11 @@
         </div>
     </div>
     <div id='fo_gift' class="algo">
-        <h1>알고리즘</h1>   
+        <h1 style="font-family: 'HBIOS-SYS';">알고리즘</h1>   
         <div class='algoboxs'>
             <div class='algobox-frame'>
                 <div class='algobox'>
-                <h3>티어별 문제추천</h3>
+                <h3 style="font-family: 'HBIOS-SYS';">티어별 문제추천</h3>
 
                     <form id='algo-recom' method='get' action="">
                         <input class='ch' id='br' name='t' type="radio" value='br' checked>
@@ -46,8 +46,9 @@
                 </div>
             </div>
             <div class='algobox-frame'>
+
                 <div class='algobox'>
-                <h3>오늘의 도전 문제</h3>
+                <h3 style="font-family: 'HBIOS-SYS';">오늘의 도전 문제</h3>
                     <lord-icon
                     src="https://cdn.lordicon.com/nkmsrxys.json"
                     trigger="hover"
@@ -58,7 +59,7 @@
                 </div>
             </div>
         </div>
-        <h2><hr><span>현재 순위</span><hr></h2>
+        <h2><hr><span style="font-family: 'HBIOS-SYS';">현재 순위</span><hr></h2>
         <div class="rank">
             {% for rankinfo in rank %}
             <div class='rankinfo_frame'>
@@ -84,7 +85,7 @@
     </div>
 
     <div class="graph">
-        <h1>기술스텍 통계</h1>  
+        <h1 style="font-family: 'HBIOS-SYS';">기술스텍 통계</h1>  
         <div class='servey'>
             {% comment %} data-num 변수로 들어갈거임 {% endcomment %}
             {% comment %} 반복문으로 변수만큼 돌면서 이름과 데이터번호는 변수처리 빽에서 넘어온거 넣음
@@ -101,7 +102,7 @@
             </div>
             {% endfor %}
             <div class='graph-btn-frame'>
-                <a class='btnAll' href="{% url 'surveys:create' %}">설문조사 하러가기!</a>
+                <a class='btnAll' href="{% url 'surveys:create' %}">설문조사 하러가기</a>
                 <a class='btnAll' href="{% url 'surveys:index' %}">통계자료 확인</a>
             </div>
         </div>
@@ -110,7 +111,7 @@
  
     
     <div class='find'>
-        <h1>나와 잘 맞는 개발자를 찾아보세요.</h1>
+        <h1 style="font-family: 'HBIOS-SYS';">나와 잘 맞는 개발자를 찾아보세요!</h1>
         <div class='lay'>
             <div class='p-img'><img src="{% static 'images/find.png' %}" style=' border-radius: 8px;' alt=""> </div>
                 <div class='p-text'>
