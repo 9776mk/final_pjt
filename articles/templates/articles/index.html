@@ -52,32 +52,14 @@
               <a href="" style='color: #000'>{{ article.category }}</a>
             {% endif %}
           </div>
-
-          {% for article in articles %}
-            <div class='d-flex align-items-center'>
-              <div class="category">
-                {% if article.category == '자료공유'%}
-                  <a href="" style='color: #1346ff'>{{ article.category }}</a>
-                {% elif article.category == '취업'%}
-                  <a href="" style='color: #ff8800'>{{ article.category }}</a>
-                {% elif article.category == '질문'%}
-                  <a href="" style='color: #33aa23'>{{ article.category }}</a>
-                {% else %}
-                  <a href="" style='color: #000'>{{ article.category }}</a>
-                {% endif %}
-              </div>
-              <div class="title">
-                <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
-                  <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
-              </div>
-              <!-- 바깥작성자는 popover로 띄울까 고민중-->
-              <div class="writer">
-                <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
-              </div>
-              <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
-            </div>
-          {% endfor %}
-
+          <div class="title">
+            <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+          </div>
+          <!-- 바깥작성자는 popover로 띄울까 고민중-->
+          <div class="writer">
+            <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
+          </div>
+          <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
         </div>
       {% endfor %}
     </div>
@@ -139,40 +121,6 @@
         <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
         <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
       </div>
-
-
-      <!--게시판-->
-      <div class="board_list">
-        <div class="top">
-          <div class="category">분류</div>
-          <div class="title">제목</div>
-          <div class="writer">작성자</div>
-          <div class="date">작성일</div>
-        </div>
-        {% for article in articles %}
-          <div>
-            <div class="category">
-              {% if article.category == '자료공유'%}
-                <a href="" style='color: #1346ff'>{{ article.category }}</a>
-              {% elif article.category == '취업'%}
-                <a href="" style='color: #ff8800'>{{ article.category }}</a>
-              {% elif article.category == '질문'%}
-                <a href="" style='color: #33aa23'>{{ article.category }}</a>
-              {% else %}
-                <a href="" style='color: #000'>{{ article.category }}</a>
-              {% endif %}
-            </div>
-            <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
-                <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
-            </div>
-            <!-- 바깥작성자는 popover로 띄울까 고민중-->
-            <div class="writer">
-              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
-            </div>
-            <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
-          </div>
-        {% endfor %}
 
       <div class="" style="display: flex;align-items: center;">
         <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
@@ -321,8 +269,7 @@
               {% endif %}
             </div>
             <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
-                <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
+              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
             <div class="writer">
@@ -392,46 +339,11 @@
         <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
       </div>
 
-
-      <!--게시판-->
-      <div class="board_list">
-        <div class="top">
-          <div class="category">분류</div>
-          <div class="title">제목</div>
-          <div class="writer">작성자</div>
-          <div class="date">작성일</div>
-        </div>
-        {% for article in articles %}
-          <div>
-            <div class="category">
-              {% if article.category == '자료공유'%}
-                <a href="" style='color: #1346ff'>{{ article.category }}</a>
-              {% elif article.category == '취업'%}
-                <a href="" style='color: #ff8800'>{{ article.category }}</a>
-              {% elif article.category == '질문'%}
-                <a href="" style='color: #33aa23'>{{ article.category }}</a>
-              {% else %}
-                <a href="" style='color: #000'>{{ article.category }}</a>
-              {% endif %}
-            </div>
-            <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
-                <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
-            </div>
-            <!-- 바깥작성자는 popover로 띄울까 고민중-->
-            <div class="writer">
-              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
-            </div>
-            <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
-          </div>
-        {% endfor %}
-
       <div class="" style="display: flex;align-items: center;">
         <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
           <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
           <input class="" type="submit" value='Search'></input>
         </form>
-
       </div>
     </div>
 
@@ -534,40 +446,6 @@
         <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
         <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
       </div>
-
-
-      <!--게시판-->
-      <div class="board_list">
-        <div class="top">
-          <div class="category">분류</div>
-          <div class="title">제목</div>
-          <div class="writer">작성자</div>
-          <div class="date">작성일</div>
-        </div>
-        {% for article in articles %}
-          <div>
-            <div class="category">
-              {% if article.category == '자료공유'%}
-                <a href="" style='color: #1346ff'>{{ article.category }}</a>
-              {% elif article.category == '취업'%}
-                <a href="" style='color: #ff8800'>{{ article.category }}</a>
-              {% elif article.category == '질문'%}
-                <a href="" style='color: #33aa23'>{{ article.category }}</a>
-              {% else %}
-                <a href="" style='color: #000'>{{ article.category }}</a>
-              {% endif %}
-            </div>
-            <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
-                <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
-            </div>
-            <!-- 바깥작성자는 popover로 띄울까 고민중-->
-            <div class="writer">
-              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
-            </div>
-            <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
-          </div>
-        {% endfor %}
 
       <div class="" style="display: flex;align-items: center;">
         <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
