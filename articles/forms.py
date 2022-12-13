@@ -28,13 +28,6 @@ class ArticleCommentForm(forms.ModelForm):
         fields = [
             "content",
         ]
-        widgets = {
-            "content": Textarea(
-                attrs={
-                    "style": "width: 100%; resize: none; outline: none; border: none; padding: 22px;",
-                }
-            ),
-        }
 
 
 # ClearableFileInput으로 여러 장의 image를 입력 받을 수 있음
