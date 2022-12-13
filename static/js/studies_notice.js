@@ -45,9 +45,7 @@ function noticeDeleteAll() {
         headers: {'X-CSRFToken': csrftoken},
     }).then(response => {
         const noticeBox = document.querySelector(`#notice-box`)
-        const deleteBtn = document.querySelector('#notice-delete-all-btn')
         noticeBox.remove()
-        deleteBtn.remove()
 
         const modalBody = document.querySelector('.modal-body')
         modalBody.insertAdjacentHTML('beforeend', '<p id="no-notices" class="py-5 text-center text-muted">아직 알림이 없어요</p>')
