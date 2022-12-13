@@ -1,4 +1,5 @@
 .bbtn_stu {
+  width: 76px;
   display: inline-block;
   padding: 10px;
   border: 1px solid #a4a4a4;
@@ -8,6 +9,7 @@
   color: #a4a4a4;
   transition: all 0.4s;
   border-radius: 10px;
+  text-align: center;
 }
 .bbtn_stu:hover {
   background-color: #a4a4a4;
@@ -20,9 +22,9 @@
 }
 
 .study_mainimg {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 20px;
-  max-width: 900px;
-  max-height: 700px;
+  max-width: 1300px;
+  max-height: 10000px;
   width: 100%;
 }/*# sourceMappingURL=studies.css.map */

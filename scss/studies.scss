@@ -1,6 +1,7 @@
 // 댓글에서 쓰던 버튼 가지고 온것!
 // detail 신청인원 스터디 인원
 .bbtn_stu {
+  width: 76px;
   display: inline-block;
   padding: 10px;
   border: 1px solid #a4a4a4;
@@ -10,6 +11,7 @@
   color: #a4a4a4;
   transition: all 0.4s;
   border-radius: 10px;
+  text-align: center;
   &:hover {
     background-color: #a4a4a4;
     color: white;
@@ -22,9 +24,9 @@
 }
 
 .study_mainimg {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 20px; 
-  max-width: 900px; 
-  max-height: 700px;
+  max-width: 1300px; 
+  max-height: 10000px;
   width: 100%;
 }
