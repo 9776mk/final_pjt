@@ -82,40 +82,40 @@
 
     <div id="wrap">
       <!-- navbar -->
-      <nav class="navbar navbar-expand-lg sticky-top">
+      <nav class="navbar navbar-expand-lg sticky-top navbar-dark" style="background: #061221;">
         <div class="container">
           <a class="navbar-brand ms-4" href="{% url "home" %}">
-            <img src="{% static 'images/logo-black.png' %}" alt="" style='width: 70px; margin: 5px;'>
+            <img src="{% static 'images/logo-white.png' %}" alt="" style='width: 70px; margin: 5px;'>
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="color: #f8f9fa;">
+            <span class="navbar-toggler-icon" style="color: #f8f9fa;"></span>
           </button>
 
           <!-- 메뉴 -->
           <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
             <ul class="navbar-nav align-items-center">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'articles:index' %}">
+                <a class="nav-link" href="{% url 'articles:index' %}" style="color: #c1c1c1;">
                   개발마당
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'algorithm:index' %}">
+                <a class="nav-link" href="{% url 'algorithm:index' %}" style="color: #c1c1c1;">
                   문제집
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'friends:index' %}">
+                <a class="nav-link" href="{% url 'friends:index' %}" style="color: #c1c1c1;">
                   벗삼기/찾기
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'studies:index' %}">
+                <a class="nav-link" href="{% url 'studies:index' %}" style="color: #c1c1c1;">
                   공부방
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href='' id='giftFocus'>
+                <a class="nav-link" href='' id='giftFocus' style="color: #c1c1c1;">
                   도전 문제
                 </a>
               </li>
@@ -179,12 +179,12 @@
                 <!-- 로그인이 되어있지 않으면 -->
               {% else %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'accounts:signup' %}">
+                  <a class="nav-link" href="{% url 'accounts:signup' %}" style="color: #c1c1c1;">
                     회원가입
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'accounts:login' %}">
+                  <a class="nav-link" href="{% url 'accounts:login' %}" style="color: #c1c1c1;">
                     로그인
                   </a>
                 </li>
