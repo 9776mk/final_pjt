@@ -225,7 +225,7 @@ def apply(request, study_pk):
 
     if request.user != study.host_user and request.method == "POST":
         if study.is_closed == False:
-            user_pks = List.objects.filter(is_accepted=False).values_list("user", flat=True)
+            user_pks = List.objects.filter(study=study, is_accepted=False).values_list("user", flat=True)
 
             # 아직 신청하지 않았으면, 유저를 List에 추가 (가입 신청)
             if not request.user.pk in user_pks:
