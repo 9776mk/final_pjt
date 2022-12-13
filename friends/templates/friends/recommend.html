@@ -22,10 +22,11 @@
     <!-- 랜덤으로 추천받은 유저들 -->
     <div class="row mx-3" id="recommended-users">
       {% for user in recommended_users %}
-        <a class='col-lg-4 col-md-6' href="{% url 'accounts:profile' user.pk %}">
-          <div class="recommended-users user_box_rec d-flex align-items-center justify-content-around mb-3 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
+        <div class='col-lg-4 col-md-6' >
+          <div class="recommended-users user_box_rec d-flex justify-content-center align-items-center mb-3 {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
             <!-- 프로필 이미지-->
-            <div>
+            <div style='min-width:30%;'>
+              <a href="{% url 'accounts:profile' user.pk %}" style='position: relative;'>
               {% comment %}  {% endcomment %}
               {% if user.profile.image|slugify|slice:'0:4' == 'http' %}
                 <img src="{{ user.profile.image }}" class="profile-img" alt="">
@@ -34,33 +35,45 @@
               {% else %}
                 <img src="{% static 'images/no-avatar.jpg' %}" class="profile-img" alt="">
               {% endif %}
+              <!-- 백준티어 -->
+              {% if user.profile.boj_tier > 0 %}
+              <img style="height:25px; height: 25px; position: absolute;top: 32px;right: 6px; "
+               src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg">
+               {% endif %}
+              </a>
             </div>
-            <div>
+            <div style='width:auto;'>
               <!-- 닉네임 -->
-              <p class="m-0">{{ user.profile.nickname }}</p>
+              <a href="{% url 'accounts:profile' user.pk %}">
+              <p class="m-0">닉네임 {{ user.profile.nickname }}</p>
+              </a>
               <!-- 주 사용언어 -->
               {% if user.profile.language == 'Python' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
+                <p class="my-1">주언어 <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/></p>
               {% elif user.profile.language == 'Java' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
+                <p class="my-1">주언어 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"></p>
               {% elif user.profile.language == 'C' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
+                <p class="my-1">주언어 <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=C&logoColor=white"></p>
               {% elif user.profile.language == 'JavaScript' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
+                <p class="my-1">주언어 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> </p>
               {% elif user.profile.language == 'C++' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
+                <p class="my-1">주언어 <img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white"></p>
               {% elif user.profile.language == 'PHP' %}
-                <p class="my-1"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
+                <p class="my-1">주언어 <img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
               {% endif %}
               <div class='d-flex'>
-                <!-- 백준티어 -->
-                <p class='mb-1 me-2'><img style="height:25px;" src="https://static.solved.ac/tier_small/{{ user.profile.boj_tier }}.svg"></p>
+                
                 <!-- MBTI -->
-                <p class="m-0"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+                {% if user.profile.mbti %}
+                <p class="m-0">MBTI &nbsp<span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
+                {% endif %}
               </div>
             </div>
+            <div>
+              <a class='' href="{% url 'notes:send_to' user.pk %}"><img style='width: 20px;' src="{% static 'images/note.png' %}" alt="쪽지"></a>
+            </div>
           </div>
-        </a>
+        </div>
       {% endfor %}
     </div>
 
