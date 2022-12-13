@@ -56,7 +56,8 @@
                 {% endif %}
               </div>
               <div class="title">
-                <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+                <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
+                  <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
               </div>
               <!-- 바깥작성자는 popover로 띄울까 고민중-->
               <div class="writer">
@@ -155,7 +156,8 @@
               {% endif %}
             </div>
             <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
+                <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
             <div class="writer">
@@ -254,7 +256,8 @@
               {% endif %}
             </div>
             <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
+                <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
             <div class="writer">
@@ -353,7 +356,8 @@
               {% endif %}
             </div>
             <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
+                <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
             <div class="writer">
@@ -452,7 +456,8 @@
               {% endif %}
             </div>
             <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}
+                <span style="font-size: 13px; color: #a3a3a3;">[{{ article.articlecomment_set.all.count }}]</span></a>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
             <div class="writer">

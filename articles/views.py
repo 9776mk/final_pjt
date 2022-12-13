@@ -396,9 +396,14 @@ def likes(request, article_pk):
         else:
             article.like.add(request.user)
             is_liked = True
-        data = {"is_liked": is_liked}
+        like_count = article.like.count()
+        data = {
+            "is_liked": is_liked,
+            'likeCount': like_count,
+            }
         return JsonResponse(data)
     return redirect("accounts:login")
+
 
 def search(request):#검색 
     search= Article.objects.order_by('-pk')
