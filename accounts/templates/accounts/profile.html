@@ -2,6 +2,24 @@
 {% load static %}
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/profile.css' %}" type="text/css">
+  <style>
+    .swiper {
+      height: 435px;
+    }
+    
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      display: none;
+    }
+
+    .swiper-slide {
+      width: auto;
+    }
+
+    .swiper-card {
+      position: relative;
+    }
+  </style>
 {% endblock link %}
 
 {% block content %}
@@ -52,8 +70,10 @@
         <p class="mb-1 me-2"><img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white"></p>
         {% endif %}
         <p class="mt-1 mb-1 me-2"><span class="{{ user.profile.mbti }}-badge">{{ user.profile.mbti }}</span></p>
-        {% if tier %}
+        {% if tier > 0 %}
         <p class="mt-1 mb-1"><img style="height: 25px" src="https://static.solved.ac/tier_small/{{ tier }}.svg"> </p>
+        {% elif tier < 0 %}
+        <p class="text-muted mt-1 mb-1"> 유효하지 않는 아이디입니다. <br> 다시 등록해주세요. </p>
         {% else %}
         <p class="text-muted mt-1 mb-1"> 백준 아이디를 등록해주세요 </p>
         {% endif %}
@@ -194,6 +214,98 @@
     </div>
   </div>
 
+  <!-- 가입된 스터디 (큰 화면) -->
+  <div class="d-none d-md-block mb-2">
+    <a data-bs-toggle="collapse" href="#study-collapse" role="button" aria-expanded="false" aria-controls="study-collapse" style="font-size: 17px;">
+      가입한 스터디  <b>{{ joined_studies|length }}</b>
+    </a>
+    
+    <div class="my-3 collapse" id="study-collapse">
+      <div class="position-relative">
+        <div id="studies-swiper" class="swiper">
+          <div class="swiper-wrapper">
+            {% for list in joined_studies %}
+              <div class="swiper-slide">
+                <div class="mb-3 d-flex justify-content-center ">
+                  <div class="card swiper-card" style="width: 21rem;">
+                    <a href="{% url 'studies:detail' list.study.pk %}">
+                      {% if list.study.thumbnail %}
+                        <img class="card-img-top" src="{{ list.study.thumbnail.url }}">
+                      {% else %}
+                        <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+                      {% endif %}
+                      
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <h5 class="card-title m-0">{{ list.study.title }}</h5>
+        
+                          {% if list.study.is_closed == False %}
+                            <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                          {% else %}
+                            <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                          {% endif %}
+                        </div>
+                        <p class="card-text">{{ list.study.host_user }}</p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            {% comment %} <div class="swiper-slide"><img src="{% static 'images/logo-black.png' %}"></div>
+            <div class="swiper-slide"><img src="{% static 'images/logo-orange.png' %}"></div>
+            <div class="swiper-slide"><img src="{% static 'images/logo-white.png' %}"></div> {% endcomment %}
+          </div>
+    
+          <div class="swiper-button-prev" style="position: absolute; top: 165px">
+            <i class="bi bi-arrow-left-circle-fill" style="font-size: 2.5rem; color:#FF8E00; z-index: 1000;"></i>
+          </div>
+          <div class="swiper-button-next" style="top: 165px">
+            <i class="bi bi-arrow-right-circle-fill" style="font-size: 2.5rem; color:#FF8E00;"></i>
+          </div>
+          {% comment %} <div class="swiper-pagination"></div> {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 가입된 스터디 (작은 화면) -->
+  <div class="d-block d-md-none mb-2">
+    <a data-bs-toggle="collapse" href="#study-collapse-2" role="button" aria-expanded="false" aria-controls="study-collapse" style="font-size: 17px;">
+      가입한 스터디  <b>{{ joined_studies|length }}</b>
+    </a>
+    
+    <div class="my-3 collapse" id="study-collapse-2">
+      {% for list in joined_studies %}
+        <div class="mb-3 d-flex justify-content-center">
+          <div class="card swiper-card" style="width: 21rem;">
+            <a href="{% url 'studies:detail' list.study.pk %}">
+              {% if list.study.thumbnail %}
+                <img class="card-img-top" src="{{ list.study.thumbnail.url }}">
+              {% else %}
+                <img class="card-img-top" src="{% static 'images/dummy-image-square.jpg' %}">
+              {% endif %}
+              
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="card-title m-0">{{ list.study.title }}</h5>
+
+                  {% if list.study.is_closed == False %}
+                    <span class="badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
+                  {% else %}
+                    <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
+                  {% endif %}
+                </div>
+                <p class="card-text">{{ list.study.host_user }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  
+
   <!-- 팔로워 modal -->
   <div class="modal fade" id="followerModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog">
@@ -312,6 +424,7 @@
 
 {% block script %}
   <script type="text/javascript" src="{% static 'js/accounts_follow_async.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/accounts_swiper.js' %}"></script>
   <script>
     //댓글 비동기 삭제
     function delete_comment(form, article_pk, comment_pk) {
