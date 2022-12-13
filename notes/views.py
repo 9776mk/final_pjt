@@ -170,7 +170,7 @@ def important_check(request, pk):
     if request.user == note.to_user:
         note.important = True
         note.save()
-    return redirect("notes:index")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
@@ -179,7 +179,7 @@ def important_return(request, pk):
     if request.user == note.to_user:
         note.important = False
         note.save()
-    return redirect("notes:index")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
