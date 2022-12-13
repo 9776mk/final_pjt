@@ -8,11 +8,18 @@
 {% endblock link %}
 
 {% block content %} 
-<h1> 스터디 게시판 디테일 페이지 </h1>
-{% for article in boards %}
-<h1> {{ article.title }} </h1>
+<h1> 스터디(이름 추가) 게시판 디테일 페이지 </h1>
+<hr>
+<h1> 게시글 : {{ boards.title}} </h1>
+<h1> 문제 번호 : {{ boards.problem_number}} </h1>
+
+<h1> 스터디 : {{ accepted_list }} </h1>
+{% for elem in accepted_list%}
+<h1> {{ elem.user.profile.nickname }} | {{ elem.user.profile.boj_id }} </h1>
 
 {% endfor %}
+
+
 
 {% endblock content %}
 
