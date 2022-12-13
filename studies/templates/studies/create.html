@@ -66,7 +66,13 @@
         <button type="submit" class="px-4 on">등록</button>
         <a class='px-4' href="{% url 'studies:index' %}">목록으로</a>
       </div>
-
     </form>
   </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+  const imageField = document.querySelector('#id_image')
+  imageField.removeAttribute('required')
+</script>
+{% endblock script %}
