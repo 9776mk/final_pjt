@@ -99,7 +99,7 @@
                 <li class='nav-item'>
                   <form onsubmit="event.preventDefault(); noticeRead()">
                     {% csrf_token %}
-                    <button id='testBtn' type="submit" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal">
+                    <button id='testBtn' type="submit" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal" style="border: 0px; font-size: 20px;">
                       <i class="bi bi-bell"></i>
                       {% if request.user.get_study_notice_cnt != 0 %}
                       <span id="study-notice-cnt" class="nav-counter">
@@ -112,7 +112,7 @@
 
                 <!-- 쪽지 창 -->
                 <li class='nav-item'>
-                  <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'">
+                  <button type="button" class="btn position-relative" onclick="location.href='{% url 'notes:index' %}'" style="border: 0px;">
                     <img style='width: 20px;' src="{% static 'images/note.png' %}" alt="쪽지">
                     {% if request.user.get_message_notice_cnt != 0 %}
                       <span class="nav-counter">
@@ -125,7 +125,7 @@
 
                 <!-- 프로필 사진 -->
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'accounts:profile' request.user.pk %}">
+                  <a class="nav-link ms-1" href="{% url 'accounts:profile' request.user.pk %}">
                     <div class="box">
                       {% comment %}  {% endcomment %}
                       {% if request.user.profile.image|slugify|slice:'0:4' == 'http' %}
