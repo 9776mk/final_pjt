@@ -174,9 +174,9 @@
                   <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.from_user.profile.nickname }}<br>{{ note.title }}</a>
                 </td>
                 {% if note.read == 1 %}
-                <td class="read">읽음</td>
+                <td class="read" style="min-width: 60px;">읽음</td>
                 {% else %}
-                <td class="not_read read">안읽음</td>
+                <td class="not_read read" style="min-width: 60px;">안읽음</td>
                 {% endif %}
                 {% if not note.important %}
                 <td scope="row" class="important"><a href="{% url 'notes:important_check' note.pk %}"><i class="bi bi-star mx-1"></i></a></td>
@@ -194,9 +194,9 @@
                   <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.from_user.profile.nickname }}<br>{{ note.title }}</a>
                 </td>
                 {% if note.read == 1 %}
-                <td class="read">읽음</td>
+                <td class="read" style="min-width: 60px;">읽음</td>
                 {% else %}
-                <td class="not_read read">안읽음</td>
+                <td class="not_read read" style="min-width: 60px;">안읽음</td>
                 {% endif %}
                 {% if not note.important %}
                 <td scope="row" class="important"><a href="{% url 'notes:important_check' note.pk %}"><i class="bi bi-star mx-1"></i></a></td>
@@ -410,7 +410,11 @@
             {% endfor %}
           </tbody>
         </table>
+        {% if to_notes %}
         <p class="text-end text-muted" style="font-size: 13px;">상대가 읽기 전에 삭제하면 상대 쪽지함에서도 삭제됩니다.</p>
+        {% else %}
+        <p class="text-center text-muted">쪽지가 없습니다.</p>
+        {% endif %}
         <!--페이지네이션-->
         <div class="paginator board_page my-5">
           <!-- 맨 앞으로 -->

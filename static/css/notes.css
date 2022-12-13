@@ -45,6 +45,9 @@ th {
   min-width: 60px;
 }
 
+td {
+  vertical-align : middle;
+}
 
 /* detail */
 
