@@ -8,208 +8,213 @@
   <!-- 전체, 기본 -->
   {% if request.resolver_match.url_name == 'index' %}
   <div class='container py-5'>
+    <div class='d-flex justify-content-between flex-wrap'style='margin-left:16px;'>
       <div>
-      <div class='mx-3 d-flex justify-content-between flex-wrap'>
-        <div>
-          <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
-          <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
-        </div>
-
-          <div class="">
-            <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
-              <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
-              <input class="" type="submit" value='Search'></input>
-            </form>
-          </div>
-        </div>
-      
-      
+        <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
+        <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
       </div>
-        <!--탭-->
-        <div class="d-flex justify-content-end my-2 me-1">
-          <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
-          <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
-          <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
-          <a class='me-3' href="{% url 'articles:index_3' %}" style="font-family: 'HBIOS-SYS';">취업</a>
-          <a class='me-3' href="{% url 'articles:index_4' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
-        </div>
 
-        <!--게시판-->
-        <div class="board_list">
-          <div class="top">
-            <div class="category">분류</div>
-            <div class="title">제목</div>
-            <div class="writer">작성자</div>
-            <div class="date">작성일</div>
-          </div>
-          {% for article in articles %}
-            <div class='d-flex align-items-center'>
-              <div class="category">
-                {% if article.category == '자료공유'%}
-                  <a href="" style='color: #1346ff'>{{ article.category }}</a>
-                {% elif article.category == '취업'%}
-                  <a href="" style='color: #ff8800'>{{ article.category }}</a>
-                {% elif article.category == '질문'%}
-                  <a href="" style='color: #33aa23'>{{ article.category }}</a>
-                {% else %}
-                  <a href="" style='color: #000'>{{ article.category }}</a>
-                {% endif %}
-              </div>
-              <div class="title">
-                <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
-              </div>
-              <!-- 바깥작성자는 popover로 띄울까 고민중-->
-              <div class="writer">
-                <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
-              </div>
-              <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
-            </div>
-          {% endfor %}
-        </div>
-
-        <!--페이지네이션-->
-        <div class="paginator board_page">
-          <!-- 맨 앞으로 -->
-          <a href="?page=1" class="page-link bt first">
-            <i class="bi bi-chevron-bar-left"></i>
-          </a>
-          <!-- 이전 페이지 -->
-          {% if articles.has_previous %}
-            <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
-              <i class="bi bi-chevron-left"></i>
-            </a>
-          {% else %}
-            <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-              <i class="bi bi-chevron-left"></i>
-            </a>
-          {% endif %}
-          <!-- 페이지 리스트 -->
-          {% comment %}  {% endcomment %}
-          {% for page_number in articles.paginator.page_range %}
-            {% if page_number >= articles.number|add:-2 and page_number <= articles.number|add:2 %}
-              {% if page_number == articles.number %}
-                <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
-              {% else %}
-                <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
-              {% endif %}
-            {% endif %}
-          {% endfor %}
-          <!-- 다음 페이지 -->
-          {% if articles.has_next %}
-            <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
-              <i class="bi bi-chevron-right"></i>
-            </a>
-          {% else %}
-            <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-              <i class="bi bi-chevron-right"></i>
-            </a>
-          {% endif %}
-          <!-- 맨 뒤로 -->
-          <a href="?page={{ max_index }}" class="page-link bt last">
-            <i class="bi bi-chevron-bar-right"></i>
-          </a>
-        </div>
-      
-
-      <!--새 글 쓰기 버튼-->
-      <div class='bt_wrap'>
-        <a class='px-4' href="{% url 'articles:create' %}">새 글 쓰기</a>
+      <div class="" style="display: flex;align-items: center;">
+        <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
+          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
+          <input class="" type="submit" value='Search'></input>
+        </form>
       </div>
     </div>
 
+    <!--탭-->
+    <div class="d-flex justify-content-end my-2 me-1">
+      <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
+      <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
+      <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
+      <a class='me-3' href="{% url 'articles:index_3' %}" style="font-family: 'HBIOS-SYS';">취업</a>
+      <a class='me-3' href="{% url 'articles:index_4' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
+    </div>
+
+    <!--게시판-->
+    <div class="board_list">
+      <div class="top">
+        <div class="category">분류</div>
+        <div class="title">제목</div>
+        <div class="writer">작성자</div>
+        <div class="date">작성일</div>
+      </div>
+      {% for article in articles %}
+        <div class='d-flex align-items-center'>
+          <div class="category">
+            {% if article.category == '자료공유'%}
+              <a href="" style='color: #1346ff'>{{ article.category }}</a>
+            {% elif article.category == '취업'%}
+              <a href="" style='color: #ff8800'>{{ article.category }}</a>
+            {% elif article.category == '질문'%}
+              <a href="" style='color: #33aa23'>{{ article.category }}</a>
+            {% else %}
+              <a href="" style='color: #000'>{{ article.category }}</a>
+            {% endif %}
+          </div>
+          <div class="title">
+            <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+          </div>
+          <!-- 바깥작성자는 popover로 띄울까 고민중-->
+          <div class="writer">
+            <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
+          </div>
+          <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!--페이지네이션-->
+    <div class="paginator board_page">
+      <!-- 맨 앞으로 -->
+      <a href="?page=1" class="page-link bt first">
+        <i class="bi bi-chevron-bar-left"></i>
+      </a>
+      <!-- 이전 페이지 -->
+      {% if articles.has_previous %}
+        <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% endif %}
+      <!-- 페이지 리스트 -->
+      {% comment %}  {% endcomment %}
+      {% for page_number in articles.paginator.page_range %}
+        {% if page_number >= articles.number|add:-2 and page_number <= articles.number|add:2 %}
+          {% if page_number == articles.number %}
+            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% else %}
+            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <!-- 다음 페이지 -->
+      {% if articles.has_next %}
+        <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+      <!-- 맨 뒤로 -->
+      <a href="?page={{ max_index }}" class="page-link bt last">
+        <i class="bi bi-chevron-bar-right"></i>
+      </a>
+    </div>
+
+    <!--새 글 쓰기 버튼-->
+    <div class='bt_wrap'>
+      <a class='px-4' href="{% url 'articles:create' %}">새 글 쓰기</a>
+    </div>
+  </div>
+  
   <!-- 자료공유 -->
   {% elif request.resolver_match.url_name == 'index_1' %}
   <div class='container py-5'>
-    <div class='mx-3'>
-      <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
-      <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+    <div class='d-flex justify-content-between flex-wrap'style='margin-left:16px;'>
+      <div>
+        <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
+        <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+      </div>
+
+      <div class="" style="display: flex;align-items: center;">
+        <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
+          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
+          <input class="" type="submit" value='Search'></input>
+        </form>
+      </div>
     </div>
-      <!--탭-->
-      <div class="d-flex justify-content-end mb-2 me-1">
-        <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
-        <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
-        <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
-        <a class='me-3' href="{% url 'articles:index_3' %}" style="font-family: 'HBIOS-SYS';">취업</a>
-        <a class='me-3' href="{% url 'articles:index_4' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
-      </div>
 
-      <!--게시판-->
-      <div class="board_list">
-        <div class="top">
-          <div class="category">분류</div>
-          <div class="title">제목</div>
-          <div class="writer">작성자</div>
-          <div class="date">작성일</div>
-        </div>
-        {% for article in articles %}
-          <div>
-            <div class="category">
-              {% if article.category == '자료공유'%}
-                <a href="" style='color: #1346ff'>{{ article.category }}</a>
-              {% elif article.category == '취업'%}
-                <a href="" style='color: #ff8800'>{{ article.category }}</a>
-              {% elif article.category == '질문'%}
-                <a href="" style='color: #33aa23'>{{ article.category }}</a>
-              {% else %}
-                <a href="" style='color: #000'>{{ article.category }}</a>
-              {% endif %}
-            </div>
-            <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
-            </div>
-            <!-- 바깥작성자는 popover로 띄울까 고민중-->
-            <div class="writer">
-              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
-            </div>
-            <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
-          </div>
-        {% endfor %}
-      </div>
+    <!--탭-->
+    <div class="d-flex justify-content-end mb-2 me-1">
+      <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
+      <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
+      <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
+      <a class='me-3' href="{% url 'articles:index_3' %}" style="font-family: 'HBIOS-SYS';">취업</a>
+      <a class='me-3' href="{% url 'articles:index_4' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
+    </div>
 
-      <!--페이지네이션-->
-      <div class="paginator board_page">
-        <!-- 맨 앞으로 -->
-        <a href="?page=1" class="page-link bt first">
-          <i class="bi bi-chevron-bar-left"></i>
-        </a>
-        <!-- 이전 페이지 -->
-        {% if articles.has_previous %}
-          <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
-            <i class="bi bi-chevron-left"></i>
-          </a>
-        {% else %}
-          <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-            <i class="bi bi-chevron-left"></i>
-          </a>
-        {% endif %}
-        <!-- 페이지 리스트 -->
-        {% comment %}  {% endcomment %}
-        {% for page_number in articles.paginator.page_range %}
-          {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
-            {% if page_number == articles.number %}
-              <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+    <!--게시판-->
+    <div class="board_list">
+      <div class="top">
+        <div class="category">분류</div>
+        <div class="title">제목</div>
+        <div class="writer">작성자</div>
+        <div class="date">작성일</div>
+      </div>
+      {% for article in articles %}
+        <div>
+          <div class="category">
+            {% if article.category == '자료공유'%}
+              <a href="" style='color: #1346ff'>{{ article.category }}</a>
+            {% elif article.category == '취업'%}
+              <a href="" style='color: #ff8800'>{{ article.category }}</a>
+            {% elif article.category == '질문'%}
+              <a href="" style='color: #33aa23'>{{ article.category }}</a>
             {% else %}
-              <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+              <a href="" style='color: #000'>{{ article.category }}</a>
             {% endif %}
-          {% endif %}
-        {% endfor %}
-        <!-- 다음 페이지 -->
-        {% if articles.has_next %}
-          <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
-            <i class="bi bi-chevron-right"></i>
-          </a>
-        {% else %}
-          <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-            <i class="bi bi-chevron-right"></i>
-          </a>
-        {% endif %}
-        <!-- 맨 뒤로 -->
-        <a href="?page={{ max_index }}" class="page-link bt last">
-          <i class="bi bi-chevron-bar-right"></i>
-        </a>
-      </div>
-    
+          </div>
+          <div class="title">
+            <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+          </div>
+          <!-- 바깥작성자는 popover로 띄울까 고민중-->
+          <div class="writer">
+            <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
+          </div>
+          <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+        </div>
+      {% endfor %}
+    </div>
 
+    <!--페이지네이션-->
+    <div class="paginator board_page">
+      <!-- 맨 앞으로 -->
+      <a href="?page=1" class="page-link bt first">
+        <i class="bi bi-chevron-bar-left"></i>
+      </a>
+      <!-- 이전 페이지 -->
+      {% if articles.has_previous %}
+        <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% endif %}
+      <!-- 페이지 리스트 -->
+      {% comment %}  {% endcomment %}
+      {% for page_number in articles.paginator.page_range %}
+        {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
+          {% if page_number == articles.number %}
+            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% else %}
+            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <!-- 다음 페이지 -->
+      {% if articles.has_next %}
+        <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+      <!-- 맨 뒤로 -->
+      <a href="?page={{ max_index }}" class="page-link bt last">
+        <i class="bi bi-chevron-bar-right"></i>
+      </a>
+    </div>
+    
     <!--새 글 쓰기 버튼-->
     <div class='bt_wrap'>
       <a class='px-4' href="{% url 'articles:create' %}">새 글 쓰기</a>
@@ -219,10 +224,20 @@
   <!-- 질문 -->
   {% elif request.resolver_match.url_name == 'index_2' %}
   <div class='container py-5'>
-    <div class='mx-3'>
-      <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
-      <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+    <div class='d-flex justify-content-between flex-wrap'style='margin-left:16px;'>
+      <div>
+        <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
+        <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+      </div>
+
+      <div class="" style="display: flex;align-items: center;">
+        <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
+          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
+          <input class="" type="submit" value='Search'></input>
+        </form>
+      </div>
     </div>
+    
       <!--탭-->
       <div class="d-flex justify-content-end mb-2 me-1">
         <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
@@ -318,96 +333,105 @@
   <!-- 취업 -->
   {% elif request.resolver_match.url_name == 'index_3' %}
   <div class='container py-5'>
-    <div class='mx-3'>
-      <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
-      <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+    <div class='d-flex justify-content-between flex-wrap'style='margin-left:16px;'>
+      <div>
+        <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
+        <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+      </div>
+
+      <div class="" style="display: flex;align-items: center;">
+        <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
+          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
+          <input class="" type="submit" value='Search'></input>
+        </form>
+      </div>
     </div>
-      <!--탭-->
-      <div class="d-flex justify-content-end mb-2 me-1">
-        <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
-        <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
-        <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
-        <a class='me-3' href="{% url 'articles:index_3' %}" style="font-family: 'HBIOS-SYS';">취업</a>
-        <a class='me-3' href="{% url 'articles:index_4' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
-      </div>
 
-      <!--게시판-->
-      <div class="board_list">
-        <div class="top">
-          <div class="category">분류</div>
-          <div class="title">제목</div>
-          <div class="writer">작성자</div>
-          <div class="date">작성일</div>
-        </div>
-        {% for article in articles %}
-          <div>
-            <div class="category">
-              {% if article.category == '자료공유'%}
-                <a href="" style='color: #1346ff'>{{ article.category }}</a>
-              {% elif article.category == '취업'%}
-                <a href="" style='color: #ff8800'>{{ article.category }}</a>
-              {% elif article.category == '질문'%}
-                <a href="" style='color: #33aa23'>{{ article.category }}</a>
-              {% else %}
-                <a href="" style='color: #000'>{{ article.category }}</a>
-              {% endif %}
-            </div>
-            <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
-            </div>
-            <!-- 바깥작성자는 popover로 띄울까 고민중-->
-            <div class="writer">
-              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
-            </div>
-            <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
-          </div>
-        {% endfor %}
-      </div>
+    <!--탭-->
+    <div class="d-flex justify-content-end mb-2 me-1">
+      <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
+      <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
+      <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
+      <a class='me-3' href="{% url 'articles:index_3' %}" style="font-family: 'HBIOS-SYS';">취업</a>
+      <a class='me-3' href="{% url 'articles:index_4' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
+    </div>
 
-      <!--페이지네이션-->
-      <div class="paginator board_page">
-        <!-- 맨 앞으로 -->
-        <a href="?page=1" class="page-link bt first">
-          <i class="bi bi-chevron-bar-left"></i>
-        </a>
-        <!-- 이전 페이지 -->
-        {% if articles.has_previous %}
-          <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
-            <i class="bi bi-chevron-left"></i>
-          </a>
-        {% else %}
-          <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-            <i class="bi bi-chevron-left"></i>
-          </a>
-        {% endif %}
-        <!-- 페이지 리스트 -->
-        {% comment %}  {% endcomment %}
-        {% for page_number in articles.paginator.page_range %}
-          {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
-            {% if page_number == articles.number %}
-              <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+    <!--게시판-->
+    <div class="board_list">
+      <div class="top">
+        <div class="category">분류</div>
+        <div class="title">제목</div>
+        <div class="writer">작성자</div>
+        <div class="date">작성일</div>
+      </div>
+      {% for article in articles %}
+        <div>
+          <div class="category">
+            {% if article.category == '자료공유'%}
+              <a href="" style='color: #1346ff'>{{ article.category }}</a>
+            {% elif article.category == '취업'%}
+              <a href="" style='color: #ff8800'>{{ article.category }}</a>
+            {% elif article.category == '질문'%}
+              <a href="" style='color: #33aa23'>{{ article.category }}</a>
             {% else %}
-              <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+              <a href="" style='color: #000'>{{ article.category }}</a>
             {% endif %}
-          {% endif %}
-        {% endfor %}
-        <!-- 다음 페이지 -->
-        {% if articles.has_next %}
-          <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
-            <i class="bi bi-chevron-right"></i>
-          </a>
-        {% else %}
-          <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-            <i class="bi bi-chevron-right"></i>
-          </a>
-        {% endif %}
-        <!-- 맨 뒤로 -->
-        <a href="?page={{ max_index }}" class="page-link bt last">
-          <i class="bi bi-chevron-bar-right"></i>
-        </a>
-      </div>
-    
+          </div>
+          <div class="title">
+            <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+          </div>
+          <!-- 바깥작성자는 popover로 띄울까 고민중-->
+          <div class="writer">
+            <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
+          </div>
+          <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+        </div>
+      {% endfor %}
+    </div>
 
+    <!--페이지네이션-->
+    <div class="paginator board_page">
+      <!-- 맨 앞으로 -->
+      <a href="?page=1" class="page-link bt first">
+        <i class="bi bi-chevron-bar-left"></i>
+      </a>
+      <!-- 이전 페이지 -->
+      {% if articles.has_previous %}
+        <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% endif %}
+      <!-- 페이지 리스트 -->
+      {% comment %}  {% endcomment %}
+      {% for page_number in articles.paginator.page_range %}
+        {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
+          {% if page_number == articles.number %}
+            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% else %}
+            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <!-- 다음 페이지 -->
+      {% if articles.has_next %}
+        <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+      <!-- 맨 뒤로 -->
+      <a href="?page={{ max_index }}" class="page-link bt last">
+        <i class="bi bi-chevron-bar-right"></i>
+      </a>
+    </div>
+    
     <!--새 글 쓰기 버튼-->
     <div class='bt_wrap'>
       <a class='px-4' href="{% url 'articles:create' %}">새 글 쓰기</a>
@@ -417,102 +441,110 @@
   <!-- 잡담 -->
   {% elif request.resolver_match.url_name == 'index_4' %}
   <div class='container py-5'>
-    <div class='mx-3'>
-      <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
-      <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+    <div class='d-flex justify-content-between flex-wrap'style='margin-left:16px;'>
+      <div>
+        <h1 style="font-family: 'HBIOS-SYS';">개발마당</h1>
+        <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
+      </div>
+
+      <div class="" style="display: flex;align-items: center;">
+        <form class="article_search d-flex" role="search" action="{% url 'articles:search' %}" method="GET">
+          <input class="" type="search" autocomplete='off' placeholder="Search" aria-label="Search" name="q" value="{{ q }}">
+          <input class="" type="submit" value='Search'></input>
+        </form>
+      </div>
     </div>
-      <!--탭-->
-      <div class="d-flex justify-content-end mb-2 me-1">
-        <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
-        <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
-        <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
-        <a class='me-3' href="{% url 'articles:index_3' %}" style="font-family: 'HBIOS-SYS';">취업</a>
-        <a class='me-3' href="{% url 'articles:index_4' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
-      </div>
 
-      <!--게시판-->
-      <div class="board_list">
-        <div class="top">
-          <div class="category">분류</div>
-          <div class="title">제목</div>
-          <div class="writer">작성자</div>
-          <div class="date">작성일</div>
-        </div>
-        {% for article in articles %}
-          <div>
-            <div class="category">
-              {% if article.category == '자료공유'%}
-                <a href="" style='color: #1346ff'>{{ article.category }}</a>
-              {% elif article.category == '취업'%}
-                <a href="" style='color: #ff8800'>{{ article.category }}</a>
-              {% elif article.category == '질문'%}
-                <a href="" style='color: #33aa23'>{{ article.category }}</a>
-              {% else %}
-                <a href="" style='color: #000'>{{ article.category }}</a>
-              {% endif %}
-            </div>
-            <div class="title">
-              <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
-            </div>
-            <!-- 바깥작성자는 popover로 띄울까 고민중-->
-            <div class="writer">
-              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
-            </div>
-            <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
-          </div>
-        {% endfor %}
-      </div>
+    <!--탭-->
+    <div class="d-flex justify-content-end mb-2 me-1">
+      <a class='me-3' href="{% url 'articles:index' %}" style="font-family: 'HBIOS-SYS';">전체</a>
+      <a class='me-3' href="{% url 'articles:index_1' %}" style="font-family: 'HBIOS-SYS';">자료공유</a>
+      <a class='me-3' href="{% url 'articles:index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
+      <a class='me-3' href="{% url 'articles:index_3' %}" style="font-family: 'HBIOS-SYS';">취업</a>
+      <a class='me-3' href="{% url 'articles:index_4' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
+    </div>
 
-      <!--페이지네이션-->
-      <div class="paginator board_page">
-        <!-- 맨 앞으로 -->
-        <a href="?page=1" class="page-link bt first">
-          <i class="bi bi-chevron-bar-left"></i>
-        </a>
-        <!-- 이전 페이지 -->
-        {% if articles.has_previous %}
-          <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
-            <i class="bi bi-chevron-left"></i>
-          </a>
-        {% else %}
-          <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-            <i class="bi bi-chevron-left"></i>
-          </a>
-        {% endif %}
-        <!-- 페이지 리스트 -->
-        {% comment %}  {% endcomment %}
-        {% for page_number in articles.paginator.page_range %}
-          {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
-            {% if page_number == articles.number %}
-              <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+    <!--게시판-->
+    <div class="board_list">
+      <div class="top">
+        <div class="category">분류</div>
+        <div class="title">제목</div>
+        <div class="writer">작성자</div>
+        <div class="date">작성일</div>
+      </div>
+      {% for article in articles %}
+        <div>
+          <div class="category">
+            {% if article.category == '자료공유'%}
+              <a href="" style='color: #1346ff'>{{ article.category }}</a>
+            {% elif article.category == '취업'%}
+              <a href="" style='color: #ff8800'>{{ article.category }}</a>
+            {% elif article.category == '질문'%}
+              <a href="" style='color: #33aa23'>{{ article.category }}</a>
             {% else %}
-              <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+              <a href="" style='color: #000'>{{ article.category }}</a>
             {% endif %}
-          {% endif %}
-        {% endfor %}
-        <!-- 다음 페이지 -->
-        {% if articles.has_next %}
-          <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
-            <i class="bi bi-chevron-right"></i>
-          </a>
-        {% else %}
-          <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
-            <i class="bi bi-chevron-right"></i>
-          </a>
-        {% endif %}
-        <!-- 맨 뒤로 -->
-        <a href="?page={{ max_index }}" class="page-link bt last">
-          <i class="bi bi-chevron-bar-right"></i>
-        </a>
-      </div>
-    
+          </div>
+          <div class="title">
+            <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+          </div>
+          <!-- 바깥작성자는 popover로 띄울까 고민중-->
+          <div class="writer">
+            <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
+          </div>
+          <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+        </div>
+      {% endfor %}
+    </div>
 
+    <!--페이지네이션-->
+    <div class="paginator board_page">
+      <!-- 맨 앞으로 -->
+      <a href="?page=1" class="page-link bt first">
+        <i class="bi bi-chevron-bar-left"></i>
+      </a>
+      <!-- 이전 페이지 -->
+      {% if articles.has_previous %}
+        <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% endif %}
+      <!-- 페이지 리스트 -->
+      {% comment %}  {% endcomment %}
+      {% for page_number in articles.paginator.page_range %}
+        {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
+          {% if page_number == articles.number %}
+            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% else %}
+            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <!-- 다음 페이지 -->
+      {% if articles.has_next %}
+        <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+      <!-- 맨 뒤로 -->
+      <a href="?page={{ max_index }}" class="page-link bt last">
+        <i class="bi bi-chevron-bar-right"></i>
+      </a>
+    </div>
+    
     <!--새 글 쓰기 버튼-->
     <div class='bt_wrap'>
       <a class='px-4' href="{% url 'articles:create' %}">새 글 쓰기</a>
     </div>
   </div>
-
   {% endif %}
 {% endblock content %}
 
