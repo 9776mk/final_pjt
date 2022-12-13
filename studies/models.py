@@ -33,7 +33,7 @@ class Study(models.Model):
     contact = models.EmailField(max_length=50)
 
     # 8. 이미지
-    image = models.ImageField(upload_to = 'study_images/')
+    image = models.ImageField(blank=True, upload_to='study_images/')
     thumbnail = ImageSpecField(
         source='image',
         processors=[Thumbnail(300, 300)],

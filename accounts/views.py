@@ -9,6 +9,7 @@ import json
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator
+from studies.models import List
 
 # 깃로그인
 import os
@@ -165,6 +166,7 @@ def logout(request):
 
 def profile(request, user_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
+    joined_studies = List.objects.filter(user=user, is_accepted=True)
     followers = user.followers.all()
     followings = user.followings.all()
 
@@ -191,6 +193,7 @@ def profile(request, user_pk):
         "followers": followers,
         "followings": followings,
         "tier": tier,
+        "joined_studies": joined_studies,
     }
 
     return render(request, "accounts/profile.html", context)

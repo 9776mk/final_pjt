@@ -14,51 +14,11 @@
 
   <div class='container py-5'>
     <div class="board_view ">
-      <!-- 방장: 모집 시작/마감 -->
-      {% if request.user == study.host_user %}
-      <form class='position-relative' style="padding: 40px 80px; margin-right: 60px;" onsubmit="event.preventDefault(); studyClose(this, '{{ study.pk }}')">
-        {% csrf_token %}
-        {% if study.is_closed == False %}
-          <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집마감" class="btn btn-danger  position-absolute end-0">
-        {% else %}
-          {% if study.limit == accepted_list.count %}
-            <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집완료" class="btn btn-success position-absolute end-0" disabled="disabled">
-          {% else %}
-            <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집시작" class="btn btn-success position-absolute end-0">
-          {% endif %}
-        {% endif %}
-      </form>
-      <!-- 방장 X -->
-      {% else %}
-      <div id="user-btns-box">
-        <!-- 1. 이미 스터디원이면 탈퇴 버튼 -->
-        {% if request.user.pk in accepted_user_list %}
-          <form class='position-relative' style="padding: 40px 80px; margin-right: 60px;" onsubmit="event.preventDefault(); withdraw(this, '{{ study.pk }}')">
-            {% csrf_token %}
-            <input type="submit" value="스터디 탈퇴" class="btn btn-secondary position-absolute end-0">
-          </form>
-        {% else %}
-        <form class='position-relative' style="padding: 40px 80px; margin-right: 60px;" onsubmit="event.preventDefault(); studyApply(this, '{{ study.pk }}')">
-          {% csrf_token %}
-          <!-- 2. 신청 후 가입 대기중이면 신청 취소 버튼 -->
-          {% if request.user.pk in waiting_user_list %}
-            <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청 취소" class="btn btn-secondary position-absolute end-0">
-            <!-- 3. 신청을 안 한 상태면 -->
-          {% else %}
-            {% if study.is_closed == False %}
-              <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청" class="btn btn-success position-absolute end-0">
-            {% else %}
-              <input type="submit" value="가입불가" class="btn btn-danger disabled position-absolute end-0" disabled="disabled">
-            {% endif %}
-          {% endif %}
-        </form>
-        {% endif %}
-      </div>
+      <!-- 사진 -->
+      {% if study.image %}
+      <img class="d-block study_mainimg mx-auto" src="{{ study.image.url }}" alt="{{ study.image }}">
       {% endif %}
 
-      <!-- 사진 -->
-      <img class="d-block study_mainimg mx-auto" src="{{ study.image.url }}" alt="{{ study.image }}">
-      
       <!-- 공부방장 -->
       <div class="writer">
         <div class='writer_profile'>
@@ -95,7 +55,7 @@
 
       <!-- 스터디 종류 & 이름 & 가입신청/마감 버튼 -->
       <div class="d-flex justify-content-between align-items-center">
-        <div class="info">
+        <div class="info" style='padding: 40px 0 40px 80px;'>
           <p style="text-align: start;">{{ study.category }}</p>
           <div class="title d-flex align-items-center">
             <span>{{ study.title }}</span>
@@ -107,7 +67,47 @@
           </div>
         </div>
 
-
+        <!-- 방장: 모집 시작/마감 -->
+        {% if request.user == study.host_user %}
+        <form style="padding: 40px 80px 40px 0;" onsubmit="event.preventDefault(); studyClose(this, '{{ study.pk }}')">
+          {% csrf_token %}
+          {% if study.is_closed == False %}
+            <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집마감" class="btn btn-danger">
+          {% else %}
+            {% if study.limit == accepted_list.count %}
+              <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집완료" class="btn btn-success" disabled="disabled">
+            {% else %}
+              <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집시작" class="btn btn-success">
+            {% endif %}
+          {% endif %}
+        </form>
+        <!-- 방장 X -->
+        {% else %}
+        <div id="user-btns-box">
+          <!-- 1. 이미 스터디원이면 탈퇴 버튼 -->
+          {% if request.user.pk in accepted_user_list %}
+            <form style="padding: 40px 80px 40px 0;" onsubmit="event.preventDefault(); withdraw(this, '{{ study.pk }}')">
+              {% csrf_token %}
+              <input type="submit" value="스터디 탈퇴" class="btn btn-secondary">
+            </form>
+          {% else %}
+          <form style="padding: 40px 80px 40px 0;" onsubmit="event.preventDefault(); studyApply(this, '{{ study.pk }}')">
+            {% csrf_token %}
+            <!-- 2. 신청 후 가입 대기중이면 신청 취소 버튼 -->
+            {% if request.user.pk in waiting_user_list %}
+              <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청 취소" class="btn btn-secondary">
+              <!-- 3. 신청을 안 한 상태면 -->
+            {% else %}
+              {% if study.is_closed == False %}
+                <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청" class="btn btn-success">
+              {% else %}
+                <input type="submit" value="가입불가" class="btn btn-danger disabled" disabled="disabled">
+              {% endif %}
+            {% endif %}
+          </form>
+          {% endif %}
+        </div>
+        {% endif %}
       </div>
 
       <!-- 모집 여부 & 인원 & 설명 -->
@@ -122,27 +122,30 @@
               <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 15px">모집 종료</span>
             {% endif %}
           </div>
-          <span class="m-0" style="font-size: 15px">인원:
-            <span id="accepted-cnt">{{ accepted_list.count }}</span>
-            /
-            {{ study.limit }}</span>
-          <p class="m-0 text-break" style="white-space: pre-line;">{{ study.content }}</p>
+          <span class="m-0" style="font-size: 20px">인원:</span>
+            <span id="accepted-cnt" style="font-size: 20px">{{ accepted_list.count }} /</span>
+            <span style="font-size: 20px">{{ study.limit }}</span>
+          <p class="mt-5 mb-0 text-break" style="white-space: pre-line;">{{ study.content }}</p>
         </div>
       </div>
 
-      <div class='d-flex justify-content-center mb-3' style="padding: 0 80px">
-        {% if request.user == study.host_user %}
-          <button class="bbtn_stu me-2" data-bs-toggle="modal" data-bs-target="#waiting-list">신청 인원</button>
-        {% endif %}
-        <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
+      <!-- 신청 인원, 스터디원, 뒤로가기, 스터디 게시판 버튼 모음-->
+      <div class='d-flex justify-content-between mb-4'>
+        <div class='d-flex justify-content-center mb-3 btns_1' style="padding: 0 0 0 80px">
+          {% if request.user == study.host_user %}
+            <button class="bbtn_stu me-2" data-bs-toggle="modal" data-bs-target="#waiting-list">신청 인원</button>
+            <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
+          {% else %}
+            <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
+            <a href="{% url 'studies:index' %}" class="bbtn_stu ms-2">뒤로가기</a>
+          {% endif %}
+        </div>
+        <div class='mb-3 btns_1' style="padding: 0 80px 0 0">
+          <a href="{% url 'studies:board' study.pk %}" class='bbtn_stu'> 게시판 </a>
+        </div>
       </div>
-
 
       <!-- 가입 대기 인원 -->
-      <div class='d-flex justify-content-end mb-3' style="padding: 0 80px">
-        <a href="{% url 'studies:board' study.pk %}" class='bbtn_stu'> 게시판 </a>
-      </div>
-
       <div class="modal fade" id="waiting-list" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -252,12 +255,13 @@
         </div>
       </div>
 
+
       <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
       {% if request.user == study.host_user %}
         <!-- 삭제, 수정, 뒤로가기 버튼들 -->
         <form action="{% url 'studies:delete' study.pk %}" method="POST">
           {% csrf_token %}
-          <div class="bt_wrap my-5">
+          <div class="bt_wrap mt-2 mb-5">
             <input type="submit" value="삭제" class="on">
             <a href="{% url 'studies:update' study.pk %}" class="on">수정</a>
             <a href="{% url 'studies:index' %}" class="on">뒤로</a>
