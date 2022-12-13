@@ -5,6 +5,7 @@
 {% load static %}
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+  <script defer src="{% static 'js/board_detail.js' %}"></script>
 {% endblock link %}
 
 {% block content %} 
@@ -55,10 +56,13 @@
       </div>
       
       <!-- 사진 -->
+      <div>
       {% for image in articles.image_set.all %}
-        <img class="d-block article_img mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}">
+      <div class="thwrap">
+        <img  src="{{ image.image.url }}" alt="{{ image.image }}">
+      </div>
       {% endfor %}
-
+      </div>
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
         {{ articles.content|mark }}
@@ -84,6 +88,7 @@
       {% else %}
         <!-- 좋아요 버튼 -->
         <div class='bt_wrap d-flex justify-content-center pb-5'>
+          {% if request.user.is_authenticated %}
           <form class="like-forms" data-article-id="{{ articles.pk }}" method="POST">
             {% csrf_token %}
             {% if request.user in articles.like.all %}
@@ -101,6 +106,13 @@
               </button>
             {% endif %}
           </form>
+          {% else %}
+          <button disabled>
+            <i class="bi bi-heart-fill my-2" style="font-style: normal; height: 45px; color: #ff0000;">
+              <span class="ms-1">{{ articles.like.count }}</span>
+            </i>
+          </button>
+          {% endif %}
           <a href="{% url 'articles:index' %}" class="on">뒤로가기</a>
         </div>
       {% endif %}
