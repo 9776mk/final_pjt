@@ -11,7 +11,7 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
-    studies = Study.objects.all().order_by('-pk')
+    studies = Study.objects.all().order_by("-pk")
 
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
@@ -28,7 +28,7 @@ def index(request):
 
 # 알고리즘 스터디
 def index_al(request):
-    studies = Study.objects.filter(category='알고리즘 공부').order_by('-pk')
+    studies = Study.objects.filter(category="알고리즘 공부").order_by("-pk")
 
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
@@ -45,7 +45,7 @@ def index_al(request):
 
 # 프론트엔드 스터디
 def index_fe(request):
-    studies = Study.objects.filter(category='프론트엔드 공부').order_by('-pk')
+    studies = Study.objects.filter(category="프론트엔드 공부").order_by("-pk")
 
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
@@ -62,7 +62,7 @@ def index_fe(request):
 
 # 백엔드 스터디
 def index_be(request):
-    studies = Study.objects.filter(category='백엔드 공부').order_by('-pk')
+    studies = Study.objects.filter(category="백엔드 공부").order_by("-pk")
 
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
@@ -79,7 +79,7 @@ def index_be(request):
 
 # 기타 스터디
 def index_etc(request):
-    studies = Study.objects.filter(category='기타').order_by('-pk')
+    studies = Study.objects.filter(category="기타").order_by("-pk")
 
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(studies, 9)  # 페이지당 9개씩 보여주기
@@ -227,7 +227,9 @@ def apply(request, study_pk):
 
     if request.user != study.host_user and request.method == "POST":
         if study.is_closed == False:
-            user_pks = List.objects.filter(is_accepted=False).values_list("user", flat=True)
+            user_pks = List.objects.filter(is_accepted=False).values_list(
+                "user", flat=True
+            )
 
             # 아직 신청하지 않았으면, 유저를 List에 추가 (가입 신청)
             if not request.user.pk in user_pks:
@@ -277,7 +279,7 @@ def accept(request, study_pk, user_pk):
 
     if request.user == study.host_user and request.method == "POST":
         accepted_list_cnt = List.objects.filter(study=study, is_accepted=True).count()
-        
+
         # 정원이 다 차면, 모집 마감
         if study.limit == accepted_list_cnt:
             study.is_closed = True
@@ -417,7 +419,7 @@ def notice_delete_all(request):
         notices = StudyNotice.objects.filter(user=request.user)
         for notice in notices:
             notice.delete()
-            
+
         is_deleted = True
 
     data = {
@@ -470,13 +472,15 @@ def board_create(request, study_pk):
 def board_detail(request, study_pk, article_pk):
     # comment = Comment.objects.get(pk=comment_pk)
     # comment_form = CommentForm()
-
+    study = get_object_or_404(Study, pk=study_pk)
+    accepted_list = List.objects.filter(study=study, is_accepted=True)
     boards = Board.objects.get(pk=study_pk)
 
     context = {
         # "comment": comment,
         # "comment_form": comment_form,
-        "boards": boards
+        "boards": boards,
+        "accepted_list": accepted_list,
     }
     return render(request, "studies/board_detail.html", context)
 
@@ -498,6 +502,7 @@ def problem_check(request):
 
     return JsonResponse(data)
 
+
 # 알림 읽음
 @login_required
 def notice_read(request):
@@ -508,7 +513,7 @@ def notice_read(request):
         for notice in notices:
             notice.read = True
             notice.save()
-            
+
         is_read = True
 
     data = {
