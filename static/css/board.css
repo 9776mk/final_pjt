@@ -96,6 +96,14 @@ thead {
   .board_list .date {
     display: none;
   }
+
+  .board_list .top .hits {
+    display: none;
+  }
+
+  .board_list .hits {
+    display: none;
+  }
 }
 
 @media (max-width : 768px) {
@@ -130,25 +138,43 @@ thead {
   .board_list .date {
     width: 20%;
   }
+
+  .board_list .top .hits {
+    display: none;
+  }
+  
+  .board_list .hits {
+    display: none;
+  }
 }
 
 @media (min-width : 769px) {
   .board_list .date {
-    width: 18%;
+    width: 13%;
   }
 
   .board_list .writer {
-    width: 30%;
+    width: 21%;
   }
 
   .board_list .title {
-    width: 40%;
+    width: 47%;
   }
 
   .board_list .category {
     width: 12%;
   }
+
+  .board_list .hits {
+    width: 6%;
+  }
 }
+
+/* @media (max-width : 992px) {
+  .board_list .writer {
+
+  }
+} */
 
 
 /* 게시판 */
@@ -205,6 +231,13 @@ thead {
   color: rgb(0, 0, 0);
 }
 
+/* 말줄임 표 */
+.text_elli {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
 
 
 /* 숫자들에 대한 스타일 지정 */
@@ -259,7 +292,8 @@ thead {
 
 .article_search input[type="search"] {
   background: #fff;
-  width: 290px;
+  /* width: 290px; */
+  width: auto;
   height: 38px;
   border: 1px solid;
   outline: none;
@@ -270,11 +304,11 @@ thead {
 .article_search input[type="submit"] {
   position: relative;
   left: -1px;
-  width: 100px;
+  width: auto;
   height: 38px;
   border: 1px solid;
   border-radius: 0 19px 19px 0;
-  padding: 0;
+  padding: 5px 15px;
   cursor: pointer;
   background: #ff8e00bd;
 }
