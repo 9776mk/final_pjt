@@ -55,9 +55,9 @@
           </tbody>
         </table>
       </div>
-      
+  
       <div class="col-9 d-none d-sm-block" style="min-height: 700px;">
-        <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">휴지통</h4>
+          <h4 class="text-center mb-4" style="font-family: 'HBIOS-SYS';">휴지통</h4>
         <table class="table bg-white">
           <thead>
             <tr>
@@ -70,7 +70,11 @@
             </tr>
           </thead>
           <tbody>
+            <div>
+              <a href="{% url 'notes:all_delete' %}">전체삭제</a>
+            </div>
             {% for note in notes %}
+            
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
                 <tr class="text-muted" id="note-{{note.pk}}">

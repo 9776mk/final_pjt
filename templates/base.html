@@ -3,7 +3,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     {% comment %} <meta http-equiv="refresh" content="10"> {% endcomment %}
     <meta charset="UTF-8">
@@ -15,9 +14,30 @@
     <!-- Bootstrap icon -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
     <title>
       비밀병기팀의 최종병기
     </title>
+
+    <style>
+      .modal-body {
+        max-height: calc(40vh);
+        overflow-y: auto;
+      }
+
+      .modal-body::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .modal-body::-webkit-scrollbar-thumb {
+        background-color: #C1C1C1; /*스크롤바의 색상*/
+      }
+
+      .modal-body::-webkit-scrollbar-track {
+          background-color: #F1F1F1; /*스크롤바 트랙 색상*/
+      }
+    </style>
   </head>
 
   <body>
@@ -31,20 +51,30 @@
           </div>
           <div class="modal-body">
             {% if request.user.get_study_notice %}
-              {% for notice in request.user.get_study_notice %}
-                <div id="notice-{{ notice.pk }}" class="d-flex justify-content-between align-items-center my-3">
-                  <p class="m-0" style="{% if notice.read %}color: #b7b7b7{% endif %}">{{ notice.content }}</p>
+              <div id="notice-box">
+                {% for notice in request.user.get_study_notice %}
+                  <div id="notice-{{ notice.pk }}" class="d-flex justify-content-between align-items-center my-4">
+                    <p class="m-0" style="{% if notice.read %}color: #b7b7b7{% endif %}">{{ notice.content }}</p>
 
-                  <!-- 알림 삭제 버튼 -->
-                  <form id="notice-delete-form" onsubmit="event.preventDefault(); noticeDelete(this, '{{ notice.pk }}')">
-                    {% csrf_token %}
-                    <input type="submit" class="btn-close" style="color:transparent;">
-                  </form>
-                </div>
-              {% endfor %}
+                    <!-- 알림 삭제 버튼 -->
+                    <form id="notice-delete-form" onsubmit="event.preventDefault(); noticeDelete(this, '{{ notice.pk }}')">
+                      {% csrf_token %}
+                      <input type="submit" class="btn-close" style="font-size: 10px; color:transparent;">
+                    </form>
+                  </div>
+                {% endfor %}
+              </div>
             {% else %}
               <p id="no-notices" class="py-5 text-center text-muted">아직 알림이 없어요</p>
             {% endif %}
+          </div>
+          <div class="modal-footer">
+            <form onsubmit="event.preventDefault(); noticeDeleteAll();">
+              {% csrf_token %}
+              <div class="text-end">
+                <input type="submit" id="notice-delete-all-btn" class="p-0" value="전체삭제" style="color: #FF8E00; border: 0px; background: transparent;">
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -281,6 +311,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <!-- Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
     <script>
       const giftFocus = document.getElementById('giftFocus')
       var base = window.location;
