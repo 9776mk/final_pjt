@@ -70,9 +70,6 @@
             </tr>
           </thead>
           <tbody>
-            <div>
-              <a href="{% url 'notes:all_delete' %}">전체삭제</a>
-            </div>
             {% for note in notes %}
             
               <!-- 쪽지 읽음 일때 -->
@@ -131,6 +128,9 @@
             {% endfor %}
           </tbody>
         </table>
+        <div class="d-flex justify-content-end">
+          <a href="{% url 'notes:all_delete' %}" class="bbtn-gray">휴지통 비우기</a>
+        </div>
         <!--페이지네이션-->
         <div class="paginator board_page my-5">
           <!-- 맨 앞으로 -->
@@ -235,6 +235,13 @@
             {% endfor %}
           </tbody>
         </table>
+        {% if notes %}
+        <div class="d-flex justify-content-end">
+          <a href="{% url 'notes:all_delete' %}" class="bbtn-gray">휴지통 비우기</a>
+        </div>
+        {% else %}
+        <p class="text-center text-muted">쪽지가 없습니다.</p>
+        {% endif %}
         <!--페이지네이션-->
         <div class="paginator board_page my-5">
           <!-- 맨 앞으로 -->

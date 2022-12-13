@@ -132,7 +132,7 @@
                     <button id='testBtn' type="submit" class="btn position-relative" data-bs-toggle="modal" data-bs-target="#study-notice-modal" style="border: 0px; font-size: 20px;">
                       <i class="bi bi-bell"></i>
                       {% if request.user.get_study_notice_cnt != 0 %}
-                      <span id="study-notice-cnt" class="nav-counter">
+                      <span id="study-notice-cnt" class="nav-counter" style="top: 8px; right: -1px;">
                         {{ request.user.get_study_notice_cnt }}
                       </span>
                       {% endif %}

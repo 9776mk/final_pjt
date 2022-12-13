@@ -44,7 +44,7 @@ main .sData h2 {
 }
 @media screen and (max-width: 600px) {
   main {
-    padding: 20px !important;
+    padding: 10px !important;
   }
   .dData,
 .eData,
