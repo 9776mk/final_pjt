@@ -120,7 +120,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'surveys:create' %}">
+                <a class="nav-link" href=""  id='surFocus'>
                   설문 조사
                 </a>
               </li>
@@ -327,6 +327,16 @@
         giftFocus.addEventListener('click', btn => {
           btn.preventDefault();
           let link = `${base.origin}#fo_gift`; //홈으로 이동을 먼저하고
+          location.href = link;
+        })
+      }
+
+      const surFocus = document.getElementById('surFocus')
+      var base = window.location;
+      if (surFocus) {
+        surFocus.addEventListener('click', btn => {
+          btn.preventDefault();
+          let link = `${base.origin}#surfocus`; //홈으로 이동을 먼저하고
           location.href = link;
         })
       }
