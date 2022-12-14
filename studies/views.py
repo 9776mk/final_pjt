@@ -560,7 +560,7 @@ def board_detail(request, study_pk, article_pk):
     comments = board.boardcomment_set.all()
     boj_id = {}
 
-    if 'go' in  request.GET.keys() :
+    if "go" in request.GET.keys():
         # 스터디에 가입된 사람들 중
         for i in accepted_list:
             # 백준 아이디가 있다면
@@ -611,7 +611,7 @@ def board_detail(request, study_pk, article_pk):
     }
     response = render(request, "studies/board_detail.html", context)
 
-    #조회수
+    # 조회수
 
     expire_date, now = datetime.now(), datetime.now()
     expire_date += timedelta(seconds=1)
@@ -629,6 +629,7 @@ def board_detail(request, study_pk, article_pk):
         board.save()
     return response
 
+
 def board_update(request, study_pk, article_pk):
     study = get_object_or_404(Study, pk=study_pk)
     board = Board.objects.get(pk=article_pk)
@@ -641,13 +642,14 @@ def board_update(request, study_pk, article_pk):
         context = {
             "board_form": board_form,
             "study": study,
+            "study": study.pk,
         }
-        return render(request, "studies/board_detail.html")
+        return render(request, "studies/board_detail.html", study.pk, board.pk, context)
     else:
         return redirect("studies:board_detail")
 
 
-def board_delete(request):
+def board_delete(request, study_pk, article_pk):
     return redirect("studies:board_detail")
 
 
