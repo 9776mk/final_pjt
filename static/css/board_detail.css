@@ -1,9 +1,11 @@
 @charset "UTF-8";
 .board_view {
-  width: 100%;
+  width: 80%;
   border: 1px solid #b7b7b7;
   background-color: white;
   border-radius: 20px;
+  overflow: hidden;
+  margin: auto;
 }
 .board_view .writer {
   padding: 50px 60px 0px;
