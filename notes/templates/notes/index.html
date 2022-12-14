@@ -75,7 +75,7 @@
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
               <tr class="text-muted">
-                <td class="user"><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
+                <td class="user"><a href="{% url 'accounts:profile' note.from_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
                 <td class="title2"><a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
                 <td class="d-none d-sm-none d-md-none d-lg-block date">{{ note.created_at|date:'m.d H:i' }}</td>
                 <td class="d-none d-sm-block d-md-block d-lg-none date">{{ note.created_at|date:'m.d' }}</td>
@@ -96,7 +96,7 @@
               {% else %}
               <!-- 쪽지 안읽음 일때-->
               <tr>
-                <td class="user"><a href="{% url 'accounts:profile' note.to_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
+                <td class="user"><a href="{% url 'accounts:profile' note.from_user.pk %}">{{ note.from_user.profile.nickname }}</a></td>
                 <td class="title2"><a class="fw-bold" href="{% url 'notes:detail' note.pk %}">{{ note.title }}</a></td>
                 <td class="d-none d-sm-none d-md-none d-lg-block date">{{ note.created_at|date:'m.d H:i' }}</td>
                 <td class="d-none d-sm-block d-md-block d-lg-none date">{{ note.created_at|date:'m.d' }}</td>
@@ -370,7 +370,7 @@
               {% if note.read == 1 %}
               <tr class="text-muted" id="note-{{note.pk}}">
                 <td class="title2" style="padding: 8px 8px 8px 16px;">
-                  <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.from_user.profile.nickname }}<br>{{ note.title }}</a>
+                  <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.to_user.profile.nickname }}<br>{{ note.title }}</a>
                 </td>
                 {% if note.read == 1 %}
                 <td class="not_read read">읽음</td>
@@ -388,9 +388,9 @@
               </tr>
               {% else %}
               <!-- 쪽지 안읽음 일때-->
-              <tr id="note-{{note.pk}}">
+              <tr id="note1-{{note.pk}}">
                 <td class="title2 fw-bold" style="padding: 8px 8px 8px 16px;">
-                  <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.from_user.profile.nickname }}<br>{{ note.title }}</a>
+                  <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.to_user.profile.nickname }}<br>{{ note.title }}</a>
                 </td>
                 {% if note.read == 1 %}
                 <td class="not_read read">읽음</td>
@@ -398,7 +398,7 @@
                 <td class="not_read read">안읽음</td>
                 {% endif %}
                 <td class="delete">
-                  <form data-note-id="{{ note.pk }}" class="note-delete-forms">
+                  <form data-note-id="{{ note.pk }}" class="note-delete-forms1">
                     {% csrf_token %}
                     <button type="submit" class="trash-btn" onclick="return confirm('삭제하시겠습니까?\n복구 불가능합니다.');">
                       <i class="bi bi-trash-fill"></i>
@@ -485,6 +485,30 @@
 
           if (is_deleted === true) {
             note.remove()
+          }
+        })
+      })
+    })
+
+    const noteDeleteForms1 = document.querySelectorAll('.note-delete-forms1')
+    noteDeleteForms1.forEach(form1 => {
+      form1.addEventListener('submit', event => {
+        event.preventDefault()
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        const noteId = event.target.dataset.noteId
+        console.log(noteId)
+        axios({
+          method: 'post',
+          url: `/notes/${noteId}/delete/`,
+          headers: {
+            'X-CSRFToken': csrfToken
+          }
+        }).then(response => {
+          const note1 = document.querySelector(`#note1-${noteId}`)
+          const is_deleted = response.data.is_deleted
+
+          if (is_deleted === true) {
+            note1.remove()
           }
         })
       })
