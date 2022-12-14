@@ -126,11 +126,23 @@ def delete(request, pk):
         return redirect("notes:index")
 
 
+@login_required
+def delete1(request, pk):
+    note = get_object_or_404(Notes, pk=pk)
+    if request.user == note.from_user and note.read == False:
+        note.delete()
+        return redirect("notes:sent")
+    else:
+        messages.warning(request, "삭제 불가능한 쪽지 입니다.")
+        return redirect("notes:sent")
+
+
 @login_required        
 def all_delete(request):# 휴지통 전체삭제
     note = Notes.objects.filter(to_user_id=request.user.id, garbage=True)
     note.delete()
     return redirect("notes:trash")
+
 
 @login_required
 def trash_throw_away(request, pk):#휴지통 여부o
@@ -139,6 +151,15 @@ def trash_throw_away(request, pk):#휴지통 여부o
         note.garbage = True
         note.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def trash_throw_away1(request, pk):
+    note = Notes.objects.get(pk=pk)
+    if request.user == note.to_user:
+        note.garbage = True
+        note.save()
+    return redirect("notes:index")
 
 
 @login_required

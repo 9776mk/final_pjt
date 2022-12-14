@@ -78,6 +78,7 @@ function isValidBjId() {
     }).then(response => {
         if (response.data.is_valid === false) {
             modalBody.innerText = "유효하지 않은 아이디입니다."
+            document.querySelector('#id_boj_id').value = ""
         }
         else {
             modalBody.innerText = "백준 id 확인"
@@ -99,6 +100,8 @@ function isValidGitId() {
     }).then(response => {
         if (response.data.is_valid === false) {
             modalBody.innerText = "유효하지 않은 아이디입니다."
+            console.log(document.querySelector('#id_github_id').innerText)
+            document.querySelector('#id_github_id').value = ""
         }
         else {
             modalBody.innerText = "Git id 확인"

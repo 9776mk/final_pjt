@@ -188,12 +188,30 @@ def profile(request, user_pk):
     profile_info.boj_tier = tier
     profile_info.save()
 
+    # 깃허브 아이디 확인
+    url = "https://github.com/"
+    profile_info = Profile.objects.get(user=user)
+    id = profile_info.github_id
+
+    if id:
+        response = requests.get(url + id)
+        if response.status_code == 200:
+            git = 1
+        else:
+            git = -1
+    else:
+        git = 0
+    
+    profile_info.git_grass = git
+    profile_info.save()
+
     context = {
         "user": user,
         "followers": followers,
         "followings": followings,
         "tier": tier,
         "joined_studies": joined_studies,
+        "git": git,
     }
 
     return render(request, "accounts/profile.html", context)

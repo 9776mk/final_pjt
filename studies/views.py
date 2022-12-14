@@ -9,6 +9,9 @@ import json
 import requests
 from django.core.paginator import Paginator
 from datetime import date, datetime, timedelta
+from django.db.models import Q
+
+
 # Create your views here.
 def index(request):
     studies = Study.objects.all().order_by("-pk")
@@ -430,6 +433,27 @@ def notice_delete_all(request):
     return JsonResponse(data)
 
 
+# 알림 읽음
+@login_required
+def notice_read(request):
+    is_read = False
+
+    if request.user.is_authenticated and request.method == "POST":
+        notices = StudyNotice.objects.filter(user=request.user, read=False)
+        for notice in notices:
+            notice.read = True
+            notice.save()
+
+        is_read = True
+
+    data = {
+        "is_read": is_read,
+    }
+
+    # return redirect('home')
+    return JsonResponse(data)
+
+
 # 스터디 게시판 인덱스
 def board_index(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
@@ -532,6 +556,8 @@ def board_detail(request, study_pk, article_pk):
     study = get_object_or_404(Study, pk=study_pk)
     accepted_list = List.objects.filter(study=study, is_accepted=True)
     board = Board.objects.get(pk=article_pk)
+    comment_form = BoardCommentForm()
+    comments = board.boardcomment_set.all()
     boj_id = {}
 
     # 스터디에 가입된 사람들 중
@@ -567,7 +593,6 @@ def board_detail(request, study_pk, article_pk):
                 boj_id[i.user.profile.boj_id] = True
             else:
                 boj_id[i.user.profile.boj_id] = False
-
     # print(boj_id)
     # for k, v in boj_id.items():
     #     print(k)
@@ -580,6 +605,8 @@ def board_detail(request, study_pk, article_pk):
         "board": board,
         "accepted_list": accepted_list,
         "boj_id": boj_id,
+        "comment_form": comment_form,
+        "comments": comments,
     }
     response = render(request, "studies/board_detail.html", context)
     #조회수
@@ -617,22 +644,146 @@ def problem_check(request):
     return JsonResponse(data)
 
 
-# 알림 읽음
+# 스터디 게시판 게시글에 댓글 작성
 @login_required
-def notice_read(request):
-    is_read = False
+def comment_create(request, study_pk, article_pk):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            board = Board.objects.get(pk=article_pk)
+            comment_form = BoardCommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.user = request.user
+                comment.article = board
+                comment.save()
 
-    if request.user.is_authenticated and request.method == "POST":
-        notices = StudyNotice.objects.filter(user=request.user, read=False)
-        for notice in notices:
-            notice.read = True
-            notice.save()
+                if not comment.user.profile.image:
+                    comment_user_image = "/static/images/no-avatar.jpg"
+                elif str(comment.user.profile.image)[:4] == "http":
+                    comment_user_image = str(comment.user.profile.image)
+                else:
+                    comment_user_image = str(comment.user.profile.image.url)
 
-        is_read = True
+                data = {
+                    "comment_pk": comment.pk,
+                    "comment_content": comment.content,
+                    "comment_nickname": comment.user.profile.nickname,
+                    "comment_user_pk": comment.user.pk,
+                    "comment_user_image": comment_user_image,
+                }
+                return JsonResponse(data)
+                # return redirect("studies:board_detail", study_pk, article_pk)
+            return redirect("studies:board_detail", study_pk, article_pk)
+    return redirect("accounts:login")
 
-    data = {
-        "is_read": is_read,
-    }
 
-    # return redirect('home')
-    return JsonResponse(data)
+@login_required
+def comment_delete(request, study_pk, article_pk, comment_pk):
+    if request.method == 'POST':
+        comment = get_object_or_404(BoardComment, pk=comment_pk)
+        is_deleted = False  # 삭제여부
+
+        if request.user == comment.user:
+            comment.delete()
+            is_deleted = True  # 삭제여부
+
+        data = {
+            "is_deleted": is_deleted,
+        }
+
+        return JsonResponse(data)
+    return redirect("studies:board_detail", study_pk, article_pk)
+
+# 검색
+def search(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    search = search.filter(Q(title__icontains=q)|Q(content__icontains=q))
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
+
+# 검색 카테고리별
+def search_al(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="알고리즘 공부"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
+
+def search_fe(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="프론트엔드 공부"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
+
+def search_be(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="백엔드 공부"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
+
+def search_etc(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="기타"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
