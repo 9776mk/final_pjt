@@ -83,7 +83,7 @@
         </a>
       {% endif %}
       <!-- 페이지 리스트 -->
-      {% comment %}  {% endcomment %}
+      
       {% for page_number in articles.paginator.page_range %}
         {% if page_number >= articles.number|add:-2 and page_number <= articles.number|add:2 %}
           {% if page_number == articles.number %}
@@ -193,7 +193,7 @@
         </a>
       {% endif %}
       <!-- 페이지 리스트 -->
-      {% comment %}  {% endcomment %}
+      
       {% for page_number in articles.paginator.page_range %}
         {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
           {% if page_number == articles.number %}
@@ -303,7 +303,7 @@
           </a>
         {% endif %}
         <!-- 페이지 리스트 -->
-        {% comment %}  {% endcomment %}
+        
         {% for page_number in articles.paginator.page_range %}
           {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
             {% if page_number == articles.number %}
@@ -414,7 +414,7 @@
         </a>
       {% endif %}
       <!-- 페이지 리스트 -->
-      {% comment %}  {% endcomment %}
+      
       {% for page_number in articles.paginator.page_range %}
         {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
           {% if page_number == articles.number %}
@@ -524,7 +524,7 @@
         </a>
       {% endif %}
       <!-- 페이지 리스트 -->
-      {% comment %}  {% endcomment %}
+      
       {% for page_number in articles.paginator.page_range %}
         {% if page_number >= articles.number|add:-3 and page_number <= articles.number|add:3 %}
           {% if page_number == articles.number %}
