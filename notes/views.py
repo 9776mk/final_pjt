@@ -133,7 +133,7 @@ def all_delete(request):# 휴지통 전체삭제
     return redirect("notes:trash")
 
 @login_required
-def trash_throw_away(request, pk):
+def trash_throw_away(request, pk):#휴지통 여부o
     note = Notes.objects.get(pk=pk)
     if request.user == note.to_user:
         note.garbage = True
@@ -142,7 +142,7 @@ def trash_throw_away(request, pk):
 
 
 @login_required
-def trash_return(request, pk):
+def trash_return(request, pk):#휴지통 여부x
     note = Notes.objects.get(pk=pk)
     if request.user == note.to_user:
         note.garbage = False
@@ -151,7 +151,7 @@ def trash_return(request, pk):
 
 
 @login_required
-def trash(request):
+def trash(request):#휴지통 목록
     trash_notes = Notes.objects.filter(to_user_id=request.user.id, garbage=True).order_by("-created_at")
     page = request.GET.get('page', '1') # 페이지
     paginator = Paginator(trash_notes, 10)  # 페이지당 10개씩 보여주기
@@ -164,7 +164,7 @@ def trash(request):
 
 
 @login_required
-def important_check(request, pk):
+def important_check(request, pk):#보관함여부
     note = Notes.objects.get(pk=pk)
     if request.user == note.to_user:
         note.important = True
@@ -173,7 +173,7 @@ def important_check(request, pk):
 
 
 @login_required
-def important_return(request, pk):
+def important_return(request, pk):#보관함여부
     note = Notes.objects.get(pk=pk)
     if request.user == note.to_user:
         note.important = False
@@ -182,7 +182,7 @@ def important_return(request, pk):
 
 
 @login_required
-def important(request):
+def important(request):#보관함목록
     important_notes = Notes.objects.filter(to_user_id=request.user.id, 
     garbage=False, important=True).order_by("-created_at")
     page = request.GET.get('page', '1') # 페이지
