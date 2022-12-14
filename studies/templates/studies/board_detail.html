@@ -8,6 +8,7 @@
 {% endblock link %}
 
 {% block content %} 
+
   <div class='container py-5'>
     <div class="board_view">
       <!-- 작성자 -->
@@ -53,7 +54,18 @@
         <p>조회수 : {{ board.hits }}</p>
         <p><span class="button gray medium"><a href="#" onclick="clip(); return false;">URL주소복사</a></span></p>
       </div>
-
+      <div>
+        {% autoescape off %}
+          {% for key, val in boj_id.items %}
+            {% if val == True%}
+              <h1> {{ key }} : O </h1>
+            {% else %}
+              <h1> {{ key }} : X </h1>
+            {% endif%}
+           <hr>
+          {% endfor %}
+        {% endautoescape %}
+      </div>
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
         {{ board.content }}
@@ -117,9 +129,7 @@
                 <div class='mx-3'>{{ comment.user.profile.nickname }}</div>
               </a>
             </div>
-
-            <div class='m-3 pe-3 text-break'>{{ comment.content|mark }}</div>
-
+            
             <!-- 댓글 작성한 당사자만 삭제할 수 있게 -->
             {% if request.user == comment.user %}
               <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{board.pk}}', '{{comment.pk}}')">
@@ -131,6 +141,7 @@
         {% endfor %}
       </div>
   </div>
+
 {% endblock content %}
 
 {% block script %}
