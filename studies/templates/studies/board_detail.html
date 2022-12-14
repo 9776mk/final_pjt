@@ -14,7 +14,7 @@
     <div class="board_view">
       <!-- 작성자 -->
       <div >
-        <div class='writer_profile'>
+        <div class='writer_profile' style='padding: 50px 60px 0 60px;'>
             <div class="layoutbox">
               <a  href="{% url 'accounts:profile' board.user.pk %}">
             {% if board.user.profile.image|slugify|slice:'0:4' == 'http' %}
@@ -28,7 +28,7 @@
             {% endif %}
           </a>
 
-            <div class="namebox">
+            <div class="namebox ms-3">
               <a  href="{% url 'accounts:profile' board.user.pk %}">
               <div>{{ board.user.profile.nickname }}</div>  </a>
               <div></div>
