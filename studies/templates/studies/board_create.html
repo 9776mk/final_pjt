@@ -54,10 +54,10 @@
       <div class="container text-center bt_wrap">
         {% if request.resolver_match.url_name == 'board_update' %}
           <button type="submit" class="px-4 on">수정</button>
-          <a class='px-4' href="{% url 'studies:board_index' study_pk %}">뒤로가기</a>
+          <a class='px-4' href="{% url 'studies:board_index' study.pk %}">뒤로가기</a>
         {% elif request.resolver_match.url_name == 'board_create' %}
           <button type="submit" class="px-4 on">등록</button>
-          <a class='px-4' href="{% url 'studies:board_index' study_pk %}">뒤로가기</a>
+          <a class='px-4' href="{% url 'studies:board_index' study.pk %}">뒤로가기</a>
         {% endif %}
       </div>
     </form>
