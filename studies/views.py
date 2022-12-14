@@ -568,7 +568,8 @@ def board_detail(request, study_pk, article_pk):
     context = {
         # "comment": comment,
         # "comment_form": comment_form,
-        "boards": boards,
+        "study": study,
+        "board": board,
         "accepted_list": accepted_list,
         "boj_id": boj_id,
     }
