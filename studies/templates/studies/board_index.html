@@ -6,7 +6,7 @@
 {% block content %}
 <div class='container py-5'>
   <div class='mx-3'>
-    <h1 style="font-family: 'HBIOS-SYS';"> {{ study.title }} 게시판</h1>
+    <a href="{% url 'studies:detail' study.pk %}"><h1 style="font-family: 'HBIOS-SYS';"> {{ study.title }} 게시판</h1></a>
     <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
   </div>
 
@@ -39,7 +39,13 @@
               {% endif %}
             </div>
             <div class="title">
-              <a href="{% url 'studies:board_detail' study.pk board.pk %}">{{ board.title }}</a>
+              <form action="{% url 'studies:board_detail' study.pk board.pk %}">
+                {% if board.category == '문제' %}
+                <input  name='go' value='{{ board.title }}' type='submit' style='all: unset; cursor: pointer;' >
+                {% else %}
+                <input  value='{{ board.title }}' type='submit' style='all: unset; cursor: pointer;' >
+                {% endif %}
+              </form>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
             <div class="writer">
