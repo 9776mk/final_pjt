@@ -257,3 +257,36 @@ thead {
   white-space: nowrap;  
   overflow: hidden;
 }
+
+/* 글 생성 버튼 */
+.bt_wrap1 {
+  margin: auto;
+  text-align: center;
+  font-size: 0;
+  border-radius: 30rem;
+}
+.bt_wrap1 a,
+.bt_wrap1 button,
+.bt_wrap1 input {
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #FF8E00;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: #FF8E00;
+    transition: all 0.4s;
+    border-radius: 10px;
+}
+.bt_wrap1 a:first-child,
+.bt_wrap1 button:first-child {
+    margin-left: 0;
+}
+.bt_wrap1 a:hover,
+.bt_wrap1 button:hover {
+    background-color: #FF8E00;
+    color: white;
+}
+.bt_wrap1 a {
+    margin-left: 15px;
+}

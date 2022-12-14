@@ -458,7 +458,6 @@ def notice_read(request):
 def board_index(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
     boards = Board.objects.filter(study=study).order_by("-pk")
-    boards1 = Board.objects.get(pk=study_pk)
 
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(boards, 15)  # 페이지당 15개씩 보여주기
