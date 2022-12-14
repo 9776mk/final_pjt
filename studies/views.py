@@ -570,13 +570,13 @@ def board_create(request, study_pk):
                 board.user = request.user
                 board.save()
 
-                return redirect("studies:board_index", study_pk)
+                return redirect("studies:board_detail", study_pk, board.pk)
 
         else:
             Board_Form = BoardForm()
 
         context = {
-            "study_pk": study_pk,
+            "study": study,
             "Board_Form": Board_Form,
         }
 
@@ -596,7 +596,8 @@ def board_detail(request, study_pk, article_pk):
     comments = board.boardcomment_set.all()
     boj_id = {}
 
-    if "go" in request.GET.keys():
+    if board.category == '문제':
+        print('if문 안')
         # 스터디에 가입된 사람들 중
         for i in accepted_list:
             # 백준 아이디가 있다면
@@ -672,17 +673,29 @@ def board_update(request, study_pk, article_pk):
 
     if request.user == board.user:
         if request.method == "POST":
-            board_form = BoardForm(request.POST, request.FILES, instance=board)
+            board_form = BoardForm(request.POST, instance=board)
+
+            if board_form.is_valid():
+                board = board_form.save(commit=False)
+                board.study = study
+                board.user = request.user
+                board.save()
+
+                return redirect("studies:board_detail", study_pk, board.pk)
+
         else:
             board_form = BoardForm(instance=board)
+        
         context = {
-            "board_form": board_form,
+            "Board_Form": board_form,
             "study": study,
-            "study": study.pk,
+            "board": board,
         }
-        return render(request, "studies/board_detail.html", study.pk, board.pk, context)
+        
+        return render(request, "studies/board_create.html", context)
+
     else:
-        return redirect("studies:board_detail")
+        return redirect("studies:board_detail", study.pk, board.pk)
 
 
 def board_delete(request, study_pk, article_pk):
