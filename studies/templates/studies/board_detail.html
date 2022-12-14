@@ -97,13 +97,13 @@
         </div>
         {% endif %}
       <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
-      {% if request.user == board.user %}
+      {% if request.user == board.user_id %}
         <!-- 삭제, 수정, 뒤로가기 버튼들 -->
         <form action="" method="POST">
           {% csrf_token %}
           <div class="bt_wrap pb-5">
             {% comment %} <a href="{% url 'board:delete' board.pk %}" class="on">삭제</a> {% endcomment %}
-            {% comment %} <a href="{% url 'board:update' board.pk %}" class="on">수정</a> {% endcomment %}
+            <a href="{% url 'board:update' board.pk %}" class="on">수정</a> 
             <a href="{% url 'studies:board_index' study.pk %}" class="on">뒤로</a>
           </div>
         </form>
