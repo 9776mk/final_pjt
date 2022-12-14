@@ -26,24 +26,68 @@
           </dl>
         </div>
 
-        <div id="category-box" class="category">
-          <dl class='d-flex align-items-center'>
-            <dt>카테고리</dt>
-            <dd>{{ Board_Form.category|add_class:'form-select' }}</dd>
-          </dl>
-        </div>
-        
-        <div id="problem-number-box" class="image">
-          <dl class='d-flex align-items-center'>
-            <dt>문제 번호</dt>
-            <dd>
-              <div class="d-flex align-items-center">
-                <span>{{ Board_Form.problem_number|add_class:'form-control'|attr:"placeholder: 문제 번호 입력"|attr:"id:id_problem_number"}}</span>
-                <span><button class='check-btn bbtn ms-2' type="button" data-bs-toggle="modal" data-bs-target="#isProblemValidModal" onclick="isValidProblem();"><span class="spot"></span>Check</button></span>
-              </div>
-            </dd>  
-          </dl>
-        </div>
+        <!-- 수정 -->
+        {% if board %}
+          {% if board.category == '문제' %}
+            <div id="category-box" class="category">
+              <dl class='d-flex align-items-center'>
+                <dt>카테고리</dt>
+                <dd>{{ Board_Form.category|add_class:'form-select' }}</dd>
+              </dl>
+            </div>
+            
+            <div id="problem-number-box" class="image">
+              <dl class='d-flex align-items-center'>
+                <dt>문제 번호</dt>
+                <dd>
+                  <div class="d-flex align-items-center">
+                    <span>{{ Board_Form.problem_number|add_class:'form-control'|attr:"placeholder: 문제 번호 입력"|attr:"id:id_problem_number"}}</span>
+                    <span><button class='check-btn bbtn ms-2' type="button" data-bs-toggle="modal" data-bs-target="#isProblemValidModal" onclick="isValidProblem();"><span class="spot"></span>Check</button></span>
+                  </div>
+                </dd>  
+              </dl>
+            </div>
+          {% else %}
+            <div id="category-box" class="image">
+              <dl class='d-flex align-items-center'>
+                <dt>카테고리</dt>
+                <dd>{{ Board_Form.category|add_class:'form-select' }}</dd>
+              </dl>
+            </div>
+            
+            <div id="problem-number-box" class="image d-none">
+              <dl class='d-flex align-items-center'>
+                <dt>문제 번호</dt>
+                <dd>
+                  <div class="d-flex align-items-center">
+                    <span>{{ Board_Form.problem_number|add_class:'form-control'|attr:"placeholder: 문제 번호 입력"|attr:"id:id_problem_number"}}</span>
+                    <span><button class='check-btn bbtn ms-2' type="button" data-bs-toggle="modal" data-bs-target="#isProblemValidModal" onclick="isValidProblem();"><span class="spot"></span>Check</button></span>
+                  </div>
+                </dd>  
+              </dl>
+            </div>
+          {% endif %}
+        <!-- 작성 -->
+        {% else %}
+          <div id="category-box" class="image">
+            <dl class='d-flex align-items-center'>
+              <dt>카테고리</dt>
+              <dd>{{ Board_Form.category|add_class:'form-select' }}</dd>
+            </dl>
+          </div>
+          
+          <div id="problem-number-box" class="image d-none">
+            <dl class='d-flex align-items-center'>
+              <dt>문제 번호</dt>
+              <dd>
+                <div class="d-flex align-items-center">
+                  <span>{{ Board_Form.problem_number|add_class:'form-control'|attr:"placeholder: 문제 번호 입력"|attr:"id:id_problem_number"}}</span>
+                  <span><button class='check-btn bbtn ms-2' type="button" data-bs-toggle="modal" data-bs-target="#isProblemValidModal" onclick="isValidProblem();"><span class="spot"></span>Check</button></span>
+                </div>
+              </dd>  
+            </dl>
+          </div>
+        {% endif %}
          
         <div class="cont text-break">
           {{ Board_Form.content|attr:"placeholder: 내용을 작성해주세요"|attr:"style: width: 100%; resize: none; outline: none; border: none; padding: 22px;" }}
@@ -97,6 +141,8 @@
         categoryBox.classList.add('category')
         categoryBox.classList.remove('image')        
       } else {
+        problemNumberField.value = null
+
         problemNumberBox.classList.add('d-none')
         problemNumberBox.classList.remove('d-block')
 
