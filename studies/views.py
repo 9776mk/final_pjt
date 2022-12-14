@@ -523,7 +523,7 @@ def board_detail(request, study_pk, article_pk):
     # comment_form = CommentForm()
     study = get_object_or_404(Study, pk=study_pk)
     accepted_list = List.objects.filter(study=study, is_accepted=True)
-    boards = Board.objects.get(pk=article_pk)
+    board = Board.objects.get(pk=article_pk)
     boj_id = {}
 
     # 스터디에 가입된 사람들 중
@@ -555,15 +555,15 @@ def board_detail(request, study_pk, article_pk):
 
             # 백준 아이디 저장할 리스트
 
-            if boards.problem_number in solved_problems:
+            if board.problem_number in solved_problems:
                 boj_id[i.user.profile.boj_id] = True
             else:
                 boj_id[i.user.profile.boj_id] = False
 
-    print(boj_id)
-    for k, v in boj_id.items():
-        print(k)
-        print(v)
+    # print(boj_id)
+    # for k, v in boj_id.items():
+    #     print(k)
+    #     print(v)
 
     context = {
         # "comment": comment,
