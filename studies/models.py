@@ -33,7 +33,7 @@ class Study(models.Model):
     contact = models.EmailField(max_length=50)
 
     # 8. 이미지
-    image = models.ImageField(blank=True, upload_to='study_images/')
+    image = models.ImageField(blank=True, upload_to="study_images/")
     thumbnail = ImageSpecField(
         source="image",
         processors=[Thumbnail(300, 300)],
@@ -70,7 +70,7 @@ class Board(models.Model):
     CATEGORY = (
         ("문제", "문제"),
         ("질문", "질문"),
-        ("자유 게시판", "자유 게시판"),
+        ("잡담", "잡담"),
     )
     category = models.CharField(max_length=10, choices=CATEGORY)
 

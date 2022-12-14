@@ -77,13 +77,21 @@
         </div>
         {% comment %} {% if note.from_user != request.user %} {% endcomment %}
         <div class="d-flex justify-content-center mt-3" style="margin-bottom: 100px;">
-          <a href="{% url 'notes:reply' note.pk %}" class="bbtn me-3">답장</a>
-          {% if not note.important %}
-          <a href="{% url 'notes:important_check' note.pk %}" class="bbtn me-3">보관</a>
-          {% else %}
-          <a href="{% url 'notes:important_return' note.pk %}" class="bbtn me-3">보관 취소</a>
+          {% if note.to_user == request.user %}
+            <a href="{% url 'notes:reply' note.pk %}" class="bbtn me-3">답장</a>
+            {% if not note.important %}
+            <a href="{% url 'notes:important_check' note.pk %}" class="bbtn me-3">보관</a>
+            {% else %}
+            <a href="{% url 'notes:important_return' note.pk %}" class="bbtn me-3">보관 취소</a>
+            {% endif %}
           {% endif %}
-          <a href="{% url 'notes:reply' note.pk %}" class="bbtn">삭제</a>
+          {% if note.from_user == request.user and note.to_user != request.user %}
+            {% comment %} {% if note.read == 0 %}
+            <a href="{% url 'notes:delete' note.pk %}" class="bbtn-gray">삭제</a>
+            {% endif %} {% endcomment %}
+          {% else %}
+          <a href="{% url 'notes:trash_throw_away' note.pk %}" class="bbtn">삭제</a>
+          {% endif %}
         </div>
         {% comment %} {% else %}
         <div style="margin-bottom: 100px;"></div>
@@ -116,7 +124,7 @@
           {% else %}
           <a href="{% url 'notes:important_return' note.pk %}" class="bbtn me-3">보관 취소</a>
           {% endif %}
-          <a href="{% url 'notes:reply' note.pk %}" class="bbtn">삭제</a>
+          <a href="{% url 'notes:trash_throw_away' note.pk %}" class="bbtn">삭제</a>
         </div>
       </div>
     </div>

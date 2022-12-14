@@ -167,17 +167,21 @@ body.noScroll {
   width: 100%;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
 }
-.thwrap img {
-  border-radius: 10px;
+.thwrap .img_frame {
   width: 50%;
-  margin: auto;
   cursor: pointer;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.thwrap .img_frame img {
+  width: 100%;
 }
 
 img {
   /* 이미지 배율 증가 시 부드럽게 */
-  border-radius: 10px;
   -o-object-position: center;
      object-position: center;
   -o-object-fit: contain;
@@ -226,4 +230,12 @@ img {
   /* 팝업 보이기 */
   opacity: 1;
   pointer-events: unset;
+}
+
+.board_view {
+  overflow: hidden;
+}
+.board_view img {
+  margin-top: 0 !important;
+  border-radius: 0 !important;
 }/*# sourceMappingURL=board_detail.css.map */
