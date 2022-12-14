@@ -121,9 +121,13 @@
     <!-- username: jupiter6676 -->
     <!-- 16진수 색상표 https://jasmintime.com/244 -->
     <!-- <img src="https://ghchart.rshah.org/6495ed/{{ user.profile.github_id }}" class="w-100"> -->
-    {% if user.profile.github_id %}
+    {% if git == 1 %}
     <img src="https://ghchart.rshah.org/{{ user.profile.github_id }}" class="w-100 mb-3" 
-    onclick="window.open('https://github.com/{{ user.profile.github_id }}')" style="cursor: pointer;" target="_blank" >
+    onclick="window.open('https://github.com/{{ user.profile.github_id }}')" style="cursor: pointer;" target="_blank" onerror="this.style.display='none'">
+    {% elif git == 0 %}
+    <p>Github 아이디를 등록해주세요</p>
+    {% else %}
+    <p>유효한 Github 아이디를 등록해주세요</p>
     {% endif %}
     <!-- 작성 글-->
     <div class="mb-2">

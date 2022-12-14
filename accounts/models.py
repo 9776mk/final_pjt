@@ -133,6 +133,8 @@ class Profile(models.Model):
     boj_id = models.CharField(blank=True, max_length=20)
     # 백준 티어
     boj_tier = models.IntegerField(blank=True, default=0)
+    # 깃허브 잔디
+    git_grass = models.IntegerField(blank=True, default=0)
 
 
 # 방명록 (User와 1:1)

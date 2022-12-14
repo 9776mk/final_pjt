@@ -1,0 +1,46 @@
+.writer_profile {
+    padding: 30px 30px 0 30px;
+    display: flex;
+    flex-wrap: wrap;
+
+    h2 {
+        margin: auto;
+    }
+
+    img {
+        width: 55px;
+        border-radius: 50%;
+    }
+
+    .layoutbox {
+        display: flex;
+    }
+
+
+
+    .namebox {
+        display: inline-block;
+    }
+}
+
+.solved {
+    table {
+        width: 70%;
+        margin: auto;
+
+        tbody {
+
+            tr:hover {
+                background-color: rgb(195, 193, 193);
+            }
+        }
+
+        th {
+            border: 1px solid;
+        }
+
+        td {
+            border: 1px solid;
+        }
+    }
+}

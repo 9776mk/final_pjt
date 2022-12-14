@@ -431,6 +431,27 @@ def notice_delete_all(request):
     return JsonResponse(data)
 
 
+# 알림 읽음
+@login_required
+def notice_read(request):
+    is_read = False
+
+    if request.user.is_authenticated and request.method == "POST":
+        notices = StudyNotice.objects.filter(user=request.user, read=False)
+        for notice in notices:
+            notice.read = True
+            notice.save()
+
+        is_read = True
+
+    data = {
+        "is_read": is_read,
+    }
+
+    # return redirect('home')
+    return JsonResponse(data)
+
+
 # 스터디 게시판 인덱스
 def board_index(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
@@ -533,46 +554,48 @@ def board_detail(request, study_pk, article_pk):
     study = get_object_or_404(Study, pk=study_pk)
     accepted_list = List.objects.filter(study=study, is_accepted=True)
     board = Board.objects.get(pk=article_pk)
+    comment_form = BoardCommentForm()
+    comments = board.boardcomment_set.all()
     boj_id = {}
 
     # 스터디에 가입된 사람들 중
     for i in accepted_list:
         # 백준 아이디가 있다면
         if i.user.profile.boj_id:
-            id = i.user.profile.boj_id
-            # 백준 아이디가 푼 문제들을 solved_problems에 저장
-            solved_problems = []
-            page_num = 1
-            while True:
-                url = f"https://solved.ac/api/v3/search/problem?query=solved_by%3A{id}&page={page_num}"
-                r_solved = requests.get(url)
-                ################ 백준 api 사용 제한이 있어서 많이 사용하는 경우 아래 코드를 못 받아옴 ################
-                ###### try를 사용해야 할 듯 ###########
-                solved = json.loads(r_solved.content.decode("utf-8"))
+            # id = i.user.profile.boj_id
+            # # 백준 아이디가 푼 문제들을 solved_problems에 저장
+            # solved_problems = []
+            # page_num = 1
+            # while True:
+            #     url = f"https://solved.ac/api/v3/search/problem?query=solved_by%3A{id}&page={page_num}"
+            #     r_solved = requests.get(url)
+            #     ################ 백준 api 사용 제한이 있어서 많이 사용하는 경우 아래 코드를 못 받아옴 ################
+            #     ###### try를 사용해야 할 듯 ###########
+            #     solved = json.loads(r_solved.content.decode("utf-8"))
 
-                items = solved.get("items")
+            #     items = solved.get("items")
 
-                if items:
-                    for item in items:
-                        solved_problems.append(item.get("problemId"))
-                    page_num += 1
-                else:
-                    break
-            # print(solved_problems)
-            # print(boards.problem_number)
-            # print(boards.problem_number in solved_problems)
+            #     if items:
+            #         for item in items:
+            #             solved_problems.append(item.get("problemId"))
+            #         page_num += 1
+            #     else:
+            #         break
+            # # print(solved_problems)
+            # # print(boards.problem_number)
+            # # print(boards.problem_number in solved_problems)
 
-            # 백준 아이디 저장할 리스트
+            # # 백준 아이디 저장할 리스트
 
-            if board.problem_number in solved_problems:
-                boj_id[i.user.profile.boj_id] = True
-            else:
-                boj_id[i.user.profile.boj_id] = False
-
-    print(boj_id)
-    for k, v in boj_id.items():
-        print(k)
-        print(v)
+            # if board.problem_number in solved_problems:
+            #     boj_id[i.user.profile.boj_id] = True
+            # else:
+            #     boj_id[i.user.profile.boj_id] = False
+            boj_id = {"test1":True,"test2":True,"test3":False}
+    # print(boj_id)
+    # for k, v in boj_id.items():
+    #     print(k)
+    #     print(v)
 
     context = {
         # "comment": comment,
@@ -581,6 +604,8 @@ def board_detail(request, study_pk, article_pk):
         "board": board,
         "accepted_list": accepted_list,
         "boj_id": boj_id,
+        "comment_form": comment_form,
+        "comments": comments,
     }
     return render(request, "studies/board_detail.html", context)
 
@@ -603,25 +628,55 @@ def problem_check(request):
     return JsonResponse(data)
 
 
-# 알림 읽음
+# 스터디 게시판 게시글에 댓글 작성
 @login_required
-def notice_read(request):
-    is_read = False
+def comment_create(request, study_pk, article_pk):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            board = Board.objects.get(pk=article_pk)
+            comment_form = BoardCommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.user = request.user
+                comment.article = board
+                comment.save()
 
-    if request.user.is_authenticated and request.method == "POST":
-        notices = StudyNotice.objects.filter(user=request.user, read=False)
-        for notice in notices:
-            notice.read = True
-            notice.save()
+                if not comment.user.profile.image:
+                    comment_user_image = "/static/images/no-avatar.jpg"
+                elif str(comment.user.profile.image)[:4] == "http":
+                    comment_user_image = str(comment.user.profile.image)
+                else:
+                    comment_user_image = str(comment.user.profile.image.url)
 
-        is_read = True
+                data = {
+                    "comment_pk": comment.pk,
+                    "comment_content": comment.content,
+                    "comment_nickname": comment.user.profile.nickname,
+                    "comment_user_pk": comment.user.pk,
+                    "comment_user_image": comment_user_image,
+                }
+                return JsonResponse(data)
+                # return redirect("studies:board_detail", study_pk, article_pk)
+            return redirect("studies:board_detail", study_pk, article_pk)
+    return redirect("accounts:login")
 
-    data = {
-        "is_read": is_read,
-    }
 
-    # return redirect('home')
-    return JsonResponse(data)
+@login_required
+def comment_delete(request, study_pk, article_pk, comment_pk):
+    if request.method == 'POST':
+        comment = get_object_or_404(BoardComment, pk=comment_pk)
+        is_deleted = False  # 삭제여부
+
+        if request.user == comment.user:
+            comment.delete()
+            is_deleted = True  # 삭제여부
+
+        data = {
+            "is_deleted": is_deleted,
+        }
+
+        return JsonResponse(data)
+    return redirect("studies:board_detail", study_pk, article_pk)
 
 # 검색
 def search(request):

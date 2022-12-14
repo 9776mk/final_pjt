@@ -4,7 +4,8 @@
 {% load filter %} <!-- 마크다운 -->
 {% load static %}
 {% block link %}
-  <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/study_detail.css' %}" type="text/css">
 {% endblock link %}
 
 {% block content %} 
@@ -12,9 +13,10 @@
   <div class='container py-5'>
     <div class="board_view">
       <!-- 작성자 -->
-      <div class="writer">
+      <div >
         <div class='writer_profile'>
-          <a class='d-flex' href="{% url 'accounts:profile' board.user.pk %}">
+            <div class="layoutbox">
+              <a  href="{% url 'accounts:profile' board.user.pk %}">
             {% if board.user.profile.image|slugify|slice:'0:4' == 'http' %}
             <!-- 깃허브에서 가져온 이미지: https로 시작 -->
               <img class='writer_img' src="{{ board.user.profile.image }}">
@@ -24,9 +26,12 @@
             {% else %}
               <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
             {% endif %}
-            <div>
-              <div class='mb-1'>{{ board.user.profile.nickname }}</div>
-              <div>
+          </a>
+
+            <div class="namebox">
+              <a  href="{% url 'accounts:profile' board.user.pk %}">
+              <div>{{ board.user.profile.nickname }}</div>  </a>
+              <div></div>
                 {% if board.user.profile.language == 'Python' %}
                   <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff">
                 {% elif board.user.profile.language == 'Java' %}
@@ -42,7 +47,9 @@
                 {% endif %}
               </div>
             </div>
-          </a>
+            {% if board.problem_number != None %}
+          <h2> 문제 번호: {{ board.problem_number }} </h2>
+          {% endif %}
         </div>
       </div>
 
@@ -54,23 +61,41 @@
         <p>조회수 : {{ board.hits }}</p>
         <p><span class="button gray medium"><a href="#" onclick="clip(); return false;">URL주소복사</a></span></p>
       </div>
-      <div>
-        {% autoescape off %}
-          {% for key, val in boj_id.items %}
-            {% if val == True%}
-              <h1> {{ key }} : O </h1>
-            {% else %}
-              <h1> {{ key }} : X </h1>
-            {% endif%}
-           <hr>
-          {% endfor %}
-        {% endautoescape %}
-      </div>
+      
+    
+
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
         {{ board.content }}
       </div>
-
+        <!-- 문제 번호 + 사용자가 그 문제를 풀었는지 나타내기 -->
+        {% if board.problem_number != None %}
+        <div class="solved">
+          <table>
+            <thead><tr>
+              <th>ID</th>
+              <th>Status</th></tr>
+            </thead>
+            <tbody>
+              {% for key, val in boj_id.items %}
+              <tr>
+                <td>
+                {{ key }}
+                </td>
+                <td>
+                  {% if val == True%}
+                  O 
+                  {% else %}
+                  X 
+                {% endif%}
+  
+                </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+          </table>
+        </div>
+        {% endif %}
       <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
       {% if request.user == board.user %}
         <!-- 삭제, 수정, 뒤로가기 버튼들 -->
@@ -87,16 +112,15 @@
     
     <br>
     
-    <!-- 댓글생성 -->
+    <!-- 댓글 생성 -->
     <details class='mb-5 mx-3'>
       <summary>댓글달기</summary>
-      {% comment %} 로그인 안 했으면 제출 버튼을 disabled 해도 되고 {% endcomment %}
       {% if request.user.is_authenticated %}
-        <form id="comment-form" data-board-id="{{ board.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{board.pk}}')">
-          <!-- create_comment:함수명 -->
+        {% comment %} <form action="{% url 'studies:comment_create' study.pk board.pk %}" method="POST"> {% endcomment %}
+        <form id="comment-form" data-board-id="{{ board.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{ study.pk }}', '{{ board.pk }}')">
           {% csrf_token %}
           <div class='d-flex justify-content-center mt-2' style='height: 120px;'>
-            <textarea name="content" required id='id_content' class="input_com me-3 px-2" cols="30" rows="10" ></textarea>
+            <textarea name="content" required id='id_content' class="input_com me-3 px-2" cols="30" rows="10"></textarea>
             <button class='bbtn_com text-break' type="submit" id="content-{{ board.pk }}">댓글 쓰기</button>
           </div>
         </form>
@@ -108,38 +132,39 @@
     </details>
     
 
-    <!-- 댓글 목록 삭제-->
-    <!-- 회원이라면 보여주고 -->
-      <div id="box">
-        {% for comment in comments.all %}
-          <div class='comment_box position-relative my-3 mx-5' id="board-{{comment.pk}}">
-            <div class='d-flex comment_writer'>
-              <a href="{% url 'accounts:profile' comment.user.pk %}">
-                {% if comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
-                <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-                  <img class='writer_img' src="{{ comment.user.profile.image }}">
-                {% elif comment.user.profile.image %}
-                  <!-- 파일로 추가한 이미지 /media/ -->
-                  <img class='writer_img' src="{{ comment.user.profile.image.url }}">
-                {% else %}
-                  <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
-                {% endif %}
-              </a>
-              <a href="{% url 'accounts:profile' comment.user.pk %}" >
-                <div class='mx-3'>{{ comment.user.profile.nickname }}</div>
-              </a>
-            </div>
-            
-            <!-- 댓글 작성한 당사자만 삭제할 수 있게 -->
-            {% if request.user == comment.user %}
-              <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{board.pk}}', '{{comment.pk}}')">
-                {% csrf_token %}
-                <input type="submit" class="btn-close position-absolute top-0 end-0 m-3" style="color:transparent;">
-              </form>
-            {% endif %}
+    <!-- 댓글 목록 -->
+    <div id="box">
+      {% for comment in comments %}
+        <div class='comment_box position-relative my-3 mx-5' id="board-{{comment.pk}}">
+          <div class='d-flex comment_writer'>
+            <a href="{% url 'accounts:profile' comment.user.pk %}">
+              {% if comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
+              <!-- 깃허브에서 가져온 이미지: https로 시작 -->
+                <img class='writer_img' src="{{ comment.user.profile.image }}">
+              {% elif comment.user.profile.image %}
+                <!-- 파일로 추가한 이미지 /media/ -->
+                <img class='writer_img' src="{{ comment.user.profile.image.url }}">
+              {% else %}
+                <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
+              {% endif %}
+            </a>
+            <a href="{% url 'accounts:profile' comment.user.pk %}" >
+              <div class='mx-3'>{{ comment.user.profile.nickname }}</div>
+            </a>
           </div>
-        {% endfor %}
-      </div>
+
+          <div class='m-3 pe-3 text-break'>{{ comment.content|mark }}</div>
+          
+          <!-- 댓글 작성한 당사자만 삭제할 수 있게 -->
+          {% if request.user == comment.user %}
+            <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{study.pk}}', '{{board.pk}}', '{{comment.pk}}')">
+              {% csrf_token %}
+              <input type="submit" class="btn-close position-absolute top-0 end-0 m-3" style="color:transparent;">
+            </form>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
   </div>
 
 {% endblock content %}
@@ -147,122 +172,81 @@
 {% block script %}
   <script>
     //댓글 비동기 생성
-    function create_comment(form, article_pk) { //form:html form태그
-      console.log(form)
-      const csrftoken = document
-        .querySelector('[name=csrfmiddlewaretoken]')
-        .value
-        axios({
-          method: 'post',
-          url: `/articles/${article_pk}/comments_create/`,
-          headers: {
-            'X-CSRFToken': csrftoken
-          },
-          data: new FormData(form) //form:html form태그
-        })
-        .then(response => {
-          const pk = response.data.pk
-          const comment_content = response.data.content
-          const userName = response.data.userName
-          const userPk = response.data.userPk
-          const commentUserImage = response.data.commentUserImage
+    function create_comment(form, study_pk, board_pk) { //form:html form태그
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      
+      axios({
+        method: 'post',
+        url: `/studies/${study_pk}/board/${board_pk}/comment/`,
+        headers: {
+          'X-CSRFToken': csrftoken
+        },
+        data: new FormData(form) //form:html form태그
+      })
+      .then(response => {
+        const commentPk = response.data.comment_pk
+        const content = response.data.comment_content
+        const nickname = response.data.comment_nickname
+        const userPk = response.data.comment_user_pk
+        const userImage = response.data.comment_user_image
 
-          const commentbox = document.querySelector('#box')
-          commentbox.insertAdjacentHTML('beforeend', `
-            <div id="article-${pk}">  
-              <div class='comment_box position-relative my-3 mx-5'> 
-                <div class='d-flex comment_writer'> 
-                  <a href="/accounts/${userPk}/">       
-                    <img class='writer_img' src="${commentUserImage}">
-                  </a>
-                  <a href="/accounts/${userPk}/">       
-                    <div class='mx-3'>${userName}</div>
-                  </a>
-                </div> 
-                <p class='bubble-comment m-3'>${comment_content}</p>
-                <!-- 댓글 작성한 당사자만 삭제할 수 있게 -->
-                <form method="POST" id="comment_delete-${pk}" onsubmit="event.preventDefault(); delete_comment(this, '${article_pk}', '${pk}')">
-                  <input type="submit" class="btn-close position-absolute top-0 end-0 m-3" style="color:transparent;">
-                </form>
-              </div>  
-            </div>
+        const commentbox = document.querySelector('#box')
+        commentbox.insertAdjacentHTML('beforeend', `
+          <div id="board-${commentPk}">  
+            <div class='comment_box position-relative my-3 mx-5'> 
+              <div class='d-flex comment_writer'> 
+                <a href="/accounts/${userPk}/">       
+                  <img class='writer_img' src="${userImage}">
+                </a>
+                <a href="/accounts/${userPk}/">       
+                  <div class='mx-3'>${nickname}</div>
+                </a>
+              </div> 
+              <p class='bubble-comment m-3'>${content}</p>
+              <!-- 댓글 작성한 당사자만 삭제할 수 있게 -->
+              <form method="POST" id="comment_delete-${commentPk}" onsubmit="event.preventDefault(); delete_comment(this, '${study_pk}', '${board_pk}', '${commentPk}')">
+                <input type="submit" class="btn-close position-absolute top-0 end-0 m-3" style="color:transparent;">
+              </form>
+            </div>  
+          </div>
 
-        `)
-          form.reset() //form:html form태그
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      }
-
-    //댓글 비동기 삭제
-    function delete_comment(form, article_pk, comment_pk) {
-      const csrftoken = document
-        .querySelector('[name=csrfmiddlewaretoken]')
-        .value
-
-        axios({
-          method: 'post',
-          url: `/articles/${article_pk}/comments_create/${comment_pk}/delete/`,
-          headers: {
-            'X-CSRFToken': csrftoken
-          }
-        })
-        .then(response => {
-          const comment = document.querySelector(`#article-${comment_pk}`)
-          console.log(response.data.is_deleted)
-          comment.remove()
-        })
+      `)
+        form.reset() //form:html form태그
+      })
+      .catch(error => {
+        console.log(error)
+      })
     }
 
-    // 좋아요
-    const form = document.querySelector('.like-forms')
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-    
-      form.addEventListener('submit', function (event) {
-        event.preventDefault()
-        const articleId = event.target.dataset.articleId
-          console.log(form)
-        axios({
-          method: 'post',
-          url: `/articles/${articleId}/likes/`,
-          headers: {'X-CSRFToken': csrftoken },
-        })
-          .then((response) => {
-            const isLiked = response.data.is_liked
-            const likeBtn = document.querySelector(`#like-${articleId}`)
-            const likeCount = document.querySelector(`#like-count-${articleId}`)
-            const heart = document.querySelector(`#heart-${articleId}`)
+    //댓글 비동기 삭제
+    function delete_comment(form, study_pk, board_pk, comment_pk) {
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
-            if (isLiked === true) {
-              // likeBtn.value = "좋아요취소❌"
-              heart.classList.add('bi-heart-fill')
-              heart.classList.remove('bi-heart')
-              likeCount.innerText = response.data.likeCount
-            } else {
-              // likeBtn.value = "좋아요🧡"
-              heart.classList.add('bi-heart')
-              heart.classList.remove('bi-heart-fill')
-              likeCount.innerText = response.data.likeCount
-            }
-          })
-          .catch((error) => {
-            console.log(error.response)
-          })
-        })
-
-        //url 링크 복사
-        function clip(){
-
-          var url = '';
-          var textarea = document.createElement("textarea");
-          document.body.appendChild(textarea);
-          url = window.document.location.href;
-          textarea.value = url;
-          textarea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textarea);
-          alert("URL이 복사되었습니다.")
+      axios({
+        method: 'post',
+        url: `/studies/${study_pk}/board/${board_pk}/comment/${comment_pk}/delete/`,
+        headers: {
+          'X-CSRFToken': csrftoken
         }
+      })
+      .then(response => {
+        const comment = document.querySelector(`#board-${comment_pk}`)
+        console.log(response.data.is_deleted)
+        comment.remove()
+      })
+    }
+
+    //url 링크 복사
+    function clip(){
+      var url = '';
+      var textarea = document.createElement("textarea");
+      document.body.appendChild(textarea);
+      url = window.document.location.href;
+      textarea.value = url;
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      alert("URL이 복사되었습니다.")
+    }
   </script>
 {% endblock script %}
