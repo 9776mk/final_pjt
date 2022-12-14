@@ -2,6 +2,40 @@
 {% load static %}
 {% block link %}
   <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
+  <style>
+    /* 글 생성 버튼 */
+    .bt_wrap1 {
+        margin: auto;
+        text-align: center;
+        font-size: 0;
+        border-radius: 30rem;
+    }
+    .bt_wrap1 a,
+    .bt_wrap1 button,
+    .bt_wrap1 input {
+        display: inline-block;
+        padding: 10px;
+        border: 1px solid #FF8E00;
+        border-radius: 2px;
+        font-size: 0.9rem;
+        background: #fff;
+        color: #FF8E00;
+        transition: all 0.4s;
+        border-radius: 10px;
+    }
+    .bt_wrap1 a:first-child,
+    .bt_wrap1 button:first-child {
+        margin-left: 0;
+    }
+    .bt_wrap1 a:hover,
+    .bt_wrap1 button:hover {
+        background-color: #FF8E00;
+        color: white;
+    }
+    .bt_wrap1 a {
+        margin-left: 15px;
+    }
+  </style>
 {% endblock link %}
 {% block content %}
 <div class='container py-5'>
@@ -58,7 +92,7 @@
     </div>
 
     <!--페이지네이션-->
-    <div class="paginator board_page">
+    <div class="paginator board_page mb-4">
       <!-- 맨 앞으로 -->
       <a href="?page=1" class="page-link bt first">
         <i class="bi bi-chevron-bar-left"></i>
@@ -132,7 +166,7 @@
     </div>
 
     <!--페이지네이션-->
-    <div class="paginator board_page">
+    <div class="paginator board_page mb-4">
       <!-- 맨 앞으로 -->
       <a href="?page=1" class="page-link bt first">
         <i class="bi bi-chevron-bar-left"></i>
@@ -206,7 +240,7 @@
     </div>
 
     <!--페이지네이션-->
-    <div class="paginator board_page">
+    <div class="paginator board_page mb-4">
       <!-- 맨 앞으로 -->
       <a href="?page=1" class="page-link bt first">
         <i class="bi bi-chevron-bar-left"></i>
@@ -280,7 +314,7 @@
     </div>
 
     <!--페이지네이션-->
-    <div class="paginator board_page">
+    <div class="paginator board_page mb-4">
       <!-- 맨 앞으로 -->
       <a href="?page=1" class="page-link bt first">
         <i class="bi bi-chevron-bar-left"></i>
@@ -324,9 +358,11 @@
   {% endif %}
   
   <!--새 글 쓰기 버튼-->
-  <div class='bt_wrap'>
-    <a class='px-4' href="{% url 'studies:board_create' study.pk %}">새 글 쓰기</a>
-  </div>
+  {% if is_accepted %}
+    <div class='bt_wrap1 mb-4'>
+      <a class='px-4' href="{% url 'studies:board_create' study.pk %}">새 글 쓰기</a>
+    </div>
+  {% endif %}
 </div>
 {% endblock content %}
 

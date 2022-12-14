@@ -464,10 +464,17 @@ def board_index(request, study_pk):
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
+    accepted_list = List.objects.filter(study=study, is_accepted=True).values_list('user', flat=True)
+    is_accepted = False
+    
+    if request.user.pk in accepted_list:
+        is_accepted = True
+
     context = {
         "study": study,
         "boards": page_obj,
         "max_index": max_index,
+        "is_accepted": is_accepted,
     }
     return render(request, "studies/board_index.html", context)
 
@@ -481,11 +488,19 @@ def board_index_1(request, study_pk):
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
+    accepted_list = List.objects.filter(study=study, is_accepted=True).values_list('user', flat=True)
+    is_accepted = False
+    
+    if request.user.pk in accepted_list:
+        is_accepted = True
+
     context = {
         "study": study,
         "boards": page_obj,
         "max_index": max_index,
+        "is_accepted": is_accepted,
     }
+
     return render(request, "studies/board_index.html", context)
 
 
@@ -498,10 +513,17 @@ def board_index_2(request, study_pk):
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
+    accepted_list = List.objects.filter(study=study, is_accepted=True).values_list('user', flat=True)
+    is_accepted = False
+    
+    if request.user.pk in accepted_list:
+        is_accepted = True
+
     context = {
         "study": study,
         "boards": page_obj,
         "max_index": max_index,
+        "is_accepted": is_accepted,
     }
     return render(request, "studies/board_index.html", context)
 
@@ -515,10 +537,17 @@ def board_index_3(request, study_pk):
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
+    accepted_list = List.objects.filter(study=study, is_accepted=True).values_list('user', flat=True)
+    is_accepted = False
+    
+    if request.user.pk in accepted_list:
+        is_accepted = True
+
     context = {
         "study": study,
         "boards": page_obj,
         "max_index": max_index,
+        "is_accepted": is_accepted,
     }
     return render(request, "studies/board_index.html", context)
 
@@ -526,27 +555,34 @@ def board_index_3(request, study_pk):
 # 스터디 게시판 게시물 생성
 @login_required
 def board_create(request, study_pk):
-    if request.method == "POST":
-        study = Study.objects.get(pk=study_pk)
-        Board_Form = BoardForm(request.POST)
-        # print(Board_Form.is_valid())
+    study = Study.objects.get(pk=study_pk)
+    accepted_list = List.objects.filter(study=study, is_accepted=True).values_list('user', flat=True)
 
-        if Board_Form.is_valid():
-            board = Board_Form.save(commit=False)
-            board.study = study
-            board.user = request.user
-            board.save()
+    # 스터디에 가입한 사람만 글 작성 가능
+    if request.user.pk in accepted_list:
+        if request.method == "POST":
+            Board_Form = BoardForm(request.POST)
+            # print(Board_Form.is_valid())
 
-            return redirect("studies:board_index", study_pk)
+            if Board_Form.is_valid():
+                board = Board_Form.save(commit=False)
+                board.study = study
+                board.user = request.user
+                board.save()
 
-    else:
-        Board_Form = BoardForm()
+                return redirect("studies:board_index", study_pk)
 
-    context = {
-        "study_pk": study_pk,
-        "Board_Form": Board_Form,
-    }
-    return render(request, "studies/board_create.html", context)
+        else:
+            Board_Form = BoardForm()
+
+        context = {
+            "study_pk": study_pk,
+            "Board_Form": Board_Form,
+        }
+
+        return render(request, "studies/board_create.html", context)
+
+    return redirect("studies:board_index", study.pk)
 
 
 # 스터디 게시판 상세보기
