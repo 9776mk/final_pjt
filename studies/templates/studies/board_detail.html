@@ -99,10 +99,10 @@
       <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
       {% if request.user.id == board.user_id %}
         <!-- 삭제, 수정, 뒤로가기 버튼들 -->
-        <form action="" method="POST">
+        <form action="{% url 'studies:board_delete' study.pk board.pk %}" method="POST">
           {% csrf_token %}
           <div class="bt_wrap pb-5">
-            <a href="{% url 'studies:board_delete' study.pk board.pk %}" class="on">삭제</a>
+            <input type="submit" value="삭제" class="on">
             <a href="{% url 'studies:board_update' study.pk board.pk %}" class="on">수정</a>
             <a href="{% url 'studies:board_index' study.pk %}" class="on">뒤로</a>
           </div>

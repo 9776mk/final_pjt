@@ -597,7 +597,6 @@ def board_detail(request, study_pk, article_pk):
     boj_id = {}
 
     if board.category == '문제':
-        print('if문 안')
         # 스터디에 가입된 사람들 중
         for i in accepted_list:
             # 백준 아이디가 있다면
@@ -667,6 +666,7 @@ def board_detail(request, study_pk, article_pk):
     return response
 
 
+@login_required
 def board_update(request, study_pk, article_pk):
     study = get_object_or_404(Study, pk=study_pk)
     board = Board.objects.get(pk=article_pk)
@@ -698,8 +698,14 @@ def board_update(request, study_pk, article_pk):
         return redirect("studies:board_detail", study.pk, board.pk)
 
 
+@login_required
 def board_delete(request, study_pk, article_pk):
-    return redirect("studies:board_detail")
+    board = Board.objects.get(pk=article_pk)
+
+    if request.user == board.user and request.method == "POST":
+        board.delete()
+
+    return redirect("studies:board_index", study_pk)
 
 
 def problem_check(request):
