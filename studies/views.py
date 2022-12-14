@@ -8,7 +8,9 @@ from django.http import JsonResponse
 import json
 import requests
 from django.core.paginator import Paginator
+from datetime import date, datetime, timedelta
 from django.db.models import Q
+
 
 # Create your views here.
 def index(request):
@@ -557,41 +559,40 @@ def board_detail(request, study_pk, article_pk):
     comment_form = BoardCommentForm()
     comments = board.boardcomment_set.all()
     boj_id = {}
+    if "go" in request.GET.keys():
+        # 스터디에 가입된 사람들 중
+        for i in accepted_list:
+            # 백준 아이디가 있다면
+            if i.user.profile.boj_id:
+                id = i.user.profile.boj_id
+                # 백준 아이디가 푼 문제들을 solved_problems에 저장
+                solved_problems = []
+                page_num = 1
+                while True:
+                    url = f"https://solved.ac/api/v3/search/problem?query=solved_by%3A{id}&page={page_num}"
+                    r_solved = requests.get(url)
+                    ################ 백준 api 사용 제한이 있어서 많이 사용하는 경우 아래 코드를 못 받아옴 ################
+                    ###### try를 사용해야 할 듯 ###########
+                    solved = json.loads(r_solved.content.decode("utf-8"))
 
-    # 스터디에 가입된 사람들 중
-    for i in accepted_list:
-        # 백준 아이디가 있다면
-        if i.user.profile.boj_id:
-            # id = i.user.profile.boj_id
-            # # 백준 아이디가 푼 문제들을 solved_problems에 저장
-            # solved_problems = []
-            # page_num = 1
-            # while True:
-            #     url = f"https://solved.ac/api/v3/search/problem?query=solved_by%3A{id}&page={page_num}"
-            #     r_solved = requests.get(url)
-            #     ################ 백준 api 사용 제한이 있어서 많이 사용하는 경우 아래 코드를 못 받아옴 ################
-            #     ###### try를 사용해야 할 듯 ###########
-            #     solved = json.loads(r_solved.content.decode("utf-8"))
+                    items = solved.get("items")
 
-            #     items = solved.get("items")
+                    if items:
+                        for item in items:
+                            solved_problems.append(item.get("problemId"))
+                        page_num += 1
+                    else:
+                        break
+                # print(solved_problems)
+                # print(boards.problem_number)
+                # print(boards.problem_number in solved_problems)
 
-            #     if items:
-            #         for item in items:
-            #             solved_problems.append(item.get("problemId"))
-            #         page_num += 1
-            #     else:
-            #         break
-            # # print(solved_problems)
-            # # print(boards.problem_number)
-            # # print(boards.problem_number in solved_problems)
+                # 백준 아이디 저장할 리스트
 
-            # # 백준 아이디 저장할 리스트
-
-            # if board.problem_number in solved_problems:
-            #     boj_id[i.user.profile.boj_id] = True
-            # else:
-            #     boj_id[i.user.profile.boj_id] = False
-            boj_id = {"test1":True,"test2":True,"test3":False}
+                if board.problem_number in solved_problems:
+                    boj_id[i.user.profile.boj_id] = True
+                else:
+                    boj_id[i.user.profile.boj_id] = False
     # print(boj_id)
     # for k, v in boj_id.items():
     #     print(k)
@@ -607,7 +608,45 @@ def board_detail(request, study_pk, article_pk):
         "comment_form": comment_form,
         "comments": comments,
     }
-    return render(request, "studies/board_detail.html", context)
+    response = render(request, "studies/board_detail.html", context)
+    # 조회수
+    expire_date, now = datetime.now(), datetime.now()
+    expire_date += timedelta(seconds=1)
+    expire_date = expire_date.replace(hour=0, minute=0, second=0, microsecond=0)
+    expire_date -= now
+    max_age = expire_date.total_seconds()
+    cookie_value = request.COOKIES.get("hitboard", "_")
+
+    if f"_{article_pk}_" not in cookie_value:
+        cookie_value += f"{article_pk}_"
+        response.set_cookie(
+            "hitboard", value=cookie_value, max_age=max_age, httponly=True
+        )
+        board.hits += 1
+        board.save()
+    return response
+
+
+def board_update(request, study_pk, article_pk):
+    study = get_object_or_404(Study, pk=study_pk)
+    board = Board.objects.get(pk=article_pk)
+
+    if request.user == board.user:
+        if request.method == "POST":
+            board_form = BoardForm(request.POST, request.FILES, instance=board)
+        else:
+            board_form = BoardForm(instance=board)
+        context = {
+            "board_form": board_form,
+            "study": study,
+        }
+        return render(request, "studies/board_detail.html")
+    else:
+        return redirect("studies:board_detail")
+
+
+def board_delete(request):
+    return redirect("studies:board_detail")
 
 
 def problem_check(request):
@@ -663,7 +702,7 @@ def comment_create(request, study_pk, article_pk):
 
 @login_required
 def comment_delete(request, study_pk, article_pk, comment_pk):
-    if request.method == 'POST':
+    if request.method == "POST":
         comment = get_object_or_404(BoardComment, pk=comment_pk)
         is_deleted = False  # 삭제여부
 
@@ -678,11 +717,12 @@ def comment_delete(request, study_pk, article_pk, comment_pk):
         return JsonResponse(data)
     return redirect("studies:board_detail", study_pk, article_pk)
 
+
 # 검색
 def search(request):
-    search= Study.objects.order_by('-pk')
-    q = request.GET.get('q')
-    search = search.filter(Q(title__icontains=q)|Q(content__icontains=q))
+    search = Study.objects.order_by("-pk")
+    q = request.GET.get("q")
+    search = search.filter(Q(title__icontains=q) | Q(content__icontains=q))
     page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
     page_obj = paginator.get_page(page)
@@ -690,17 +730,18 @@ def search(request):
     context = {
         "search_list": page_obj,
         "max_index": max_index,
-        'search':search,
-        'q':q,
-    } 
-    return render(request, 'studies/search.html',context)
+        "search": search,
+        "q": q,
+    }
+    return render(request, "studies/search.html", context)
+
 
 # 검색 카테고리별
 def search_al(request):
-    search= Study.objects.order_by('-pk')
-    q = request.GET.get('q')
+    search = Study.objects.order_by("-pk")
+    q = request.GET.get("q")
     que = Q()
-    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(title__icontains=q) | Q(content__icontains=q), que.AND)
     que.add(Q(category="알고리즘 공부"), que.AND)
     search = search.filter(que)
     page = request.GET.get("page", "1")  # 페이지
@@ -710,16 +751,17 @@ def search_al(request):
     context = {
         "search_list": page_obj,
         "max_index": max_index,
-        'search':search,
-        'q':q,
-    } 
-    return render(request, 'studies/search.html',context)
+        "search": search,
+        "q": q,
+    }
+    return render(request, "studies/search.html", context)
+
 
 def search_fe(request):
-    search= Study.objects.order_by('-pk')
-    q = request.GET.get('q')
+    search = Study.objects.order_by("-pk")
+    q = request.GET.get("q")
     que = Q()
-    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(title__icontains=q) | Q(content__icontains=q), que.AND)
     que.add(Q(category="프론트엔드 공부"), que.AND)
     search = search.filter(que)
     page = request.GET.get("page", "1")  # 페이지
@@ -729,16 +771,17 @@ def search_fe(request):
     context = {
         "search_list": page_obj,
         "max_index": max_index,
-        'search':search,
-        'q':q,
-    } 
-    return render(request, 'studies/search.html',context)
+        "search": search,
+        "q": q,
+    }
+    return render(request, "studies/search.html", context)
+
 
 def search_be(request):
-    search= Study.objects.order_by('-pk')
-    q = request.GET.get('q')
+    search = Study.objects.order_by("-pk")
+    q = request.GET.get("q")
     que = Q()
-    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(title__icontains=q) | Q(content__icontains=q), que.AND)
     que.add(Q(category="백엔드 공부"), que.AND)
     search = search.filter(que)
     page = request.GET.get("page", "1")  # 페이지
@@ -748,16 +791,17 @@ def search_be(request):
     context = {
         "search_list": page_obj,
         "max_index": max_index,
-        'search':search,
-        'q':q,
-    } 
-    return render(request, 'studies/search.html',context)
+        "search": search,
+        "q": q,
+    }
+    return render(request, "studies/search.html", context)
+
 
 def search_etc(request):
-    search= Study.objects.order_by('-pk')
-    q = request.GET.get('q')
+    search = Study.objects.order_by("-pk")
+    q = request.GET.get("q")
     que = Q()
-    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(title__icontains=q) | Q(content__icontains=q), que.AND)
     que.add(Q(category="기타"), que.AND)
     search = search.filter(que)
     page = request.GET.get("page", "1")  # 페이지
@@ -767,7 +811,7 @@ def search_etc(request):
     context = {
         "search_list": page_obj,
         "max_index": max_index,
-        'search':search,
-        'q':q,
-    } 
-    return render(request, 'studies/search.html',context)
+        "search": search,
+        "q": q,
+    }
+    return render(request, "studies/search.html", context)
