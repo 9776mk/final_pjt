@@ -45,4 +45,11 @@ urlpatterns = [
         "notice_delete/all/", views.notice_delete_all, name="notice_delete_all"
     ),  # 알림 전체 삭제
     path("notice_read/", views.notice_read, name="notice_read"),  # 알림 읽음
+    # 검색
+    path('search/',views.search, name='search' ),#검색
+    # 검색 카테고리별
+    path('search_al/', views.search_al, name='search_al'),
+    path('search_fe/', views.search_fe, name='search_fe'),
+    path('search_be/', views.search_be, name='search_be'),
+    path('search_etc/', views.search_etc, name='search_etc'),
 ]
