@@ -8,7 +8,9 @@ from django.http import JsonResponse
 import json
 import requests
 from django.core.paginator import Paginator
+from datetime import date, datetime, timedelta
 from django.db.models import Q
+
 
 # Create your views here.
 def index(request):
@@ -606,8 +608,23 @@ def board_detail(request, study_pk, article_pk):
         "comment_form": comment_form,
         "comments": comments,
     }
-    return render(request, "studies/board_detail.html", context)
+    response = render(request, "studies/board_detail.html", context)
+    #조회수
+    expire_date, now = datetime.now(), datetime.now()
+    expire_date += timedelta(seconds=1)
+    expire_date = expire_date.replace(hour=0, minute=0, second=0, microsecond=0)
+    expire_date -= now
+    max_age = expire_date.total_seconds()
+    cookie_value = request.COOKIES.get("hitboard", "_")
 
+    if f"_{article_pk}_" not in cookie_value:
+        cookie_value += f"{article_pk}_"
+        response.set_cookie(
+            "hitboard", value=cookie_value, max_age=max_age, httponly=True
+        )
+        board.hits += 1
+        board.save()
+    return response
 
 def problem_check(request):
     is_valid = False
