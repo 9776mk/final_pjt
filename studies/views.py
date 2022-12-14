@@ -430,63 +430,71 @@ def notice_delete_all(request):
 
 # 스터디 게시판 인덱스
 def board_index(request, study_pk):
-    page = request.GET.get("page", "1")  # 페이지
     study = get_object_or_404(Study, pk=study_pk)
-    boards = Board.objects.filter(study_id=study_pk).order_by("-pk")
+    boards = Board.objects.filter(study=study).order_by("-pk")
+
+    page = request.GET.get("page", "1")  # 페이지
     paginator = Paginator(boards, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
-    # print(boards)
 
     context = {
         "study": study,
-        "boards": boards,
-        "articles": page_obj,
+        "boards": page_obj,
         "max_index": max_index,
     }
     return render(request, "studies/board_index.html", context)
 
 
 def board_index_1(request, study_pk):
-    articles = Board.objects.filter(category="문제").order_by("-pk")
+    study = get_object_or_404(Study, pk=study_pk)
+    boards = Board.objects.filter(study_id=study_pk, category="문제").order_by("-pk")
+
     page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
+    paginator = Paginator(boards, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
     context = {
-        "articles": page_obj,
+        "study": study,
+        "boards": page_obj,
         "max_index": max_index,
     }
-    return render(request, "articles/index.html", context)
+    return render(request, "studies/board_index.html", context)
 
 
-def board_index_2(request):
-    articles = Board.objects.filter(category="질문").order_by("-pk")
+def board_index_2(request, study_pk):
+    study = get_object_or_404(Study, pk=study_pk)
+    boards = Board.objects.filter(study_id=study_pk, category="질문").order_by("-pk")
+
     page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
+    paginator = Paginator(boards, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
     context = {
-        "articles": page_obj,
+        "study": study,
+        "boards": page_obj,
         "max_index": max_index,
     }
-    return render(request, "articles/index.html", context)
+    return render(request, "studies/board_index.html", context)
 
 
-def board_index_3(request):
-    articles = Board.objects.filter(category="잡담").order_by("-pk")
+def board_index_3(request, study_pk):
+    study = get_object_or_404(Study, pk=study_pk)
+    boards = Board.objects.filter(study_id=study_pk, category="잡담").order_by("-pk")
+
     page = request.GET.get("page", "1")  # 페이지
-    paginator = Paginator(articles, 15)  # 페이지당 15개씩 보여주기
+    paginator = Paginator(boards, 15)  # 페이지당 15개씩 보여주기
     page_obj = paginator.get_page(page)
     max_index = len(paginator.page_range)  # 마지막 페이지 번호
 
     context = {
-        "articles": page_obj,
+        "study": study,
+        "boards": page_obj,
         "max_index": max_index,
     }
-    return render(request, "articles/index.html", context)
+    return render(request, "studies/board_index.html", context)
 
 
 # 스터디 게시판 게시물 생성
