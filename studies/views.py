@@ -521,7 +521,7 @@ def board_detail(request, study_pk, article_pk):
     # comment_form = CommentForm()
     study = get_object_or_404(Study, pk=study_pk)
     accepted_list = List.objects.filter(study=study, is_accepted=True)
-    boards = Board.objects.get(pk=article_pk)
+    board = Board.objects.get(pk=article_pk)
 
     # 백준 아이디 저장할 리스트
     boj_id = []
@@ -553,7 +553,7 @@ def board_detail(request, study_pk, article_pk):
             # print(boards.problem_number in solved_problems)
 
             ###### 백준 api 때문에 막혀서 잠시 주석 처리
-            if boards.problem_number in solved_problems:
+            if board.problem_number in solved_problems:
                 boj_id.append({i.user.profile.boj_id: True})
             else:
                 boj_id.append({i.user.profile.boj_id: False})
@@ -569,7 +569,8 @@ def board_detail(request, study_pk, article_pk):
     context = {
         # "comment": comment,
         # "comment_form": comment_form,
-        "boards": boards,
+        "study": study,
+        "board": board,
         "accepted_list": accepted_list,
         "problem_check": boj_id,
     }

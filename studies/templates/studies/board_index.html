@@ -13,12 +13,10 @@
   <!-- 탭 -->
   <div class="d-flex justify-content-end my-2 me-1">
     <a class='me-3' href="{% url 'studies:board_index' study.pk %}" style="font-family: 'HBIOS-SYS';">전체</a>
-    <a class='me-3' href="{% url 'studies:board_index_1' %}" style="font-family: 'HBIOS-SYS';">문제</a>
-    <a class='me-3' href="{% url 'studies:board_index_2' %}" style="font-family: 'HBIOS-SYS';">질문</a>
-    <a class='me-3' href="{% url 'studies:board_index_3' %}" style="font-family: 'HBIOS-SYS';">잡담</a>
+    <a class='me-3' href="{% url 'studies:board_index_1' study.pk %}" style="font-family: 'HBIOS-SYS';">문제</a>
+    <a class='me-3' href="{% url 'studies:board_index_2' study.pk %}" style="font-family: 'HBIOS-SYS';">질문</a>
+    <a class='me-3' href="{% url 'studies:board_index_3' study.pk %}" style="font-family: 'HBIOS-SYS';">잡담</a>
   </div>
-
-
 
     <!--게시판-->
     <div class="board_list">
@@ -28,17 +26,15 @@
         <div class="writer">작성자</div>
         <div class="date">작성일</div>
       </div>
-      {% for article in boards %}
+      {% for article in articles %}
           <div>
             <div class="category">
-              {% if article.category == '자료공유'%}
+              {% if article.category == '문제' %}
                 <a href="" style='color: #1346ff'>{{ article.category }}</a>
-              {% elif article.category == '취업'%}
-                <a href="" style='color: #ff8800'>{{ article.category }}</a>
-              {% elif article.category == '질문'%}
-                <a href="" style='color: #33aa23'>{{ article.category }}</a>
-              {% else %}
+              {% elif article.category == '잡담' %}
                 <a href="" style='color: #000'>{{ article.category }}</a>
+              {% else %}
+                <a href="" style='color: #33aa23'>{{ article.category }}</a>
               {% endif %}
             </div>
             <div class="title">
@@ -100,7 +96,7 @@
 
   <!--새 글 쓰기 버튼-->
   <div class='bt_wrap'>
-    <a class='px-4' href="{% url 'studies:board_create' study.pk%}">새 글 쓰기</a>
+    <a class='px-4' href="{% url 'studies:board_create' study.pk %}">새 글 쓰기</a>
   </div>
 </div>
 
