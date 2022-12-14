@@ -17,6 +17,9 @@
   display: inline-block;
 }
 
+.solved {
+  padding-bottom: 40px;
+}
 .solved table {
   width: 70%;
   margin: auto;
