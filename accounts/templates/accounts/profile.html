@@ -257,7 +257,7 @@
                             <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
                           {% endif %}
                         </div>
-                        <p class="card-text card-user-nickname">{{ list.study.host_user }}</p>
+                        <p class="card-text card-user-nickname">{{ list.study.host_user.profile.nickname }}</p>
                       </div>
                     </a>
                   </div>
@@ -308,7 +308,7 @@
                     <span class="badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
                   {% endif %}
                 </div>
-                <p class="card-text card-user-nickname">{{ list.study.host_user }}</p>
+                <p class="card-text card-user-nickname">{{ list.study.host_user.profile.nickname }}</p>
               </div>
             </a>
           </div>

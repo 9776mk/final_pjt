@@ -1,0 +1,250 @@
+thead {
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+.board_page {
+	margin-top: 30px;
+	text-align: center;
+	font-size: 0;
+	a {
+		display: inline-block;
+		width: 32px;
+		height: 32px;
+		box-sizing: border-box;
+		vertical-align: middle;
+		border-left: 0;
+		line-height: 100%;
+		color: rgb(178, 178, 178);
+		&.bt {
+			padding-top: 10px;
+			font-size: 0.8rem;
+			letter-spacing: -1px;
+			color: rgb(178, 178, 178);
+			&.first {
+				&:hover {
+					color: rgb(30, 225, 255);
+				}
+			}
+			&.last {
+				&:hover {
+					color: rgb(30, 225, 255);
+				}
+			}
+			&.prev {
+				&:hover {
+					color: rgb(255, 30, 30);
+				}
+			}
+			&.next {
+				&:hover {
+					color: rgb(255, 30, 30);
+				}
+			}
+		}
+		&.num {
+			padding-top: 9px;
+			font-size: 0.8rem;
+			&.on {
+				cursor: default;
+				color: #fff;
+				border-color: #FF8E00;
+				border-radius: 40rem;
+				background: #FF8E00;
+			}
+		}
+	}
+}
+
+/* 게시판 반응형 */
+@media (max-width : 576px) {
+  .board_list {
+    .top {
+      .writer,
+      .date,
+      .hits {
+        display: none;
+      }
+      .category {
+        width: 35%;
+      }
+      .title {
+        width: 65%;
+      }
+    }
+    .writer,
+    .date,
+    .hits {
+      display: none;
+    }
+    .category {
+      width: 35%;
+    }
+    .title {
+      width: 65%;
+    }
+  }
+}
+
+@media (max-width : 768px) {
+  .board_list {
+    .top {
+      .writer,
+      .hits {
+        display: none;
+      }
+      .category {
+        width: 20%;
+      }
+      .title {
+        width: 60%;
+      }
+      .date {
+        width: 20%;
+      }
+    }
+    .writer,
+    .hits {
+      display: none;
+    }
+    .category {
+      width: 20%;
+    }
+    .title {
+      width: 60%;
+    }
+    .date {
+      width: 20%;
+    }
+  }
+}
+
+@media (min-width : 769px) {
+  .board_list {
+    .date {
+      width: 13%;
+    }
+    .writer {
+      width: 21%;
+    }
+    .title {
+      width: 47%;
+    }
+    .category {
+      width: 12%;
+    }
+    .hits {
+      width: 6%;
+    }
+  }
+}
+
+/* 게시판 */
+.board_wrap {
+  width: 1000px;
+  margin: 100px auto;
+}
+
+.board_list {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  >div {
+    border-top: 1px solid rgb(182, 182, 182);
+    font-size: 0;
+    &.top {
+      border-top: 0;
+      font-weight: bold;
+      color: rgb(175, 175, 175);
+      padding-top: 11px;
+      padding-bottom: 8px;
+    }
+    >div {
+      display: inline-block;
+      padding: 15px 0;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  }
+  .category {
+    >a {
+      color: rgb(12, 155, 69);
+    }
+  }
+  .title {
+    text-align: left;
+    >a {
+      color: rgb(0, 0, 0);
+    }
+  }
+  .top {
+    .title {
+      text-align: center;
+    }
+  }
+  .writer {
+    >a {
+      color: rgb(0, 0, 0);
+    }
+  }
+}
+
+.modal {
+  .num {
+    margin-left: 3px;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.article_search {
+  input[type="search"] {
+    background: #fff;
+    /* width: 290px; */
+    width: auto;
+    height: 38px;
+    border: 1px solid;
+    outline: none;
+    padding: 0 25px;
+    border-radius: 19px 0 0 19px;
+  }
+  input[type="submit"] {
+    position: relative;
+    left: -1px;
+    width: auto;
+    height: 38px;
+    border: 1px solid;
+    border-radius: 0 19px 19px 0;
+    padding: 5px 15px;
+    cursor: pointer;
+    background: #ff8e00bd;
+    &:hover {
+      background: #ef8606;
+    }
+  }
+}
+
+/* 말줄임 표 */
+.text_elli {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* 호버 */
+.card a div {
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.card a img {
+  overflow: hidden;
+  transition: all 0.2s linear;
+}
+
+.card a:hover img {
+  transform: scale(1.2);
+}

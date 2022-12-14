@@ -1,13 +1,10 @@
-a {
-  text-decoration: none;
-}
+@charset "UTF-8";
 
 thead {
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
 
-/* 페이지네이션 */
 .board_page {
   margin-top: 30px;
   text-align: center;
@@ -23,7 +20,6 @@ thead {
   border-left: 0;
   line-height: 100%;
   color: rgb(178, 178, 178);
-
 }
 
 .board_page a.bt {
@@ -62,14 +58,12 @@ thead {
   background: #FF8E00;
 }
 
-
 /* 게시판 반응형 */
-@media (max-width : 576px) {
-  .board_list .top .writer {
-    display: none;
-  }
+@media (max-width: 576px) {
 
-  .board_list .writer {
+  .board_list .top .writer,
+  .board_list .top .date,
+  .board_list .top .hits {
     display: none;
   }
 
@@ -77,41 +71,29 @@ thead {
     width: 35%;
   }
 
-  .board_list .category {
-    width: 35%;
-  }
-
   .board_list .top .title {
     width: 65%;
+  }
+
+  .board_list .writer,
+  .board_list .date,
+  .board_list .hits {
+    display: none;
+  }
+
+  .board_list .category {
+    width: 35%;
   }
 
   .board_list .title {
     width: 65%;
   }
-
-  .board_list .top .date {
-    display: none;
-  }
-
-  .board_list .date {
-    display: none;
-  }
-
-  .board_list .top .hits {
-    display: none;
-  }
-
-  .board_list .hits {
-    display: none;
-  }
 }
 
-@media (max-width : 768px) {
-  .board_list .top .writer {
-    display: none;
-  }
+@media (max-width: 768px) {
 
-  .board_list .writer {
+  .board_list .top .writer,
+  .board_list .top .hits {
     display: none;
   }
 
@@ -119,15 +101,7 @@ thead {
     width: 20%;
   }
 
-  .board_list .category {
-    width: 20%;
-  }
-
   .board_list .top .title {
-    width: 60%;
-  }
-
-  .board_list .title {
     width: 60%;
   }
 
@@ -135,20 +109,25 @@ thead {
     width: 20%;
   }
 
-  .board_list .date {
-    width: 20%;
-  }
-
-  .board_list .top .hits {
-    display: none;
-  }
-
+  .board_list .writer,
   .board_list .hits {
     display: none;
   }
+
+  .board_list .category {
+    width: 20%;
+  }
+
+  .board_list .title {
+    width: 60%;
+  }
+
+  .board_list .date {
+    width: 20%;
+  }
 }
 
-@media (min-width : 769px) {
+@media (min-width: 769px) {
   .board_list .date {
     width: 13%;
   }
@@ -170,13 +149,6 @@ thead {
   }
 }
 
-/* @media (max-width : 992px) {
-  .board_list .writer {
-
-  }
-} */
-
-
 /* 게시판 */
 .board_wrap {
   width: 1000px;
@@ -196,7 +168,7 @@ thead {
   font-size: 0;
 }
 
-.board_list>div.top {
+.board_list > div.top {
   border-top: 0;
   font-weight: bold;
   color: rgb(175, 175, 175);
@@ -219,60 +191,16 @@ thead {
   text-align: left;
 }
 
-.board_list .top .title {
-  text-align: center;
-}
-
 .board_list .title>a {
   color: rgb(0, 0, 0);
 }
 
+.board_list .top .title {
+  text-align: center;
+}
+
 .board_list .writer>a {
   color: rgb(0, 0, 0);
-}
-
-/* 말줄임 표 */
-.text_elli {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-
-
-/* 숫자들에 대한 스타일 지정 */
-.pagination a {
-  float: left;
-  display: block;
-  font-size: 14px;
-  text-decoration: none;
-  padding: 5px 12px;
-  color: #96a0ad;
-  line-height: 1.5;
-}
-
-.first {
-  margin-right: 15px;
-}
-
-.last {
-  margin-left: 15px;
-}
-
-.first:hover,
-.last:hover,
-.left:hover,
-.right:hover {
-  color: #2e9cdf;
-}
-
-.pagination a.active {
-  cursor: default;
-  color: #ffffff;
-}
-
-.pagination a:active {
-  outline: none;
 }
 
 .modal .num {
@@ -282,15 +210,7 @@ thead {
   height: 30px;
 }
 
-.article_search input {
-  position: relative;
-  display: inline-block;
-  font-size: 18px;
-  box-sizing: border-box;
-  transition: .5s;
-}
-
-.article_search input[type="search"] {
+.article_search input[type=search] {
   background: #fff;
   /* width: 290px; */
   width: auto;
@@ -301,7 +221,7 @@ thead {
   border-radius: 19px 0 0 19px;
 }
 
-.article_search input[type="submit"] {
+.article_search input[type=submit] {
   position: relative;
   left: -1px;
   width: auto;
@@ -310,17 +230,23 @@ thead {
   border-radius: 0 19px 19px 0;
   padding: 5px 15px;
   cursor: pointer;
-  background: #ff8e00bd;
+  background: rgba(255, 142, 0, 0.7411764706);
 }
 
-.article_search input[type="submit"]:hover {
+.article_search input[type=submit]:hover {
   background: #ef8606;
+}
 
+/* 말줄임 표 */
+.text_elli {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* 호버 */
 .card a div {
-  border-radius: 0.375rem;
+  border-radius: 0.375rem 0.375rem 0 0;
   overflow: hidden;
 
 }

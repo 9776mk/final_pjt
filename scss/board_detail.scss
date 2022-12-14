@@ -1,39 +1,36 @@
 .board_view {
-  width: 100%;
+  width: 80%;
   border: 1px solid #b7b7b7;
   background-color: white;
   border-radius: 20px;
 
+  overflow: hidden;
+  margin: auto;
+
   .writer {
     // 위부터 시계방향
     padding: 50px 60px 0px;
-
     a {
       width: 305px;
     }
-
     .writer_img {
-      width: 18%;
       border-radius: 70%;
+      width: 18%;
       margin-right: 20px;
     }
-
     .writer_profile {
       width: auto;
     }
   }
-
   .info {
     padding: 40px 80px;
     margin: 0;
     margin-bottom: 0;
-
     .title {
       font-size: 1.5rem;
       font-weight: bold;
       margin-bottom: 10px;
     }
-
     p {
       padding-right: 5px;
       color: rgb(195, 195, 195);
@@ -43,13 +40,11 @@
       margin-bottom: 3px;
     }
   }
-
   .cont {
     padding: 20px 80px 60px;
     line-height: 160%;
     font-size: 1.0rem;
   }
-
   .article_img {
     max-width: 500px;
     max-height: 580px;
@@ -68,17 +63,14 @@
   background-color: #fff;
   border-radius: .4em;
   padding: 20px;
-
   &:hover {
     color: #fff;
     background-color: #04188a;
     border: 0;
-
     &::after {
       border-right-color: #04188a;
     }
   }
-
   &::after {
     content: '';
     position: absolute;
@@ -95,7 +87,6 @@
   }
 }
 
-
 // 댓글 달기 접기
 details {
   color: #a4a4a4;
@@ -110,7 +101,6 @@ details {
 
   .comment_writer {
     padding: 10px;
-
     a {
       .writer_img {
         width: 40px;
@@ -145,7 +135,6 @@ details {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
   &:hover {
     background-color: #a4a4a4;
     color: white;
@@ -160,7 +149,6 @@ details {
       display: none;
     }
   }
-
   .input_com {
     width: 370px;
   }
@@ -171,7 +159,6 @@ details {
     width: 500px;
   }
 }
-
 
 .bbtn_bang {
   width: 53px;
@@ -185,7 +172,6 @@ details {
   transition: all 0.4s;
   border-radius: 10px;
   text-align: center;
-
   &:hover {
     background-color: #ffb0b0;
     color: white;
@@ -193,7 +179,6 @@ details {
 }
 
 // 이미지 팝업
-
 body.noScroll {
   /* 이미지 팝업 시 이중 스크롤 방지 */
   overflow: hidden;
@@ -207,20 +192,15 @@ body.noScroll {
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
-
-
   .img_frame {
     width: 50%;
     cursor: pointer;
     overflow: hidden;
     border-radius: 10px;
-
     img {
       width: 100%;
     }
   }
-
-
 }
 
 
@@ -274,11 +254,10 @@ img {
   pointer-events: unset;
 }
 
-.board_view {
-  overflow: hidden;
-
-  img {
-    margin-top: 0 !important;
-    border-radius: 0 !important;
-  }
-}
+// .board_view {
+//   overflow: hidden;
+//   img {
+//     margin-top: 0 !important;
+//     border-radius: 0 !important;
+//   }
+// }

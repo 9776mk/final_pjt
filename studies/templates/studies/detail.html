@@ -3,281 +3,299 @@
 {% load mathfilters %}
 {% load static %}
 {% block link %}
-  <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
-  <link rel="stylesheet" href="{% static 'css/studies.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/studies.css' %}" type="text/css">
 {% endblock link %}
 
 {% block content %}
-  <div class="alert alert-warning d-none">
+<div class="alert alert-warning d-none">
     이미 모집이 마감된 스터디입니다.
-  </div>
+</div>
 
-  <div class='container py-5'>
+<div class='container py-5'>
     <div class="board_view ">
-      <!-- 사진 -->
-      {% if study.image %}
-      <img class="d-block study_mainimg mx-auto" src="{{ study.image.url }}" alt="{{ study.image }}">
-      {% endif %}
+        <!-- 사진 -->
+        {% if study.image %}
+        <img class="d-block study_mainimg mx-auto" src="{{ study.image.url }}" alt="{{ study.image }}">
+        {% endif %}
 
-      <!-- 공부방장 -->
-      <div class="writer">
-        <div class='writer_profile'>
-          <a class='d-flex align-items-center' href="{% url 'accounts:profile' study.host_user.pk %}">
-            {% comment %}  {% endcomment %}
-            {% if study.host_user.profile.image|slugify|slice:'0:4' == 'http' %}
-              <img class='writer_img' src="{{ study.host_user.profile.image }}">
-            {% elif study.host_user.profile.image %}
-              <img class='writer_img' src="{{ study.host_user.profile.image.url }}">
-            {% else %}
-              <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
-            {% endif %}
-            <div>
-              <div class='mb-1'>{{ study.host_user.profile.nickname }}</div>
-              <div>
-                {% if study.host_user.profile.language == 'Python' %}
-                  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff">
-                {% elif study.host_user.profile.language == 'Java' %}
-                  <img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white">
-                {% elif study.host_user.profile.language == 'C' %}
-                  <img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white">
-                {% elif study.host_user.profile.language == 'JavaScript' %}
-                  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
-                {% elif study.host_user.profile.language == 'C++' %}
-                  <img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white">
-                {% elif study.host_user.profile.language == 'PHP' %}
-                  <img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white">
+        <!-- 공부방장 -->
+        <div class="writer">
+            <div class='writer_profile'>
+                <a class='d-flex align-items-center' href="{% url 'accounts:profile' study.host_user.pk %}">
+                    {% comment %} {% endcomment %}
+                    {% if study.host_user.profile.image|slugify|slice:'0:4' == 'http' %}
+                    <img class='writer_img' src="{{ study.host_user.profile.image }}">
+                    {% elif study.host_user.profile.image %}
+                    <img class='writer_img' src="{{ study.host_user.profile.image.url }}">
+                    {% else %}
+                    <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
+                    {% endif %}
+                    <div>
+                        <div class='mb-1'>{{ study.host_user.profile.nickname }}</div>
+                        <div>
+                            {% if study.host_user.profile.language == 'Python' %}
+                            <img
+                                src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff">
+                            {% elif study.host_user.profile.language == 'Java' %}
+                            <img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white">
+                            {% elif study.host_user.profile.language == 'C' %}
+                            <img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white">
+                            {% elif study.host_user.profile.language == 'JavaScript' %}
+                            <img
+                                src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+                            {% elif study.host_user.profile.language == 'C++' %}
+                            <img
+                                src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white">
+                            {% elif study.host_user.profile.language == 'PHP' %}
+                            <img
+                                src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white">
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 스터디 종류 & 이름 & 가입신청/마감 버튼 -->
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="info" style='padding: 40px 0 40px 80px;'>
+                <p style="text-align: start;">{{ study.category }}</p>
+                <div class="title d-flex align-items-center">
+                    <span>{{ study.title }}</span>
+                    {% if study.is_closed == False %}
+                    <span class="status-badges badge rounded-pill text-bg-success ms-2"
+                        style="font-size: 10px">모집중</span>
+                    {% else %}
+                    <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집
+                        종료</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 방장: 모집 시작/마감 -->
+            {% if request.user == study.host_user %}
+            <form style="padding: 40px 80px 40px 0;"
+                onsubmit="event.preventDefault(); studyClose(this, '{{ study.pk }}')">
+                {% csrf_token %}
+                {% if study.is_closed == False %}
+                <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집마감" class="btn btn-danger">
+                {% else %}
+                {% if study.limit == accepted_list.count %}
+                <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집완료" class="btn btn-success"
+                    disabled="disabled">
+                {% else %}
+                <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집시작" class="btn btn-success">
                 {% endif %}
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 스터디 종류 & 이름 & 가입신청/마감 버튼 -->
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="info" style='padding: 40px 0 40px 80px;'>
-          <p style="text-align: start;">{{ study.category }}</p>
-          <div class="title d-flex align-items-center">
-            <span>{{ study.title }}</span>
-            {% if study.is_closed == False %}
-              <span class="status-badges badge rounded-pill text-bg-success ms-2" style="font-size: 10px">모집중</span>
-            {% else %}
-              <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 10px">모집 종료</span>
-            {% endif %}
-          </div>
-        </div>
-
-        <!-- 방장: 모집 시작/마감 -->
-        {% if request.user == study.host_user %}
-        <form style="padding: 40px 80px 40px 0;" onsubmit="event.preventDefault(); studyClose(this, '{{ study.pk }}')">
-          {% csrf_token %}
-          {% if study.is_closed == False %}
-            <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집마감" class="btn btn-danger">
-          {% else %}
-            {% if study.limit == accepted_list.count %}
-              <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집완료" class="btn btn-success" disabled="disabled">
-            {% else %}
-              <input id="study-close-btn-{{ study.pk }}" type="submit" value="모집시작" class="btn btn-success">
-            {% endif %}
-          {% endif %}
-        </form>
-        <!-- 방장 X -->
-        {% else %}
-        <div id="user-btns-box">
-          <!-- 1. 이미 스터디원이면 탈퇴 버튼 -->
-          {% if request.user.pk in accepted_user_list %}
-            <form style="padding: 40px 80px 40px 0;" onsubmit="event.preventDefault(); withdraw(this, '{{ study.pk }}')">
-              {% csrf_token %}
-              <input type="submit" value="스터디 탈퇴" class="btn btn-secondary">
+                {% endif %}
             </form>
-          {% else %}
-          <form style="padding: 40px 80px 40px 0;" onsubmit="event.preventDefault(); studyApply(this, '{{ study.pk }}')">
-            {% csrf_token %}
-            <!-- 2. 신청 후 가입 대기중이면 신청 취소 버튼 -->
-            {% if request.user.pk in waiting_user_list %}
-              <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청 취소" class="btn btn-secondary">
-              <!-- 3. 신청을 안 한 상태면 -->
+            <!-- 방장 X -->
             {% else %}
-              {% if study.is_closed == False %}
-                <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청" class="btn btn-success">
-              {% else %}
-                <input type="submit" value="가입불가" class="btn btn-danger disabled" disabled="disabled">
-              {% endif %}
-            {% endif %}
-          </form>
-          {% endif %}
-        </div>
-        {% endif %}
-      </div>
-
-      <!-- 모집 여부 & 인원 & 설명 -->
-      <div class="d-flex justify-content-start align-items-center mb-5" style="padding: 0 80px">
-        <div>
-          <!-- is_closed == False && 정원 미달 -->
-          <div class="title d-flex align-items-center">
-            <span style='font-size: 20px'>모집여부:</span>
-            {% if study.is_closed == False %}
-              <span class="status-badges badge rounded-pill text-bg-success ms-2" style="font-size: 15px">모집중</span>
-            {% else %}
-              <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 15px">모집 종료</span>
-            {% endif %}
-          </div>
-          <span class="m-0" style="font-size: 20px">인원:</span>
-            <span id="accepted-cnt" style="font-size: 20px">{{ accepted_list.count }}</span>
-            <span style="font-size: 20px"> / {{ study.limit }}</span>
-          <p class="mt-5 mb-0 text-break" style="white-space: pre-line;">{{ study.content }}</p>
-        </div>
-      </div>
-
-      <!-- 신청 인원, 스터디원, 뒤로가기, 스터디 게시판 버튼 모음-->
-      <div class='d-flex justify-content-between mb-5'>
-        {% if request.user == study.host_user %}
-          <div class='d-flex justify-content-center' style="padding: 0 0 0 80px">
-            <button class="bbtn_stu me-2" data-bs-toggle="modal" data-bs-target="#waiting-list">신청 인원</button>
-            <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
-          </div>
-        {% else %}
-        <div style="padding: 0 0 0 80px">
-          <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
-        </div>
-          <a href="{% url 'studies:index' %}" class="bbtn_back">뒤로</a>
-        {% endif %}
-        
-        <div class='' style="padding: 0 80px 0 0">
-          <a href="{% url 'studies:board' study.pk %}" class='bbtn_stu'> 게시판 </a>
-        </div>
-      </div>
-
-      <!-- 가입 대기 인원 -->
-      <div class="modal fade" id="waiting-list" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel2">가입 대기 인원</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div id="user-btns-box">
+                <!-- 1. 이미 스터디원이면 탈퇴 버튼 -->
+                {% if request.user.pk in accepted_user_list %}
+                <form style="padding: 40px 80px 40px 0;"
+                    onsubmit="event.preventDefault(); withdraw(this, '{{ study.pk }}')">
+                    {% csrf_token %}
+                    <input type="submit" value="스터디 탈퇴" class="btn btn-secondary">
+                </form>
+                {% else %}
+                <form style="padding: 40px 80px 40px 0;"
+                    onsubmit="event.preventDefault(); studyApply(this, '{{ study.pk }}')">
+                    {% csrf_token %}
+                    <!-- 2. 신청 후 가입 대기중이면 신청 취소 버튼 -->
+                    {% if request.user.pk in waiting_user_list %}
+                    <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청 취소" class="btn btn-secondary">
+                    <!-- 3. 신청을 안 한 상태면 -->
+                    {% else %}
+                    {% if study.is_closed == False %}
+                    <input id="study-apply-btn-{{ study.pk }}" type="submit" value="가입신청" class="btn btn-success">
+                    {% else %}
+                    <input type="submit" value="가입불가" class="btn btn-danger disabled" disabled="disabled">
+                    {% endif %}
+                    {% endif %}
+                </form>
+                {% endif %}
             </div>
-            <div id="waiting-box" data-waiting-box-id="{{ elem.user.pk }}" class="modal-body py-2">
-              {% if waiting_list %}
-                {% for elem in waiting_list %}
-                  <div class="d-flex justify-content-between align-items-center" id="waiting-user-{{ elem.user.pk }}">
-                    <div class="d-flex align-items-center my-3">
-                      <div class="mx-3">
-                        <a href="{% url 'accounts:profile' elem.user.pk %}">
-                          {% comment %}  {% endcomment %}
-                          {% if elem.user.profile.image|slugify|slice:'0:4' == 'http' %}
-                            <img src="{{ elem.user.profile.image }}" class="modal-profile-img" alt="">
-                          {% elif elem.user.profile.image %}
-                            <img src="{{ elem.user.profile.image.url }}" class="modal-profile-img" alt="">
-                          {% else %}
-                            <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
-                          {% endif %}
-                        </a>
-                      </div>
-                      <div>
-                        <a href="{% url 'accounts:profile' elem.user.pk %}">
-                          <p class="mb-0">
-                            <b>{{ elem.user.profile.nickname }}</b>
-                          </p>
-                          <p class="mb-0" style="font-size: 13px;">{{ elem.user }}</p>
-                        </a>
-                      </div>
+            {% endif %}
+        </div>
+
+        <!-- 모집 여부 & 인원 & 설명 -->
+        <div class="d-flex justify-content-start align-items-center mb-5" style="padding: 0 80px">
+            <div>
+                <!-- is_closed == False && 정원 미달 -->
+                <div class="title d-flex align-items-center">
+                    <span style='font-size: 20px'>모집여부:</span>
+                    {% if study.is_closed == False %}
+                    <span class="status-badges badge rounded-pill text-bg-success ms-2"
+                        style="font-size: 15px">모집중</span>
+                    {% else %}
+                    <span class="status-badges badge rounded-pill text-bg-danger ms-2" style="font-size: 15px">모집
+                        종료</span>
+                    {% endif %}
+                </div>
+                <span class="m-0" style="font-size: 20px">인원:</span>
+                <span id="accepted-cnt" style="font-size: 20px">{{ accepted_list.count }}</span>
+                <span style="font-size: 20px"> / {{ study.limit }}</span>
+                <p style="font-size: 20px">이메일: {{study.contact}}</p>
+                <p class="mt-5 mb-0 text-break" style="white-space: pre-line;">{{ study.content }}</p>
+            </div>
+        </div>
+
+        <!-- 신청 인원, 스터디원, 뒤로가기, 스터디 게시판 버튼 모음-->
+        <div class='d-flex justify-content-between mb-5'>
+            {% if request.user == study.host_user %}
+            <div class='d-flex justify-content-center' style="padding: 0 0 0 80px">
+                <button class="bbtn_stu me-2" data-bs-toggle="modal" data-bs-target="#waiting-list">신청 인원</button>
+                <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
+            </div>
+            {% else %}
+            <div style="padding: 0 0 0 80px">
+                <button class='bbtn_stu' data-bs-toggle="modal" data-bs-target="#accepted-list">스터디원</button>
+            </div>
+            <a href="{% url 'studies:index' %}" class="bbtn_back">뒤로</a>
+            {% endif %}
+
+            <div class='' style="padding: 0 80px 0 0">
+                <a href="{% url 'studies:board_index' study.pk %}" class='bbtn_stu'> 게시판 </a>
+            </div>
+        </div>
+
+        <!-- 가입 대기 인원 -->
+        <div class="modal fade" id="waiting-list" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel2">가입 대기 인원</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="me-3">
-                      <div class="d-flex align-items-center">
-                        {% if request.user == study.host_user %}
-                          <form class="me-2" onsubmit="event.preventDefault(); accept(this, '{{ study.pk }}', '{{ elem.user.pk }}')">
-                            {% csrf_token %}
-                            <input type="submit" value="승인" class="btn btn-primary">
-                          </form>
-                          <form onsubmit="event.preventDefault(); deny(this, '{{ study.pk }}', '{{ elem.user.pk }}')">
-                            {% csrf_token %}
-                            <input type="submit" value="거절" class="btn btn-danger">
-                          </form>
+                    <div id="waiting-box" data-waiting-box-id="{{ elem.user.pk }}" class="modal-body py-2">
+                        {% if waiting_list %}
+                        {% for elem in waiting_list %}
+                        <div class="d-flex justify-content-between align-items-center"
+                            id="waiting-user-{{ elem.user.pk }}">
+                            <div class="d-flex align-items-center my-3">
+                                <div class="mx-3">
+                                    <a href="{% url 'accounts:profile' elem.user.pk %}">
+                                        {% comment %} {% endcomment %}
+                                        {% if elem.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                                        <img src="{{ elem.user.profile.image }}" class="modal-profile-img" alt="">
+                                        {% elif elem.user.profile.image %}
+                                        <img src="{{ elem.user.profile.image.url }}" class="modal-profile-img" alt="">
+                                        {% else %}
+                                        <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'accounts:profile' elem.user.pk %}">
+                                        <p class="mb-0">
+                                            <b>{{ elem.user.profile.nickname }}</b>
+                                        </p>
+                                        <p class="mb-0" style="font-size: 13px;">{{ elem.user }}</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="me-3">
+                                <div class="d-flex align-items-center">
+                                    {% if request.user == study.host_user %}
+                                    <form class="me-2"
+                                        onsubmit="event.preventDefault(); accept(this, '{{ study.pk }}', '{{ elem.user.pk }}')">
+                                        {% csrf_token %}
+                                        <input type="submit" value="승인" class="btn btn-primary">
+                                    </form>
+                                    <form
+                                        onsubmit="event.preventDefault(); deny(this, '{{ study.pk }}', '{{ elem.user.pk }}')">
+                                        {% csrf_token %}
+                                        <input type="submit" value="거절" class="btn btn-danger">
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p id="no-waitings" class="py-5 text-center text-muted">아직 신청 인원이 없어요</p>
                         {% endif %}
-                      </div>
                     </div>
-                  </div>
-                {% endfor %}
-              {% else %}
-                <p id="no-waitings" class="py-5 text-center text-muted">아직 신청 인원이 없어요</p>
-              {% endif %}
+                </div>
             </div>
-          </div>
         </div>
-      </div>
 
-      <!-- 스터디(가입 완료) 인원 -->
-      <div class="modal fade" id="accepted-list" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel2">스터디원</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div id="accepted-box" data-accepted-box-id="{{ elem.user.pk }}" class="modal-body py-2">
-              {% if accepted_list %}
-                {% for elem in accepted_list %}
-                  <div class="d-flex justify-content-between align-items-center" id="accepted-user-{{ elem.user.pk }}">
-                    <div class="d-flex align-items-center my-3">
-                      <div class="mx-3">
-                        <a href="{% url 'accounts:profile' elem.user.pk %}">
-                          {% comment %}  {% endcomment %}
-                          {% if elem.user.profile.image|slugify|slice:'0:4' == 'http' %}
-                            <img src="{{ elem.user.profile.image }}" class="modal-profile-img" alt="">
-                          {% elif elem.user.profile.image %}
-                            <img src="{{ elem.user.profile.image.url }}" class="modal-profile-img" alt="">
-                          {% else %}
-                            <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
-                          {% endif %}
-                        </a>
-                      </div>
-                      <div>
-                        <a href="{% url 'accounts:profile' elem.user.pk %}">
-                          <p class="mb-0">
-                            <b>{{ elem.user.profile.nickname }}</b>
-                          </p>
-                          <p class="mb-0" style="font-size: 13px;">{{ elem.user }}</p>
-                        </a>
-                      </div>
+        <!-- 스터디(가입 완료) 인원 -->
+        <div class="modal fade" id="accepted-list" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel2">스터디원</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="me-3">
-                      {% if request.user == study.host_user and request.user.pk != elem.user.pk %}
-                        <form onsubmit="event.preventDefault(); kick(this, '{{ study.pk }}', '{{ elem.user.pk }}')">
-                          {% csrf_token %}
-                          <input type="submit" value="추방" class="btn btn-danger">
-                        </form>
-                      {% endif %}
+                    <div id="accepted-box" data-accepted-box-id="{{ elem.user.pk }}" class="modal-body py-2">
+                        {% if accepted_list %}
+                        {% for elem in accepted_list %}
+                        <div class="d-flex justify-content-between align-items-center"
+                            id="accepted-user-{{ elem.user.pk }}">
+                            <div class="d-flex align-items-center my-3">
+                                <div class="mx-3">
+                                    <a href="{% url 'accounts:profile' elem.user.pk %}">
+                                        {% comment %} {% endcomment %}
+                                        {% if elem.user.profile.image|slugify|slice:'0:4' == 'http' %}
+                                        <img src="{{ elem.user.profile.image }}" class="modal-profile-img" alt="">
+                                        {% elif elem.user.profile.image %}
+                                        <img src="{{ elem.user.profile.image.url }}" class="modal-profile-img" alt="">
+                                        {% else %}
+                                        <img src="{% static 'images/no-avatar.jpg' %}" class="modal-profile-img" alt="">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'accounts:profile' elem.user.pk %}">
+                                        <p class="mb-0">
+                                            <b>{{ elem.user.profile.nickname }}</b>
+                                        </p>
+                                        <p class="mb-0" style="font-size: 13px;">{{ elem.user }}</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="me-3">
+                                {% if request.user == study.host_user and request.user.pk != elem.user.pk %}
+                                <form
+                                    onsubmit="event.preventDefault(); kick(this, '{{ study.pk }}', '{{ elem.user.pk }}')">
+                                    {% csrf_token %}
+                                    <input type="submit" value="추방" class="btn btn-danger">
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p id="no-accepted" class="py-5 text-center text-muted">아직 스터디원이 없어요</p>
+                        {% endif %}
                     </div>
-                  </div>
-                {% endfor %}
-              {% else %}
-                <p id="no-accepted" class="py-5 text-center text-muted">아직 스터디원이 없어요</p>
-              {% endif %}
+                </div>
             </div>
-          </div>
         </div>
-      </div>
 
 
-      <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
-      {% if request.user == study.host_user %}
+        <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
+        {% if request.user == study.host_user %}
         <!-- 삭제, 수정, 뒤로가기 버튼들 -->
         <form action="{% url 'studies:delete' study.pk %}" method="POST">
-          {% csrf_token %}
-          <div class="bt_wrap mt-2 mb-5">
-            <input type="submit" value="삭제" class="on">
-            <a href="{% url 'studies:update' study.pk %}" class="on">수정</a>
-            <a href="{% url 'studies:index' %}" class="on">뒤로</a>
-          </div>
+            {% csrf_token %}
+            <div class="bt_wrap mt-2 mb-5">
+                <input type="submit" value="삭제" class="on">
+                <a href="{% url 'studies:update' study.pk %}" class="on">수정</a>
+                <a href="{% url 'studies:index' %}" class="on">뒤로</a>
+            </div>
         </form>
-      {% endif %}
+        {% endif %}
     </div>
-  </div>
+</div>
 {% endblock content %}
 
 {% block script %}
-  <script type="text/javascript" src="{% static 'js/studies_close_async.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/studies_apply_cancel_async.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/studies_accept_deny_kick_async.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/studies_withdraw_async.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/studies_close_async.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/studies_apply_cancel_async.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/studies_accept_deny_kick_async.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/studies_withdraw_async.js' %}"></script>
 {% endblock script %}

@@ -33,7 +33,7 @@ class Study(models.Model):
     contact = models.EmailField(max_length=50)
 
     # 8. 이미지
-    image = models.ImageField(blank=True, upload_to='study_images/')
+    image = models.ImageField(blank=True, upload_to="study_images/")
     thumbnail = ImageSpecField(
         source="image",
         processors=[Thumbnail(300, 300)],
@@ -64,13 +64,13 @@ class Board(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="board_user"
     )
     # image = ProcessedImageField()
-    problem_number = models.IntegerField()
+    problem_number = models.IntegerField(null=True, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     hits = models.PositiveIntegerField(default=0, verbose_name="조회수")
     CATEGORY = (
         ("문제", "문제"),
         ("질문", "질문"),
-        ("자유 게시판", "자유 게시판"),
+        ("잡담", "잡담"),
     )
     category = models.CharField(max_length=10, choices=CATEGORY)
 

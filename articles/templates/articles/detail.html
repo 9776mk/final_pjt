@@ -17,7 +17,7 @@
           <a class='d-flex' href="{% url 'accounts:profile' articles.user.pk %}">
             {% if articles.user.profile.image|slugify|slice:'0:4' == 'http' %}
             <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-              <img class='writer_img' src="{{ articles.user.profile.image }}">
+              <img class='writer_img' src="{{ articles.user.profile.image }}" style='border-radius: 70%;'>
             {% elif articles.user.profile.image %}
               <!-- 파일로 추가한 이미지 /media/ -->
               <img class='writer_img' src="{{ articles.user.profile.image.url }}">

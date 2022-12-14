@@ -1,9 +1,11 @@
 @charset "UTF-8";
 .board_view {
-  width: 100%;
+  width: 80%;
   border: 1px solid #b7b7b7;
   background-color: white;
   border-radius: 20px;
+  overflow: hidden;
+  margin: auto;
 }
 .board_view .writer {
   padding: 50px 60px 0px;
@@ -12,8 +14,8 @@
   width: 305px;
 }
 .board_view .writer .writer_img {
-  width: 18%;
   border-radius: 70%;
+  width: 18%;
   margin-right: 20px;
 }
 .board_view .writer .writer_profile {
@@ -230,12 +232,4 @@ img {
   /* 팝업 보이기 */
   opacity: 1;
   pointer-events: unset;
-}
-
-.board_view {
-  overflow: hidden;
-}
-.board_view img {
-  margin-top: 0 !important;
-  border-radius: 0 !important;
 }/*# sourceMappingURL=board_detail.css.map */
