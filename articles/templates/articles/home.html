@@ -48,7 +48,7 @@
             <div class='algobox-frame'>
 
                 <div class='algobox'>
-                <h3 style="font-family: 'HBIOS-SYS';">오늘의 도전 문제</h3>
+                <h3 style="font-family: 'HBIOS-SYS'; min-width: 190px;">오늘의 도전 문제</h3>
                     <lord-icon
                     src="https://cdn.lordicon.com/nkmsrxys.json"
                     trigger="hover"
@@ -59,13 +59,13 @@
                 </div>
             </div>
         </div>
-        <h2><hr><span style="font-family: 'HBIOS-SYS';">현재 순위</span><hr></h2>
+        <h2><hr><span style="font-family: 'HBIOS-SYS'; min-width: 115px;">현재 순위</span><hr></h2>
         <div class="rank">
             {% for rankinfo in rank %}
             <div class='rankinfo_frame'>
                 <div class="info">
                     <div class='fcnt'>
-                        <span> {{ forloop.counter}}위</span>
+                        <span style="font-family: 'HBIOS-SYS';"> {{ forloop.counter}}위</span>
                     </div>
                     <div class="prof">
                         <div class="crown"></div><a href="{% url 'accounts:profile' rankinfo.4 %}"><img src="{{rankinfo.2}}" width='42px;' alt="프사"></a>
@@ -75,7 +75,7 @@
                         <p style='margin-bottom:10px; text-align: start;'><img style="height:25px" src="https://static.solved.ac/tier_small/{{rankinfo.0}}.svg"><span style='margin-left:10px;'>{{rankinfo.1}}</span></p>
                         
                         <div>
-                            <p style='margin-bottom:0; text-align: start;'>사용 언어: {{rankinfo.3}}</p>
+                            <p style='margin-bottom:0; text-align: start; min-width: 150px;'>사용 언어: {{rankinfo.3}}</p>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
     </div>
 
     <div class="graph">
-        <h1 style="font-family: 'HBIOS-SYS';">기술스텍 통계</h1>  
+        <h1 style="font-family: 'HBIOS-SYS';">널뛰기 주언어 순위</h1>  
         <div class='servey'>
             {% comment %} data-num 변수로 들어갈거임 {% endcomment %}
             {% comment %} 반복문으로 변수만큼 돌면서 이름과 데이터번호는 변수처리 빽에서 넘어온거 넣음
@@ -103,7 +103,7 @@
             {% endfor %}
             <div class='graph-btn-frame'>
                 <a class='btnAll' href="{% url 'surveys:create' %}">설문조사 하러가기</a>
-                <a class='btnAll' href="{% url 'surveys:index' %}">통계자료 확인</a>
+                <a class='btnAll' href="{% url 'surveys:index' %}">설문 결과 확인</a>
             </div>
         </div>
     </div>
@@ -116,9 +116,9 @@
             <div class='p-img'><img src="{% static 'images/find.png' %}" style=' border-radius: 8px;' alt=""> </div>
                 <div class='p-text'>
                     <div class='p-box'>
-                        <p>사용하는 기술스텍과 MBTI가 나와 비슷한 혹은 정반대의 동료와 스터디 혹은 관심 분야에 이야기를 나누어보세요</p> 
+                        <p>사용하는 기술스텍과 MBTI가 나와 비슷한 혹은 정반대의 동료와 스터디 혹은 관심 분야에 대한 이야기를 나누어보세요</p> 
                         <div class='btn-holder'>
-                            <a class='btnAll' href="{% url 'friends:index' %}">찾으러</a>
+                            <a class='btnAll' href="{% url 'friends:index' %}">찾으러 가기 👀</a>
                         </div>
                     </div>
                 </div>

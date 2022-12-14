@@ -18,7 +18,7 @@ main {
         border-radius: 10px;
 
         h1 {
-            margin: 30px 0;
+            margin: 30px 20px;
         }
     }
 }
@@ -270,7 +270,9 @@ main {
 
                 .fcnt {
                     width: 20%;
-                    font-size: 28px;
+                    font-size: 25px;
+                    min-width: 50px;
+                    margin-right: 5px;
                 }
 
 
@@ -517,7 +519,7 @@ main {
     background-color: #FF8E00;
     color: #fff;
     border-radius: 5px;
-    padding: 8px;
+    padding: 8px 10px;
 }
 
 .btnAll:hover {

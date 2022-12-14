@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "HBIOS-SYS";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2207-01@1.0/HBIOS-SYS.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
 main {
   display: flex;
   justify-content: center;
@@ -20,13 +26,13 @@ main .sData {
   width: 70%;
   text-align: center;
   margin-bottom: 30px;
-  border-radius: 10px;
+  padding: 10px;
 }
 main .eData h2,
 main .dData h2,
 main .sData h2 {
-  margin: 30px 0;
-  font-family: 'HBIOS-SYS';
+  margin: 20px 0px 40px 0px;
+  font-family: "HBIOS-SYS";
 }
 
 @media screen and (max-width: 1024px) {
