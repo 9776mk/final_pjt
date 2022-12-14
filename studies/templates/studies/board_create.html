@@ -118,10 +118,10 @@
           data: { 'problem_num': problem_num }
       }).then(response => {
           if (response.data.is_valid === false) {
-              modalBody.innerText = "문제 번호 확인"
+              modalBody.innerText = "문제 번호를 확인해주세요."
           }
           else {
-              modalBody.innerText = "문제 확인"
+              modalBody.innerText = "문제 번호가 확인되었습니다."
           }
       })
   
