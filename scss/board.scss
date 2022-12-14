@@ -248,3 +248,12 @@ thead {
 .card a:hover img {
   transform: scale(1.2);
 }
+
+.card-title-text, 
+.card-user-nickname {
+  width: 100%;
+  min-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;  
+  overflow: hidden;
+}

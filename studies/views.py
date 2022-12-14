@@ -8,6 +8,7 @@ from django.http import JsonResponse
 import json
 import requests
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -676,3 +677,97 @@ def comment_delete(request, study_pk, article_pk, comment_pk):
 
         return JsonResponse(data)
     return redirect("studies:board_detail", study_pk, article_pk)
+
+# 검색
+def search(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    search = search.filter(Q(title__icontains=q)|Q(content__icontains=q))
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
+
+# 검색 카테고리별
+def search_al(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="알고리즘 공부"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
+
+def search_fe(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="프론트엔드 공부"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
+
+def search_be(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="백엔드 공부"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)
+
+def search_etc(request):
+    search= Study.objects.order_by('-pk')
+    q = request.GET.get('q')
+    que = Q()
+    que.add(Q(title__icontains=q)|Q(content__icontains=q), que.AND)
+    que.add(Q(category="기타"), que.AND)
+    search = search.filter(que)
+    page = request.GET.get("page", "1")  # 페이지
+    paginator = Paginator(search, 9)  # 페이지당 9개씩 보여주기
+    page_obj = paginator.get_page(page)
+    max_index = len(paginator.page_range)  # 마지막 페이지 번호
+    context = {
+        "search_list": page_obj,
+        "max_index": max_index,
+        'search':search,
+        'q':q,
+    } 
+    return render(request, 'studies/search.html',context)

@@ -23,7 +23,6 @@ urlpatterns = [
     path("<int:notice_pk>/notice_delete/", views.notice_delete, name="notice_delete"),  # 알림 삭제
     path("notice_delete/all/", views.notice_delete_all, name="notice_delete_all"),  # 알림 전체 삭제
     path("notice_read/", views.notice_read, name="notice_read"),  # 알림 읽음
-
     path("<int:study_pk>/board/", views.board_index, name="board_index"),
     path("<int:study_pk>/board/index/1/", views.board_index_1, name="board_index_1"),
     path("<int:study_pk>/board/index/2/", views.board_index_2, name="board_index_2"),
@@ -32,4 +31,10 @@ urlpatterns = [
     path("<int:study_pk>/board/<int:article_pk>/", views.board_detail, name="board_detail"),  # 스터디 게시판 글 보기
     path("<int:study_pk>/board/<int:article_pk>/comment/", views.comment_create ,name="comment_create"),  # 스터디 게시판 댓글 작성
     path("<int:study_pk>/board/<int:article_pk>/comment/<int:comment_pk>/delete/", views.comment_delete, name="comment_delete"),  # 스터디 게시판 댓글 삭제
+    path('search/',views.search, name='search' ),#검색
+    # 검색 카테고리별
+    path('search_al/', views.search_al, name='search_al'),
+    path('search_fe/', views.search_fe, name='search_fe'),
+    path('search_be/', views.search_be, name='search_be'),
+    path('search_etc/', views.search_etc, name='search_etc'),
 ]
