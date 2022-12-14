@@ -6,7 +6,7 @@
 {% block content %}
 <div class='container py-5'>
   <div class='mx-3'>
-    <h1 style="font-family: 'HBIOS-SYS';"> {{ study.title }} 게시판</h1>
+    <a href="{% url 'studies:detail' study.pk %}"><h1 style="font-family: 'HBIOS-SYS';"> {{ study.title }} 게시판</h1></a>
     <p>욕설이나 비방이 확인되면 강퇴입니다.</p>
   </div>
 
