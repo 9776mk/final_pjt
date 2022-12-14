@@ -13,30 +13,30 @@
       <!-- 작성자 -->
       <div class="writer">
         <div class='writer_profile'>
-          <a class='d-flex' href="{% url 'accounts:profile' articles.user.pk %}">
-            {% if articles.user.profile.image|slugify|slice:'0:4' == 'http' %}
+          <a class='d-flex' href="{% url 'accounts:profile' board.user.pk %}">
+            {% if board.user.profile.image|slugify|slice:'0:4' == 'http' %}
             <!-- 깃허브에서 가져온 이미지: https로 시작 -->
-              <img class='writer_img' src="{{ articles.user.profile.image }}">
-            {% elif articles.user.profile.image %}
+              <img class='writer_img' src="{{ board.user.profile.image }}">
+            {% elif board.user.profile.image %}
               <!-- 파일로 추가한 이미지 /media/ -->
-              <img class='writer_img' src="{{ articles.user.profile.image.url }}">
+              <img class='writer_img' src="{{ board.user.profile.image.url }}">
             {% else %}
               <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
             {% endif %}
             <div>
-              <div class='mb-1'>{{ articles.user.profile.nickname }}</div>
+              <div class='mb-1'>{{ board.user.profile.nickname }}</div>
               <div>
-                {% if articles.user.profile.language == 'Python' %}
+                {% if board.user.profile.language == 'Python' %}
                   <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff">
-                {% elif articles.user.profile.language == 'Java' %}
+                {% elif board.user.profile.language == 'Java' %}
                   <img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white">
-                {% elif articles.user.profile.language == 'C' %}
+                {% elif board.user.profile.language == 'C' %}
                   <img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white">
-                {% elif user.profile.language == 'JavaScript' %}
+                {% elif board.user.profile.language == 'JavaScript' %}
                   <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
-                {% elif user.profile.language == 'C++' %}
+                {% elif board.user.profile.language == 'C++' %}
                   <img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white">
-                {% elif user.profile.language == 'PHP' %}
+                {% elif board.user.profile.language == 'PHP' %}
                   <img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white">
                 {% endif %}
               </div>
@@ -47,62 +47,29 @@
 
       <!-- 제목 작성일 -->
       <div class="info">
-        <p class='category' style='text-align: start;'>{{ articles.category }}</p>
-        <div class='title'>{{ articles.title }}</div>
-        <p>{{ articles.create_at|date:'Y-m-d H:i' }}</p>
-        <p>조회수 : {{ articles.hits }}</p>
+        <p class='category' style='text-align: start;'>{{ board.category }}</p>
+        <div class='title'>{{ board.title }}</div>
+        <p>{{ board.create_at|date:'Y-m-d H:i' }}</p>
+        <p>조회수 : {{ board.hits }}</p>
         <p><span class="button gray medium"><a href="#" onclick="clip(); return false;">URL주소복사</a></span></p>
       </div>
-      
-      <!-- 사진 -->
-      {% for image in articles.image_set.all %}
-        <img class="d-block article_img mx-auto" src="{{ image.image.url }}" alt="{{ image.image }}">
-      {% endfor %}
 
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
-        {{ articles.content|mark }}
+        {{ board.content }}
       </div>
 
       <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
-      {% if request.user == articles.user %}
+      {% if request.user == board.user %}
         <!-- 삭제, 수정, 뒤로가기 버튼들 -->
         <form action="" method="POST">
           {% csrf_token %}
           <div class="bt_wrap pb-5">
-            <button disabled>
-              <i class="bi bi-heart-fill my-2" style="font-style: normal; height: 45px; color: #ff0000;">
-                <span class="ms-1">{{ articles.like.count }}</span>
-              </i>
-            </button>
-            <a href="{% url 'articles:delete' articles.pk %}" class="on">삭제</a>
-            <a href="{% url 'articles:update' articles.pk %}" class="on">수정</a>
-            <a href="{% url 'articles:index' %}" class="on">뒤로</a>
+            {% comment %} <a href="{% url 'board:delete' board.pk %}" class="on">삭제</a> {% endcomment %}
+            {% comment %} <a href="{% url 'board:update' board.pk %}" class="on">수정</a> {% endcomment %}
+            <a href="{% url 'studies:board_index' study.pk %}" class="on">뒤로</a>
           </div>
         </form>
-      <!-- 글 작성자가 아닌 경우 좋아요 -->
-      {% else %}
-        <!-- 좋아요 버튼 -->
-        <div class='bt_wrap d-flex justify-content-center pb-5'>
-          <form class="like-forms" data-article-id="{{ articles.pk }}" method="POST">
-            {% csrf_token %}
-            {% if request.user in articles.like.all %}
-              {% comment %} <input type="submit" value="좋아요취소❌" id="like-{{ articles.pk }}"> {% endcomment %}
-              <button type="submit" id="like-{{ articles.pk }}">
-                <i id="heart-{{ articles.pk }}" class="bi bi-heart-fill my-2" style="font-style: normal; height: 45px; color: #ff0000;"></i>
-                <span class="ms-1" id="like-count-{{ articles.pk }}">{{ articles.like.count }}</span>
-              </button>
-            {% else %}
-              {% comment %} <input type="submit" value="좋아요🧡" id="like-{{ articles.pk }}"> {% endcomment %}
-              <button type="submit" id="like-{{ articles.pk }}">
-                <i id="heart-{{ articles.pk }}" class="bi bi-heart my-2" style="font-style: normal; height: 45px; color: #ff0000;">
-                  <span class="ms-1" id="like-count-{{ articles.pk }}">{{ articles.like.count }}</span>
-                </i>
-              </button>
-            {% endif %}
-          </form>
-          <a href="{% url 'articles:index' %}" class="on">뒤로가기</a>
-        </div>
       {% endif %}
     </div>
     
@@ -113,12 +80,12 @@
       <summary>댓글달기</summary>
       {% comment %} 로그인 안 했으면 제출 버튼을 disabled 해도 되고 {% endcomment %}
       {% if request.user.is_authenticated %}
-        <form id="comment-form" data-article-id="{{ articles.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{articles.pk}}')">
+        <form id="comment-form" data-board-id="{{ board.pk }}" method="POST" onsubmit="event.preventDefault(); create_comment(this, '{{board.pk}}')">
           <!-- create_comment:함수명 -->
           {% csrf_token %}
           <div class='d-flex justify-content-center mt-2' style='height: 120px;'>
             <textarea name="content" required id='id_content' class="input_com me-3 px-2" cols="30" rows="10" ></textarea>
-            <button class='bbtn_com text-break' type="submit" id="content-{{ articles.pk }}">댓글 쓰기</button>
+            <button class='bbtn_com text-break' type="submit" id="content-{{ board.pk }}">댓글 쓰기</button>
           </div>
         </form>
       {% else %}
@@ -133,7 +100,7 @@
     <!-- 회원이라면 보여주고 -->
       <div id="box">
         {% for comment in comments.all %}
-          <div class='comment_box position-relative my-3 mx-5' id="article-{{comment.pk}}">
+          <div class='comment_box position-relative my-3 mx-5' id="board-{{comment.pk}}">
             <div class='d-flex comment_writer'>
               <a href="{% url 'accounts:profile' comment.user.pk %}">
                 {% if comment.user.profile.image|slugify|slice:'0:4' == 'http' %}
@@ -155,7 +122,7 @@
 
             <!-- 댓글 작성한 당사자만 삭제할 수 있게 -->
             {% if request.user == comment.user %}
-              <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{articles.pk}}', '{{comment.pk}}')">
+              <form method="POST" id="comment_delete-{{comment.pk}}" onsubmit="event.preventDefault(); delete_comment(this, '{{board.pk}}', '{{comment.pk}}')">
                 {% csrf_token %}
                 <input type="submit" class="btn-close position-absolute top-0 end-0 m-3" style="color:transparent;">
               </form>

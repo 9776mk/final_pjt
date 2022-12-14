@@ -18,13 +18,14 @@
       {% csrf_token %}
 
       <!--폼-->
-      <div class="board_write">
+      <div class="board_write pb-2">
         <div class="title">
           <dl>
             <dt>제목</dt>
             <dd>{{ Board_Form.title|attr:"placeholder: 제목을 입력해주세요" }}</dd>
           </dl>
         </div>
+
         <div id="category-box" class="category">
           <dl class='d-flex align-items-center'>
             <dt>카테고리</dt>
@@ -32,44 +33,31 @@
           </dl>
         </div>
         
-        <div id="problem-number-box">
+        <div id="problem-number-box" class="image">
           <dl class='d-flex align-items-center'>
             <dt>문제 번호</dt>
-            <dd>{{ Board_Form.problem_number|add_class:'form-control'|attr:"placeholder: 문제 번호 입력"|attr:"id:id_problem_number"}}</dd>
-            <button class='check-btn' type="button" data-bs-toggle="modal" data-bs-target="#isProblemValidModal" onclick="isValidProblem();"><span class="spot"></span>Check</button>
+            <dd>
+              <div class="d-flex align-items-center">
+                <span>{{ Board_Form.problem_number|add_class:'form-control'|attr:"placeholder: 문제 번호 입력"|attr:"id:id_problem_number"}}</span>
+                <span><button class='check-btn bbtn ms-2' type="button" data-bs-toggle="modal" data-bs-target="#isProblemValidModal" onclick="isValidProblem();"><span class="spot"></span>Check</button></span>
+              </div>
+            </dd>  
           </dl>
         </div>
-
-
-        
-
-
-
-
-          
-
-          
-          
+         
+        <div class="cont text-break">
+          {{ Board_Form.content|attr:"placeholder: 내용을 작성해주세요"|attr:"style: width: 100%; resize: none; outline: none; border: none; padding: 22px;" }}
         </div>
-        <!-- <div class="image">
-          <dl class='d-flex align-items-center'>
-            <dt>이미지</dt>
-            <dd>{{ image_form.image|add_class:'form-control' }}</dd>
-          </dl>
-        </div> -->
-        <div class="content text-break">
-          {{ Board_Form.content|attr:"placeholder: 내용을 작성해주세요" }}
-        </div>
-        <br>
       </div>
+
       <!-- 버튼 -->
       <div class="container text-center bt_wrap">
         {% if request.resolver_match.url_name == 'board_update' %}
           <button type="submit" class="px-4 on">수정</button>
-          <a class='px-4' href="{% url 'studies:board' study_pk %}">뒤로가기</a>
+          <a class='px-4' href="{% url 'studies:board_index' study_pk %}">뒤로가기</a>
         {% elif request.resolver_match.url_name == 'board_create' %}
           <button type="submit" class="px-4 on">등록</button>
-          <a class='px-4' href="{% url 'studies:board' study_pk %}">뒤로가기</a>
+          <a class='px-4' href="{% url 'studies:board_index' study_pk %}">뒤로가기</a>
         {% endif %}
       </div>
     </form>
@@ -82,7 +70,7 @@
         <div class="modal-body text-center" id="problem-modal-body" style="padding: 40px 30px;font-size: 1rem; font-weight: 500;">
         </div>
         <div class="modal-footer d-flex justify-content-center py-2">
-          <button class="btn" type="button" data-bs-dismiss="modal" style="color: #5e0080; border: 0px; font-weight: 500;">확인</button>
+          <button class="btn" type="button" data-bs-dismiss="modal" style="color: #FF8E00; border: 0px; font-weight: 500;">확인</button>
         </div>
       </div>
     </div>

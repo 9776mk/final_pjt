@@ -64,7 +64,7 @@ class Board(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="board_user"
     )
     # image = ProcessedImageField()
-    problem_number = models.IntegerField()
+    problem_number = models.IntegerField(null=True, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     hits = models.PositiveIntegerField(default=0, verbose_name="조회수")
     CATEGORY = (
