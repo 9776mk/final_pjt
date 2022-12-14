@@ -227,7 +227,9 @@ def apply(request, study_pk):
 
     if request.user != study.host_user and request.method == "POST":
         if study.is_closed == False:
-            user_pks = List.objects.filter(study=study, is_accepted=False).values_list("user", flat=True)
+            user_pks = List.objects.filter(study=study, is_accepted=False).values_list(
+                "user", flat=True
+            )
 
             # 아직 신청하지 않았으면, 유저를 List에 추가 (가입 신청)
             if not request.user.pk in user_pks:
@@ -522,9 +524,8 @@ def board_detail(request, study_pk, article_pk):
     study = get_object_or_404(Study, pk=study_pk)
     accepted_list = List.objects.filter(study=study, is_accepted=True)
     boards = Board.objects.get(pk=article_pk)
+    boj_id = {}
 
-    # 백준 아이디 저장할 리스트
-    boj_id = []
     # 스터디에 가입된 사람들 중
     for i in accepted_list:
         # 백준 아이디가 있다면
@@ -552,26 +553,24 @@ def board_detail(request, study_pk, article_pk):
             # print(boards.problem_number)
             # print(boards.problem_number in solved_problems)
 
-            ###### 백준 api 때문에 막혀서 잠시 주석 처리
+            # 백준 아이디 저장할 리스트
+
             if boards.problem_number in solved_problems:
-                boj_id.append({i.user.profile.boj_id: True})
+                boj_id[i.user.profile.boj_id] = True
             else:
-                boj_id.append({i.user.profile.boj_id: False})
+                boj_id[i.user.profile.boj_id] = False
 
     print(boj_id)
-    print(type(boj_id))  # 리스트
-    print(type(boj_id[0]))  # 딕셔너리
-
-    for i in boj_id:
-        print(i.keys())  # dict_keys(['9776mk'])
-        print(i.values())  # dict_values([False])
+    for k, v in boj_id.items():
+        print(k)
+        print(v)
 
     context = {
         # "comment": comment,
         # "comment_form": comment_form,
         "boards": boards,
         "accepted_list": accepted_list,
-        "problem_check": boj_id,
+        "boj_id": boj_id,
     }
     return render(request, "studies/board_detail.html", context)
 
