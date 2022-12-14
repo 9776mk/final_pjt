@@ -4,7 +4,8 @@
 {% load filter %} <!-- 마크다운 -->
 {% load static %}
 {% block link %}
-  <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/board_detail.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/study_detail.css' %}" type="text/css">
 {% endblock link %}
 
 {% block content %} 
@@ -12,9 +13,10 @@
   <div class='container py-5'>
     <div class="board_view">
       <!-- 작성자 -->
-      <div class="writer">
+      <div >
         <div class='writer_profile'>
-          <a class='d-flex' href="{% url 'accounts:profile' board.user.pk %}">
+            <div class="layoutbox">
+              <a  href="{% url 'accounts:profile' board.user.pk %}">
             {% if board.user.profile.image|slugify|slice:'0:4' == 'http' %}
             <!-- 깃허브에서 가져온 이미지: https로 시작 -->
               <img class='writer_img' src="{{ board.user.profile.image }}">
@@ -24,9 +26,12 @@
             {% else %}
               <img class='writer_img' src="{% static 'images/no-avatar.jpg' %}">
             {% endif %}
-            <div>
-              <div class='mb-1'>{{ board.user.profile.nickname }}</div>
-              <div>
+          </a>
+
+            <div class="namebox">
+              <a  href="{% url 'accounts:profile' board.user.pk %}">
+              <div>{{ board.user.profile.nickname }}</div>  </a>
+              <div></div>
                 {% if board.user.profile.language == 'Python' %}
                   <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=ffffff">
                 {% elif board.user.profile.language == 'Java' %}
@@ -42,7 +47,9 @@
                 {% endif %}
               </div>
             </div>
-          </a>
+            {% if board.problem_number != None %}
+          <h2> 문제 번호: {{ board.problem_number }} </h2>
+          {% endif %}
         </div>
       </div>
 
@@ -55,25 +62,40 @@
         <p><span class="button gray medium"><a href="#" onclick="clip(); return false;">URL주소복사</a></span></p>
       </div>
       
-      <!-- 문제 번호 + 사용자가 그 문제를 풀었는지 나타내기 -->
-      <div class="info">
-        <h1> 문제 번호 : {{ board.problem_number }} </h1>
-        {% autoescape off %}
-          {% for key, val in boj_id.items %}
-            {% if val == True%}
-              <h1> 사용자 ID : {{ key }} | 문제 풀었어요? : O </h1>
-            {% else %}
-              <h1> 사용자 ID : {{ key }} | 문제 풀었어요? : X </h1>
-            {% endif%}
-          {% endfor %}
-        {% endautoescape %}
-      </div>
+    
 
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
         {{ board.content }}
       </div>
-
+        <!-- 문제 번호 + 사용자가 그 문제를 풀었는지 나타내기 -->
+        {% if board.problem_number != None %}
+        <div class="solved">
+          <table>
+            <thead><tr>
+              <th>ID</th>
+              <th>Status</th></tr>
+            </thead>
+            <tbody>
+              {% for key, val in boj_id.items %}
+              <tr>
+                <td>
+                {{ key }}
+                </td>
+                <td>
+                  {% if val == True%}
+                  O 
+                  {% else %}
+                  X 
+                {% endif%}
+  
+                </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+          </table>
+        </div>
+        {% endif %}
       <!-- 글 작성자인 경우 삭제, 수정, 뒤로가기 -->
       {% if request.user == board.user %}
         <!-- 삭제, 수정, 뒤로가기 버튼들 -->

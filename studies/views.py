@@ -561,36 +561,36 @@ def board_detail(request, study_pk, article_pk):
     for i in accepted_list:
         # 백준 아이디가 있다면
         if i.user.profile.boj_id:
-            id = i.user.profile.boj_id
-            # 백준 아이디가 푼 문제들을 solved_problems에 저장
-            solved_problems = []
-            page_num = 1
-            while True:
-                url = f"https://solved.ac/api/v3/search/problem?query=solved_by%3A{id}&page={page_num}"
-                r_solved = requests.get(url)
-                ################ 백준 api 사용 제한이 있어서 많이 사용하는 경우 아래 코드를 못 받아옴 ################
-                ###### try를 사용해야 할 듯 ###########
-                solved = json.loads(r_solved.content.decode("utf-8"))
+            # id = i.user.profile.boj_id
+            # # 백준 아이디가 푼 문제들을 solved_problems에 저장
+            # solved_problems = []
+            # page_num = 1
+            # while True:
+            #     url = f"https://solved.ac/api/v3/search/problem?query=solved_by%3A{id}&page={page_num}"
+            #     r_solved = requests.get(url)
+            #     ################ 백준 api 사용 제한이 있어서 많이 사용하는 경우 아래 코드를 못 받아옴 ################
+            #     ###### try를 사용해야 할 듯 ###########
+            #     solved = json.loads(r_solved.content.decode("utf-8"))
 
-                items = solved.get("items")
+            #     items = solved.get("items")
 
-                if items:
-                    for item in items:
-                        solved_problems.append(item.get("problemId"))
-                    page_num += 1
-                else:
-                    break
-            # print(solved_problems)
-            # print(boards.problem_number)
-            # print(boards.problem_number in solved_problems)
+            #     if items:
+            #         for item in items:
+            #             solved_problems.append(item.get("problemId"))
+            #         page_num += 1
+            #     else:
+            #         break
+            # # print(solved_problems)
+            # # print(boards.problem_number)
+            # # print(boards.problem_number in solved_problems)
 
-            # 백준 아이디 저장할 리스트
+            # # 백준 아이디 저장할 리스트
 
-            if board.problem_number in solved_problems:
-                boj_id[i.user.profile.boj_id] = True
-            else:
-                boj_id[i.user.profile.boj_id] = False
-
+            # if board.problem_number in solved_problems:
+            #     boj_id[i.user.profile.boj_id] = True
+            # else:
+            #     boj_id[i.user.profile.boj_id] = False
+            boj_id = {"test1":True,"test2":True,"test3":False}
     # print(boj_id)
     # for k, v in boj_id.items():
     #     print(k)
