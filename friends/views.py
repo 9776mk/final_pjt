@@ -36,10 +36,9 @@ def index(request):
 
 
 def recommend(request):
-    users = get_user_model().objects.all()
-
-    # 랜덤 추천
-    num_total_users = get_user_model().objects.count()
+    users = get_user_model().objects.exclude(username = request.user)
+   
+    num_total_users = users.count()
     input_num = int(request.POST.get("num-of-people"))
     warning = ""
 

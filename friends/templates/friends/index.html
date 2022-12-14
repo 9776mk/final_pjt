@@ -43,6 +43,7 @@
     <!-- 사용자들 -->
     <div style="min-height: 350px;">
       {% for user in users %}
+      {% if user != request.user %}
         <div class="all-users user_box d-none {{ user.profile.language }} {{ user.profile.mbti }}" data-lang="{{ user.profile.language }}" data-mbti="{{ user.profile.mbti }}">
           <div style='display: flex; justify-content: center;'>
 
@@ -99,6 +100,7 @@
       </div>
 
       </div>
+      {% endif %}
       {% endfor %}
     </div>
   </div>
