@@ -136,7 +136,7 @@ thead {
   border-top: 1px solid rgb(182, 182, 182);
   font-size: 0;
 }
-.board_list > div .top {
+.board_list > div.top {
   border-top: 0;
   font-weight: bold;
   color: rgb(175, 175, 175);
