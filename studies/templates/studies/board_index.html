@@ -18,7 +18,8 @@
     <a class='me-3' href="{% url 'studies:board_index_3' study.pk %}" style="font-family: 'HBIOS-SYS';">잡담</a>
   </div>
 
-    <!--게시판-->
+  <!--게시판-->
+  {% if request.resolver_match.url_name == 'board_index' %}
     <div class="board_list">
       <div class="top">
         <div class="category">분류</div>
@@ -26,25 +27,25 @@
         <div class="writer">작성자</div>
         <div class="date">작성일</div>
       </div>
-      {% for article in articles %}
+      {% for board in boards %}
           <div>
             <div class="category">
-              {% if article.category == '문제' %}
-                <a href="" style='color: #1346ff'>{{ article.category }}</a>
-              {% elif article.category == '잡담' %}
-                <a href="" style='color: #000'>{{ article.category }}</a>
+              {% if board.category == '문제' %}
+                <a href="" style='color: #1346ff'>{{ board.category }}</a>
+              {% elif board.category == '잡담' %}
+                <a href="" style='color: #000'>{{ board.category }}</a>
               {% else %}
-                <a href="" style='color: #33aa23'>{{ article.category }}</a>
+                <a href="" style='color: #33aa23'>{{ board.category }}</a>
               {% endif %}
             </div>
             <div class="title">
-              <a href="{% url 'studies:board_detail' study.pk article.pk %}">{{ article.title }}</a>
+              <a href="{% url 'studies:board_detail' study.pk board.pk %}">{{ board.title }}</a>
             </div>
             <!-- 바깥작성자는 popover로 띄울까 고민중-->
             <div class="writer">
-              <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.profile.nickname }}</a>
+              <a href="{% url 'accounts:profile' board.user.pk %}">{{ board.user.profile.nickname }}</a>
             </div>
-            <div class="date">{{ article.create_at|date:'Y.m.d' }}</div>
+            <div class="date">{{ board.create_at|date:'Y.m.d' }}</div>
           </div>
         {% endfor %}
       </div>
@@ -57,8 +58,8 @@
         <i class="bi bi-chevron-bar-left"></i>
       </a>
       <!-- 이전 페이지 -->
-      {% if articles.has_previous %}
-        <a class="page-link bt prev" href="?page={{ articles.previous_page_number }}">
+      {% if boards.has_previous %}
+        <a class="page-link bt prev" href="?page={{ boards.previous_page_number }}">
           <i class="bi bi-chevron-left"></i>
         </a>
       {% else %}
@@ -68,9 +69,9 @@
       {% endif %}
       <!-- 페이지 리스트 -->
       {% comment %}  {% endcomment %}
-      {% for page_number in articles.paginator.page_range %}
-        {% if page_number >= articles.number|add:-2 and page_number <= articles.number|add:2 %}
-          {% if page_number == articles.number %}
+      {% for page_number in boards.paginator.page_range %}
+        {% if page_number >= boards.number|add:-2 and page_number <= boards.number|add:2 %}
+          {% if page_number == boards.number %}
             <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
           {% else %}
             <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
@@ -78,8 +79,8 @@
         {% endif %}
       {% endfor %}
       <!-- 다음 페이지 -->
-      {% if articles.has_next %}
-        <a class="page-link bt next" href="?page={{ articles.next_page_number }}">
+      {% if boards.has_next %}
+        <a class="page-link bt next" href="?page={{ boards.next_page_number }}">
           <i class="bi bi-chevron-right"></i>
         </a>
       {% else %}
@@ -92,19 +93,235 @@
         <i class="bi bi-chevron-bar-right"></i>
       </a>
     </div>
-  
+  {% elif request.resolver_match.url_name == 'board_index_1' %}
+    <div class="board_list">
+      <div class="top">
+        <div class="category">분류</div>
+        <div class="title">제목</div>
+        <div class="writer">작성자</div>
+        <div class="date">작성일</div>
+      </div>
+      {% for board in boards %}
+          <div>
+            <div class="category">
+              {% if board.category == '문제' %}
+                <a href="" style='color: #1346ff'>{{ board.category }}</a>
+              {% elif board.category == '잡담' %}
+                <a href="" style='color: #000'>{{ board.category }}</a>
+              {% else %}
+                <a href="" style='color: #33aa23'>{{ board.category }}</a>
+              {% endif %}
+            </div>
+            <div class="title">
+              <a href="{% url 'studies:board_detail' study.pk board.pk %}">{{ board.title }}</a>
+            </div>
+            <!-- 바깥작성자는 popover로 띄울까 고민중-->
+            <div class="writer">
+              <a href="{% url 'accounts:profile' board.user.pk %}">{{ board.user.profile.nickname }}</a>
+            </div>
+            <div class="date">{{ board.create_at|date:'Y.m.d' }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
 
+    <!--페이지네이션-->
+    <div class="paginator board_page">
+      <!-- 맨 앞으로 -->
+      <a href="?page=1" class="page-link bt first">
+        <i class="bi bi-chevron-bar-left"></i>
+      </a>
+      <!-- 이전 페이지 -->
+      {% if boards.has_previous %}
+        <a class="page-link bt prev" href="?page={{ boards.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% endif %}
+      <!-- 페이지 리스트 -->
+      {% comment %}  {% endcomment %}
+      {% for page_number in boards.paginator.page_range %}
+        {% if page_number >= boards.number|add:-2 and page_number <= boards.number|add:2 %}
+          {% if page_number == boards.number %}
+            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% else %}
+            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <!-- 다음 페이지 -->
+      {% if boards.has_next %}
+        <a class="page-link bt next" href="?page={{ boards.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+      <!-- 맨 뒤로 -->
+      <a href="?page={{ max_index }}" class="page-link bt last">
+        <i class="bi bi-chevron-bar-right"></i>
+      </a>
+    </div>
+  {% elif request.resolver_match.url_name == 'board_index_2' %}
+    <div class="board_list">
+      <div class="top">
+        <div class="category">분류</div>
+        <div class="title">제목</div>
+        <div class="writer">작성자</div>
+        <div class="date">작성일</div>
+      </div>
+      {% for board in boards %}
+          <div>
+            <div class="category">
+              {% if board.category == '문제' %}
+                <a href="" style='color: #1346ff'>{{ board.category }}</a>
+              {% elif board.category == '잡담' %}
+                <a href="" style='color: #000'>{{ board.category }}</a>
+              {% else %}
+                <a href="" style='color: #33aa23'>{{ board.category }}</a>
+              {% endif %}
+            </div>
+            <div class="title">
+              <a href="{% url 'studies:board_detail' study.pk board.pk %}">{{ board.title }}</a>
+            </div>
+            <!-- 바깥작성자는 popover로 띄울까 고민중-->
+            <div class="writer">
+              <a href="{% url 'accounts:profile' board.user.pk %}">{{ board.user.profile.nickname }}</a>
+            </div>
+            <div class="date">{{ board.create_at|date:'Y.m.d' }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!--페이지네이션-->
+    <div class="paginator board_page">
+      <!-- 맨 앞으로 -->
+      <a href="?page=1" class="page-link bt first">
+        <i class="bi bi-chevron-bar-left"></i>
+      </a>
+      <!-- 이전 페이지 -->
+      {% if boards.has_previous %}
+        <a class="page-link bt prev" href="?page={{ boards.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% endif %}
+      <!-- 페이지 리스트 -->
+      {% comment %}  {% endcomment %}
+      {% for page_number in boards.paginator.page_range %}
+        {% if page_number >= boards.number|add:-2 and page_number <= boards.number|add:2 %}
+          {% if page_number == boards.number %}
+            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% else %}
+            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <!-- 다음 페이지 -->
+      {% if boards.has_next %}
+        <a class="page-link bt next" href="?page={{ boards.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+      <!-- 맨 뒤로 -->
+      <a href="?page={{ max_index }}" class="page-link bt last">
+        <i class="bi bi-chevron-bar-right"></i>
+      </a>
+    </div>
+  {% elif request.resolver_match.url_name == 'board_index_3' %}
+    <div class="board_list">
+      <div class="top">
+        <div class="category">분류</div>
+        <div class="title">제목</div>
+        <div class="writer">작성자</div>
+        <div class="date">작성일</div>
+      </div>
+      {% for board in boards %}
+          <div>
+            <div class="category">
+              {% if board.category == '문제' %}
+                <a href="" style='color: #1346ff'>{{ board.category }}</a>
+              {% elif board.category == '잡담' %}
+                <a href="" style='color: #000'>{{ board.category }}</a>
+              {% else %}
+                <a href="" style='color: #33aa23'>{{ board.category }}</a>
+              {% endif %}
+            </div>
+            <div class="title">
+              <a href="{% url 'studies:board_detail' study.pk board.pk %}">{{ board.title }}</a>
+            </div>
+            <!-- 바깥작성자는 popover로 띄울까 고민중-->
+            <div class="writer">
+              <a href="{% url 'accounts:profile' board.user.pk %}">{{ board.user.profile.nickname }}</a>
+            </div>
+            <div class="date">{{ board.create_at|date:'Y.m.d' }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!--페이지네이션-->
+    <div class="paginator board_page">
+      <!-- 맨 앞으로 -->
+      <a href="?page=1" class="page-link bt first">
+        <i class="bi bi-chevron-bar-left"></i>
+      </a>
+      <!-- 이전 페이지 -->
+      {% if boards.has_previous %}
+        <a class="page-link bt prev" href="?page={{ boards.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt prev" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      {% endif %}
+      <!-- 페이지 리스트 -->
+      {% comment %}  {% endcomment %}
+      {% for page_number in boards.paginator.page_range %}
+        {% if page_number >= boards.number|add:-2 and page_number <= boards.number|add:2 %}
+          {% if page_number == boards.number %}
+            <a class='page-link num on' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% else %}
+            <a class='page-link num' href="?page={{ page_number }}">{{ page_number }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <!-- 다음 페이지 -->
+      {% if boards.has_next %}
+        <a class="page-link bt next" href="?page={{ boards.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% else %}
+        <a class="page-link bt next" href="javascript:void(0)" tabindex='-1' aria-disabled='true'>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+      <!-- 맨 뒤로 -->
+      <a href="?page={{ max_index }}" class="page-link bt last">
+        <i class="bi bi-chevron-bar-right"></i>
+      </a>
+    </div>
+  {% endif %}
+  
   <!--새 글 쓰기 버튼-->
   <div class='bt_wrap'>
     <a class='px-4' href="{% url 'studies:board_create' study.pk %}">새 글 쓰기</a>
   </div>
 </div>
-
-
-
-
-
-  
 {% endblock content %}
 
 {% block script %}{% endblock script %}
