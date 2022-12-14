@@ -568,10 +568,10 @@ def board_detail(request, study_pk, article_pk):
             else:
                 boj_id[i.user.profile.boj_id] = False
 
-    print(boj_id)
-    for k, v in boj_id.items():
-        print(k)
-        print(v)
+    # print(boj_id)
+    # for k, v in boj_id.items():
+    #     print(k)
+    #     print(v)
 
     context = {
         # "comment": comment,

@@ -54,18 +54,21 @@
         <p>조회수 : {{ board.hits }}</p>
         <p><span class="button gray medium"><a href="#" onclick="clip(); return false;">URL주소복사</a></span></p>
       </div>
-      <div>
+      
+      <!-- 문제 번호 + 사용자가 그 문제를 풀었는지 나타내기 -->
+      <div class="info">
+        <h1> 문제 번호 : {{ board.problem_number }} </h1>
         {% autoescape off %}
           {% for key, val in boj_id.items %}
             {% if val == True%}
-              <h1> {{ key }} : O </h1>
+              <h1> 사용자 ID : {{ key }} | 문제 풀었어요? : O </h1>
             {% else %}
-              <h1> {{ key }} : X </h1>
+              <h1> 사용자 ID : {{ key }} | 문제 풀었어요? : X </h1>
             {% endif%}
-           <hr>
           {% endfor %}
         {% endautoescape %}
       </div>
+
       <!-- 내용 -->
       <div class="cont text-break" style="white-space: pre-line">
         {{ board.content }}
