@@ -20,13 +20,11 @@ main .sData {
   width: 70%;
   text-align: center;
   margin-bottom: 30px;
-  border-radius: 10px;
 }
-main .eData h2,
-main .dData h2,
-main .sData h2 {
+main .eData h1,
+main .dData h1,
+main .sData h1 {
   margin: 30px 0;
-  font-family: 'HBIOS-SYS';
 }
 
 @media screen and (max-width: 1024px) {
@@ -44,7 +42,7 @@ main .sData h2 {
 }
 @media screen and (max-width: 600px) {
   main {
-    padding: 10px !important;
+    padding: 0 !important;
   }
   .dData,
 .eData,
