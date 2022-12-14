@@ -183,7 +183,7 @@
             {% for note in notes %}
               <!-- 쪽지 읽음 일때 -->
               {% if note.read == 1 %}
-              <tr class="text-muted">
+              <tr class="text-muted" id="note1-{{note.pk}}">
                 <td class="title2" style="padding: 8px 8px 8px 16px;">
                   <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.from_user.profile.nickname }}<br>{{ note.title }}</a>
                 </td>
@@ -198,7 +198,7 @@
                   </a>
                 </td>
                 <td class="delete">
-                  <form data-note-id="{{ note.pk }}" class="note-delete-forms">
+                  <form data-note-id="{{ note.pk }}" class="note-delete-forms1">
                     {% csrf_token %}
                     <button type="submit" class="trash-btn" onclick="return confirm('삭제하시겠습니까?\n복구 불가능합니다.');">
                       <i class="bi bi-trash-fill"></i>
@@ -208,7 +208,7 @@
               </tr>
               {% else %}
               <!-- 쪽지 안읽음 일때-->
-              <tr>
+              <tr id="note1-{{note.pk}}">
                 <td class="title2" style="padding: 8px 8px 8px 16px;">
                   <a class="text-muted" href="{% url 'notes:detail' note.pk %}">{{ note.from_user.profile.nickname }}<br>{{ note.title }}</a>
                 </td>
@@ -223,7 +223,7 @@
                   </a>
                 </td>
                 <td class="delete">
-                  <form data-note-id="{{ note.pk }}" class="note-delete-forms">
+                  <form data-note-id="{{ note.pk }}" class="note-delete-forms1">
                     {% csrf_token %}
                     <button type="submit" class="trash-btn" onclick="return confirm('삭제하시겠습니까?\n복구 불가능합니다.');">
                       <i class="bi bi-trash-fill"></i>
@@ -310,6 +310,30 @@
 
           if (is_deleted === true) {
             note.remove()
+          }
+        })
+      })
+    })
+
+    const noteDeleteForms1 = document.querySelectorAll('.note-delete-forms1')
+    noteDeleteForms1.forEach(form1 => {
+      form1.addEventListener('submit', event => {
+        event.preventDefault()
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        const noteId = event.target.dataset.noteId
+        console.log(noteId)
+        axios({
+          method: 'post',
+          url: `/notes/${noteId}/delete/`,
+          headers: {
+            'X-CSRFToken': csrfToken
+          }
+        }).then(response => {
+          const note1 = document.querySelector(`#note1-${noteId}`)
+          const is_deleted = response.data.is_deleted
+
+          if (is_deleted === true) {
+            note1.remove()
           }
         })
       })

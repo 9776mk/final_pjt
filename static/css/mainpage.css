@@ -21,7 +21,7 @@ main .community h1,
 main .find h1,
 main .graph h1,
 main .algo h1 {
-  margin: 30px 0;
+  margin: 30px 20px;
 }
 
 @media screen and (max-width: 1250px) {
@@ -189,7 +189,9 @@ main .algo h1 {
 }
 .algo .rank .rankinfo_frame .info .fcnt {
   width: 20%;
-  font-size: 28px;
+  font-size: 25px;
+  min-width: 50px;
+  margin-right: 5px;
 }
 .algo .rank .rankinfo_frame .info .set {
   margin-left: 20px;
@@ -377,7 +379,7 @@ main .algo h1 {
   background-color: #FF8E00;
   color: #fff;
   border-radius: 5px;
-  padding: 8px;
+  padding: 8px 10px;
 }
 
 .btnAll:hover {

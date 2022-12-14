@@ -86,11 +86,11 @@
             {% endif %}
           {% endif %}
           {% if note.from_user == request.user and note.to_user != request.user %}
-            {% comment %} {% if note.read == 0 %}
-            <a href="{% url 'notes:delete' note.pk %}" class="bbtn-gray">삭제</a>
-            {% endif %} {% endcomment %}
+            {% if note.read == 0 %}
+            <a href="{% url 'notes:delete1' note.pk %}" class="bbtn-gray" onclick="return confirm('삭제하시겠습니까?\n복구 불가능합니다.');">삭제</a>
+            {% endif %}
           {% else %}
-          <a href="{% url 'notes:trash_throw_away' note.pk %}" class="bbtn">삭제</a>
+          <a href="{% url 'notes:trash_throw_away1' note.pk %}" class="bbtn">삭제</a>
           {% endif %}
         </div>
         {% comment %} {% else %}
@@ -118,13 +118,21 @@
           </div>
         </div>
         <div class="d-flex justify-content-center mt-4" style="margin-bottom: 100px;">
-          <a href="{% url 'notes:reply' note.pk %}" class="bbtn me-3">답장</a>
-          {% if not note.important %}
-          <a href="{% url 'notes:important_check' note.pk %}" class="bbtn me-3">보관</a>
-          {% else %}
-          <a href="{% url 'notes:important_return' note.pk %}" class="bbtn me-3">보관 취소</a>
+          {% if note.to_user == request.user %}
+            <a href="{% url 'notes:reply' note.pk %}" class="bbtn me-3">답장</a>
+            {% if not note.important %}
+            <a href="{% url 'notes:important_check' note.pk %}" class="bbtn me-3">보관</a>
+            {% else %}
+            <a href="{% url 'notes:important_return' note.pk %}" class="bbtn me-3">보관 취소</a>
+            {% endif %}
           {% endif %}
-          <a href="{% url 'notes:trash_throw_away' note.pk %}" class="bbtn">삭제</a>
+          {% if note.from_user == request.user and note.to_user != request.user %}
+            {% if note.read == 0 %}
+            <a href="{% url 'notes:delete1' note.pk %}" class="bbtn-gray" onclick="return confirm('삭제하시겠습니까?\n복구 불가능합니다.');">삭제</a>
+            {% endif %}
+          {% else %}
+          <a href="{% url 'notes:trash_throw_away1' note.pk %}" class="bbtn">삭제</a>
+          {% endif %}
         </div>
       </div>
     </div>
