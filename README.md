@@ -1,4 +1,4 @@
-![bandicam 2022-12-14 19-35-24-227](Assets/README.assets/bandicam 2022-12-14 19-35-24-227.png)
+![bandicam 2022-12-14 19-35-24-227](/Assets/README.assets/bandicam 2022-12-14 19-35-24-227.png)
 
 
 
